@@ -4,7 +4,13 @@ A students' project for a seminar about livestreaming
 ## Getting Started
 
 
-A fully functioning distribution can be arranged by one of the authors.
+Install Gradle.
+
+Compile build.gradle file
+
+[If needed] add missing libraries[junit] to classpath
+
+
 
 
 ## Built With
