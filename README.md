@@ -1,1 +1,26 @@
 # StreamPlaysTabu
+A students' project for a seminar about livestreaming
+
+## Getting Started
+
+
+A fully functioning distribution can be arranged by one of the authors.
+
+
+## Built With
+
+* [Gradle] - Dependency Manager
+* [Intellij] - IDE
+
+## Contributing
+
+For details on our code of conduct and the process for submitting pull requests to us, contact any of the authors or advisor.
+
+## Authors
+
+* **Marc Schubhan** - *Ongoing work* - [mcdaschu](https://github.com/mcdaschu)
+* **Tim Düwel** - *Ongoing work* - [s8tiduew](https://github.com/s8tiduew)
+* **Ba Thinh Tran** - *Ongoing work* - [PewhProgrammer](https://github.com/PewhProgrammer)
+* **Tuan Manh Ho** - *Ongoing work*
+
+See also the list of [contributors](https://github.com/PewhProgrammer/Membran/graphs/contributors) who participated in this project.
