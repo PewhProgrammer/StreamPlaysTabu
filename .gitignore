@@ -17,6 +17,9 @@ gen### JetBrains template
 .idea/vcs.xml
 .idea/jsLibraryMappings.xml
 
+# Readme
+README.md
+
 # Sensitive or high-churn files:
 .idea/dataSources.ids
 .idea/dataSources.xml
