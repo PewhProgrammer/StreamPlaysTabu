@@ -1,6 +1,6 @@
 # StreamPlaysTabu
 
-[![Build Status](https://travis-ci.com/PewhProgrammer/StreamPlaysTabu.svg?token=3Kr2aEJKCmDsLsuKytEz&branch=master)](https://travis-ci.com/PewhProgrammer/StreamPlaysTabu)
+[![Build Status](https://travis-ci.com/PewhProgrammer/StreamPlaysTabu.svg?token=3Kr2aEJKCmDsLsuKytEz&branch=development)](https://travis-ci.com/PewhProgrammer/StreamPlaysTabu)
 
 A students' project for a seminar about livestreaming
 
