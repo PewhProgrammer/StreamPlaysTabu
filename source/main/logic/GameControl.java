@@ -21,19 +21,10 @@ public class GameControl {
 
 
     /**
-     * brauchen wir als modul, da startGame() es wieder aufrufen muss
-     * @param
-     * @return NULL
+     * setup game before main game starts
      */
-    public void waitingForPlayers(){
-        Log.trace("Control is waiting for Players");
-        while(mModel.getGameState() == GameState.WaitingForPlayers){
-            //process twitch/beam api
-            if(mModel.getNumPlayers() >= MIN_PLAYERS)
-                mModel.setGameState(GameState.GameStarted);
-        }
-        Log.trace("Players available to play the game");
-        startGame();
+    public void setupGame() {
+
     }
 
     /**
@@ -41,7 +32,7 @@ public class GameControl {
      * @param
      * @return NULL
      */
-    public void startGame(){
+    public void runGame(){
 
         Log.trace("Control started the game");
         isStarted = (mModel.getGameState() == GameState.GameStarted);
@@ -54,4 +45,26 @@ public class GameControl {
 
     }
 
+    /**
+     * brauchen wir als modul, da runGame() es wieder aufrufen muss
+     * @param
+     * @return NULL
+     */
+    private void waitingForPlayers(){
+        Log.trace("Control is waiting for Players");
+        while(mModel.getGameState() == GameState.WaitingForPlayers){
+            //process twitch/beam api
+            if(mModel.getNumPlayers() >= MIN_PLAYERS)
+                mModel.setGameState(GameState.GameStarted);
+        }
+        Log.trace("Players available to play the game");
+        runGame();
+    }
+
+    /**
+     * initialize registration phase
+     */
+    private void registration() {
+
+    }
 }
