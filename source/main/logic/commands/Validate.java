@@ -8,8 +8,8 @@ import model.GameModel;
  */
 public class Validate extends Command {
 
-    public Validate(GameModel gm, Bot b, String ch) {
-        super(gm, b, ch);
+    public Validate(GameModel gm, String ch) {
+        super(gm, ch);
     }
 
     @Override

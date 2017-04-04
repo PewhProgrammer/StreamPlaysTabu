@@ -8,8 +8,8 @@ import model.GameModel;
  */
 public class Ask extends Command {
 
-    public Ask(GameModel gm, Bot b, String ch) {
-        super(gm, b, ch);
+    public Ask(GameModel gm, String ch) {
+        super(gm, ch);
     }
 
     @Override

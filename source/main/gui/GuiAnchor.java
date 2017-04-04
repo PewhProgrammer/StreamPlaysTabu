@@ -5,7 +5,12 @@ package gui;/**
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class GuiAnchor extends Application {
+
+    private List<String> explanations = new LinkedList<String>();
 
     public static void main(String[] args) {
         launch(args);

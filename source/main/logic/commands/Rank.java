@@ -4,15 +4,12 @@ import logic.bots.Bot;
 import model.GameModel;
 
 /**
- * Created by Marc on 03.04.2017.
+ * Created by Marc on 04.04.2017.
  */
-public class Rules extends Command {
+public class Rank extends Command {
 
-    Bot bot;
-
-    public Rules(GameModel gm, Bot b, String ch) {
+    public Rank(GameModel gm, String ch) {
         super(gm, ch);
-        bot = b;
     }
 
     @Override

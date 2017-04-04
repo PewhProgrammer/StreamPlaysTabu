@@ -8,8 +8,8 @@ import model.GameModel;
  */
 public class Register extends Command {
 
-    public Register(GameModel gm, Bot b, String ch) {
-        super(gm, b, ch);
+    public Register(GameModel gm, String ch) {
+        super(gm, ch);
     }
 
     @Override

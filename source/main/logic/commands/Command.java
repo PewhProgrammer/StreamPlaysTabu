@@ -9,13 +9,11 @@ import model.GameModel;
 public abstract class Command {
 
     private GameModel gameModel;
-    private Bot bot; //differs between Twitch and Beam Bot
     private String thisChannel; //channel you're working on.
     boolean needsAdmin = false;
 
-    public Command(GameModel gm, Bot b, String ch) {
+    public Command(GameModel gm, String ch) {
         gameModel = gm;
-        bot = b;
         thisChannel = ch;
     }
 
