@@ -1,18 +1,14 @@
 package logic.commands;
 
-import logic.bots.Bot;
 import model.GameModel;
 
 /**
- * Created by Marc on 03.04.2017.
+ * Created by Marc on 04.04.2017.
  */
-public class Rules extends Command {
+public class Answer extends Command {
 
-    Bot bot;
-
-    public Rules(GameModel gm, Bot b, String ch) {
+    public Answer(GameModel gm, String ch) {
         super(gm, ch);
-        bot = b;
     }
 
     @Override
@@ -22,6 +18,7 @@ public class Rules extends Command {
 
     @Override
     public boolean validate() {
+        //Anti cheating mechanism
         return false;
     }
 }

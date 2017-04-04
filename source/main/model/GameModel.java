@@ -11,16 +11,25 @@ import java.util.Set;
 public class GameModel extends Observable{
 
     private GameState mGameState;
+
     private int mNumPlayers;
+
     private Language lang;
     private GameMode gameMode;
+
     private Set<String> registeredPlayers;
+    private Set<String> tabooWords;
+    //TODO List for guesses + num of occurences
+    private String category, giver, word, explanation, question, answer;
 
 
     public void GameModel(Language l, GameMode gm){
         mGameState = GameState.WaitingForPlayers;
         mNumPlayers = 0;
         registeredPlayers = new HashSet<String>();
+        tabooWords = new HashSet<String>();
+        lang = l;
+        gameMode = gm;
     }
 
 

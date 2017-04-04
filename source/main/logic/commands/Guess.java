@@ -8,8 +8,17 @@ import model.GameModel;
  */
 public class Guess extends Command {
 
-    public Guess(GameModel gm, Bot b, String ch) {
-        super(gm, b, ch);
+    String name;
+
+    /**
+     *
+     * @param gm gamemodel
+     * @param ch channelname
+     * @param name name of user who gave us the guess.
+     */
+    public Guess(GameModel gm, String ch, String name) {
+        super(gm, ch);
+        this.name = name;
     }
 
     @Override

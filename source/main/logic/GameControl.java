@@ -1,6 +1,8 @@
 package logic;
 
 import common.Log;
+import logic.bots.Bot;
+import logic.bots.SiteBot;
 import model.GameModel;
 import model.GameState;
 
@@ -12,6 +14,9 @@ public class GameControl {
     private final short MIN_PLAYERS = 2 ;
 
     private GameModel mModel;
+    private Bot bot;
+    private SiteBot sbot;
+
     private boolean isStarted;
 
     public void GameControl(){
