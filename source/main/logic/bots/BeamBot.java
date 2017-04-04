@@ -1,5 +1,7 @@
 package logic.bots;
 
+import pro.beam.api.BeamAPI;
+
 /**
  * Created by Marc on 03.04.2017.
  */
