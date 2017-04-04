@@ -13,6 +13,8 @@ public abstract class Bot {
     protected PrintWriter out;
     protected BufferedReader in;
 
+    protected final String rules = "rules!";
+
     boolean terminate = false;
 
     public abstract void connectToChatroom(String user);

@@ -24,17 +24,19 @@ public class CommandFactory {
         admins = new HashSet<String>();
     }
 
-    /**
-     *
-     * @param str the message received from a user.
-     * @return the command-class matching the message.
-     */
     public Command makeCommand(String str) {
+        if(!str.startsWith("!")) return null;
+
+
         return null;
     }
 
+    /**Was soll die Methode machen? Wenn er den string parst um herauszufinden
+    ob es ein Command ist, verlieren wir doch gerade die Information, um
+    welchen Command es sich handelt. **/
     private boolean isCommand(String str) {
 
         return false;
     }
+
 }
