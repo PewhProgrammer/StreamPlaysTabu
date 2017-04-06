@@ -31,9 +31,6 @@ public class CommandFactory {
         return null;
     }
 
-    /**Was soll die Methode machen? Wenn er den string parst um herauszufinden
-    ob es ein Command ist, verlieren wir doch gerade die Information, um
-    welchen Command es sich handelt. **/
     private boolean isCommand(String str) {
 
         return false;

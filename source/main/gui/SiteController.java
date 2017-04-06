@@ -11,4 +11,14 @@ public class SiteController implements IObserver {
     public void onNotify() {
 
     }
+
+    @Override
+    public void onNotifyStartGame() {
+
+    }
+
+    @Override
+    public void onNotifyWaitingForPlayers() {
+
+    }
 }

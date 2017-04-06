@@ -6,4 +6,8 @@ package model;
 public interface IObserver {
 
     public void onNotify();
+
+    public void onNotifyStartGame();
+
+    public void onNotifyWaitingForPlayers();
 }

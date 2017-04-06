@@ -3,33 +3,24 @@ package logic;
 import common.Log;
 import logic.bots.Bot;
 import logic.bots.SiteBot;
+import logic.commands.Command;
 import model.GameModel;
 import model.GameState;
+import model.Language;
+import model.Observable;
 
 /**
  * Created by Thinh-Laptop on 26.03.2017.
  */
-public class GameControl {
-
-    private final short MIN_PLAYERS = 2 ;
+public class GameControl extends Observable{
 
     private GameModel mModel;
-    private Bot bot;
-    private SiteBot sbot;
 
     private boolean isStarted;
 
-    public void GameControl(){
-        mModel = new GameModel();
+    public GameControl(short minPlayers, Language l ){
+        mModel = new GameModel(l,minPlayers);
         isStarted = false;
-    }
-
-
-    /**
-     * setup game before main game starts
-     */
-    public void setupGame() {
-
     }
 
     /**
@@ -37,14 +28,15 @@ public class GameControl {
      * @param
      * @return NULL
      */
-    public void runGame(){
+    private void runGame(){
 
         Log.trace("Control started the game");
         isStarted = (mModel.getGameState() == GameState.GameStarted);
-        while(isStarted){
-            //I suggest state pattern for actual gameplay and splitscreen/highscore
 
-            //
+        while(isStarted){
+            processNextCommand();
+            if(mModel.getGameState() == GameState.WaitingForPlayers)
+                waitingForPlayers();
         }
         Log.trace("Control ends the game");
 
@@ -55,21 +47,30 @@ public class GameControl {
      * @param
      * @return NULL
      */
-    private void waitingForPlayers(){
+    public void waitingForPlayers(){
         Log.trace("Control is waiting for Players");
         while(mModel.getGameState() == GameState.WaitingForPlayers){
             //process twitch/beam api
-            if(mModel.getNumPlayers() >= MIN_PLAYERS)
-                mModel.setGameState(GameState.GameStarted);
+            processNextCommand();
         }
-        Log.trace("Players available to play the game");
+        Log.trace("Players are available to play the game");
+        isStarted = true;
         runGame();
     }
 
     /**
-     * initialize registration phase
+     * sorgt dafür, dass die command queue abgearbeitet wird.
      */
-    private void registration() {
-
+    private void processNextCommand(){
+        for (; ; ) {
+            Command c = mModel.pollNextCommand();
+            try {
+                c.validate();
+                c.execute();
+                break;
+            } catch(Exception e) {
+                break;
+            }
+        }
     }
 }

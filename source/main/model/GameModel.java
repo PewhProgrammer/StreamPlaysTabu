@@ -1,8 +1,12 @@
 package model;
 
 import logic.GameControl;
+import logic.bots.Bot;
+import logic.bots.SiteBot;
+import logic.commands.Command;
 
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 /**
@@ -21,15 +25,21 @@ public class GameModel extends Observable{
     private Set<String> tabooWords;
     //TODO List for guesses + num of occurences
     private String category, giver, word, explanation, question, answer;
+    private LinkedList<Command> commands = new LinkedList<>();
+
+    private Bot bot;
+    private SiteBot sbot;
+
+    private short MIN_PLAYERS;
 
 
-    public void GameModel(Language l, GameMode gm){
+    public GameModel(Language l, short minPlayers){
         mGameState = GameState.WaitingForPlayers;
         mNumPlayers = 0;
         registeredPlayers = new HashSet<String>();
         tabooWords = new HashSet<String>();
         lang = l;
-        gameMode = gm;
+        MIN_PLAYERS = minPlayers;
     }
 
 
@@ -50,5 +60,13 @@ public class GameModel extends Observable{
 
     public int getNumPlayers(){
         return mNumPlayers;
+    }
+
+    public Command pollNextCommand(){
+        return commands.pollFirst();
+    }
+
+    public void pushCommand(Command e){
+        commands.push(e);
     }
 }

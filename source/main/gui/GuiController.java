@@ -11,4 +11,14 @@ public class GuiController implements IObserver {
     public void onNotify() {
         //something interested happened to gameModel
     }
+
+    @Override
+    public void onNotifyStartGame() {
+
+    }
+
+    @Override
+    public void onNotifyWaitingForPlayers() {
+
+    }
 }
