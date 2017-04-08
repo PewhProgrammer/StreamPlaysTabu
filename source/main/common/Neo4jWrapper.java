@@ -1,12 +1,10 @@
 package common;
 
-import org.neo4j.driver.v1.AuthTokens;
-import org.neo4j.driver.v1.Driver;
-import org.neo4j.driver.v1.GraphDatabase;
-import org.neo4j.driver.v1.Record;
-import org.neo4j.driver.v1.Session;
-import org.neo4j.driver.v1.StatementResult;
-import org.neo4j.driver.v1.Transaction;
+import org.neo4j.driver.v1.*;
+import org.neo4j.driver.v1.exceptions.ServiceUnavailableException;
+
+import java.io.File;
+import java.util.List;
 
 import static org.neo4j.driver.v1.Values.parameters;
 
@@ -15,7 +13,14 @@ import static org.neo4j.driver.v1.Values.parameters;
  */
 public class Neo4jWrapper {
 
+    private final Config config ;
+
     public Neo4jWrapper(boolean simulation){
+
+        //baut enkryptische Verbindung, um uns gegen "man-in-the-middle" attacken zu schützen
+        config = Config.build().withEncryptionLevel( Config.EncryptionLevel.REQUIRED ).toConfig() ;
+
+
         if(simulation){
             //clear default data base
             // use default data base
@@ -73,6 +78,21 @@ public class Neo4jWrapper {
 
     public boolean resetDatabase(){
         return false;
+    }
+
+    private Driver acquireDriver(List<String> uris, AuthToken authToken, Config config)
+    {
+        for (String uri : uris)
+        {
+            try {
+                return GraphDatabase.driver(uri, authToken, config);
+            }
+            catch (ServiceUnavailableException ex)
+            {
+                // This URI failed, so loop around again if we have another.
+            }
+        }
+        throw new ServiceUnavailableException("No valid database URI found");
     }
 
 }
