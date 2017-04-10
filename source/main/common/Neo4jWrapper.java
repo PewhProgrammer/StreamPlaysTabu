@@ -32,7 +32,7 @@ public class Neo4jWrapper {
 
     //muss noch schauen, ob es sich lohnt Objekte dafür zu machen
     public boolean createNode(){
-        Driver driver = GraphDatabase.driver( "bolt://localhost:7687", AuthTokens.basic( "neo4j", "neo4j" ) );
+        Driver driver = GraphDatabase.driver( "bolt://localhost:7687", AuthTokens.basic( "neo4j", "streamplaystabu" ) );
 
         try ( Session session = driver.session() )
         {
@@ -68,15 +68,18 @@ public class Neo4jWrapper {
     }
 
     public boolean createProperty(){
+        //sowas wie validationrating für eine beziehung
         return false;
     }
 
     //
     public boolean deleteNode(){
+        //wenn beziehungen zu wenig validierung haben
         return false;
     }
 
     public boolean resetDatabase(){
+        //wie kann man die datenbank auf ihren ursprung resetten ohne alle daten zu löschen
         return false;
     }
 

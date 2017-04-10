@@ -60,14 +60,15 @@ public class Main {
         Log.info("Connecting to neo4j default database("+defaultDatbase+")");
         //TODO instanziiere Neo4jWrapper. Frage ob man immer connecten soll
 
+
+        Log.info("Launching GUI...");
+        String[] param = {"testparam"};
+        //new GuiAnchor().main(param);
+
         Log.info("Launching Server...");
         new GameControl((short)2,Language.Ger).waitingForPlayers();
 
 
-        //TODO anderer thread
-        Log.info("Launching GUI...");
-        String[] param = {"testparam"};
-        new GuiAnchor().main(param);
     }
 
     public void parseCommandLine(String[] args){

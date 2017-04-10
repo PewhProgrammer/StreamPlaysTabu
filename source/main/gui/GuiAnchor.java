@@ -9,8 +9,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
 public class GuiAnchor extends Application {
 
@@ -21,7 +19,9 @@ public class GuiAnchor extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
+        Parent root = FXMLLoader.load(getClass().
+                getResource("" +
+                        "gui.fxml"));
 
         Scene scene = new Scene(root, 1280, 720);
 

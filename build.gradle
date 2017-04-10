@@ -6,6 +6,18 @@ apply plugin: 'idea'
 
 sourceCompatibility = 1.5
 
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Sample Project',
+                'Implementation-Version': version,
+                'Main-Class': 'main.Main'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
 repositories {
     mavenCentral()
     maven {
