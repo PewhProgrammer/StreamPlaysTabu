@@ -58,15 +58,16 @@ public class Main {
 
 
         Log.info("Connecting to neo4j default database("+defaultDatbase+")");
+        //TODO instanziiere Neo4jWrapper. Frage ob man immer connecten soll
 
         Log.info("Launching Server...");
         new GameControl((short)2,Language.Ger).waitingForPlayers();
 
 
-        String[] param = {"lol"};
-        new GuiAnchor().main(param);
+        //TODO anderer thread
         Log.info("Launching GUI...");
-        // ....
+        String[] param = {"testparam"};
+        new GuiAnchor().main(param);
     }
 
     public void parseCommandLine(String[] args){
@@ -127,6 +128,8 @@ public class Main {
             switch (args[0]) {
                 case "--neo4jserver":
                     neo4jbindAddr = line.getOptionValue("neo4jserver");
+                    if(!checkBindAddrFormat(neo4jbindAddr))
+                        throw new ParseException(neo4jbindAddr + " malicious bind address format for neo4j!");
                     if (line.hasOption("s"))
                         seed = ((Number)line.getParsedOptionValue("s")).intValue();
                     if (line.hasOption("defaultdata"))
@@ -164,8 +167,21 @@ public class Main {
      *      true if possible
      */
     private boolean checkBindAddrFormat(String bindAddr) {
-        return bindAddr.equals("localhost")
-                || Pattern.compile("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}:[0-9]{1,5}").matcher(bindAddr).matches();
+
+        String[] parts ={};
+        try {
+            parts = bindAddr.split(":");
+        }catch(IndexOutOfBoundsException e){
+            return false;
+        }
+        String host = parts[0]; // host
+        String port = parts[1]; // port
+        boolean correctHost = host.equals("localhost")
+                || Pattern.compile("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}:[0-9]{1,5}").
+                matcher(host).matches();
+        boolean correctPort = Pattern.compile("\\d+").
+                matcher(port).matches();
+        return correctHost && correctPort;
     }
 
     /**
