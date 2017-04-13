@@ -3,12 +3,16 @@ package gui;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -28,8 +32,11 @@ public class FXMLController implements Initializable {
     @FXML
     private CheckBox fullscreenBox = new CheckBox();
 
-    private boolean fullscreen = false;
-    private int resX = 1280, resY = 720;
+    @FXML
+    private Text text = new Text();
+
+    static boolean fullscreen = false;
+    static int resX = 1280, resY = 720;
 
 
     @Override
@@ -40,7 +47,19 @@ public class FXMLController implements Initializable {
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Starting Game with settings: Fullscreen = " + fullscreen + "; Resolution: " + resX + "x" + resY);
+                System.out.println("Starting Game with settings: Fullscreen = " + FXMLController.fullscreen + "; Resolution: " + FXMLController.resX + "x" + FXMLController.resY);
+
+                Parent root = null;
+                try {
+                    root = FXMLLoader.load((getClass().getResource("idle.fxml")));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene scene = new Scene(root, FXMLController.resX, FXMLController.resY);
+                GuiAnchor.stage.setScene(scene);
+                GuiAnchor.stage.centerOnScreen();
+                if(FXMLController.fullscreen)
+                    GuiAnchor.stage.setFullScreen(true);
             }
         });
 

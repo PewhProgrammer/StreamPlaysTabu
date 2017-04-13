@@ -11,7 +11,7 @@
    <children>
       <CheckBox fx:id="fullscreenBox" layoutX="38.0" layoutY="86.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="87.0" text="Fullscreen" />
       <Button fx:id="startButton" layoutX="162.0" layoutY="536.0" mnemonicParsing="false" text="Start Game" />
-      <Text layoutX="136.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Settings">
+      <Text layoutX="136.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Settings" AnchorPane.leftAnchor="135.916015625" AnchorPane.rightAnchor="136.083984375">
          <font>
             <Font size="36.0" />
          </font>

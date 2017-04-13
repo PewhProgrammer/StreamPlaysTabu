@@ -1,34 +1,40 @@
-package gui;/**
- * Created by Thinh-Laptop on 26.03.2017.
- */
+package gui;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
+/**
+ * Created by Marc on 11.04.2017.
+ */
 public class GuiAnchor extends Application {
+
+    public static Stage stage = null;
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
-
+    public void start(Stage primaryStage) throws Exception {
+        GuiAnchor.stage = primaryStage;
+        //load the start.fxml
+        Parent root = FXMLLoader.load(getClass().getResource("start.fxml"));
+        //setup scene
         Scene scene = new Scene(root, 400, 600);
+        stage.setTitle("StreamPlaysTabu");
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.show();
+    }
 
-        primaryStage.setTitle("StreamPlaysTabu");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public void waitingForPlayer() throws Exception {
+        Parent root = FXMLLoader.load((getClass().getResource("idle.fxml")));
+        Scene scene = new Scene(root, FXMLController.resX, FXMLController.resY);
+        stage.setScene(scene);
+        if(FXMLController.fullscreen)
+            stage.setFullScreen(true);
     }
 }

@@ -1,8 +1,5 @@
 import common.Log;
-import gui.GuiAnchor;
 import logic.GameControl;
-import logic.commands.Answer;
-import model.GameModel;
 import model.Language;
 import org.apache.commons.cli.*;
 
