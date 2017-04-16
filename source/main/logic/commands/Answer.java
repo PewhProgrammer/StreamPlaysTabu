@@ -23,6 +23,7 @@ public class Answer extends Command {
     public void execute() {
         gameModel.addQAndA(question, answer);
         //store for later processing, inform observer
+        //TODO parse template + update db
     }
 
     @Override

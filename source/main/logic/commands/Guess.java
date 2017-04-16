@@ -27,8 +27,8 @@ public class Guess extends Command {
     public void execute() {
         //TODO check for right answer
         //TODO if right answer is given, inform observer and set gamestate to register, clear all game specific information,
-            //TODO add guesses to db, update score of giver, winner and stream
-        //TODO if not, update guess list and inform observer if top 10 has changed
+            //TODO update score of giver, winner and stream
+        //TODO if not, update guess list and inform observer if top 10 has changed, add guesses to db
     }
 
     @Override
