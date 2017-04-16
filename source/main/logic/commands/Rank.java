@@ -14,11 +14,12 @@ public class Rank extends Command {
 
     @Override
     public void execute() {
-
+        //TODO call corresponding method in twitch/beam bot
     }
 
     @Override
     public boolean validate() {
         return false;
+        //TODO check #rank commands in last minute s.t. limit will not be violated
     }
 }

@@ -23,5 +23,6 @@ public class Rules extends Command {
     @Override
     public boolean validate() {
         return false;
+        //TODO check #rules in last x seconds to avoid spam and to not violate the limit
     }
 }

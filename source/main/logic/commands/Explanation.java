@@ -7,18 +7,24 @@ import model.GameModel;
  */
 public class Explanation extends Command {
 
-    public Explanation(GameModel gm, String ch) {
+    private String explanation;
+
+    public Explanation(GameModel gm, String ch, String explanation) {
         super(gm, ch);
+        this.explanation = explanation;
     }
+
 
     @Override
     public void execute() {
-
+        gameModel.addExplanation(explanation);
+        //update model, inform observer
+        //TODO db update
     }
 
     @Override
     public boolean validate() {
-        //Anti cheating mechanism
+        //TODO anti cheating meachanism(, game state?)
         return false;
     }
 }

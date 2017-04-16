@@ -13,11 +13,14 @@ public class Host extends Command {
 
     @Override
     public void execute() {
-
+        //check if stream is already host
+        //if yes, remove him from host list and make bots disconnect from corresponding channel
+        //if no, add him to host list and make bots connect to corresponding channel
     }
 
     @Override
     public boolean validate() {
         return false;
+        //anything to do here?
     }
 }

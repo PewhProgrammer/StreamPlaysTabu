@@ -13,11 +13,12 @@ public class StreamerExplains extends Command {
 
     @Override
     public void execute() {
-
+        //TODO update game mode
     }
 
     @Override
     public boolean validate() {
         return false;
+        //TODO check if the person sending !streamExplains is owner of home channel
     }
 }

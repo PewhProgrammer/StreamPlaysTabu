@@ -13,11 +13,12 @@ public class Taboo extends Command {
 
     @Override
     public void execute() {
-
+        //TODO update list of taboo suggestions
     }
 
     @Override
     public boolean validate() {
         return false;
+        //anything to do here?
     }
 }

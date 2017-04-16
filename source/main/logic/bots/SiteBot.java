@@ -24,5 +24,9 @@ public class SiteBot {
         }
     }
 
+    public void sendQuestion(String question) {
+        //TODO send !ask question
+    }
+
     //TODO method for starting Thread that listens to server
 }

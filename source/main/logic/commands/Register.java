@@ -14,11 +14,12 @@ public class Register extends Command {
 
     @Override
     public void execute() {
-
+        //TODO add to registered set, update #players and game state
     }
 
     @Override
     public boolean validate() {
         return false;
+        //TODO check game state
     }
 }

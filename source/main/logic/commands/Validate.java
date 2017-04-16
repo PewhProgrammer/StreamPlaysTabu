@@ -14,11 +14,12 @@ public class Validate extends Command {
 
     @Override
     public void execute() {
-
+        //TODO update score of validated information, remove from db if score is baaaaaaaad
     }
 
     @Override
     public boolean validate() {
         return false;
+        //anything to do here?
     }
 }

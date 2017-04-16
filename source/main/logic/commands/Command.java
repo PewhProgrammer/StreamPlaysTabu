@@ -8,8 +8,8 @@ import model.GameModel;
  */
 public abstract class Command {
 
-    private GameModel gameModel;
-    private String thisChannel; //channel you're working on.
+    protected GameModel gameModel;
+    protected String thisChannel; //channel you're working on.
     boolean needsAdmin = false;
 
     public Command(GameModel gm, String ch) {

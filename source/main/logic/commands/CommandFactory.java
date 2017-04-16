@@ -15,6 +15,8 @@ public class CommandFactory {
     private Bot bot; //differs between Twitch and Beam Bot
     private String thisChannel; //channel you're working on.
 
+    //TODO kann raus i guess?
+
     Set<String> admins;
 
     public CommandFactory(GameModel gm, Bot b, String ch) {
