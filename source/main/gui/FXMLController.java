@@ -51,7 +51,7 @@ public class FXMLController implements Initializable {
 
                 Parent root = null;
                 try {
-                    root = FXMLLoader.load((getClass().getResource("idle.fxml")));
+                    root = FXMLLoader.load((getClass().getResource("/idle.fxml")));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

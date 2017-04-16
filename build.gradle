@@ -18,6 +18,8 @@ task fatJar(type: Jar) {
     with jar
 }
 
+sourceSets.main.resources.srcDirs = ["source/resources"]
+
 repositories {
     mavenCentral()
     maven {
