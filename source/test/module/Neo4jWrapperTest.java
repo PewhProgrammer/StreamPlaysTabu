@@ -55,8 +55,20 @@ public class Neo4jWrapperTest extends TestCase {
     }
 
     public void testCreateRelationship(){
-        database.createRelationship("Nautilus","Nautilus",
-                "KNOWS");
+        assertEquals("No such relationshio could be created!"
+                ,true,
+                database.createRelationship("Nautilus","Nautilus",
+                        "RATING"));
+    }
+
+    public void testClearRelationships(){
+        assertEquals("No such relationshio could be created!"
+                ,true,
+                database.createRelationship("Nautilus","Nautilus",
+                        "RATING"));
+        assertEquals("Something went wrong when clearing the ratings!"
+                ,true,
+                database.clearFailedRelationships());
     }
 
 }

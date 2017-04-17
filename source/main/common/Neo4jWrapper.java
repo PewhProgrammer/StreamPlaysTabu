@@ -20,6 +20,7 @@ public class Neo4jWrapper {
     // whereas 7687 is the default for binary bolt protocol.
     private StringBuilder neo4jbindAddr = new StringBuilder();
     private final boolean legacy ;
+    private final int DEL_TRESHHOLD = 5;
     private final String label;
     Driver driver;
 
@@ -33,6 +34,7 @@ public class Neo4jWrapper {
         driver = acquireDriver("bolt://" + neo4jbindAddr,
                 AuthTokens.basic( "neo4j", "streamplaystabu" ),config);
 
+        //non-legacy nodes are used experimentally
         if(simulation){
             resetDatabase();
             label = "Node";
@@ -41,7 +43,34 @@ public class Neo4jWrapper {
 
     }
 
-    //muss noch schauen, ob es sich lohnt Objekte dafür zu machen
+    /**
+     * This method is mainly called to build our ontology
+     * @param node1
+     * @param node2
+     * @param relationship
+     * @return
+     */
+    public boolean insertNodesAndRelationship(String node1, String node2, String relationship){
+        //create two nodes if not already
+        try {
+            createNode(node1);
+            createNode(node2);
+        }catch(ServiceUnavailableException e){
+            Log.debug(e.getLocalizedMessage());
+            return false;
+        }
+        //creates a binding connection between node1 and node2
+        return createRelationship(node1,node2,relationship);
+    }
+
+    /**************************** INTERN PUBLIC METHOD ****************************/
+
+    /**
+     * creates a Node in our ontology. Dependent on legacy or not.
+     * @param nodeName
+     * @return
+     * @throws ServiceUnavailableException
+     */
     public boolean createNode(String nodeName) throws ServiceUnavailableException{
 
         try ( Session session = driver.session() )
@@ -49,6 +78,10 @@ public class Neo4jWrapper {
 
             try ( Transaction tx = session.beginTransaction() )
             {
+                if(lookUpNode(nodeName)){
+                    Log.info(nodeName + " is already in the database!");
+                    return false;
+                }
                 tx.run( "CREATE (a: "+label+" {name: {name} })",
                         parameters( "name", nodeName ) );
                 tx.success();
@@ -60,6 +93,11 @@ public class Neo4jWrapper {
         return true;
     }
 
+    /**
+     * look up a node in our ontology
+     * @param nodeName
+     * @return
+     */
     public boolean lookUpNode(String nodeName){
         try ( Session session = driver.session() ) {
             try (Transaction tx = session.beginTransaction()) {
@@ -105,6 +143,13 @@ public class Neo4jWrapper {
 
     }
 
+    /**
+     * Creates a connection between two nodes while also incrementing the rating by 1
+     * @param node1
+     * @param node2
+     * @param relationship
+     * @return
+     */
     public boolean createRelationship(String node1, String node2, String relationship){
         try ( Session session = driver.session() )
         {
@@ -112,28 +157,77 @@ public class Neo4jWrapper {
             try ( Transaction tx = session.beginTransaction() )
             {
                 int count = 0;
-                tx.run( "MATCH (ee:Node) WHERE ee.name = " + node1 + " " +
-                                "MATCH (js:Node) WHERE ee.name = " + node2 + " " +
-                        "(ee)-[:{relationship} {rating: +"+ count++ +"}]->(js)"
-                        , parameters( "relationship", relationship )); //
+                StatementResult result = tx.run( "MATCH (n)-[rel:rating]->(r)" +
+                        "RETURN rel");
+                while (result.hasNext()) {
+                    Record record = result.next();
+                    count = record.get("rating").asInt();
+                }
+
+                tx.run( "MATCH (ee) WHERE ee.name =  {name1} "+
+                                "MATCH (js) WHERE ee.name = {name2} " +
+                        "CREATE UNIQUE (ee)-[:"+relationship+" {rating: "+ ++count +"," +
+                                "legacy: "+legacy+"} " +
+                                "]->(js)"
+
+                        , parameters( "name1",node1,"name2",node2 )); //
 
                 tx.success();
+                return true;
             }
 
         }
 
-        return false;
     }
 
     public boolean createProperty(){
-        //sowas wie validationrating für eine beziehung
+        //Not needed up till now
         return false;
     }
 
-    //
-    public boolean deleteNode(){
-        //wenn beziehungen zu wenig validierung haben
-        return false;
+    /**
+     * clear all connections that have too less of a rating
+     * @return true if succesfully delete the relationship
+     */
+    public boolean clearFailedRelationships(){
+
+        try ( Session session = driver.session() )
+        {
+
+            try ( Transaction tx = session.beginTransaction() )
+            {
+                tx.run( "MATCH (n)-[rel]->(r) \n" +
+                                "WHERE rel.rating < "+DEL_TRESHHOLD+"\n" +
+                                "DELETE rel");
+
+                tx.success();
+                return true;
+            }
+
+        }
+    }
+
+    /**
+     * Resets all connections to the pre-existing legacy edges.
+     * Anything besides of legacy = true, will be cleared
+     * @return
+     */
+    public boolean resetRelationships(){
+
+        try ( Session session = driver.session() )
+        {
+
+            try ( Transaction tx = session.beginTransaction() )
+            {
+                tx.run( "MATCH (n)-[rel]->(r) \n" +
+                        "WHERE NOT EXISTS (rel.legacy) OR NOT (rel.legacy = true) " +
+                        "DELETE rel");
+
+                tx.success();
+                return true;
+            }
+
+        }
     }
 
     /**
@@ -141,6 +235,7 @@ public class Neo4jWrapper {
      * @return suceed if nodes are deleted
      */
     public boolean resetDatabase(){
+        resetRelationships();
         try ( Session session = driver.session() )
         {
 
