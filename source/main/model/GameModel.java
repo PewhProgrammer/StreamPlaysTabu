@@ -81,7 +81,7 @@ public class GameModel extends Observable{
         //TODO inform observer
     }
 
-    public String getCategory(String category) {
+    public String getCategory() {
         return this.category;
     }
 
