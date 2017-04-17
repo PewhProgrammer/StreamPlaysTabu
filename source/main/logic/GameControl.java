@@ -1,6 +1,7 @@
 package logic;
 
 import common.Log;
+import common.Neo4jWrapper;
 import logic.bots.Bot;
 import logic.bots.SiteBot;
 import logic.commands.Command;
@@ -18,8 +19,8 @@ public class GameControl extends Observable{
 
     private boolean isStarted;
 
-    public GameControl(short minPlayers, Language l ){
-        mModel = new GameModel(l,minPlayers);
+    public GameControl(short minPlayers, Language l, Neo4jWrapper neo){
+        mModel = new GameModel(l,minPlayers,neo);
         isStarted = false;
     }
 
@@ -48,7 +49,7 @@ public class GameControl extends Observable{
      * @return NULL
      */
     public void waitingForPlayers(){
-        Log.trace("Control is waiting for Players");
+        Log.info("Control is waiting for Players");
         while(mModel.getGameState() == GameState.WaitingForPlayers){
             //process twitch/beam api
             processNextCommand();

@@ -1,5 +1,6 @@
 package model;
 
+import common.Neo4jWrapper;
 import logic.GameControl;
 import logic.bots.Bot;
 import logic.bots.SiteBot;
@@ -15,28 +16,29 @@ import java.util.Set;
 public class GameModel extends Observable{
 
     private GameState mGameState;
-
     private int mNumPlayers;
+    private short MIN_PLAYERS;
 
     private Language lang;
     private GameMode gameMode;
+    private final Neo4jWrapper mOntologyDataBase;
 
     private LinkedList<String[]> qAndA;
+    private LinkedList<Command> commands = new LinkedList<>();
 
     private Set<String> registeredPlayers;
     private Set<String> tabooWords;
     private Set<String> explanations;
+
     //TODO List for guesses + num of occurences
     private String category, giver, word;
-    private LinkedList<Command> commands = new LinkedList<>();
 
     private Bot bot;
     private SiteBot sbot;
 
-    private short MIN_PLAYERS;
 
 
-    public GameModel(Language l, short minPlayers){
+    public GameModel(Language l, short minPlayers, Neo4jWrapper neo){
         mGameState = GameState.WaitingForPlayers;
         mNumPlayers = 0;
         registeredPlayers = new HashSet<String>();
@@ -45,10 +47,17 @@ public class GameModel extends Observable{
         qAndA = new LinkedList<>();
         lang = l;
         MIN_PLAYERS = minPlayers;
+        mOntologyDataBase = neo;
     }
 
 
+
     /******************* SETTER / GETTER ****************************/
+
+
+    public Neo4jWrapper getNeo4jWrapper() {
+        return mOntologyDataBase;
+    }
 
     public SiteBot getSiteBot() {
         return sbot;
