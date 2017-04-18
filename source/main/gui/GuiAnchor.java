@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import model.GameModel;
 
 /**
  * Created by Marc on 11.04.2017.
@@ -12,6 +13,7 @@ import javafx.stage.Stage;
 public class GuiAnchor extends Application {
 
     public static Stage stage = null;
+    public  GameModel gameModel = null;
 
     public static void main(String[] args) {
         launch(args);
@@ -30,5 +32,8 @@ public class GuiAnchor extends Application {
         stage.setResizable(false);
         stage.show();
     }
-    
+
+    public void setModel(GameModel gameModel) {
+        gameModel = gameModel;
+    }
 }
