@@ -11,15 +11,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.text.Text;
+import model.IObserver;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static gui.GuiAnchor.stage;
+
 /**
  * Created by Marc on 10.04.2017.
  */
-public class FXMLController implements Initializable {
+public class FXMLController implements Initializable, IObserver {
 
     @FXML
     private RadioButton fullHDRadio = new RadioButton();
@@ -51,15 +54,15 @@ public class FXMLController implements Initializable {
 
                 Parent root = null;
                 try {
-                    root = FXMLLoader.load((getClass().getResource("/idle.fxml")));
+                    root = FXMLLoader.load((getClass().getResource("FXMLFiles/idle.fxml")));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 Scene scene = new Scene(root, FXMLController.resX, FXMLController.resY);
-                GuiAnchor.stage.setScene(scene);
-                GuiAnchor.stage.centerOnScreen();
+                stage.setScene(scene);
+                stage.centerOnScreen();
                 if(FXMLController.fullscreen)
-                    GuiAnchor.stage.setFullScreen(true);
+                    stage.setFullScreen(true);
             }
         });
 
@@ -88,5 +91,29 @@ public class FXMLController implements Initializable {
                 fullHDRadio.setSelected(false);
             }
         });
+    }
+
+    @Override
+    public void onNotify() {
+
+    }
+
+    @Override
+    public void onNotifyStartGame() {
+
+    }
+
+    @Override
+    public void onNotifyWaitingForPlayers() {
+        Parent root = null;
+        try {
+            root = FXMLLoader.load((getClass().getResource("FXMLFiles/idle.fxml")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Scene scene = new Scene(root, FXMLController.resX, FXMLController.resY);
+        stage.setScene(scene);
+        if(FXMLController.fullscreen)
+            stage.setFullScreen(true);
     }
 }
