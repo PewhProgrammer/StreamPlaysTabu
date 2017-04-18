@@ -31,7 +31,7 @@ public class CommandTest extends TestCase{
     @org.junit.Test
     public void setUp() throws Exception {
         gModel = new GameModel(lang,MIN_PLAYERS
-        ,neo);
+        ,neo, new SiteBot());
     }
 
     public void testAnswer(){
@@ -55,7 +55,7 @@ public class CommandTest extends TestCase{
     public void testCategoryChosen(){
         String category = "League of Legends";
         Command cateChosenCommand = new CategoryChosen(gModel,
-                "",category,sBot);
+                "",category);
         assertTrue("Validation failed @ " +
                 getName(), cateChosenCommand.validate());
         cateChosenCommand.execute();

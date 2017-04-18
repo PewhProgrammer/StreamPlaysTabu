@@ -75,13 +75,13 @@ public class FXMLController implements Initializable, IObserver {
                 //initialize bots
                 if(platform.equals("twitch"))
                     try {
-                        gm.setBot(new TwitchBot(/*chn*/));
+                    //  gm.setBot(new TwitchBot(/*chn*/));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 else
                     try {
-                        gm.setBot(new BeamBot(chn));
+                    //  gm.setBot(new BeamBot(chn));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -143,28 +143,62 @@ public class FXMLController implements Initializable, IObserver {
         }));
     }
 
-    @Override
-    public void onNotify() {
-
-    }
 
     @Override
-    public void onNotifyStartGame() {
+    public void onNotifyGameState() {
+        switch (gm.getGameState()) {
 
-    }
+            case GameStarted: {
+                Parent root = null;
+                try {
+                    root = FXMLLoader.load((getClass().getResource("FXMLFiles/game.fxml")));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene scene = new Scene(root, resX, resY);
+                stage.setScene(scene);
+            }
+                break;
 
-    @Override
-    public void onNotifyWaitingForPlayers() {
-        Parent root = null;
-        try {
-            root = FXMLLoader.load((getClass().getResource("FXMLFiles/idle.fxml")));
-        } catch (IOException e) {
-            e.printStackTrace();
+            case Registration: {
+                Parent root = null;
+                try {
+                    root = FXMLLoader.load((getClass().getResource("FXMLFiles/idle.fxml")));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Scene scene = new Scene(root, resX, resY);
+                stage.setScene(scene);
+            }
+                break;
+            default:
+                System.out.println("GameState unknown for GUI");
         }
-        Scene scene = new Scene(root, resX, resY);
-        stage.setScene(scene);
-        if(fullscreen)
-            stage.setFullScreen(true);
+    }
+
+    @Override
+    public void onNotifiyQandA() {
+
+    }
+
+    @Override
+    public void onNotifyCategoryChosen() {
+
+    }
+
+    @Override
+    public void onNotifyExplanation() {
+
+    }
+
+    @Override
+    public void onNotifyWinner() {
+
+    }
+
+    @Override
+    public void onNotifyGuess() {
+
     }
 
 }

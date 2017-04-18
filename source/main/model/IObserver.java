@@ -5,8 +5,6 @@ package model;
  */
 public interface IObserver {
 
-    public void onNotify();
-
     //called when game state changes
     public void onNotifyGameState();
 
@@ -25,7 +23,4 @@ public interface IObserver {
     //called when guesses struct changes
     public void onNotifyGuess();
 
-    public void onNotifyStartGame();
-
-    public void onNotifyWaitingForPlayers();
 }

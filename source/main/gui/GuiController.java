@@ -7,10 +7,6 @@ import model.IObserver;
  */
 public class GuiController implements IObserver {
 
-    @Override
-    public void onNotify() {
-        //something interested happened to gameModel
-    }
 
     @Override
     public void onNotifyGameState() {
@@ -42,13 +38,4 @@ public class GuiController implements IObserver {
 
     }
 
-    @Override
-    public void onNotifyStartGame() {
-
-    }
-
-    @Override
-    public void onNotifyWaitingForPlayers() {
-
-    }
 }

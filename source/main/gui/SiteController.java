@@ -7,10 +7,6 @@ import model.IObserver;
  */
 public class SiteController implements IObserver {
 
-    @Override
-    public void onNotify() {
-
-    }
 
     @Override
     public void onNotifyGameState() {
@@ -42,13 +38,4 @@ public class SiteController implements IObserver {
 
     }
 
-    @Override
-    public void onNotifyStartGame() {
-
-    }
-
-    @Override
-    public void onNotifyWaitingForPlayers() {
-
-    }
 }

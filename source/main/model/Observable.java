@@ -46,18 +46,7 @@ public abstract class Observable {
             ob.onNotifyGuess();
         }
     }
-
-    public void notifyStartGame() {
-        for (IObserver ob : listIObserver) {
-            ob.onNotifyStartGame();
-        }
-    }
-
-    public void notifyWaitingForPlayers() {
-        for (IObserver ob : listIObserver) {
-            ob.onNotifyWaitingForPlayers();
-        }
-    }
+    
 
     public void addObserver(IObserver ob){
         listIObserver.add(ob);

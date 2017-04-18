@@ -2,6 +2,7 @@ import common.Log;
 import common.Neo4jWrapper;
 import gui.GuiAnchor;
 import logic.GameControl;
+import logic.bots.SiteBot;
 import model.GameModel;
 import model.Language;
 import org.apache.commons.cli.*;
@@ -66,7 +67,7 @@ public class Main {
 
         Neo4jWrapper neoWrapper = new Neo4jWrapper(defaultDatbase,neo4jbindAddr);
 
-        GameModel model = new GameModel(language,(short)players,neoWrapper);
+        GameModel model = new GameModel(language,(short)players,neoWrapper, new SiteBot());
         mTHREAD = new Thread() {
             @Override
             public void run() {
