@@ -8,4 +8,5 @@ public enum GameState {
         WaitingForGiver,
         GameStarted,
         GameClosed,
+        Registration,
 }

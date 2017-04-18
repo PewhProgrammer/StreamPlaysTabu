@@ -1,7 +1,7 @@
 package common;
 
 import org.neo4j.driver.v1.*;
-import org.neo4j.driver.v1.exceptions.ServiceUnavailableException;
+import org.neo4j.driver.v1.exceptions.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class Neo4jWrapper {
      * @param relationship
      * @return
      */
-    public boolean insertNodesAndRelationship(String node1, String node2, String relationship){
+    public boolean insertNodesAndRelationshipIntoOntology(String node1, String node2, String relationship){
         //create two nodes if not already
         try {
             createNode(node1);
@@ -62,6 +62,23 @@ public class Neo4jWrapper {
         //creates a binding connection between node1 and node2
         return createRelationship(node1,node2,relationship);
     }
+
+    public int increaseUserPoints(String user, int i)
+    throws Neo4jException{
+        return getUserPoints(user) + i;
+    }
+
+    public int decreaseUserPoints(String user, int i) throws Neo4jException{
+        return increaseUserPoints(user,-i);
+    }
+
+    public int getUserPoints(String user) throws Neo4jException{
+        //parse user points from database
+        return 0;
+    }
+
+    //** TODO: Missing Logging system for user's activity
+
 
     /**************************** INTERN PUBLIC METHOD ****************************/
 
