@@ -19,8 +19,8 @@ public class GameControl extends Observable{
 
     private boolean isStarted;
 
-    public GameControl(short minPlayers, Language l, Neo4jWrapper neo){
-        mModel = new GameModel(l,minPlayers,neo);
+    public GameControl(GameModel model){
+        mModel = model;
         isStarted = false;
     }
 
