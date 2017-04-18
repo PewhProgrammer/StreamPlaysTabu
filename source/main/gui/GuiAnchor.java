@@ -23,14 +23,18 @@ public class GuiAnchor extends Application {
     public void start(Stage primaryStage) throws Exception {
         GuiAnchor.stage = primaryStage;
         //load the start.fxml
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLFiles/start.fxml"));
+        FXMLLoader loader = new FXMLLoader();
+        Parent root = loader.load(getClass().getResource("FXMLFiles/start.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/start.fxml"));
+        FXMLController cont = loader.getController();
         //setup scene
         Scene scene = new Scene(root, 400, 600);
         stage.setTitle("StreamPlaysTabu");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+
+
     }
 
     public void setModel(GameModel gameModel) {
