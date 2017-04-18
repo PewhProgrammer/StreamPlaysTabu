@@ -13,7 +13,9 @@ import model.GameModel;
 public class GuiAnchor extends Application {
 
     public static Stage stage = null;
-    public  GameModel gameModel = null;
+    public static FXMLController cont = null;
+    public GameModel gameModel = null;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -27,7 +29,7 @@ public class GuiAnchor extends Application {
         FXMLLoader loader = new FXMLLoader();
         Parent root = loader.load(getClass().getResource("FXMLFiles/start.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/start.fxml"));
-        FXMLController cont = loader.getController();
+        cont = loader.getController();
         //setup scene
         Scene scene = new Scene(root, 400, 600);
         stage.setTitle("StreamPlaysTabu");

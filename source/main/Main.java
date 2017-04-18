@@ -84,9 +84,8 @@ public class Main {
         if(guiSimulation) {
             Log.info("Launching prototype GUI...");
             GuiAnchor anchor = new GuiAnchor();
-            anchor.main(param);
             anchor.setModel(model);
-            new GuiAnchor().main(param);
+            anchor.main(param);
         }
         else {
             Log.info("Launching experimental GUI...");

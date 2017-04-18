@@ -88,7 +88,9 @@ public class FXMLController implements Initializable, IObserver {
 
                 Parent root = null;
                 try {
-                    root = FXMLLoader.load((getClass().getResource("FXMLFiles/idle.fxml")));
+                    FXMLLoader loader = new FXMLLoader();
+                    root = loader.load((getClass().getResource("FXMLFiles/idle.fxml")));
+                    GuiAnchor.cont = loader.getController();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
