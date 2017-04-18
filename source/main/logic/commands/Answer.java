@@ -1,6 +1,7 @@
 package logic.commands;
 
 import model.GameModel;
+import model.GameState;
 
 /**
  * Created by Marc on 04.04.2017.
@@ -26,7 +27,12 @@ public class Answer extends Command {
 
     @Override
     public boolean validate() {
-        //TODO anti cheating mechanism, game state
-        return false;
+        //TODO anti cheating mechanism
+
+        if (!gameModel.getGameState().equals(GameState.GameStarted)) {
+            return false;
+        }
+
+        return true;
     }
 }

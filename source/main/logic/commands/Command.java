@@ -20,8 +20,4 @@ public abstract class Command {
     public abstract void execute();
 
     public abstract boolean validate();
-
-    public boolean isAdminNeeded() {
-        return needsAdmin;
-    }
 }

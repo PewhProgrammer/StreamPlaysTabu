@@ -7,20 +7,20 @@ import model.GameModel;
  */
 public class Host extends Command {
 
-    public Host(GameModel gm, String ch) {
+    private String host;
+
+    public Host(GameModel gm, String ch, String host) {
         super(gm, ch);
+        this.host = host;
     }
 
     @Override
     public void execute() {
-        //check if stream is already host
-        //if yes, remove him from host list and make bots disconnect from corresponding channel
-        //if no, add him to host list and make bots connect to corresponding channel
+        gameModel.host(host);
     }
 
     @Override
     public boolean validate() {
-        return false;
-        //anything to do here?
+        return true;
     }
 }

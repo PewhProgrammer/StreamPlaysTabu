@@ -30,7 +30,7 @@ public class Ask extends Command {
         if (!gameModel.getGameState().equals(GameState.GameStarted)) {
             return false;
         }
-        //TODO bad word filter?
+
         return true;
     }
 }

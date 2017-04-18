@@ -29,18 +29,18 @@ public class Guess extends Command {
 
         if (guess.equals(gameModel.getExplainWord())) {
             gameModel.win(name);
-            gameModel.setGameState(GameState.Register);
-            gameModel.clear();
+            gameModel.generateVotingCategories();
+            gameModel.setGameState(GameState.Registration);
         } else {
             gameModel.guess(guess);
         }
-
-        //TODO if not, update guess list and inform observer if top 10 has changed, add guesses to db
     }
 
     @Override
     public boolean validate() {
-        return false;
-        //TODO check game state
+        if (!gameModel.getGameState().equals(GameState.GameStarted)) {
+            return false;
+        }
+        return true;
     }
 }

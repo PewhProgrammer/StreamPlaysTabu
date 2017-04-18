@@ -42,10 +42,10 @@ public class Guess implements Comparable<Guess>{
         }
 
         if (score < g.getScore()) {
-            return -1;
+            return 1;
         }
 
-        return 1;
+        return -1;
     }
 
     @Override

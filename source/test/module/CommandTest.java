@@ -103,8 +103,8 @@ public class CommandTest extends TestCase{
 
     public void testRegister(){
 
-        Command regCommand = new Register(gModel,"");
-        gModel.setGameState(GameState.GameClosed);
+        Command regCommand = new Register(gModel,"", "");
+        gModel.setGameState(GameState.GameStarted);
         assertFalse("Validation passed @ " +
                 getName(), regCommand.validate());
         gModel.setGameState(GameState.Registration);
@@ -117,7 +117,7 @@ public class CommandTest extends TestCase{
     public void testSkip(){
         String giver = "John";
         int currentScore = neo.getUserPoints(giver);
-        Command giverJoinedCommand = new GiverJoined(gModel,"",giver);
+        Command giverJoinedCommand = new GiverJoined(gModel,"");
         Command skipCommand = new Skip(gModel,"");
 
         skipCommand.validate();
@@ -129,7 +129,7 @@ public class CommandTest extends TestCase{
     }
 
     public void testStreamerExplains(){
-        Command streamExplainsCommand = new StreamerExplains(gModel,"");
+        Command streamExplainsCommand = new StreamerExplains(gModel,"", "");
 
         gModel.setGameMode(GameMode.Normal);
         streamExplainsCommand.validate(); //komisch zu überprüfen
@@ -141,7 +141,7 @@ public class CommandTest extends TestCase{
     public void testTaboo(){
         String giver = "John";
         Command tabooCommand = new Taboo(gModel,"");
-        Command giverJoinedCommand = new GiverJoined(gModel,"",giver);
+        Command giverJoinedCommand = new GiverJoined(gModel,"");
 
         giverJoinedCommand.validate();
         giverJoinedCommand.execute();

@@ -23,4 +23,13 @@ public interface IObserver {
     //called when guesses struct changes
     public void onNotifyGuess();
 
+    //called when a user's score changes
+    public void onNotifyScoreUpdate();
+
+    //called when gamemode changes
+    public void onNotifyGameMode();
+
+    //called when giver has been votekicked
+    public void onNotifyKick();
+
 }

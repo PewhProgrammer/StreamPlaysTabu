@@ -8,21 +8,20 @@ import model.GameModel;
  */
 public class Rules extends Command {
 
-    Bot bot;
+    private String user;
 
-    public Rules(GameModel gm, Bot b, String ch) {
+    public Rules(GameModel gm, String ch, String user) {
         super(gm, ch);
-        bot = b;
+        this.user = user;
     }
 
     @Override
     public void execute() {
-
+        gameModel.getBot().whisperRules(user);
     }
 
     @Override
     public boolean validate() {
-        return false;
-        //TODO check #rules in last x seconds to avoid spam and to not violate the limit
+        return true;
     }
 }
