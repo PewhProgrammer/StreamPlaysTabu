@@ -2,6 +2,7 @@ package logic.commands;
 
 import logic.bots.Bot;
 import model.GameModel;
+import model.GameState;
 
 /**
  * Created by Marc on 03.04.2017.
@@ -25,9 +26,15 @@ public class Guess extends Command {
 
     @Override
     public void execute() {
-        //TODO check for right answer
-        //TODO if right answer is given, inform observer and set gamestate to register, clear all game specific information,
-            //TODO update score of giver, winner and stream
+
+        if (guess.equals(gameModel.getExplainWord())) {
+            gameModel.win(name);
+            gameModel.setGameState(GameState.Register);
+            gameModel.clear();
+        } else {
+            gameModel.guess(guess);
+        }
+
         //TODO if not, update guess list and inform observer if top 10 has changed, add guesses to db
     }
 

@@ -11,21 +11,51 @@ public abstract class Observable {
 
     /** TODO mehrere notify methoden */
 
-    public void notifyUpdate(){
+    public void notifyQandA(){
         for (IObserver ob: listIObserver) {
-            ob.onNotify();
+            ob.onNotifiyQandA();
         }
     }
 
-    public void notifyWaitingForPlayers(){
-        for (IObserver ob: listIObserver) {
-            ob.onNotify();
+    public void notifyCategoryChosen() {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyCategoryChosen();
         }
     }
 
-    public void notifyStartGame(){
-        for (IObserver ob: listIObserver) {
-            ob.onNotify();
+    public void notifyGameState() {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyGameState();
+        }
+    }
+
+    public void notifyExplanation() {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyExplanation();
+        }
+    }
+
+    public void notifyWinner() {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyWinner();
+        }
+    }
+
+    public void notifyGuess() {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyGuess();
+        }
+    }
+
+    public void notifyStartGame() {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyStartGame();
+        }
+    }
+
+    public void notifyWaitingForPlayers() {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyWaitingForPlayers();
         }
     }
 

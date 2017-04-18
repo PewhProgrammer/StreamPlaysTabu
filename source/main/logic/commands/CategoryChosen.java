@@ -9,12 +9,10 @@ import model.GameModel;
 public class CategoryChosen extends Command {
 
     private String category;
-    private SiteBot siteBot;
 
-    public CategoryChosen(GameModel gm, String ch, String category, SiteBot siteBot) {
+    public CategoryChosen(GameModel gm, String ch, String category) {
         super(gm, ch);
         this.category = category;
-        this.siteBot = siteBot;
 
     }
 
@@ -23,14 +21,13 @@ public class CategoryChosen extends Command {
      */
     @Override
     public void execute() {
-        this.gameModel.setCategory(category);
-        //TODO send word2explain + taboowords
-        //update model, inform observer
+        gameModel.setCategory(category);
+        gameModel.getSiteBot().sendWord(gameModel.getExplainWord(), gameModel.getTabooWords());
     }
 
     @Override
     public boolean validate() {
         //TODO anything to do here?
-        return false;
+        return true;
     }
 }

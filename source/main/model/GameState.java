@@ -5,6 +5,7 @@ package model;
  */
 public enum GameState {
         WaitingForPlayers,
+        Register,
         WaitingForGiver,
         GameStarted,
         GameClosed,

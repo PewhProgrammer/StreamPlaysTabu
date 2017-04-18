@@ -18,8 +18,6 @@ public class Explanation extends Command {
     @Override
     public void execute() {
         gameModel.addExplanation(explanation);
-        //update model, inform observer
-        //TODO parse template + db update
     }
 
     @Override

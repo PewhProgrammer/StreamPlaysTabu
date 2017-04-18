@@ -14,9 +14,8 @@ public class GiverLeft extends Command {
 
     @Override
     public void execute() {
-        gameModel.setGameState(GameState.GameClosed);
-        //update model + observer ( -> registration screen)
-        //TODO reset round specific information: #players, qAndA, explanations, category, etc.
+        gameModel.setGameState(GameState.Register);
+        gameModel.clear();
     }
 
     @Override

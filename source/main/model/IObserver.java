@@ -7,6 +7,24 @@ public interface IObserver {
 
     public void onNotify();
 
+    //called when game state changes
+    public void onNotifyGameState();
+
+    //called when new question, answer pair is available
+    public void onNotifiyQandA();
+
+    //called when giver chose category
+    public void onNotifyCategoryChosen();
+
+    //called when giver gave new explanation
+    public void onNotifyExplanation();
+
+    //called if someone gave right answer
+    public void onNotifyWinner();
+
+    //called when guesses struct changes
+    public void onNotifyGuess();
+
     public void onNotifyStartGame();
 
     public void onNotifyWaitingForPlayers();

@@ -4,10 +4,9 @@ import logic.GameControl;
 import logic.bots.Bot;
 import logic.bots.SiteBot;
 import logic.commands.Command;
+import sun.awt.image.ImageWatched;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Thinh-Laptop on 26.03.2017.
@@ -26,14 +25,18 @@ public class GameModel extends Observable{
     private Set<String> registeredPlayers;
     private Set<String> tabooWords;
     private Set<String> explanations;
-    //TODO List for guesses + num of occurences
-    private String category, giver, word;
+    //TODO dynamic decay of guesses
+    private String category, giver, word, winner;
     private LinkedList<Command> commands = new LinkedList<>();
+
+    //best structure? idk ... contains vs. index tradeoff
+    LinkedList<Guess> guesses = new LinkedList<>();
 
     private Bot bot;
     private SiteBot sbot;
 
-    private short MIN_PLAYERS;
+    //könnte auch static sein denke ich
+    private final short MIN_PLAYERS;
 
 
     public GameModel(Language l, short minPlayers){
@@ -64,12 +67,27 @@ public class GameModel extends Observable{
 
     public void setGameState(GameState mGameState) {
         this.mGameState = mGameState;
-        //TODO inform observer
+        notifyGameState();
     }
 
     public void setCategory(String category) {
         this.category = category;
-        //TODO inform observer
+        notifyCategoryChosen();
+    }
+
+    public String getExplainWord() {
+        String exp = "";
+        //TODO db query for word
+        word = exp;
+        return word;
+    }
+
+    public Set<String> getTabooWords() {
+        int lvl = 1;
+        //TODO db query for giver lvl
+        //TODO db query for taboowords
+
+        return tabooWords;
     }
 
     public String getCategory(String category) {
@@ -94,7 +112,9 @@ public class GameModel extends Observable{
 
     public void addQAndA(String question, String answer) {
         qAndA.push(new String[]{question, answer});
-        //TODO inform observer
+        notifyQandA();
+
+        //TODO parse template
         //TODO update database
     }
 
@@ -108,12 +128,54 @@ public class GameModel extends Observable{
 
     public void addExplanation(String explanation) {
         explanations.add(explanation);
-        //TODO inform observer
+        //TODO parse template
         //TODO update database
+        notifyExplanation();
     }
 
-    public void clearExplanations(String explanation) {
+    public void clearExplanations() {
         explanations.clear();
+    }
+
+    public void clearRegisteredPlayers() {
+        registeredPlayers.clear();
+    }
+
+    public void clear() {
+        clearExplanations();
+        clearQAndA();
+        setNumPlayers(0);
+        clearRegisteredPlayers();
+    }
+
+    public void win(String winner) {
+        this.winner  = winner;
+        notifyWinner();
+        //TODO update score of giver & winner & stream in db
+        clear();
+    }
+
+    public void guess(String guess) {
+
+        boolean contained = false;
+
+        Iterator<Guess> it = guesses.iterator();
+        while (it.hasNext()) {
+            Guess g = it.next();
+            if (g.getGuess().equals(guess)) {
+                g.occured();
+                g.increaseScore();
+                Collections.sort(guesses);
+                contained = true;
+                break;
+            }
+        }
+
+        if (!contained) {
+            guesses.add(new Guess(guess));
+        }
+
+        notifyGuess();
     }
 
 }

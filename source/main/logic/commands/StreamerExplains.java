@@ -13,7 +13,7 @@ public class StreamerExplains extends Command {
 
     @Override
     public void execute() {
-        //TODO update game mode
+        //TODO update game mode -> inform observer
     }
 
     @Override
