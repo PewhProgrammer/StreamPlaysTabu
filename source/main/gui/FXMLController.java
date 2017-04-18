@@ -10,13 +10,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import logic.bots.BeamBot;
+import logic.bots.TwitchBot;
 import model.GameModel;
 import model.IObserver;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 
 import static gui.GuiAnchor.stage;
 
@@ -29,6 +33,10 @@ public class FXMLController implements Initializable, IObserver {
     private RadioButton fullHDRadio = new RadioButton();
     @FXML
     private RadioButton HDRadio = new RadioButton();
+    @FXML
+    private RadioButton beamRadio = new RadioButton();
+    @FXML
+    private RadioButton twitchRadio = new RadioButton();
 
     @FXML
     private Button startButton = new Button();
@@ -37,10 +45,13 @@ public class FXMLController implements Initializable, IObserver {
     private CheckBox fullscreenBox = new CheckBox();
 
     @FXML
-    private Text text = new Text();
+    private TextField channelInput = new TextField();
 
-    static boolean fullscreen = false;
-    static int resX = 1280, resY = 720;
+    private boolean fullscreen = false;
+    private int resX = 1280, resY = 720;
+
+    private String platform = "twitch";
+    private String chn = "k3uleeeBot";
 
     public static GameModel gm = null;
 
@@ -49,11 +60,31 @@ public class FXMLController implements Initializable, IObserver {
     public void initialize(URL location, ResourceBundle resources) {
 
         HDRadio.setSelected(true);
+        twitchRadio.setSelected(true);
 
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Starting Game with settings: Fullscreen = " + FXMLController.fullscreen + "; Resolution: " + FXMLController.resX + "x" + FXMLController.resY);
+                if(!channelInput.getText().equals(""))
+                    chn = channelInput.getText();
+
+                System.out.println("Starting Game with settings:");
+                System.out.println("Fullscreen = " + fullscreen + "; Resolution: " + resX + "x" + resY);
+                System.out.println("Platform: " + platform + ", Channel: " + chn);
+
+                //initialize bots
+                if(platform.equals("twitch"))
+                    try {
+                        gm.setBot(new TwitchBot(/*chn*/));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                else
+                    try {
+                        gm.setBot(new BeamBot(chn));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                 Parent root = null;
                 try {
@@ -61,10 +92,10 @@ public class FXMLController implements Initializable, IObserver {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Scene scene = new Scene(root, FXMLController.resX, FXMLController.resY);
+                Scene scene = new Scene(root, resX, resY);
                 stage.setScene(scene);
                 stage.centerOnScreen();
-                if(FXMLController.fullscreen)
+                if(fullscreen)
                     stage.setFullScreen(true);
             }
         });
@@ -94,6 +125,22 @@ public class FXMLController implements Initializable, IObserver {
                 fullHDRadio.setSelected(false);
             }
         });
+
+        twitchRadio.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                platform = "twitch";
+                beamRadio.setSelected(false);
+            }
+        });
+
+        beamRadio.setOnAction((new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                platform = "beam";
+                twitchRadio.setSelected(false);
+            }
+        }));
     }
 
     @Override
@@ -114,10 +161,10 @@ public class FXMLController implements Initializable, IObserver {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Scene scene = new Scene(root, FXMLController.resX, FXMLController.resY);
+        Scene scene = new Scene(root, resX, resY);
         stage.setScene(scene);
-        if(FXMLController.fullscreen)
+        if(fullscreen)
             stage.setFullScreen(true);
     }
-    
+
 }

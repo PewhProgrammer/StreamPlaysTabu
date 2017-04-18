@@ -22,6 +22,7 @@ public class GuiAnchor extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         GuiAnchor.stage = primaryStage;
+        FXMLController.gm = gameModel;
         //load the start.fxml
         Parent root = FXMLLoader.load(getClass().getResource("FXMLFiles/start.fxml"));
         //Parent root = FXMLLoader.load(getClass().getResource("/start.fxml"));
