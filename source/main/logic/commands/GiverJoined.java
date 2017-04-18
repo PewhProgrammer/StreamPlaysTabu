@@ -17,8 +17,7 @@ public class GiverJoined extends Command {
     @Override
     public void execute() {
         gameModel.setGameState(GameState.GameStarted);
-        //TODO send explain+taboowords, how to start round counter?
-        //update model + observer -> gamescreen
+        //TODO taboo + validate von zwischenschirm in db
     }
 
     @Override

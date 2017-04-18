@@ -84,7 +84,7 @@ public class Main {
             Log.info("Launching prototype GUI...");
             GuiAnchor anchor = new GuiAnchor();
             anchor.main(param);
-
+            anchor.setModel(model);
             new GuiAnchor().main(param);
         }
         else {

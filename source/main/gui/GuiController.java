@@ -13,6 +13,36 @@ public class GuiController implements IObserver {
     }
 
     @Override
+    public void onNotifyGameState() {
+
+    }
+
+    @Override
+    public void onNotifiyQandA() {
+
+    }
+
+    @Override
+    public void onNotifyCategoryChosen() {
+
+    }
+
+    @Override
+    public void onNotifyExplanation() {
+
+    }
+
+    @Override
+    public void onNotifyWinner() {
+
+    }
+
+    @Override
+    public void onNotifyGuess() {
+
+    }
+
+    @Override
     public void onNotifyStartGame() {
 
     }

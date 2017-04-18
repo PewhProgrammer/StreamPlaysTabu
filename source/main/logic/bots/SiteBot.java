@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Set;
 
 /**
  * Created by Marc on 03.04.2017.
@@ -26,6 +27,10 @@ public class SiteBot {
 
     public void sendQuestion(String question) {
         //TODO send !ask question
+    }
+
+    public void sendWord(String word, Set<String> tabooWords) {
+        //TODO send word2explain + taboowords for giver
     }
 
     //TODO method for starting Thread that listens to server
