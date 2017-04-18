@@ -97,6 +97,10 @@ public class GameModel extends Observable{
         notifyGameMode();
     }
 
+    public void setGameMode(GameMode gm) {
+        this.gameMode = gm;
+    }
+
     public Neo4jWrapper getNeo4jWrapper() {
         return mOntologyDataBase;
     }

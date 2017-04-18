@@ -8,16 +8,14 @@ import model.GameModel;
 public class Skip extends Command {
 
     private static final int SKIP_COST = 20;
-    private String user;
 
-    public Skip(GameModel gm, String ch, String user) {
+    public Skip(GameModel gm, String ch) {
         super(gm, ch);
-        this.user = user;
     }
 
     public void execute() {
         gameModel.getSiteBot().sendWord(gameModel.generateExplainWord(), gameModel.generateTabooWords());
-        gameModel.updateScore(user, SKIP_COST);
+        gameModel.updateScore(gameModel.getGiver(), SKIP_COST);
         gameModel.clearQAndA();
         gameModel.clearExplanations();
         gameModel.clearGuesses();
