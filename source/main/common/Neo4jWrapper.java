@@ -4,6 +4,7 @@ import org.neo4j.driver.v1.*;
 import org.neo4j.driver.v1.exceptions.ServiceUnavailableException;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.neo4j.driver.v1.Values.parameters;
@@ -14,88 +15,260 @@ import static org.neo4j.driver.v1.Values.parameters;
 public class Neo4jWrapper {
 
     private final Config config ;
+    //default -> localhost:7687
+    //You're using the wrong port number. 7474 is by default used for http
+    // whereas 7687 is the default for binary bolt protocol.
+    private StringBuilder neo4jbindAddr = new StringBuilder();
+    private final boolean legacy ;
+    private final int DEL_TRESHHOLD = 5;
+    private final String label;
+    Driver driver;
 
-    public Neo4jWrapper(boolean simulation){
+    public Neo4jWrapper(boolean simulation, String neo4jbind){
 
         //baut enkryptische Verbindung, um uns gegen "man-in-the-middle" attacken zu schützen
         config = Config.build().withEncryptionLevel( Config.EncryptionLevel.REQUIRED ).toConfig() ;
+        neo4jbindAddr.append(neo4jbind);
+        legacy = simulation;
 
+        driver = acquireDriver("bolt://" + neo4jbindAddr,
+                AuthTokens.basic( "neo4j", "streamplaystabu" ),config);
 
+        //non-legacy nodes are used experimentally
         if(simulation){
-            //clear default data base
-            // use default data base
+            resetDatabase();
+            label = "Node";
         }
-        else{
+        else label = "legacyNode";
 
-        }
     }
 
-    //muss noch schauen, ob es sich lohnt Objekte dafür zu machen
-    public boolean createNode(){
-        Driver driver = GraphDatabase.driver( "bolt://localhost:7687", AuthTokens.basic( "neo4j", "streamplaystabu" ) );
+    /**
+     * This method is mainly called to build our ontology
+     * @param node1
+     * @param node2
+     * @param relationship
+     * @return
+     */
+    public boolean insertNodesAndRelationship(String node1, String node2, String relationship){
+        //create two nodes if not already
+        try {
+            createNode(node1);
+            createNode(node2);
+        }catch(ServiceUnavailableException e){
+            Log.debug(e.getLocalizedMessage());
+            return false;
+        }
+        //creates a binding connection between node1 and node2
+        return createRelationship(node1,node2,relationship);
+    }
+
+    /**************************** INTERN PUBLIC METHOD ****************************/
+
+    /**
+     * creates a Node in our ontology. Dependent on legacy or not.
+     * @param nodeName
+     * @return
+     * @throws ServiceUnavailableException
+     */
+    public boolean createNode(String nodeName) throws ServiceUnavailableException{
 
         try ( Session session = driver.session() )
         {
 
             try ( Transaction tx = session.beginTransaction() )
             {
-                tx.run( "CREATE (a:Person {name: {name}, title: {title}})",
-                        parameters( "name", "Arthur", "title", "King" ) );
-                tx.success();
-            }
-
-            try ( Transaction tx = session.beginTransaction() )
-            {
-                StatementResult result = tx.run( "MATCH (a:Person) WHERE a.name = {name} " +
-                                "RETURN a.name AS name, a.title AS title",
-                        parameters( "name", "Arthur" ) );
-                while ( result.hasNext() )
-                {
-                    Record record = result.next();
-                    System.out.println( String.format( "%s %s", record.get( "title" ).asString(), record.get( "name" ).asString() ) );
+                if(lookUpNode(nodeName)){
+                    Log.info(nodeName + " is already in the database!");
+                    return false;
                 }
+                tx.run( "CREATE (a: "+label+" {name: {name} })",
+                        parameters( "name", nodeName ) );
+                tx.success();
             }
 
         }
 
-        driver.close();
 
         return true;
     }
 
-    public boolean createRelationship(){
-        return false;
+    /**
+     * look up a node in our ontology
+     * @param nodeName
+     * @return
+     */
+    public boolean lookUpNode(String nodeName){
+        try ( Session session = driver.session() ) {
+            try (Transaction tx = session.beginTransaction()) {
+
+                StatementResult result = tx.run("MATCH (n) WHERE n.name = {name} " +
+                                "RETURN n",
+                        parameters("name", nodeName));
+                if(!result.hasNext()) return false;
+                while (result.hasNext()) {
+                    Record record = result.next();
+                    List<Value> val = record.values();
+                    Value name = val.get(0).asNode().get("name");
+
+                    val.get(0).asNode().labels().forEach(t -> {
+                        Log.info("Found Node: " + String.format("%s %s", name,
+                                t.toString()));
+                    });
+
+                }
+            }
+        }
+
+        return true;
+    }
+
+    //TODO
+    public List<Node> getAllNodes(){
+        List<Node> nodes = new ArrayList<>();
+        try ( Session session = driver.session() ) {
+            try (Transaction tx = session.beginTransaction()) {
+
+                StatementResult result = tx.run("MATCH (n) RETURN n");
+                while (result.hasNext()) {
+                    Record record = result.next();
+                    System.out.println(String.format("%s %s", record.get("title").asString(), record.get("name").asString()));
+                    Object test = record.asMap();
+                    nodes.add(new Node());
+                }
+            }
+        }
+
+        return nodes;
+
+    }
+
+    /**
+     * Creates a connection between two nodes while also incrementing the rating by 1
+     * @param node1
+     * @param node2
+     * @param relationship
+     * @return
+     */
+    public boolean createRelationship(String node1, String node2, String relationship){
+        try ( Session session = driver.session() )
+        {
+
+            try ( Transaction tx = session.beginTransaction() )
+            {
+                int count = 0;
+                StatementResult result = tx.run( "MATCH (n)-[rel:rating]->(r)" +
+                        "RETURN rel");
+                while (result.hasNext()) {
+                    Record record = result.next();
+                    count = record.get("rating").asInt();
+                }
+
+                tx.run( "MATCH (ee) WHERE ee.name =  {name1} "+
+                                "MATCH (js) WHERE ee.name = {name2} " +
+                        "CREATE UNIQUE (ee)-[:"+relationship+" {rating: "+ ++count +"," +
+                                "legacy: "+legacy+"} " +
+                                "]->(js)"
+
+                        , parameters( "name1",node1,"name2",node2 )); //
+
+                tx.success();
+                return true;
+            }
+
+        }
+
     }
 
     public boolean createProperty(){
-        //sowas wie validationrating für eine beziehung
+        //Not needed up till now
         return false;
     }
 
-    //
-    public boolean deleteNode(){
-        //wenn beziehungen zu wenig validierung haben
-        return false;
-    }
+    /**
+     * clear all connections that have too less of a rating
+     * @return true if succesfully delete the relationship
+     */
+    public boolean clearFailedRelationships(){
 
-    public boolean resetDatabase(){
-        //wie kann man die datenbank auf ihren ursprung resetten ohne alle daten zu löschen
-        return false;
-    }
-
-    private Driver acquireDriver(List<String> uris, AuthToken authToken, Config config)
-    {
-        for (String uri : uris)
+        try ( Session session = driver.session() )
         {
-            try {
-                return GraphDatabase.driver(uri, authToken, config);
-            }
-            catch (ServiceUnavailableException ex)
+
+            try ( Transaction tx = session.beginTransaction() )
             {
-                // This URI failed, so loop around again if we have another.
+                tx.run( "MATCH (n)-[rel]->(r) \n" +
+                                "WHERE rel.rating < "+DEL_TRESHHOLD+"\n" +
+                                "DELETE rel");
+
+                tx.success();
+                return true;
             }
+
         }
-        throw new ServiceUnavailableException("No valid database URI found");
+    }
+
+    /**
+     * Resets all connections to the pre-existing legacy edges.
+     * Anything besides of legacy = true, will be cleared
+     * @return
+     */
+    public boolean resetRelationships(){
+
+        try ( Session session = driver.session() )
+        {
+
+            try ( Transaction tx = session.beginTransaction() )
+            {
+                tx.run( "MATCH (n)-[rel]->(r) \n" +
+                        "WHERE NOT EXISTS (rel.legacy) OR NOT (rel.legacy = true) " +
+                        "DELETE rel");
+
+                tx.success();
+                return true;
+            }
+
+        }
+    }
+
+    /**
+     * Does only delete normal nodes but not legacy nodes
+     * @return suceed if nodes are deleted
+     */
+    public boolean resetDatabase(){
+        resetRelationships();
+        try ( Session session = driver.session() )
+        {
+
+            try ( Transaction tx = session.beginTransaction() )
+            {
+                tx.run("        MATCH (n:Node)\n" +
+                        "        DETACH DELETE n"
+                ); // , parameters( "name", nodeName )
+
+                tx.success();
+            }
+
+        }
+        return true;
+    }
+
+    private Driver acquireDriver(String uri, AuthToken authToken, Config config)
+    {
+
+        try {
+            return GraphDatabase.driver(uri, authToken, config);
+        }
+        catch (ServiceUnavailableException ex)
+        {
+            Log.debug("No valid database URI found");
+            System.exit(0);
+        }
+        return null;
+
+    }
+
+    public class Node{
+
     }
 
 }

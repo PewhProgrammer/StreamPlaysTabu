@@ -1,4 +1,6 @@
 import common.Log;
+import common.Neo4jWrapper;
+import gui.GuiAnchor;
 import logic.GameControl;
 import model.Language;
 import org.apache.commons.cli.*;
@@ -24,6 +26,8 @@ public class Main {
 
     private boolean defaultDatbase = true;
 
+    Thread mTHREAD ;
+
     /**
      * Normal Main Method started by java -jar
      *
@@ -45,25 +49,44 @@ public class Main {
                 Log.error("Unknown verbosity level");
         }
 
-        Log.info("Following Command Lines have been processed: \n" +
-                "neo4j bind address: " + neo4jbindAddr + "\n" +
-                "neo4j default database: " + defaultDatbase + "\n"+
-                "language mode is " + language + "\n" +
-                "minimum players is " + players + "\n" +
-                "gui prototype: "+ guiSimulation + "\n" +
-                "verbosity level is " + Log.getLevel());
+        Log.trace("Following Command Lines have been processed: \n" +
+                "- neo4j bind address: " + neo4jbindAddr + "\n" +
+                "- neo4j default database: " + defaultDatbase + "\n"+
+                "- language mode is " + language + "\n" +
+                "- minimum players is " + players + "\n" +
+                "- gui prototype: "+ guiSimulation + "\n" +
+                "- verbosity level is " + Log.getLevel());
 
 
-        Log.info("Connecting to neo4j default database("+defaultDatbase+")");
+        if(defaultDatbase)
+            Log.info("Connecting to neo4j default database with " + neo4jbindAddr);
+        else  Log.info("Connecting to neo4j legacy database with " + neo4jbindAddr); //Diese datenbank benutzten wir für unsere studie
         //TODO instanziiere Neo4jWrapper. Frage ob man immer connecten soll
 
+        Neo4jWrapper neoWrapper = new Neo4jWrapper(defaultDatbase,neo4jbindAddr);
 
-        Log.info("Launching GUI...");
+        mTHREAD = new Thread() {
+            @Override
+            public void run() {
+                Log.info("Launching Server...");
+                new GameControl((short)players,language,neoWrapper).waitingForPlayers();
+            }
+
+        } ;
+
+        mTHREAD.start();
+
+
         String[] param = {"testparam"};
-        //new GuiAnchor().main(param);
+        if(guiSimulation) {
+            Log.info("Launching prototype GUI...");
+            new GuiAnchor().main(param);
+        }
+        else {
+            Log.info("Launching experimental GUI...");
+        }
 
-        Log.info("Launching Server...");
-        new GameControl((short)2,Language.Ger).waitingForPlayers();
+
 
 
     }
@@ -192,7 +215,7 @@ public class Main {
     private void abort(String message) {
         Log.error(message);
         System.err.println(
-                "java <jarfile> --neo4jserver <host>:<port> [-s <seed>] -p <num min. player>\n" +
+                "java <jarfile> --neo4jserver <host>:<port> -defaultdata <boolean> [-s <seed>] -p <num min. player>\n" +
                         "               -gui --lang <language>\n" +
                         "               [-v (1-3)]");
         System.err.println();
