@@ -68,6 +68,11 @@ public class BeamBot extends Bot {
     }
 
     @Override
+    public void disconnectFromChatroom(String user) {
+
+    }
+
+    @Override
     public void sendChatMessage(String msg) {
         chatConnectable.send(ChatSendMethod.of(String.format(msg)));
     }
@@ -94,6 +99,11 @@ public class BeamBot extends Bot {
 
     @Override
     public void announceRegistration() {
+
+    }
+
+    @Override
+    public void announceScore(String user, int score) {
 
     }
 

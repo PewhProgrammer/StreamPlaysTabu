@@ -44,6 +44,11 @@ public class TwitchBot extends Bot {
     }
 
     @Override
+    public void disconnectFromChatroom(String user) {
+
+    }
+
+    @Override
     public void sendChatMessage(String msg) {
 
     }
@@ -70,6 +75,11 @@ public class TwitchBot extends Bot {
 
     @Override
     public void announceRegistration() {
+
+    }
+
+    @Override
+    public void announceScore(String user, int score) {
 
     }
 

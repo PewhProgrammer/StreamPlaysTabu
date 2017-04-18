@@ -38,4 +38,19 @@ public class GuiController implements IObserver {
 
     }
 
+    @Override
+    public void onNotifyScoreUpdate() {
+        
+    }
+
+    @Override
+    public void onNotifyGameMode() {
+
+    }
+
+    @Override
+    public void onNotifyKick() {
+
+    }
+
 }

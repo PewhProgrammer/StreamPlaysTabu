@@ -203,4 +203,19 @@ public class FXMLController implements Initializable, IObserver {
 
     }
 
+    @Override
+    public void onNotifyScoreUpdate() {
+
+    }
+
+    @Override
+    public void onNotifyGameMode() {
+
+    }
+
+    @Override
+    public void onNotifyKick() {
+
+    }
+
 }
