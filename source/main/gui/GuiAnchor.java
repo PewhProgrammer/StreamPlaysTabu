@@ -21,8 +21,8 @@ public class GuiAnchor extends Application {
     public void start(Stage primaryStage) throws Exception {
         GuiAnchor.stage = primaryStage;
         //load the start.fxml
-        //Parent root = FXMLLoader.load(getClass().getResource("start.fxml"));
-        Parent root = FXMLLoader.load(getClass().getResource("/start.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLFiles/start.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("/start.fxml"));
         //setup scene
         Scene scene = new Scene(root, 400, 600);
         stage.setTitle("StreamPlaysTabu");
@@ -30,12 +30,5 @@ public class GuiAnchor extends Application {
         stage.setResizable(false);
         stage.show();
     }
-
-    public void waitingForPlayer() throws Exception {
-        Parent root = FXMLLoader.load((getClass().getResource("/idle.fxml")));
-        Scene scene = new Scene(root, FXMLController.resX, FXMLController.resY);
-        stage.setScene(scene);
-        if(FXMLController.fullscreen)
-            stage.setFullScreen(true);
-    }
+    
 }

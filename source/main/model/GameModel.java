@@ -27,6 +27,125 @@ public class GameModel extends Observable{
 
     private Set<String> registeredPlayers;
     private Set<String> tabooWords;
+
+    private String explainBear;
+
+    public GameState getmGameState() {
+        return mGameState;
+    }
+
+    public void setmGameState(GameState mGameState) {
+        this.mGameState = mGameState;
+    }
+
+    public int getmNumPlayers() {
+        return mNumPlayers;
+    }
+
+    public void setmNumPlayers(int mNumPlayers) {
+        this.mNumPlayers = mNumPlayers;
+    }
+
+    public short getMIN_PLAYERS() {
+        return MIN_PLAYERS;
+    }
+
+    public void setMIN_PLAYERS(short MIN_PLAYERS) {
+        this.MIN_PLAYERS = MIN_PLAYERS;
+    }
+
+    public Language getLang() {
+        return lang;
+    }
+
+    public void setLang(Language lang) {
+        this.lang = lang;
+    }
+
+    public GameMode getGameMode() {
+        return gameMode;
+    }
+
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
+
+    public Neo4jWrapper getmOntologyDataBase() {
+        return mOntologyDataBase;
+    }
+
+    public LinkedList<String[]> getqAndA() {
+        return qAndA;
+    }
+
+    public void setqAndA(LinkedList<String[]> qAndA) {
+        this.qAndA = qAndA;
+    }
+
+    public LinkedList<Command> getCommands() {
+        return commands;
+    }
+
+    public void setCommands(LinkedList<Command> commands) {
+        this.commands = commands;
+    }
+
+    public Set<String> getRegisteredPlayers() {
+        return registeredPlayers;
+    }
+
+    public void setRegisteredPlayers(Set<String> registeredPlayers) {
+        this.registeredPlayers = registeredPlayers;
+    }
+
+    public Set<String> getTabooWords() {
+        return tabooWords;
+    }
+
+    public void setTabooWords(Set<String> tabooWords) {
+        this.tabooWords = tabooWords;
+    }
+
+    public Set<String> getExplanations() {
+        return explanations;
+    }
+
+    public void setExplanations(Set<String> explanations) {
+        this.explanations = explanations;
+    }
+
+    public String getGiver() {
+        return giver;
+    }
+
+    public void setGiver(String giver) {
+        this.giver = giver;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+    }
+
+    public Bot getBot() {
+        return bot;
+    }
+
+    public void setBot(Bot bot) {
+        this.bot = bot;
+    }
+
+    public SiteBot getSbot() {
+        return sbot;
+    }
+
+    public void setSbot(SiteBot sbot) {
+        this.sbot = sbot;
+    }
+
     private Set<String> explanations;
 
     //TODO dynamic decay of guesses

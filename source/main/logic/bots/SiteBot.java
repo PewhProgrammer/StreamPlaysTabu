@@ -18,8 +18,8 @@ public class SiteBot {
     public SiteBot() {
         //connect to our server for the external webpage.
         try {
-            sock = new Socket("", 1234); //TODO enter our serverAdress and Port (look at TwitchBot)!
-            in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            //sock = new Socket("", 1234); //TODO enter our serverAdress and Port (look at TwitchBot)!
+            //in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
         } catch(Exception e) {
             e.printStackTrace();
         }
