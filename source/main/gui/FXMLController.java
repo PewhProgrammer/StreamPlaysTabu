@@ -12,15 +12,13 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
-import logic.bots.BeamBot;
-import logic.bots.TwitchBot;
-import model.GameModel;
+import model.GameState;
+import model.Guess;
 import model.IObserver;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutionException;
 
 import static gui.GuiAnchor.stage;
 
@@ -47,13 +45,18 @@ public class FXMLController implements Initializable, IObserver {
     @FXML
     private TextField channelInput = new TextField();
 
-    private boolean fullscreen = false;
-    private int resX = 1280, resY = 720;
+    @FXML
+    private Text guesses = new Text();
+    @FXML
+    private Text explanations = new Text();
+    @FXML
+    private Text qAndA = new Text();
+
+    public static boolean fullscreen = false;
+    public static int resX = 1280, resY = 720;
 
     private String platform = "twitch";
     private String chn = "k3uleeeBot";
-
-    public static GameModel gm = null;
 
 
     @Override
@@ -69,7 +72,7 @@ public class FXMLController implements Initializable, IObserver {
                     chn = channelInput.getText();
 
                 System.out.println("Starting Game with settings:");
-                System.out.println("Fullscreen = " + fullscreen + "; Resolution: " + resX + "x" + resY);
+                System.out.println("Fullscreen = " + FXMLController.fullscreen + "; Resolution: " + FXMLController.resX + "x" + FXMLController.resY);
                 System.out.println("Platform: " + platform + ", Channel: " + chn);
 
                 //initialize bots
@@ -88,16 +91,16 @@ public class FXMLController implements Initializable, IObserver {
 
                 Parent root = null;
                 try {
-                    FXMLLoader loader = new FXMLLoader();
-                    root = loader.load((getClass().getResource("FXMLFiles/idle.fxml")));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
+                    root = loader.load();
                     GuiAnchor.cont = loader.getController();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Scene scene = new Scene(root, resX, resY);
+                Scene scene = new Scene(root, FXMLController.resX, FXMLController.resY);
                 stage.setScene(scene);
                 stage.centerOnScreen();
-                if(fullscreen)
+                if(FXMLController.fullscreen)
                     stage.setFullScreen(true);
             }
         });
@@ -105,16 +108,16 @@ public class FXMLController implements Initializable, IObserver {
         fullscreenBox.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(fullscreenBox.isSelected()) fullscreen = true;
-                else fullscreen = false;
+                if(fullscreenBox.isSelected()) FXMLController.fullscreen = true;
+                else FXMLController.fullscreen = false;
             }
         });
 
         fullHDRadio.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                resX = 1920;
-                resY = 1080;
+                FXMLController.resX = 1920;
+                FXMLController.resY = 1080;
                 HDRadio.setSelected(false);
             }
         });
@@ -122,8 +125,8 @@ public class FXMLController implements Initializable, IObserver {
         HDRadio.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                resX = 1280;
-                resY = 720;
+                FXMLController.resX = 1280;
+                FXMLController.resY = 720;
                 fullHDRadio.setSelected(false);
             }
         });
@@ -148,39 +151,47 @@ public class FXMLController implements Initializable, IObserver {
 
     @Override
     public void onNotifyGameState() {
-        switch (gm.getGameState()) {
 
-            case GameStarted: {
-                Parent root = null;
-                try {
-                    root = FXMLLoader.load((getClass().getResource("FXMLFiles/game.fxml")));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene scene = new Scene(root, resX, resY);
-                stage.setScene(scene);
+        if (GuiAnchor.gameModel.getGameState() == GameState.GameStarted) {
+            Parent root = null;
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/game.fxml"));
+                root = loader.load();
+                GuiAnchor.cont = loader.getController();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-                break;
-
-            case Registration: {
-                Parent root = null;
-                try {
-                    root = FXMLLoader.load((getClass().getResource("FXMLFiles/idle.fxml")));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Scene scene = new Scene(root, resX, resY);
-                stage.setScene(scene);
-            }
-                break;
-            default:
-                System.out.println("GameState unknown for GUI");
+            Scene scene = new Scene(root, FXMLController.resX, FXMLController.resY);
+            stage.setScene(scene);
+            if(FXMLController.fullscreen)
+                stage.setFullScreen(true);
         }
+        else if(GuiAnchor.gameModel.getGameState() == GameState.Registration) {
+            Parent root = null;
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
+                root = loader.load();
+                GuiAnchor.cont = loader.getController();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Scene scene = new Scene(root, FXMLController.resX, FXMLController.resY);
+            stage.setScene(scene);
+            if(FXMLController.fullscreen)
+                stage.setFullScreen(true);
+        }
+        else
+            System.out.println("GameState unknown for GUI");
     }
 
     @Override
     public void onNotifiyQandA() {
-
+        String s = "Q. and A.:\n\n";
+        for(int i=0; i < GuiAnchor.gameModel.getQAndA().size(); i++) {
+            String[] QA = GuiAnchor.gameModel.getQAndA().get(i);
+            s = s + "Q: " + QA[0] + "\nA: " + QA[1] + "\n\n";
+        }
+        qAndA.setText(s);
     }
 
     @Override
@@ -190,7 +201,11 @@ public class FXMLController implements Initializable, IObserver {
 
     @Override
     public void onNotifyExplanation() {
-
+        String s = "Explanations:\n\n";
+        for(String str : GuiAnchor.gameModel.getExplanations()) {
+            s = s + "- " + str + "\n";
+        }
+        explanations.setText(s);
     }
 
     @Override
@@ -200,7 +215,11 @@ public class FXMLController implements Initializable, IObserver {
 
     @Override
     public void onNotifyGuess() {
-
+        String s = "Guesses:\n\n";
+        for(Guess g : GuiAnchor.gameModel.getGuesses()) {
+            s = s + "- " + g.getGuess() + "\n";
+        }
+        guesses.setText(s);
     }
 
     @Override

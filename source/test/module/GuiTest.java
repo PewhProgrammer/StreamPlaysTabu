@@ -1,6 +1,7 @@
 package module;
 
 import gui.GuiAnchor;
+import javafx.application.Platform;
 import junit.framework.TestCase;
 import model.GameMode;
 import model.GameModel;
@@ -21,7 +22,7 @@ public class GuiTest extends TestCase {
     }
 
     public void test() {
-      /*  ga.setModel(gm);
+        ga.setModel(gm);
         Thread t = new Thread() {
             public void run() {
                 String[] param = {"testparam"};
@@ -35,9 +36,96 @@ public class GuiTest extends TestCase {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        ga.gameModel.setGameState(GameState.GameStarted);
-        ga.cont.onNotifyGameState();
-        */
+
+        GuiAnchor.gameModel.setGameState(GameState.GameStarted);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                GuiAnchor.cont.onNotifyGameState();
+            }
+        });
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //add guesses, explanations etc...
+        GuiAnchor.gameModel.addExplanation("It is sweet.");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                GuiAnchor.cont.onNotifyExplanation();
+            }
+        });
+
+        //simulate realism LOL
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        GuiAnchor.gameModel.guess("banane");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                GuiAnchor.cont.onNotifyGuess();
+            }
+        });
+
+        //simulate realism LOL
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        GuiAnchor.gameModel.guess("schaschlik");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                GuiAnchor.cont.onNotifyGuess();
+            }
+        });
+
+        //simulate realism LOL
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        GuiAnchor.gameModel.addExplanation("It used to be trololol");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                GuiAnchor.cont.onNotifyExplanation();
+            }
+        });
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        GuiAnchor.gameModel.addQAndA("Is it sexy?", "Yes it is very sexy!");
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                GuiAnchor.cont.onNotifiyQandA();
+            }
+        });
+
+        while(t.isAlive()) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

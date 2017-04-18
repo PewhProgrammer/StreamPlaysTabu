@@ -40,7 +40,7 @@ public class GuiController implements IObserver {
 
     @Override
     public void onNotifyScoreUpdate() {
-        
+
     }
 
     @Override

@@ -14,7 +14,7 @@ public class GuiAnchor extends Application {
 
     public static Stage stage = null;
     public static FXMLController cont = null;
-    public GameModel gameModel = null;
+    public static GameModel gameModel = null;
 
 
     public static void main(String[] args) {
@@ -24,10 +24,9 @@ public class GuiAnchor extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         GuiAnchor.stage = primaryStage;
-        FXMLController.gm = gameModel;
         //load the start.fxml
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(getClass().getResource("FXMLFiles/start.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/start.fxml"));
+        Parent root = loader.load();
         //Parent root = FXMLLoader.load(getClass().getResource("/start.fxml"));
         cont = loader.getController();
         //setup scene
@@ -40,7 +39,7 @@ public class GuiAnchor extends Application {
 
     }
 
-    public void setModel(GameModel gameModel) {
-        gameModel = gameModel;
+    public void setModel(GameModel gm) {
+        gameModel = gm;
     }
 }
