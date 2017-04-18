@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.text.Text;
+import model.GameModel;
 import model.IObserver;
 
 import java.io.IOException;
@@ -40,6 +41,8 @@ public class FXMLController implements Initializable, IObserver {
 
     static boolean fullscreen = false;
     static int resX = 1280, resY = 720;
+
+    public static GameModel gm = null;
 
 
     @Override
@@ -116,4 +119,5 @@ public class FXMLController implements Initializable, IObserver {
         if(FXMLController.fullscreen)
             stage.setFullScreen(true);
     }
+    
 }

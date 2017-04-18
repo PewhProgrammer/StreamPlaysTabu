@@ -2,6 +2,7 @@ import common.Log;
 import common.Neo4jWrapper;
 import gui.GuiAnchor;
 import logic.GameControl;
+import model.GameModel;
 import model.Language;
 import org.apache.commons.cli.*;
 
@@ -65,11 +66,12 @@ public class Main {
 
         Neo4jWrapper neoWrapper = new Neo4jWrapper(defaultDatbase,neo4jbindAddr);
 
+        GameModel model = new GameModel(language,(short)players,neoWrapper);
         mTHREAD = new Thread() {
             @Override
             public void run() {
                 Log.info("Launching Server...");
-                new GameControl((short)players,language,neoWrapper).waitingForPlayers();
+                new GameControl(model).waitingForPlayers();
             }
 
         } ;
@@ -80,6 +82,9 @@ public class Main {
         String[] param = {"testparam"};
         if(guiSimulation) {
             Log.info("Launching prototype GUI...");
+            GuiAnchor anchor = new GuiAnchor();
+            anchor.main(param);
+            anchor.setModel(model);
             new GuiAnchor().main(param);
         }
         else {
