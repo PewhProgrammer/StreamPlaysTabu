@@ -3,12 +3,17 @@ package module;
 import common.Neo4jWrapper;
 import junit.framework.TestCase;
 import logic.bots.SiteBot;
-import logic.commands.Answer;
-import logic.commands.CategoryChosen;
-import logic.commands.Command;
+import logic.commands.*;
 import model.GameMode;
 import model.GameModel;
+import model.GameState;
 import model.Language;
+import org.junit.Rule;
+import org.junit.rules.TestName;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Thinh-Laptop on 17.04.2017.
@@ -49,18 +54,35 @@ public class CommandTest extends TestCase{
 
     public void testCategoryChosen(){
         String category = "League of Legends";
-        Command cateChosen = new CategoryChosen(gModel,
+        Command cateChosenCommand = new CategoryChosen(gModel,
                 "",category,sBot);
+        assertTrue("Validation failed @ " +
+                getName(), cateChosenCommand.validate());
+        cateChosenCommand.execute();
         assertTrue("Category has not been chosen correctly",
                 gModel.getCategory().equals(category));
 
     }
 
     public void testExplanation(){
-        fail();
+        String explanation = "It is used for killing mobs.";
+        String dummy = "negatve";
+        Command expCommand = new Explanation(gModel,"",explanation);
+        gModel.setGameState(GameState.WaitingForGiver);
+        assertFalse("Validation passed @ " +
+                getName(), expCommand.validate());
+        gModel.setGameState(GameState.GameStarted);
+        assertTrue("Validation failed @ " +
+                getName(), expCommand.validate());
+        expCommand.execute();
+        assertTrue("Could not find explanation in game model!",gModel.getExplanations().stream().
+                filter(p -> p.equals(explanation)).findAny().isPresent());
+        assertFalse("Found explanation even though should not have!",gModel.getExplanations().stream().
+                filter(p -> p.equals(dummy)).findAny().isPresent());
     }
 
-    public void testGiverJoined(){
+    public void testGiverJoined()
+    {
         fail();
     }
 
@@ -77,26 +99,63 @@ public class CommandTest extends TestCase{
     }
 
     public void testRank(){
-        fail();
     }
 
     public void testRegister(){
-        fail();
+
+        Command regCommand = new Register(gModel,"");
+        gModel.setGameState(GameState.GameClosed);
+        assertFalse("Validation passed @ " +
+                getName(), regCommand.validate());
+        gModel.setGameState(GameState.Registration);
+        assertTrue("Validation failed @ " +
+                getName(), regCommand.validate());
     }
 
-    public void testRules(){
-        fail();
-    }
+    public void testRules(){}
 
     public void testSkip(){
-        fail();
+        String giver = "John";
+        int currentScore = neo.getUserPoints(giver);
+        Command giverJoinedCommand = new GiverJoined(gModel,"",giver);
+        Command skipCommand = new Skip(gModel,"");
+
+        skipCommand.validate();
+        skipCommand.execute();
+
+        int updatedScore = neo.getUserPoints(giver);
+        assertNotSame("User's point did not decrease",
+                currentScore,updatedScore);
     }
 
     public void testStreamerExplains(){
-        fail();
+        Command streamExplainsCommand = new StreamerExplains(gModel,"");
+
+        gModel.setGameMode(GameMode.Normal);
+        streamExplainsCommand.validate(); //komisch zu überprüfen
+        streamExplainsCommand.execute();
+
+        assertTrue("Game Mode has not been updated.",gModel.getGameMode() == GameMode.Streamer);
     }
 
     public void testTaboo(){
-        fail();
+        String giver = "John";
+        Command tabooCommand = new Taboo(gModel,"");
+        Command giverJoinedCommand = new GiverJoined(gModel,"",giver);
+
+        giverJoinedCommand.validate();
+        giverJoinedCommand.execute();
+
+        Set<String> taboos1 = gModel.getTabooWords();
+
+        tabooCommand.validate();
+        tabooCommand.execute();
+
+        assertFalse("Taboo list didnt update!",
+                gModel.getTabooWords().equals(taboos1));
+
+
+
+
     }
 }
