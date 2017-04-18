@@ -33,5 +33,13 @@ public class SiteBot {
         //TODO send word2explain + taboowords for giver
     }
 
+    public void kick() {
+        //TODO tell giver that he has been kicked and remove him from page
+    }
+
+    public void finish() {
+        //TODO tell giver that his word has been guessed right and remove him from page
+    }
+
     //TODO method for starting Thread that listens to server
 }

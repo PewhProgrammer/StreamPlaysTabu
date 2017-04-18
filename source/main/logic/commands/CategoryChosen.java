@@ -22,12 +22,11 @@ public class CategoryChosen extends Command {
     @Override
     public void execute() {
         gameModel.setCategory(category);
-        gameModel.getSiteBot().sendWord(gameModel.getExplainWord(), gameModel.getTabooWords());
+        gameModel.getSiteBot().sendWord(gameModel.generateExplainWord(), gameModel.generateTabooWords());
     }
 
     @Override
     public boolean validate() {
-        //TODO anything to do here?
         return true;
     }
 }

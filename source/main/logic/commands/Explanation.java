@@ -22,7 +22,7 @@ public class Explanation extends Command {
 
     @Override
     public boolean validate() {
-        //TODO anti cheating meachanism(, game state?)
-        return false;
+        //TODO anti cheating meachanism
+        return true;
     }
 }

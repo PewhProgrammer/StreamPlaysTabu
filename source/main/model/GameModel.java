@@ -4,6 +4,7 @@ import common.Neo4jWrapper;
 import logic.bots.Bot;
 import logic.bots.SiteBot;
 import logic.commands.Command;
+import logic.commands.Prevote;
 
 import java.util.*;
 
@@ -23,16 +24,22 @@ public class GameModel extends Observable{
     private Set<String> registeredPlayers;
     private Set<String> tabooWords;
     private Set<String> explanations;
+    private Set<String> usedWords;
+    private Set<String> votekick;
     LinkedList<Guess> guesses = new LinkedList<>();
     private LinkedList<String[]> qAndA;
 
     private String category, giver, word, winner;
 
+    private ArrayList<PrevoteCategory> prevoting;
+
     private Bot bot;
-    private SiteBot sbot;
+    private SiteBot sBot;
+
+    private Set<String> hosts;
 
     public GameModel(Language l, short minPlayers, Neo4jWrapper neo, SiteBot siteBot){
-        mGameState = GameState.WaitingForPlayers;
+        mGameState = GameState.Registration;
         mNumPlayers = 0;
         registeredPlayers = new HashSet<>();
         tabooWords = new HashSet<>();
@@ -41,7 +48,11 @@ public class GameModel extends Observable{
         lang = l;
         MIN_PLAYERS = minPlayers;
         mOntologyDataBase = neo;
-        sbot = siteBot;
+        sBot = siteBot;
+        hosts = new HashSet<>();
+        prevoting = new ArrayList<>(10);
+        usedWords = new HashSet<>();
+        votekick = new HashSet<>();
     }
 
     public GameState getGameState(){
@@ -81,8 +92,9 @@ public class GameModel extends Observable{
         return gameMode;
     }
 
-    public void setGameMode(GameMode gameMode) {
-        this.gameMode = gameMode;
+    public void setGameMode() {
+        this.gameMode = gameMode == GameMode.Normal ? GameMode.Streamer : GameMode.Normal;
+        notifyGameMode();
     }
 
     public Neo4jWrapper getNeo4jWrapper() {
@@ -109,6 +121,11 @@ public class GameModel extends Observable{
         return registeredPlayers;
     }
 
+    public void register(String user) {
+        registeredPlayers.add(user);
+        mNumPlayers++;
+    }
+
     public void clearRegisteredPlayers() {
         registeredPlayers.clear();
     }
@@ -117,9 +134,11 @@ public class GameModel extends Observable{
         return tabooWords;
     }
 
-    public void generateTabooWords() {
+    public Set<String> generateTabooWords() {
         //TODO db query for giver lvl
         //TODO db query for taboo words
+
+        return tabooWords;
     }
 
     public Set<String> getExplanations() {
@@ -132,8 +151,10 @@ public class GameModel extends Observable{
         //TODO update database
         notifyExplanation();
     }
+
     public void clearExplanations() {
         explanations.clear();
+        notifyExplanation();
     }
 
     public void guess(String guess) {
@@ -165,6 +186,7 @@ public class GameModel extends Observable{
 
     public void clearGuesses() {
         guesses.clear();
+        notifyGuess();
     }
 
     public void addQAndA(String question, String answer) {
@@ -181,6 +203,7 @@ public class GameModel extends Observable{
 
     public void clearQAndA() {
         qAndA.clear();
+        notifyQandA();
     }
 
     public void setCategory(String category) {
@@ -190,6 +213,23 @@ public class GameModel extends Observable{
 
     public String getCategory() {
         return this.category;
+    }
+
+    public void prevote(int ID) {
+        prevoting.get(ID).increaseScore();
+    }
+
+    public String[] getPrevotedCategories() {
+        String[] prevotedCategories = new String[5];
+        Collections.sort(prevoting);
+        for (int i = 0; i < 5; i++) {
+            prevotedCategories[i] = prevoting.get(i).getCategory();
+        }
+        return prevotedCategories;
+    }
+
+    public void generateVotingCategories() {
+        //TODO get voting categories from db, create corresponding PrevoteCategory objects and fill arraylist
     }
 
     public String getGiver() {
@@ -208,15 +248,24 @@ public class GameModel extends Observable{
     }
 
     public String generateExplainWord() {
-        //TODO query db for explain word
+        //TODO query db for explain word that is not contained in usedWords
         return word;
     }
 
     public void win(String winner) {
         this.winner  = winner;
+        //TODO score
+        int score = 10;
+        updateScore(winner, score);
         notifyWinner();
-        //TODO update score of giver & winner & stream in db
+        getSiteBot().finish();
+        getBot().announceWinner();
+        //TODO put top guesses in db
         clear();
+    }
+
+    public String getWinner() {
+        return this.winner;
     }
 
     public Bot getBot() {
@@ -228,14 +277,46 @@ public class GameModel extends Observable{
     }
 
     public SiteBot getSiteBot() {
-        return sbot;
+        return sBot;
     }
 
     public void clear() {
         clearExplanations();
         clearQAndA();
+        clearGuesses();
+
+        usedWords.clear();
         setNumPlayers(0);
         clearRegisteredPlayers();
     }
 
+    public Set<String> getVotekick() {
+        return votekick;
+    }
+
+    public void clearVotekick() {
+        votekick.clear();
+    }
+
+    public void host(String host) {
+        if (hosts.contains(host)) {
+            bot.disconnectFromChatroom(host);
+            hosts.remove(host);
+        } else {
+            bot.connectToChatroom(host);
+            hosts.add(host);
+        }
+    }
+
+    public int getScore(String user) {
+        //TODO db query for user score
+        return 0;
+    }
+
+    public void updateScore(String user, int value) {
+        int score = getScore(user) + value;
+        score = Integer.max(0, score);
+        //TODO write user's score to db
+        notifyScoreUpdate();
+    }
 }

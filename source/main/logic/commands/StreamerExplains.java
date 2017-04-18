@@ -7,18 +7,20 @@ import model.GameModel;
  */
 public class StreamerExplains extends Command {
 
-    public StreamerExplains(GameModel gm, String ch) {
+    private String user;
+
+    public StreamerExplains(GameModel gm, String ch, String user) {
         super(gm, ch);
+        this.user = user;
     }
 
     @Override
     public void execute() {
-        //TODO update game mode -> inform observer
+        gameModel.setGameMode();
     }
 
     @Override
     public boolean validate() {
-        return false;
-        //TODO check if the person sending !streamExplains is owner of home channel
+        return user.equals(thisChannel);
     }
 }

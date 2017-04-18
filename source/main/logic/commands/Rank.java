@@ -8,18 +8,20 @@ import model.GameModel;
  */
 public class Rank extends Command {
 
-    public Rank(GameModel gm, String ch) {
+    private String user;
+
+    public Rank(GameModel gm, String ch, String user) {
         super(gm, ch);
+        this.user = user;
     }
 
     @Override
     public void execute() {
-        //TODO call corresponding method in twitch/beam bot
+        gameModel.getBot().announceScore(user, gameModel.getScore(user));
     }
 
     @Override
     public boolean validate() {
-        return false;
-        //TODO check #rank commands in last minute s.t. limit will not be violated
+        return true;
     }
 }

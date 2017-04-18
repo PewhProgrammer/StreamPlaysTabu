@@ -1,24 +1,23 @@
 package logic.commands;
 
-import logic.bots.Bot;
 import model.GameModel;
 import model.GameState;
 
 /**
- * Created by Marc on 03.04.2017.
+ * Created by Tim on 18.04.2017.
  */
-public class Register extends Command {
+public class Prevote extends Command {
 
-    private String user;
+    private int id;
 
-    public Register(GameModel gm, String ch, String user) {
+    public Prevote(GameModel gm, String ch, int id) {
         super(gm, ch);
-        this.user = user;
+        this.id = id;
     }
 
     @Override
     public void execute() {
-        gameModel.register(user);
+        gameModel.prevote(id);
     }
 
     @Override

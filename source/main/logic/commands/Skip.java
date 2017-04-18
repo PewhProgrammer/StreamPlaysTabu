@@ -7,16 +7,23 @@ import model.GameModel;
  */
 public class Skip extends Command {
 
-    public Skip(GameModel gm, String ch) {
+    private static final int SKIP_COST = 20;
+    private String user;
+
+    public Skip(GameModel gm, String ch, String user) {
         super(gm, ch);
+        this.user = user;
     }
 
     public void execute() {
-        //TODO send new explain+taboowords, decrease giver's score
+        gameModel.getSiteBot().sendWord(gameModel.generateExplainWord(), gameModel.generateTabooWords());
+        gameModel.updateScore(user, SKIP_COST);
+        gameModel.clearQAndA();
+        gameModel.clearExplanations();
+        gameModel.clearGuesses();
     }
 
     public boolean validate() {
-     return false;
-     //anything to do here?
+     return true;
     }
 }

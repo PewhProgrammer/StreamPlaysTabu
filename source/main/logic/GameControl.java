@@ -36,7 +36,7 @@ public class GameControl extends Observable{
 
         while(isStarted){
             processNextCommand();
-            if(mModel.getGameState() == GameState.WaitingForPlayers)
+            if(mModel.getGameState() == GameState.Registration)
                 waitingForPlayers();
         }
         Log.trace("Control ends the game");
@@ -50,7 +50,7 @@ public class GameControl extends Observable{
      */
     public void waitingForPlayers(){
         Log.info("Control is waiting for Players");
-        while(mModel.getGameState() == GameState.WaitingForPlayers){
+        while(mModel.getGameState() == GameState.Registration){
             //process twitch/beam api
             processNextCommand();
         }

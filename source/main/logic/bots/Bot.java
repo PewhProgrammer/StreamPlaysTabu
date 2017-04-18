@@ -19,6 +19,8 @@ public abstract class Bot {
 
     public abstract void connectToChatroom(String user);
 
+    public abstract void disconnectFromChatroom(String user);
+
     public abstract void sendChatMessage(String msg);
 
     public abstract void whisperRules(String user);
@@ -30,4 +32,6 @@ public abstract class Bot {
     public abstract void announceWinner();
 
     public abstract void announceRegistration();
+
+    public abstract void announceScore(String user, int score);
 }

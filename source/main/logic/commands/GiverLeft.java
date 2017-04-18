@@ -14,13 +14,13 @@ public class GiverLeft extends Command {
 
     @Override
     public void execute() {
-        gameModel.setGameState(GameState.Register);
         gameModel.clear();
+        gameModel.generateVotingCategories();
+        gameModel.setGameState(GameState.Registration);
     }
 
     @Override
     public boolean validate() {
-        //anything to do here?
-        return false;
+        return true;
     }
 }

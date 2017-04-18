@@ -48,6 +48,24 @@ public abstract class Observable {
     }
     
 
+    public void notifyScoreUpdate() {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyScoreUpdate();
+        }
+    }
+
+    public void notifyGameMode() {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyGameMode();
+        }
+    }
+
+    public void notifyKick() {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyKick();
+        }
+    }
+
     public void addObserver(IObserver ob){
         listIObserver.add(ob);
     }

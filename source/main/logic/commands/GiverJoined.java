@@ -8,9 +8,7 @@ import model.GameState;
  */
 public class GiverJoined extends Command {
 
-    private String giver;
-
-    public GiverJoined(GameModel gm, String ch, String giver) {
+    public GiverJoined(GameModel gm, String ch) {
         super(gm, ch);
     }
 
@@ -22,7 +20,10 @@ public class GiverJoined extends Command {
 
     @Override
     public boolean validate() {
-        //TODO timelimit, game state
+        if (!gameModel.getGameState().equals(GameState.WaitingForGiver)) {
+            return false;
+        }
+        //TODO timelimit
         return false;
     }
 }
