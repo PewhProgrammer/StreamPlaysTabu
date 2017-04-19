@@ -168,9 +168,9 @@ public class FXMLController implements Initializable, IObserver {
         if (GuiAnchor.gameModel.getGameState() == GameState.GameStarted) {
             Parent root = null;
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/game.fxml"));
-                //FXMLLoader loader = new FXMLLoader(getClass().getResource("/game.fxml"));
-                root = loader.load();
+                //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/game.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/game.fxml"));
+                  root = loader.load();
                 GuiAnchor.cont = loader.getController();
                 gameModel.updateObserver(cont);
             } catch (IOException e) {
