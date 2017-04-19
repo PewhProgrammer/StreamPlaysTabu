@@ -56,6 +56,10 @@ public class FXMLController implements Initializable, IObserver {
     private Text qAndA = new Text();
     @FXML
     private Text timer = new Text();
+    @FXML
+    private Text gameTimer = new Text();
+    @FXML
+    private Text giverText = new Text();
 
     public static boolean fullscreen = false;
     public static int resX = 1280, resY = 720;
@@ -174,8 +178,25 @@ public class FXMLController implements Initializable, IObserver {
             }
             Scene scene = new Scene(root, FXMLController.resX, FXMLController.resY);
             stage.setScene(scene);
+
+            cont.giverText.setText("Giver: " + gameModel.getGiver());
+
             if(FXMLController.fullscreen)
                 stage.setFullScreen(true);
+
+            new Thread() {
+                public void run() {
+                    for(int i=90; i>=0; i--) {
+                            cont.gameTimer.setText(i + "s");
+                        try {
+                            sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }.start();
+
         }
         else if(GuiAnchor.gameModel.getGameState() == GameState.Registration) {
             Parent root = null;

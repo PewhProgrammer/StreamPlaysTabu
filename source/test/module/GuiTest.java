@@ -23,6 +23,8 @@ public class GuiTest extends TestCase {
 
     public void test() {
         ga.setModel(gm);
+        GuiAnchor.gameModel.setGiver("k3uleee");
+
         Thread t = new Thread() {
             public void run() {
                 String[] param = {"testparam"};
@@ -45,7 +47,7 @@ public class GuiTest extends TestCase {
         });
 
         try {
-            Thread.sleep(32000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
