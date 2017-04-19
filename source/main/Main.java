@@ -72,7 +72,7 @@ public class Main {
             @Override
             public void run() {
                 Log.info("Launching Server...");
-                new GameControl(model).waitingForConfig();
+                new GameControl(model,seed).waitingForConfig();
             }
 
         } ;
