@@ -1,5 +1,6 @@
 package logic.bots;
 
+import common.Log;
 import logic.commands.*;
 import model.GameModel;
 
@@ -38,9 +39,19 @@ public class TwitchBot extends Bot {
                     System.out.println("> " +serverResponse);
             }
 
-            System.out.println("Connected to Twitchserver");
+            Log.info("Connected to Chatroom");
 
             connectToChatroom(channel);
+
+            Thread mTHREAD = new Thread() {
+                @Override
+                public void run() {
+                    TwitchBot.this.run();
+                }
+
+            } ;
+
+            mTHREAD.start();
 
         } catch(Exception e) {
             e.printStackTrace();
@@ -53,12 +64,13 @@ public class TwitchBot extends Bot {
         //TODO sleep until connected to chatroom, multithreading stuff (locks, wait, notify etc.)
 
         while (joined) {
-
+            Log.info("while entered");
             String line = "";
 
             try {
                 line = in.readLine();
-            } catch (IOException e) {
+                Log.info("read line");
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -74,6 +86,7 @@ public class TwitchBot extends Bot {
 
                 // !register
                 if (message[3].equals("!register")) {
+                    Log.info("Register Command received");
                     Command cmd = new Register(model, channel, sender);
                     model.pushCommand(cmd);
                 }
@@ -208,6 +221,7 @@ public class TwitchBot extends Bot {
             }
 
         }
+        Log.info("Twitchbot exited");
 
     }
     //TODO
