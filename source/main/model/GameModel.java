@@ -263,7 +263,7 @@ public class GameModel extends Observable{
         updateScore(winner, score);
         notifyWinner();
         getSiteBot().finish();
-        getBot().announceWinner();
+        getBot().announceWinner(winner);
         //TODO put top guesses in db
         clear();
     }

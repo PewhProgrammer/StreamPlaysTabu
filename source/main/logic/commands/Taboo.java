@@ -7,7 +7,7 @@ import model.GameModel;
  */
 public class Taboo extends Command {
 
-    public Taboo(GameModel gm, String ch) {
+    public Taboo(GameModel gm, String ch, String Taboo) {
         super(gm, ch);
     }
 

@@ -8,7 +8,7 @@ import model.GameModel;
  */
 public class Validate extends Command {
 
-    public Validate(GameModel gm, String ch) {
+    public Validate(GameModel gm, String ch, int ID, int valScore) {
         super(gm, ch);
     }
 

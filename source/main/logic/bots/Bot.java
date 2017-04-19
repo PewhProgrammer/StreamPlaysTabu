@@ -1,5 +1,7 @@
 package logic.bots;
 
+import model.GameModel;
+
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -12,10 +14,15 @@ public abstract class Bot {
     protected Socket sock;
     protected PrintWriter out;
     protected BufferedReader in;
+    protected boolean joined = false;
+    protected GameModel model;
+    protected String channel;
 
     protected final String rules = "rules!";
 
     boolean terminate = false;
+
+    public abstract void run();
 
     public abstract void connectToChatroom(String user);
 
@@ -29,7 +36,7 @@ public abstract class Bot {
 
     public abstract void announceNewRound();
 
-    public abstract void announceWinner();
+    public abstract void announceWinner(String user);
 
     public abstract void announceRegistration();
 
