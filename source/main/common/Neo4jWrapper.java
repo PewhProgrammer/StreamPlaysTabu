@@ -63,17 +63,20 @@ public class Neo4jWrapper {
         return createRelationship(node1,node2,relationship);
     }
 
-    public int increaseUserPoints(String user, int i)
+    public int updateUserPoints(String user, int i)
     throws Neo4jException{
         return getUserPoints(user) + i;
     }
 
-    public int decreaseUserPoints(String user, int i) throws Neo4jException{
-        return increaseUserPoints(user,-i);
-    }
 
     public int getUserPoints(String user) throws Neo4jException{
         //parse user points from database
+        return 0;
+    }
+
+    public int increaseUserError(String user) throws Neo4jException{
+
+        //parse user error and increment it
         return 0;
     }
 

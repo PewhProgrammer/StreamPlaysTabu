@@ -91,7 +91,8 @@ public class FXMLController implements Initializable, IObserver {
 
                 Parent root = null;
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
+                    //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/idle.fxml"));
                     root = loader.load();
                     GuiAnchor.cont = loader.getController();
                 } catch (IOException e) {
@@ -235,6 +236,11 @@ public class FXMLController implements Initializable, IObserver {
     @Override
     public void onNotifyKick() {
 
+    }
+
+    @Override
+    public int onNotifyRegistrationTime() {
+        return 0;
     }
 
 }

@@ -25,9 +25,11 @@ public class GuiAnchor extends Application {
     public void start(Stage primaryStage) throws Exception {
         GuiAnchor.stage = primaryStage;
         //load the start.fxml
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/start.fxml"));
+
+        //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/start.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/start.fxml"));
+
         Parent root = loader.load();
-        //Parent root = FXMLLoader.load(getClass().getResource("/start.fxml"));
         cont = loader.getController();
         //setup scene
         Scene scene = new Scene(root, 400, 600);
