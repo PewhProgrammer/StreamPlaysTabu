@@ -7,4 +7,5 @@ public enum GameState {
         WaitingForGiver,
         GameStarted,
         Registration,
+        Config,
 }

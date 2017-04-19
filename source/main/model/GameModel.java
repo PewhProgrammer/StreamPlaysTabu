@@ -71,7 +71,7 @@ public class GameModel extends Observable{
 
     public void setGameState(GameState mGameState) {
         this.mGameState = mGameState;
-        notifyGameState();
+        //notifyGameState();
     }
 
     public void setNumPlayers(int count){

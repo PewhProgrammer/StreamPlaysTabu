@@ -1,5 +1,6 @@
 package logic.commands;
 
+import common.Log;
 import model.GameModel;
 import model.GameState;
 
@@ -14,6 +15,7 @@ public class GiverJoined extends Command {
 
     @Override
     public void execute() {
+        Log.info("Giver has accepted the offer");
         gameModel.setGameState(GameState.GameStarted);
         //TODO taboo + validate von zwischenschirm in db
     }
