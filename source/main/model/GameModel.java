@@ -29,7 +29,7 @@ public class GameModel extends Observable{
 
     private LinkedList<Command> commands = new LinkedList<>();
 
-    private Set<String> registeredPlayers;
+    private List<String> registeredPlayers;
     private Set<String> tabooWords;
     private Set<String> explanations;
     private Set<String> usedWords;
@@ -51,7 +51,7 @@ public class GameModel extends Observable{
     public GameModel(Language l, short minPlayers, Neo4jWrapper neo, SiteBot siteBot){
         mGameState = GameState.Registration;
         mNumPlayers = 0;
-        registeredPlayers = new HashSet<>();
+        registeredPlayers = new ArrayList<>();
         tabooWords = new HashSet<>();
         explanations = new HashSet<>();
         qAndA = new LinkedList<>();
@@ -71,7 +71,7 @@ public class GameModel extends Observable{
 
     public void setGameState(GameState mGameState) {
         this.mGameState = mGameState;
-        //notifyGameState();
+        notifyGameState();
     }
 
     public void setNumPlayers(int count){
@@ -131,7 +131,7 @@ public class GameModel extends Observable{
         commands.push(e);
     }
 
-    public Set<String> getRegisteredPlayers() {
+    public List<String> getRegisteredPlayers() {
         return registeredPlayers;
     }
 

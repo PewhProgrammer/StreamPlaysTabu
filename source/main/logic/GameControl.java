@@ -14,6 +14,7 @@ import model.Observable;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,11 +26,13 @@ public class GameControl extends Observable{
     private GameModel mModel;
 
     private boolean isStarted;
+    private Random rand ;
 
-    public GameControl(GameModel model){
+    public GameControl(GameModel model,int seed){
         mModel = model;
         isStarted = false;
         mModel.setGameState(GameState.Config);
+        rand = new Random(seed);
     }
 
     /**
@@ -44,8 +47,10 @@ public class GameControl extends Observable{
 
         while(isStarted){
             //processNextCommand();
-            if(mModel.getGameState() == GameState.Registration)
-                waitingForPlayers();
+            if(mModel.getGameState() == GameState.Registration) {
+               //mModel.notifyGameState();
+               waitingForPlayers();
+            }
         }
         Log.trace("Control ends the game");
 
@@ -85,7 +90,7 @@ public class GameControl extends Observable{
             if(mModel.getRegisteredPlayers().size() > 0){
                 chooseNewGiver();
             }
-            mModel.notifyRegistrationTime();
+            //mModel.notifyRegistrationTime();
 
             mModel.setTimeStamp();
             try {
@@ -96,10 +101,14 @@ public class GameControl extends Observable{
                 e.printStackTrace();
             }
 
-            //elapsedTime = (new Date()).getTime() - startTime;
-
+            if(mModel.getRegisteredPlayers().contains(
+                    mModel.getGiver()
+            )){
+                // then send link
+            }
 
         }
+
         Log.info("Starting the round");
         mModel.notifyGameState();
 
@@ -108,8 +117,14 @@ public class GameControl extends Observable{
         runGame();
     }
 
+    /**
+     * handles new giver
+     */
     public void chooseNewGiver(){
         Log.info("New giver has been chosen");
+        int index = rand.nextInt(mModel.getRegisteredPlayers().size());
+        String newGiver =  mModel.getRegisteredPlayers().get(index);
+        mModel.setGiver(newGiver);
     }
 
     /**
