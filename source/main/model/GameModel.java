@@ -9,6 +9,8 @@ import logic.commands.Prevote;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static gui.GuiAnchor.gameModel;
+
 
 public class GameModel extends Observable{
 
@@ -18,6 +20,7 @@ public class GameModel extends Observable{
     private static final int LEVEL_5 = 1200;
     private static final int LEVEL_6 = 1800;
 
+    private static final double ROUND_TIME = 1000.0 * 90.0;
 
     private GameState mGameState;
     private int mNumPlayers;
@@ -34,14 +37,16 @@ public class GameModel extends Observable{
     private Set<String> explanations;
     private Set<String> usedWords;
     private Set<String> votekick;
-    LinkedList<Guess> guesses = new LinkedList<>();
+    private HashMap<String, TabooSuggestion> tabooSuggestions;
+    private LinkedList<Guess> guesses;
     private LinkedList<String[]> qAndA;
 
     private String category, giver, word, winner;
 
     private ArrayList<PrevoteCategory> prevoting;
 
-    SimpleDateFormat timeStamp;
+
+    private Date timeStamp;
 
     private Bot bot;
     private SiteBot sBot;
@@ -63,6 +68,8 @@ public class GameModel extends Observable{
         prevoting = new ArrayList<>(10);
         usedWords = new HashSet<>();
         votekick = new HashSet<>();
+        guesses = new LinkedList<>();
+        tabooSuggestions = new HashMap<>();
     }
 
     public GameState getGameState(){
@@ -300,13 +307,18 @@ public class GameModel extends Observable{
 
     public void win(String winner) {
         this.winner  = winner;
-        //TODO score
-        int score = 10;
+        Date joinedTime = new Date();
+        Date referenceTime = getTimeStamp();
+        long diff = joinedTime.getTime() - referenceTime.getTime();
+        double q = (double) diff / ROUND_TIME;
+        int score = (int) ((tabooWords.size() + 1) * 100 - q * (tabooWords.size() + 1) * 100);
         updateScore(winner, score);
         notifyWinner();
         getSiteBot().finish();
         getBot().announceWinner();
-        //TODO put top guesses in db
+        for (int i = 0; i < 3; i++) {
+            mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, guesses.get(i).getGuess(), "isRelatedTo");
+        }
         clear();
     }
 
@@ -361,15 +373,39 @@ public class GameModel extends Observable{
     public void updateScore(String user, int value) {
         int score = getScore(user) + value;
         score = Integer.max(0, score);
-        //TODO update db score
+        mOntologyDataBase.updateUserPoints(user, score);
         notifyScoreUpdate();
     }
 
-    public SimpleDateFormat getTimeStamp() {
+    public void tabooSuggetion(String suggestion) {
+        if (!tabooSuggestions.containsKey(suggestion)) {
+            TabooSuggestion ts = new TabooSuggestion(suggestion, word);
+            tabooSuggestions.put(suggestion, ts);
+        } else {
+            tabooSuggestions.get(suggestion).occurred();
+        }
+    }
+
+    public void transferTabooSuggestions() {
+
+        ArrayList<TabooSuggestion> sortedSuggestions = new ArrayList<>(tabooSuggestions.size());
+        for (TabooSuggestion ts : tabooSuggestions.values()) {
+            sortedSuggestions.add(ts);
+        }
+        Collections.sort(sortedSuggestions);
+        for (int i = 0; i < 3; i++) {
+            mOntologyDataBase.insertNodesAndRelationshipIntoOntology(sortedSuggestions.get(i).getExplanation(),
+                    sortedSuggestions.get(i).getContent(), "isRelatedTo");
+        }
+
+        tabooSuggestions.clear();
+    }
+
+    public Date getTimeStamp() {
         return timeStamp;
     }
 
     public void setTimeStamp() {
-        timeStamp = new SimpleDateFormat("dd:MM:yy:HH:mm:ss");
+        timeStamp = new Date();
     }
 }

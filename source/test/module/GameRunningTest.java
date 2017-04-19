@@ -31,12 +31,12 @@ public class GameRunningTest extends TestCase {
         database = new Neo4jWrapper(simulation,neo4jbindAddr);
         gModel = new GameModel(language,(short)2,database,
                 siteBot);
-        controller = new GameControl(gModel);
+        controller = new GameControl(gModel, 1337);
         Thread mTHREAD = new Thread() {
             @Override
             public void run() {
                 Log.info("Launching Server...");
-                new GameControl(gModel).waitingForConfig();
+                new GameControl(gModel, 1337).waitingForConfig();
             }
 
         } ;
