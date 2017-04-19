@@ -1,24 +1,27 @@
 package logic.commands;
 
 import model.GameModel;
+import model.GameState;
 
 /**
  * Created by Marc on 05.04.2017.
  */
 public class Taboo extends Command {
 
-    public Taboo(GameModel gm, String ch, String Taboo) {
+    private String suggestion;
+
+    public Taboo(GameModel gm, String ch, String suggestion) {
         super(gm, ch);
+        this.suggestion = suggestion;
     }
 
     @Override
     public void execute() {
-        //TODO update list of taboo suggestions
+        gameModel.tabooSuggetion(suggestion);
     }
 
     @Override
     public boolean validate() {
-        return false;
-        //anything to do here?
+        return gameModel.getGameState().equals(GameState.Registration);
     }
 }

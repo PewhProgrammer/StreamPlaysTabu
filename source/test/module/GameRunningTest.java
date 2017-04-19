@@ -1,9 +1,12 @@
 package module;
 
+import common.Log;
 import common.Neo4jWrapper;
+import gui.GuiAnchor;
 import junit.framework.TestCase;
 import logic.GameControl;
 import logic.bots.SiteBot;
+import logic.commands.GiverJoined;
 import logic.commands.Register;
 import model.GameMode;
 import model.GameModel;
@@ -28,12 +31,37 @@ public class GameRunningTest extends TestCase {
         database = new Neo4jWrapper(simulation,neo4jbindAddr);
         gModel = new GameModel(language,(short)2,database,
                 siteBot);
-        controller = new GameControl(gModel);
+        controller = new GameControl(gModel, 1337);
+        Thread mTHREAD = new Thread() {
+            @Override
+            public void run() {
+                Log.info("Launching Server...");
+                new GameControl(gModel, 1337).waitingForConfig();
+            }
+
+        } ;
+
+        mTHREAD.start();
     }
 
     public void testGameRunning(){
 
         gModel.getCommands().push(new Register(gModel,"","John"));
-        controller.waitingForPlayers();
+        //controller.waitingForPlayers();
+        gModel.getCommands().push(new Register(gModel,"","Maria"));
+        gModel.getCommands().push(new GiverJoined(gModel,""));
+
+        String[] param = {"testparam"};
+        if(true) {
+            Log.info("Launching prototype GUI...");
+            GuiAnchor anchor = new GuiAnchor();
+            anchor.setModel(gModel);
+            anchor.main(param);
+        }
+        else {
+            Log.info("Launching experimental GUI...");
+        }
+
+
     }
 }

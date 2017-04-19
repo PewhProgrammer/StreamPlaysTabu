@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,6 +21,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import static gui.GuiAnchor.cont;
+import static gui.GuiAnchor.gameModel;
 import static gui.GuiAnchor.stage;
 
 /**
@@ -51,6 +54,12 @@ public class FXMLController implements Initializable, IObserver {
     private Text explanations = new Text();
     @FXML
     private Text qAndA = new Text();
+    @FXML
+    private Text timer = new Text();
+    @FXML
+    private Text gameTimer = new Text();
+    @FXML
+    private Text giverText = new Text();
 
     public static boolean fullscreen = false;
     public static int resX = 1280, resY = 720;
@@ -68,6 +77,7 @@ public class FXMLController implements Initializable, IObserver {
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                gameModel.setGameState(GameState.Registration);
                 if(!channelInput.getText().equals(""))
                     chn = channelInput.getText();
 
@@ -91,10 +101,12 @@ public class FXMLController implements Initializable, IObserver {
 
                 Parent root = null;
                 try {
-                    //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/idle.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
+                    //FXMLLoader loader = new FXMLLoader(getClass().getResource("/idle.fxml"));
                     root = loader.load();
                     GuiAnchor.cont = loader.getController();
+                    gameModel.updateObserver(cont);
+                    //gameModel.addObserver(cont);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -157,15 +169,34 @@ public class FXMLController implements Initializable, IObserver {
             Parent root = null;
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/game.fxml"));
+                //FXMLLoader loader = new FXMLLoader(getClass().getResource("/game.fxml"));
                 root = loader.load();
                 GuiAnchor.cont = loader.getController();
+                gameModel.updateObserver(cont);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             Scene scene = new Scene(root, FXMLController.resX, FXMLController.resY);
             stage.setScene(scene);
+
+            cont.giverText.setText("Giver: " + gameModel.getGiver());
+
             if(FXMLController.fullscreen)
                 stage.setFullScreen(true);
+
+            new Thread() {
+                public void run() {
+                    for(int i=90; i>=0; i--) {
+                            cont.gameTimer.setText(i + "s");
+                        try {
+                            sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }.start();
+
         }
         else if(GuiAnchor.gameModel.getGameState() == GameState.Registration) {
             Parent root = null;
@@ -173,6 +204,7 @@ public class FXMLController implements Initializable, IObserver {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
                 root = loader.load();
                 GuiAnchor.cont = loader.getController();
+                gameModel.updateObserver(cont);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -239,8 +271,21 @@ public class FXMLController implements Initializable, IObserver {
     }
 
     @Override
-    public int onNotifyRegistrationTime() {
-        return 0;
+    public void onNotifyRegistrationTime() {
+        new Thread() {
+            public void run() {
+                for(int i=30; i>=0; i--) {
+                    if(i>=10)
+                        timer.setText("00:"+i);
+                    else
+                        timer.setText("00:0"+i);
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
     }
-
 }

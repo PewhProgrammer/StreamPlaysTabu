@@ -19,7 +19,7 @@ public class Register extends Command {
 
     @Override
     public void execute() {
-        Log.info("Registered user");
+        Log.info("Registered user: " + user);
         gameModel.register(user);
     }
 

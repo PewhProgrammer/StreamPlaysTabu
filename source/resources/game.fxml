@@ -46,15 +46,5 @@
             </Text>
          </children>
       </StackPane>
-      <Text fx:id="giverText" fill="RED" layoutX="5.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Giver" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="5.0">
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Text>
-      <Text fx:id="gameTimer" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="90s" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="5.0">
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Text>
    </children>
 </AnchorPane>

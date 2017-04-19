@@ -1,5 +1,6 @@
 package model;
 
+import gui.FXMLController;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  */
 public abstract class Observable {
 
-    public ArrayList<IObserver> listIObserver = new ArrayList<>();
+    public ArrayList<IObserver> listIObserver = new ArrayList<>(2);
 
     /** TODO mehrere notify methoden */
 
@@ -115,12 +116,29 @@ public abstract class Observable {
 
     public void notifyRegistrationTime() {
         for (IObserver ob : listIObserver) {
-            ob.onNotifyRegistrationTime();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    ob.onNotifyRegistrationTime();
+                }
+            });
+
         }
     }
 
     public void addObserver(IObserver ob){
-        listIObserver.add(ob);
+        listIObserver.add(0,ob);
+    }
+
+    public void updateObserver(IObserver ob){
+        if(ob instanceof FXMLController) {
+            listIObserver.remove(0);
+            listIObserver.add(0, ob);
+            return;
+        }
+        listIObserver.remove(1);
+        listIObserver.add(1, ob);
+
     }
 
     public void removeObserver(IObserver ob){
