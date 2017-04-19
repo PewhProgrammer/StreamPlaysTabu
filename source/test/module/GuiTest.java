@@ -37,6 +37,19 @@ public class GuiTest extends TestCase {
             e.printStackTrace();
         }
 
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                GuiAnchor.cont.onNotifyRegistrationTime();
+            }
+        });
+
+        try {
+            Thread.sleep(32000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         GuiAnchor.gameModel.setGameState(GameState.GameStarted);
         Platform.runLater(new Runnable() {
             @Override

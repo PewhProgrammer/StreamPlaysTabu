@@ -10,7 +10,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.FXMLController">
    <children>
-      <StackPane prefHeight="71.0" prefWidth="1280.0">
+      <StackPane alignment="TOP_CENTER" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="StreamPlaysTabu">
                <font>
@@ -19,7 +19,7 @@
             </Text>
          </children>
       </StackPane>
-      <StackPane alignment="TOP_LEFT" layoutY="109.0" prefHeight="612.0" prefWidth="279.0">
+      <StackPane alignment="TOP_LEFT" layoutY="109.0" prefHeight="612.0" prefWidth="279.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <children>
             <Text fx:id="guesses" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Guesses:">
                <font>
@@ -28,7 +28,7 @@
             </Text>
          </children>
       </StackPane>
-      <StackPane alignment="TOP_LEFT" layoutX="294.0" layoutY="109.0" prefHeight="612.0" prefWidth="512.0">
+      <StackPane alignment="TOP_CENTER" layoutX="294.0" layoutY="109.0" prefHeight="612.0" prefWidth="512.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="294.0" AnchorPane.rightAnchor="474.0">
          <children>
             <Text fx:id="explanations" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Explanations:">
                <font>
@@ -37,7 +37,7 @@
             </Text>
          </children>
       </StackPane>
-      <StackPane alignment="TOP_LEFT" layoutX="833.0" layoutY="108.0" prefHeight="612.0" prefWidth="447.0">
+      <StackPane alignment="TOP_LEFT" layoutX="833.0" layoutY="108.0" prefHeight="612.0" prefWidth="447.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <Text fx:id="qAndA" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Q. and A.:">
                <font>

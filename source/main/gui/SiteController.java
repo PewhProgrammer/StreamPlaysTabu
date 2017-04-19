@@ -54,8 +54,8 @@ public class SiteController implements IObserver {
     }
 
     @Override
-    public int onNotifyRegistrationTime() {
-        return 0;
+    public void onNotifyRegistrationTime() {
+
     }
 
 }

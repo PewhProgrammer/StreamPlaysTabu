@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -51,6 +52,8 @@ public class FXMLController implements Initializable, IObserver {
     private Text explanations = new Text();
     @FXML
     private Text qAndA = new Text();
+    @FXML
+    private Text timer = new Text();
 
     public static boolean fullscreen = false;
     public static int resX = 1280, resY = 720;
@@ -91,8 +94,8 @@ public class FXMLController implements Initializable, IObserver {
 
                 Parent root = null;
                 try {
-                    //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/idle.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
+                    //FXMLLoader loader = new FXMLLoader(getClass().getResource("/idle.fxml"));
                     root = loader.load();
                     GuiAnchor.cont = loader.getController();
                 } catch (IOException e) {
@@ -239,8 +242,21 @@ public class FXMLController implements Initializable, IObserver {
     }
 
     @Override
-    public int onNotifyRegistrationTime() {
-        return 0;
+    public void onNotifyRegistrationTime() {
+        new Thread() {
+            public void run() {
+                for(int i=30; i>=0; i--) {
+                    if(i>=10)
+                        timer.setText("00:"+i);
+                    else
+                        timer.setText("00:0"+i);
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
     }
-
 }
