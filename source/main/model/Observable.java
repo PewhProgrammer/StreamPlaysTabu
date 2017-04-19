@@ -66,6 +66,12 @@ public abstract class Observable {
         }
     }
 
+    public void notifyRegistrationTime() {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyRegistrationTime();
+        }
+    }
+
     public void addObserver(IObserver ob){
         listIObserver.add(ob);
     }

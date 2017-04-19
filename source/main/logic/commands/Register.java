@@ -1,5 +1,6 @@
 package logic.commands;
 
+import common.Log;
 import logic.bots.Bot;
 import model.GameModel;
 import model.GameState;
@@ -18,6 +19,7 @@ public class Register extends Command {
 
     @Override
     public void execute() {
+        Log.info("Registered user");
         gameModel.register(user);
     }
 

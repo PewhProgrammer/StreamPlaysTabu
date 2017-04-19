@@ -74,6 +74,12 @@ public class Neo4jWrapper {
         return 0;
     }
 
+    public int increaseUserError(String user) throws Neo4jException{
+
+        //parse user error and increment it
+        return 0;
+    }
+
     //** TODO: Missing Logging system for user's activity
 
 

@@ -5,10 +5,15 @@ import common.Neo4jWrapper;
 import logic.bots.Bot;
 import logic.bots.SiteBot;
 import logic.commands.Command;
+import logic.commands.Register;
 import model.GameModel;
 import model.GameState;
 import model.Language;
 import model.Observable;
+
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Thinh-Laptop on 26.03.2017.
@@ -51,8 +56,20 @@ public class GameControl extends Observable{
     public void waitingForPlayers(){
         Log.info("Control is waiting for Players");
         while(mModel.getGameState() == GameState.Registration){
-            //process twitch/beam api
+            //if user is not registered
+            if(mModel.getRegisteredPlayers().size() > 0
+                    )
+            mModel.notifyRegistrationTime();
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+
+                }
+            }, 2*60*1000);
+
             processNextCommand();
+
         }
         Log.trace("Players are available to play the game");
         isStarted = true;

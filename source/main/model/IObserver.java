@@ -32,4 +32,6 @@ public interface IObserver {
     //called when giver has been votekicked
     public void onNotifyKick();
 
+    public int onNotifyRegistrationTime();
+
 }
