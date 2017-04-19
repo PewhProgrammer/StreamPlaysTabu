@@ -1,5 +1,7 @@
 package model;
 
+import javafx.application.Platform;
+
 import java.util.ArrayList;
 
 /**
@@ -13,56 +15,101 @@ public abstract class Observable {
 
     public void notifyQandA(){
         for (IObserver ob: listIObserver) {
-            ob.onNotifiyQandA();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    ob.onNotifiyQandA();
+                }
+            });
         }
     }
 
     public void notifyCategoryChosen() {
-        for (IObserver ob : listIObserver) {
-            ob.onNotifyCategoryChosen();
+        for (IObserver ob: listIObserver) {
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    ob.onNotifyCategoryChosen();
+                }
+            });
         }
     }
 
     public void notifyGameState() {
         for (IObserver ob : listIObserver) {
-            ob.onNotifyGameState();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    ob.onNotifyGameState();
+                }
+            });
         }
     }
 
     public void notifyExplanation() {
         for (IObserver ob : listIObserver) {
-            ob.onNotifyExplanation();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    ob.onNotifyExplanation();
+                }
+            });
         }
     }
 
     public void notifyWinner() {
         for (IObserver ob : listIObserver) {
-            ob.onNotifyWinner();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    ob.onNotifyWinner();
+                }
+            });
         }
     }
 
     public void notifyGuess() {
         for (IObserver ob : listIObserver) {
-            ob.onNotifyGuess();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    ob.onNotifyGuess();
+                }
+            });
         }
     }
     
 
     public void notifyScoreUpdate() {
         for (IObserver ob : listIObserver) {
-            ob.onNotifyScoreUpdate();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    ob.onNotifyScoreUpdate();
+                }
+            });
         }
     }
 
     public void notifyGameMode() {
         for (IObserver ob : listIObserver) {
-            ob.onNotifyGameMode();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    ob.onNotifyGameMode();
+                }
+            });
         }
     }
 
     public void notifyKick() {
         for (IObserver ob : listIObserver) {
-            ob.onNotifyKick();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    ob.onNotifyKick();
+                }
+            });
         }
     }
 

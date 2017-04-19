@@ -6,10 +6,18 @@ import logic.bots.SiteBot;
 import logic.commands.Command;
 import logic.commands.Prevote;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
 public class GameModel extends Observable{
+
+    private static final int LEVEL_2 = 100;
+    private static final int LEVEL_3 = 300;
+    private static final int LEVEL_4 = 700;
+    private static final int LEVEL_5 = 1200;
+    private static final int LEVEL_6 = 1800;
+
 
     private GameState mGameState;
     private int mNumPlayers;
@@ -32,6 +40,8 @@ public class GameModel extends Observable{
     private String category, giver, word, winner;
 
     private ArrayList<PrevoteCategory> prevoting;
+
+    SimpleDateFormat timeStamp;
 
     private Bot bot;
     private SiteBot sBot;
@@ -139,7 +149,29 @@ public class GameModel extends Observable{
     }
 
     public Set<String> generateTabooWords() {
-        //TODO db query for giver lvl
+        int score = mOntologyDataBase.getUserPoints(getGiver());
+        int lvl = 1;
+
+        if (score >= LEVEL_2 && score < LEVEL_3) {
+            lvl = 2;
+        }
+
+        if (score >= LEVEL_3 && score < LEVEL_4) {
+            lvl = 3;
+        }
+
+        if (score >= LEVEL_4 && score < LEVEL_5) {
+            lvl = 4;
+        }
+
+        if (score >= LEVEL_5 && score < LEVEL_6) {
+            lvl = 5;
+        }
+
+        if (score >= LEVEL_6) {
+            lvl = 6;
+        }
+
         //TODO db query for taboo words
 
         return tabooWords;
@@ -151,9 +183,13 @@ public class GameModel extends Observable{
 
     public void addExplanation(String explanation) {
         explanations.add(explanation);
-        //TODO parse template
-        //TODO update database
+
         notifyExplanation();
+        //TODO parse answer template
+        String targetNode = "";
+        String relation = "";
+
+        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation);
     }
 
     public void clearExplanations() {
@@ -197,8 +233,11 @@ public class GameModel extends Observable{
         qAndA.push(new String[]{question, answer});
         notifyQandA();
 
-        //TODO parse template
-        //TODO update database
+        //TODO parse answer template
+        String targetNode = "";
+        String relation = "";
+
+        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation);
     }
 
     public LinkedList<String[]> getQAndA() {
@@ -233,6 +272,9 @@ public class GameModel extends Observable{
     }
 
     public void generateVotingCategories() {
+        for (int i = 0; i < 10; i++) {
+            prevoting.add(i, new PrevoteCategory("Category " + Integer.toString(i + 1)));
+        }
         //TODO get voting categories from db, create corresponding PrevoteCategory objects and fill arraylist
     }
 
@@ -313,14 +355,21 @@ public class GameModel extends Observable{
     }
 
     public int getScore(String user) {
-        //TODO db query for user score
-        return 0;
+        return mOntologyDataBase.getUserPoints(user);
     }
 
     public void updateScore(String user, int value) {
         int score = getScore(user) + value;
         score = Integer.max(0, score);
-        //TODO write user's score to db
+        //TODO update db score
         notifyScoreUpdate();
+    }
+
+    public SimpleDateFormat getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp() {
+        timeStamp = new SimpleDateFormat("dd:MM:yy:HH:mm:ss");
     }
 }
