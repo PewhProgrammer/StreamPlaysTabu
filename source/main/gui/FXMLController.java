@@ -13,6 +13,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import logic.bots.BeamBot;
+import logic.bots.TwitchBot;
 import model.GameState;
 import model.Guess;
 import model.IObserver;
@@ -88,13 +90,13 @@ public class FXMLController implements Initializable, IObserver {
                 //initialize bots
                 if(platform.equals("twitch"))
                     try {
-                    //  gm.setBot(new TwitchBot(/*chn*/));
+                      GuiAnchor.gameModel.setBot(new TwitchBot(GuiAnchor.gameModel, chn));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 else
                     try {
-                    //  gm.setBot(new BeamBot(chn));
+                      GuiAnchor.gameModel.setBot(new BeamBot(chn, GuiAnchor.gameModel));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -168,8 +170,8 @@ public class FXMLController implements Initializable, IObserver {
         if (GuiAnchor.gameModel.getGameState() == GameState.GameStarted) {
             Parent root = null;
             try {
-                //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/game.fxml"));
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/game.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/game.fxml"));
+                //FXMLLoader loader = new FXMLLoader(getClass().getResource("/game.fxml"));
                   root = loader.load();
                 GuiAnchor.cont = loader.getController();
                 gameModel.updateObserver(cont);
