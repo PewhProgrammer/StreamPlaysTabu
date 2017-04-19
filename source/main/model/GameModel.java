@@ -189,7 +189,7 @@ public class GameModel extends Observable{
         String targetNode = "";
         String relation = "";
 
-        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation);
+//        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation);
     }
 
     public void clearExplanations() {
