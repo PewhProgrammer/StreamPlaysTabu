@@ -68,7 +68,7 @@ public class GameControl extends Observable{
         Thread mTHREAD = new Thread() {
             @Override
             public void run() {
-                Log.info("processing Commands...");
+                Log.info("Starting new thread for commands processing...");
                 processNextCommand();
             }
 

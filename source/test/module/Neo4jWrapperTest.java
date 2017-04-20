@@ -1,9 +1,11 @@
 package module;
 
+import common.DatabaseException;
 import common.Log;
 import common.Neo4jWrapper;
 import junit.framework.TestCase;
 import model.Language;
+import org.junit.Test;
 import org.neo4j.driver.v1.exceptions.ServiceUnavailableException;
 
 /**
@@ -16,42 +18,52 @@ public class Neo4jWrapperTest extends TestCase {
     private String neo4jbindAddr = "localhost:7687";
     private final Language language = Language.Ger;
     private Neo4jWrapper database ;
+    private final String label = "Node";
 
     @org.junit.Test
     public void setUp() throws Exception {
-        database = new Neo4jWrapper(simulation,neo4jbindAddr);
+        database = new Neo4jWrapper(simulation,neo4jbindAddr,20);
+        database.resetRelationships();
         database.resetDatabase();
+        Log.setLevel(Log.Level.TRACE);
     }
 
     public void testCreateNode(){
         try {
             database.createNode("Nautilus");
-            assertEquals("No such Node found in database!"
-                    ,true,
-                    database.lookUpNode("Nautilus"));
+            database.createNode("Nautilus");
+            fail();
         }
-        catch(ServiceUnavailableException e){
-            e.printStackTrace();
-            fail(e.getMessage());
+        catch(ServiceUnavailableException | DatabaseException e){
+            Log.trace(e.getMessage());
         }
     }
 
     public void testResetDatabase(){
-        database.createNode("Maokai");
-        database.resetDatabase();
-        assertEquals("Should not find the Node!"
-                ,false,
-                database.lookUpNode("Maokai"));
+        try {
+            database.createNode("Nautilus");
+            database.resetDatabase();
+            database.createNode("Nautilus");
+        }
+        catch(ServiceUnavailableException | DatabaseException e){
+            Log.info(e.getMessage());
+            fail();
+        }
     }
 
     public void testLookUpNode(){
         assertEquals("Should not find the Node!"
                 ,false,
-                database.lookUpNode("Maokai"));
-        database.createNode("Maokai");
-        assertEquals("No such Node found in database!"
+                database.lookUpNode("Maokai",label));
+        try {
+            database.createNode("Maokai");
+        }catch(DatabaseException e){
+            e.getMessage();
+            fail();
+        }
+        assertEquals("lookUp could not find the node!"
                 ,true,
-                database.lookUpNode("Maokai"));
+                database.lookUpNode("Maokai",label));
     }
 
     public void testCreateRelationship(){
@@ -69,6 +81,26 @@ public class Neo4jWrapperTest extends TestCase {
         assertEquals("Something went wrong when clearing the ratings!"
                 ,true,
                 database.clearFailedRelationships());
+    }
+
+    public void testGetUserPoints(){
+        String user ="John";
+        database.createUser(user);
+
+        assertEquals("Points were incorrect!",
+                0,database.getUserPoints(user));
+        assertEquals("Points were incorrect!",
+                200,database.updateUserPoints(user,200));
+    }
+
+    public void testGetUserErrors(){
+        String user ="Manuel";
+        database.createUser(user);
+
+        assertEquals("Points were incorrect!",
+                0,database.getUserError(user));
+        assertEquals("Points were incorrect!",
+                1,database.increaseUserError(user));
     }
 
 }
