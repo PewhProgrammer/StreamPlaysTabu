@@ -91,102 +91,104 @@ public class TwitchBot extends Bot {
         String[] message = line.split(" ");
         String sender = message[0].substring(1).split("!")[0];
 
-        if (message[1].equals("PRIVMSG") && message.length > 3 && message[3].startsWith("!")) {
+        if (message[1].equals("PRIVMSG") && message.length > 3 && message[3].startsWith(":!")) {
 
             // !register
-            if (message[3].equals("!register")) {
+            if (message[3].equals(":!register")) {
                 Log.info("Register Command received");
                 return new Register(model, channel, sender);
             }
 
             // !guess
-            if (message[3].equals("!guess")) {
+            if (message[3].equals(":!guess")) {
                 return new Guess(model, channel, sender, message[4]);
             }
 
             // !ask
-            if (message[3].equals("!ask")) {
-                return new Ask(model, channel, message[4]);
+            if (message[3].equals(":!ask")) {
+                String[] question = line.split("!ask ");
+                return new Ask(model, channel, question[1]) ;
             }
 
             // !rules
-            if (message[3].equals("!rules")) {
+            if (message[3].equals(":!rules")) {
                 return new Rules(model, channel, sender);
             }
 
             // !score
-            if (message[3].equals("!score")) {
+            if (message[3].equals(":!score")) {
                 return new Rank(model, channel, sender);
             }
 
             // !votekick
-            if (message[3].equals("!votekick")) {
+            if (message[3].equals(":!votekick")) {
                 return new Votekick(model, channel, sender);
             }
 
             // !streamerexplains
-            if (message[3].equals("!streamerexplains")) {
+            if (message[3].equals(":!streamerexplains")) {
                 return new StreamerExplains(model, channel, sender);
             }
 
             // !validate
-            if (message[3].equals("!validate")) {
+            if (message[3].equals(":!validate")) {
                 int ID = Integer.parseInt(message[4]);
                 int valScore = Integer.parseInt(message[5]);
                 return new Validate(model, channel, ID, valScore);
             }
 
             // !taboo
-            if (message[3].equals("!taboo")) {
+            if (message[3].equals(":!taboo")) {
                 return new Taboo(model, channel, message[4]);
             }
 
             // !vote
-            if (message[3].equals("!vote")) {
+            if (message[3].equals(":!vote")) {
                 int voteNum = Integer.parseInt(message[4]);
                 return new Prevote(model, channel, voteNum);
             }
         }
 
-        if (message[1].equals("PRIVMSG") && message.length > 4 && message[4].startsWith("!")) {
+        if (message[1].equals("PRIVMSG") && message.length > 4 && message[4].startsWith(":!")) {
 
             // !register
-            if (message[4].equals("!register")) {
+            if (message[4].equals(":!register")) {
                 return new Register(model, channel, sender);
             }
 
             // !guess
-            if (message[4].equals("!guess")) {
+            if (message[4].equals(":!guess")) {
                 return new Guess(model, channel, sender, message[5]);
             }
 
             // !ask
-            if (message[4].equals("!ask")) {
-                return new Ask(model, channel, message[5]);
+            if (message[4].equals(":!ask")) {
+                String[] question = line.split("!ask ");
+                return new Ask(model, channel, question[1]);
             }
 
             // !rules
-            if (message[4].equals("!rules")) {
+            if (message[4].equals(":!rules")) {
                 return new Rules(model, channel, sender);
             }
 
             // !score
-            if (message[4].equals("!score")) {
+            if (message[4].equals(":!score")) {
                 return new Rank(model, channel, sender);
             }
 
             // !votekick
-            if (message[4].equals("!votekick")) {
+            if (message[4].equals(":!votekick")) {
                 return new Votekick(model, channel, sender);
             }
 
             // !streamerexplains
-            if (message[4].equals("!streamerexplains")) {
+            if (message[4].equals(":!streamerexplains")) {
                 return new StreamerExplains(model, channel, sender);
             }
 
             // !validate
-            if (message[4].equals("!validate")) {
+            if (message[4].equals(":!validate")) {
                 int ID = Integer.parseInt(message[5]);
                 int valScore = Integer.parseInt(message[6]);
                 return new Validate(model, channel, ID, valScore);
@@ -198,7 +200,7 @@ public class TwitchBot extends Bot {
             }
 
             // !vote
-            if (message[4].equals("!vote")) {
+            if (message[4].equals(":!vote")) {
                 int voteNum = Integer.parseInt(message[5]);
                 return new Prevote(model, channel, voteNum);
             }

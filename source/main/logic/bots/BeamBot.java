@@ -119,7 +119,8 @@ public class BeamBot extends Bot {
             /* !ask */
         if (message[0].equals("!ask")) {
                 /*SAVE ASK SEND GUI*/
-            return new Ask(model, channel, message[1]);
+                String[] question = line.split("!ask ");
+            return new Ask(model, channel, question[1]);
         }
 
             /* !rules */
