@@ -91,8 +91,8 @@ public class FXMLController implements Initializable, IObserver {
                 //initialize bots
                 if(platform.equals("twitch"))
                     try {
-                      //GuiAnchor.gameModel.setBot(new TwitchBot(GuiAnchor.gameModel, chn));
-                        GuiAnchor.gameModel.setBot(new AltTwitchBot());
+                        GuiAnchor.gameModel.setBot(new TwitchBot(GuiAnchor.gameModel, chn));
+                        //GuiAnchor.gameModel.setBot(new AltTwitchBot());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -105,8 +105,8 @@ public class FXMLController implements Initializable, IObserver {
 
                 Parent root = null;
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
-                    //FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/idle.fxml"));
+                    //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/idle.fxml"));
                     root = loader.load();
                     GuiAnchor.cont = loader.getController();
                     gameModel.updateObserver(cont);
@@ -172,8 +172,8 @@ public class FXMLController implements Initializable, IObserver {
         if (GuiAnchor.gameModel.getGameState() == GameState.GameStarted) {
             Parent root = null;
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/game.fxml"));
-                //FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/game.fxml"));
+                //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/game.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/game.fxml"));
                   root = loader.load();
                 GuiAnchor.cont = loader.getController();
                 gameModel.updateObserver(cont);
@@ -205,8 +205,8 @@ public class FXMLController implements Initializable, IObserver {
         else if(GuiAnchor.gameModel.getGameState() == GameState.Registration) {
             Parent root = null;
             try {
-                //FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/idle.fxml"));
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/idle.fxml"));
+                //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
                 root = loader.load();
                 GuiAnchor.cont = loader.getController();
                 gameModel.updateObserver(cont);

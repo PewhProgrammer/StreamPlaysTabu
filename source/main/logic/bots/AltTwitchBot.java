@@ -12,7 +12,7 @@ public class AltTwitchBot extends Bot {
     private Pirc bot;
 
     public AltTwitchBot(){
-        connectToChatroom("pewhTV");
+        connectToChatroom("pewhtv");
     }
 
     private class Pirc extends PircBot{
@@ -26,7 +26,7 @@ public class AltTwitchBot extends Bot {
             //sendMessage(channel,"@" + sender + " " +curse.get(r.nextInt(curse.size())));
 
             Log.info("Received");
-            sendChatMessage("shut up!");
+            sendMessage(channel,"halts maul");
             if (message.equalsIgnoreCase("thinh")) {
                 sendMessage(channel, sender + ": just wrote my name huiiii");
             }
@@ -66,7 +66,7 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void connectToChatroom(String user) {
-        bot = new Pirc(user);
+        bot = new Pirc("pewhtv");
 
         // Connect to the IRC server.
         try {
@@ -76,7 +76,7 @@ public class AltTwitchBot extends Bot {
             System.exit(1);
         }
 
-        bot.joinChannel("#"+user);
+        bot.joinChannel("#realwasabimc");
         Log.info("connected");
     }
 
