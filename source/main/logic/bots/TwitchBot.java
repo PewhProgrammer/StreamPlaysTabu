@@ -31,7 +31,7 @@ public class TwitchBot extends Bot {
 
             //login
             out.println("PASS oauth:" + accessToken);
-            out.println("NICK StreamPlaysTaboo"); //TODO change to our Botname!
+            out.println("NICK streamplaystaboo"); //TODO change to our Botname!
 
             String serverResponse;
             for(int i = 0; i < 7; i++) {
@@ -79,7 +79,7 @@ public class TwitchBot extends Bot {
                 continue;
             }
 
-            Command cmd = parseLine(line);
+            Command cmd = parseLine(line,"");
             if (cmd != null) {
                 model.pushCommand(cmd);
             }
@@ -89,7 +89,7 @@ public class TwitchBot extends Bot {
     }
 
     @Override
-    public Command parseLine(String line) {
+    public Command parseLine(String line, String filler) {
 
         String[] message = line.split(" ");
         String sender = message[0].substring(1).split("!")[0];

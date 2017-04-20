@@ -43,5 +43,5 @@ public abstract class Bot {
 
     public abstract void announceScore(String user, int score);
 
-    public abstract Command parseLine(String line);
+    public abstract Command parseLine(String line, String sender);
 }

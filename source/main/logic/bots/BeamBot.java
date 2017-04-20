@@ -92,7 +92,7 @@ public class BeamBot extends Bot {
 
         chatConnectable.on(IncomingMessageEvent.class, event -> {
             sender = event.data.userName;
-            Command cmd = parseLine(event.data.message.message.get(0).text);
+            Command cmd = parseLine(event.data.message.message.get(0).text, sender);
             if (cmd != null) {
                 model.pushCommand(cmd);
             }
@@ -101,7 +101,7 @@ public class BeamBot extends Bot {
     }
 
     @Override
-    public Command parseLine(String line) {
+    public Command parseLine(String line, String sender) {
 
         String[] message = line.split(" ");
 
@@ -236,5 +236,7 @@ public class BeamBot extends Bot {
     public void announceScore(String user, int score) {
         chatConnectable.send(ChatSendMethod.of(String.format("%s. You have %d Points!", user, score)));
     }
+
+
 
 }

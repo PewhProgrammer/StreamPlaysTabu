@@ -1,7 +1,7 @@
 package logic.bots;
 
 import common.Log;
-import logic.commands.Command;
+import logic.commands.*;
 import org.jibble.pircbot.PircBot;
 
 /**
@@ -11,14 +11,14 @@ public class AltTwitchBot extends Bot {
 
     private Pirc bot;
 
-    public AltTwitchBot(){
+    public AltTwitchBot() {
         connectToChatroom("pewhtv");
     }
 
-    private class Pirc extends PircBot{
-        public Pirc(String user){
+    private class Pirc extends PircBot {
+        public Pirc(String user) {
             this.setName(user);
-            this.setLogin("["+user+"]");
+            this.setLogin("[" + user + "]");
         }
 
         public void onMessage(String channel, String sender,
@@ -26,38 +26,30 @@ public class AltTwitchBot extends Bot {
             //sendMessage(channel,"@" + sender + " " +curse.get(r.nextInt(curse.size())));
 
             Log.info("Received");
-            sendMessage(channel,"halts maul");
-            if (message.equalsIgnoreCase("thinh")) {
-                sendMessage(channel, sender + ": just wrote my name huiiii");
+            sendMessage(channel, "halts maul");
+            if (message.equalsIgnoreCase("PING")) {
+                sendMessage(channel, "PONG");
             }
 
-            System.out.println(sender.toString());
-            if(sender.equals("hci_livestreaming") && message.startsWith("!LivestreamingMeetsHCI")){
-                Log.debug("Correct sender " + sender.toString());
-                StringBuffer target = new StringBuffer(message);
-                target.replace( 0 ,23 ,"");
-                String[] Tokens = target.toString().split(";");
-                //chatConnectable.send(ChatSendMethod.of(String.format("Ping! %d tokens detected from %s",Tokens.length,event.data.userName)));
-                for(String s:Tokens){
-                    if(s.equals("NexXw5")) {
-                        //sendMessage(channel,": Ping! I found my token!!");
-                        continue;
+            Command cmd = parseLine(message,sender);
+            if (cmd != null) {
+                model.pushCommand(cmd);
+
+                if (sender.equals("pewhtv")) {
+                    if (message.startsWith("!print")) {
+                        Log.debug("Print command received!");
+                        sendMessage(channel, String.format("@" + sender + ": Ping! I've counted %d occurences on twitch! Kappa"));
+                    }
+                    if (message.startsWith("!shutdown")) {
+                        Log.debug("Shutdown command received!");
+                        sendMessage(channel, "Ping! I'm going offline!!");
+                        System.exit(1);
                     }
                 }
             }
-
-            if(sender.equals("pewhtv")){
-                if(message.startsWith("!print")) {
-                    Log.debug("Print command received!");
-                    sendMessage(channel, String.format("@" + sender + ": Ping! I've counted %d occurences on twitch! Kappa"));
-                }
-                if(message.startsWith("!shutdown")){
-                    Log.debug("Shutdown command received!");
-                    sendMessage(channel, "Ping! I'm going offline!!");
-                    System.exit(1);
-                }
-            }
         }
+
+
     }
     @Override
     public void run() {
@@ -70,8 +62,8 @@ public class AltTwitchBot extends Bot {
 
         // Connect to the IRC server.
         try {
-            bot.connect("irc.chat.twitch.tv",6667,"oauth:"+ "a7cc5zbe6gc7uj5uzz8p97zjkijy54");
-        }catch(Exception e){
+            bot.connect("irc.chat.twitch.tv", 6667, "oauth:" + "a7cc5zbe6gc7uj5uzz8p97zjkijy54");
+        } catch (Exception e) {
             Log.trace("HTTPResponse bot connection failure");
             System.exit(1);
         }
@@ -87,41 +79,101 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void sendChatMessage(String msg) {
-
+        bot.sendMessage(channel, msg);
     }
 
     @Override
     public void whisperRules(String user) {
-
+        sendChatMessage("/w " + user + " Rules");
     }
 
     @Override
     public void whisperLink(String user, String link) {
-
+        sendChatMessage("/w " + user + " You are the giver! Here is your link, please click it! " + link);
     }
 
     @Override
     public void announceNewRound() {
-
+        sendChatMessage("A new round has started. Good Luck!!!");
     }
 
     @Override
     public void announceWinner(String user) {
-
+        sendChatMessage("The Winner is " + user + "Congratulations!"); //PogChamp?
     }
 
     @Override
     public void announceRegistration() {
-
+        sendChatMessage("A new round will start soon. Type !register to get into the giver pool!");
     }
 
     @Override
     public void announceScore(String user, int score) {
-
+        sendChatMessage(user + " You have " + score + " Points!");
     }
 
     @Override
-    public Command parseLine(String line) {
+    public Command parseLine(String message, String sender) {
+
+        String[] parts = message.split(" ");
+
+        // !register
+        if (parts[0].equals("!register")) {
+            Log.info("Register Command received");
+            return new Register(model, channel, sender);
+        }
+
+        // !guess
+        if (parts[0].equals("!guess")) {
+            String guess[] = message.split("!guess ");
+            return new Guess(model, channel, sender, guess[1]);
+        }
+
+        // !ask
+        if (parts[0].equals("!ask")) {
+            String[] question = message.split("!ask ");
+            return new Ask(model, channel, question[1]);
+        }
+
+        // !rules
+        if (parts[0].equals("!rules")) {
+            return new Rules(model, channel, sender);
+        }
+
+        // !score
+        if (parts[0].equals(":!score")) {
+            return new Rank(model, channel, sender);
+        }
+
+        // !votekick
+        if (parts[0].equals(":!votekick")) {
+            return new Votekick(model, channel, sender);
+        }
+
+        // !streamerexplains
+        if (parts[1].equals(":!streamerexplains")) {
+            return new StreamerExplains(model, channel, sender);
+        }
+
+        // !validate
+        if (parts[0].equals(":!validate")) {
+            int ID = Integer.parseInt(parts[1]);
+            int valScore = Integer.parseInt(parts[2]);
+            return new Validate(model, channel, ID, valScore);
+        }
+
+        // !taboo
+        if (parts[0].equals(":!taboo")) {
+            return new Taboo(model, channel, parts[1]);
+        }
+
+        // !vote
+        if (parts[0].equals(":!vote")) {
+            int voteNum = Integer.parseInt(parts[1]);
+            return new Prevote(model, channel, new int[3]);
+        }
+
+
         return null;
     }
 }
