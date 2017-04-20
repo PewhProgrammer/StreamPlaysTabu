@@ -113,7 +113,8 @@ public class BeamBot extends Bot {
             /* !guess */
         if (message[0].equals("!guess")) {
                 /* SAVE GUESS AND USERNAME*/
-            return new Guess(model, channel,sender, message[1]);
+                String[] guess = line.split("!guess ");
+            return new Guess(model, channel,sender, guess[1]);
         }
 
             /* !ask */
