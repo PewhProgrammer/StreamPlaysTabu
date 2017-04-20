@@ -43,26 +43,29 @@ public class TwitchBot extends Bot {
 
             connectToChatroom(channel);
 
-            new Thread() {
+            Thread mTHREAD = new Thread() {
                 @Override
                 public void run() {
-                    super.run();
+                    TwitchBot.this.run();
                 }
-            }.start();
+
+            } ;
+
+            mTHREAD.start();
 
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
-
+    @Override
     public void run() {
 
         //TODO sleep until connected to chatroom, multithreading stuff (locks, wait, notify etc.)
 
-        String line = null;
         while (joined) {
             Log.info("while entered");
+            String line = "";
 
             try {
                 line = in.readLine();
@@ -72,7 +75,7 @@ public class TwitchBot extends Bot {
             }
 
             if (line.startsWith("PING")) {
-                out.println("PONG :tmi.twitch.tv");
+                out.println("PONG"+" "+ line.substring(5)+ "\r\n");
                 continue;
             }
 
@@ -145,7 +148,7 @@ public class TwitchBot extends Bot {
             // !vote
             if (message[3].equals(":!vote")) {
                 int voteNum = Integer.parseInt(message[4]);
-                return new Prevote(model, channel, voteNum);
+                return new Prevote(model, channel, new int[3]);
             }
         }
 
@@ -202,7 +205,7 @@ public class TwitchBot extends Bot {
             // !vote
             if (message[4].equals(":!vote")) {
                 int voteNum = Integer.parseInt(message[5]);
-                return new Prevote(model, channel, voteNum);
+                return new Prevote(model, channel, new int[3]);
             }
         }
         return null;

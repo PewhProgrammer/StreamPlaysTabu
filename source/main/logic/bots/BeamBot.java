@@ -166,7 +166,7 @@ public class BeamBot extends Bot {
         if (message[0].equals("!vote")) {
                 /* GET VOTES */
             int voteNum = Integer.parseInt(message[1]);
-            return new Prevote(model, channel, voteNum);
+            return new Prevote(model, channel, new int[3]);
         }
         return null;
 

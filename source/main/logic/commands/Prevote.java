@@ -8,16 +8,18 @@ import model.GameState;
  */
 public class Prevote extends Command {
 
-    private int id;
+    private int[] id;
 
-    public Prevote(GameModel gm, String ch, int id) {
+    public Prevote(GameModel gm, String ch, int[] id) {
         super(gm, ch);
         this.id = id;
     }
 
     @Override
     public void execute() {
-        gameModel.prevote(id);
+        for (int i : id) {
+            gameModel.prevote(i);
+        }
     }
 
     @Override
@@ -25,7 +27,7 @@ public class Prevote extends Command {
         return gameModel.getGameState().equals(GameState.Registration);
     }
 
-    public int getId() {
+    public int[] getId() {
         return id;
     }
 
@@ -37,7 +39,14 @@ public class Prevote extends Command {
         }
 
         Prevote p = (Prevote) o;
+        int[] reference = p.getId();
 
-        return id == p.getId();
+        for (int i = 0; i < id.length; i++) {
+            if (id[i] != reference[i]) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
