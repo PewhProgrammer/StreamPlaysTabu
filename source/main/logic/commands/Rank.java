@@ -24,4 +24,20 @@ public class Rank extends Command {
     public boolean validate() {
         return true;
     }
+
+    public String getUser() {
+        return user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        Rank r = (Rank) o;
+
+        return user.equals(r.getUser()) && thisChannel.equals(r.getChannel());
+    }
 }

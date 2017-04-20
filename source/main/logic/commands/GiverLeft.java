@@ -23,4 +23,13 @@ public class GiverLeft extends Command {
     public boolean validate() {
         return true;
     }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -27,4 +27,20 @@ public class Register extends Command {
     public boolean validate() {
         return gameModel.getGameState().equals(GameState.Registration);
     }
+
+    public String getUser() {
+        return user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        Register r = (Register) o;
+
+        return user.equals(r.getUser());
+    }
 }

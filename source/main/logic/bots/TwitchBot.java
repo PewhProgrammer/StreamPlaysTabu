@@ -79,151 +79,136 @@ public class TwitchBot extends Bot {
                 continue;
             }
 
-            String[] message = line.split(" ");
-            String sender = message[0].substring(1).split("!")[0];
-
-            if (message[1].equals("PRIVMSG") && message.length > 3 && message[3].startsWith("!")) {
-
-                // !register
-                if (message[3].equals("!register")) {
-                    Log.info("Register Command received");
-                    Command cmd = new Register(model, channel, sender);
-                    model.pushCommand(cmd);
-                }
-
-                // !guess
-                if (message[3].equals("!guess")) {
-                    Command cmd = new Guess(model, channel, sender, message[4]);
-                    model.pushCommand(cmd);
-                }
-
-                // !ask
-                if (message[3].equals("!ask")) {
-                    Command cmd = new Ask(model, channel, message[4]);
-                    model.pushCommand(cmd);
-                }
-
-                // !rules
-                if (message[3].equals("!rules")) {
-                    Command cmd = new Rules(model, channel, sender);
-                    model.pushCommand(cmd);
-                }
-
-                // !score
-                if (message[3].equals("!score")) {
-                    Command cmd = new Rank(model, channel, sender);
-                    model.pushCommand(cmd);
-                }
-
-                // !votekick
-                if (message[3].equals("!votekick")) {
-                    Command cmd = new Votekick(model, channel, sender);
-                    model.pushCommand(cmd);
-                }
-
-                // !streamerexplains
-                if (message[3].equals("!streamerexplains")) {
-                    Command cmd = new StreamerExplains(model, channel, sender);
-                    model.pushCommand(cmd);
-                }
-
-                // !validate
-                if (message[3].equals("!validate")) {
-                    int ID = Integer.parseInt(message[4]);
-                    int valScore = Integer.parseInt(message[5]);
-                    Command cmd = new Validate(model, channel, ID, valScore);
-                    model.pushCommand(cmd);
-                }
-
-                // !taboo
-                if (message[3].equals("!taboo")) {
-                    Command cmd = new Taboo(model, channel, message[4]);
-                    model.pushCommand(cmd);
-                }
-
-                // !vote
-                if (message[3].equals("!vote")) {
-                    int voteNum = Integer.parseInt(message[4]);
-                    Command cmd = new Prevote(model, channel, voteNum);
-                    model.pushCommand(cmd);
-                }
-
-
-
-
-
+            Command cmd = parseLine(line);
+            if (cmd != null) {
+                model.pushCommand(cmd);
             }
-            if (message[1].equals("PRIVMSG") && message.length > 4 && message[4].startsWith("!")) {
-
-                // !register
-                if (message[4].equals("!register")) {
-                    Command cmd = new Register(model, channel, sender);
-                    model.pushCommand(cmd);
-                }
-
-                // !guess
-                if (message[4].equals("!guess")) {
-                    Command cmd = new Guess(model, channel, sender, message[5]);
-                    model.pushCommand(cmd);
-                }
-
-                // !ask
-                if (message[4].equals("!ask")) {
-                    Command cmd = new Ask(model, channel, message[5]);
-                    model.pushCommand(cmd);
-                }
-
-                // !rules
-                if (message[4].equals("!rules")) {
-                    Command cmd = new Rules(model, channel, sender);
-                    model.pushCommand(cmd);
-                }
-
-                // !score
-                if (message[4].equals("!score")) {
-                    Command cmd = new Rank(model, channel, sender);
-                    model.pushCommand(cmd);
-                }
-
-                // !votekick
-                if (message[4].equals("!votekick")) {
-                    Command cmd = new Votekick(model, channel, sender);
-                    model.pushCommand(cmd);
-                }
-
-                // !streamerexplains
-                if (message[4].equals("!streamerexplains")) {
-                    Command cmd = new StreamerExplains(model, channel, sender);
-                    model.pushCommand(cmd);
-                }
-
-                // !validate
-                if (message[4].equals("!validate")) {
-                    int ID = Integer.parseInt(message[5]);
-                    int valScore = Integer.parseInt(message[6]);
-                    Command cmd = new Validate(model, channel, ID, valScore);
-                    model.pushCommand(cmd);
-                }
-
-                // !taboo
-                if (message[4].equals("!taboo")) {
-                    Command cmd = new Taboo(model, channel, message[5]);
-                    model.pushCommand(cmd);
-                }
-
-                // !vote
-                if (message[4].equals("!vote")) {
-                    int voteNum = Integer.parseInt(message[5]);
-                    Command cmd = new Prevote(model, channel, voteNum);
-                    model.pushCommand(cmd);
-                }
-
-            }
-
         }
-        Log.info("Twitchbot exited");
 
+        Log.info("Twitchbot exited");
     }
+
+    @Override
+    public Command parseLine(String line) {
+
+        String[] message = line.split(" ");
+        String sender = message[0].substring(1).split("!")[0];
+
+        if (message[1].equals("PRIVMSG") && message.length > 3 && message[3].startsWith("!")) {
+
+            // !register
+            if (message[3].equals("!register")) {
+                Log.info("Register Command received");
+                return new Register(model, channel, sender);
+            }
+
+            // !guess
+            if (message[3].equals("!guess")) {
+                return new Guess(model, channel, sender, message[4]);
+            }
+
+            // !ask
+            if (message[3].equals("!ask")) {
+                return new Ask(model, channel, message[4]);
+            }
+
+            // !rules
+            if (message[3].equals("!rules")) {
+                return new Rules(model, channel, sender);
+            }
+
+            // !score
+            if (message[3].equals("!score")) {
+                return new Rank(model, channel, sender);
+            }
+
+            // !votekick
+            if (message[3].equals("!votekick")) {
+                return new Votekick(model, channel, sender);
+            }
+
+            // !streamerexplains
+            if (message[3].equals("!streamerexplains")) {
+                return new StreamerExplains(model, channel, sender);
+            }
+
+            // !validate
+            if (message[3].equals("!validate")) {
+                int ID = Integer.parseInt(message[4]);
+                int valScore = Integer.parseInt(message[5]);
+                return new Validate(model, channel, ID, valScore);
+            }
+
+            // !taboo
+            if (message[3].equals("!taboo")) {
+                return new Taboo(model, channel, message[4]);
+            }
+
+            // !vote
+            if (message[3].equals("!vote")) {
+                int voteNum = Integer.parseInt(message[4]);
+                return new Prevote(model, channel, voteNum);
+            }
+        }
+
+        if (message[1].equals("PRIVMSG") && message.length > 4 && message[4].startsWith("!")) {
+
+            // !register
+            if (message[4].equals("!register")) {
+                return new Register(model, channel, sender);
+            }
+
+            // !guess
+            if (message[4].equals("!guess")) {
+                return new Guess(model, channel, sender, message[5]);
+            }
+
+            // !ask
+            if (message[4].equals("!ask")) {
+                return new Ask(model, channel, message[5]);
+            }
+
+            // !rules
+            if (message[4].equals("!rules")) {
+                return new Rules(model, channel, sender);
+            }
+
+            // !score
+            if (message[4].equals("!score")) {
+                return new Rank(model, channel, sender);
+            }
+
+            // !votekick
+            if (message[4].equals("!votekick")) {
+                return new Votekick(model, channel, sender);
+            }
+
+            // !streamerexplains
+            if (message[4].equals("!streamerexplains")) {
+                return new StreamerExplains(model, channel, sender);
+            }
+
+            // !validate
+            if (message[4].equals("!validate")) {
+                int ID = Integer.parseInt(message[5]);
+                int valScore = Integer.parseInt(message[6]);
+                return new Validate(model, channel, ID, valScore);
+            }
+
+            // !taboo
+            if (message[4].equals("!taboo")) {
+                return new Taboo(model, channel, message[5]);
+            }
+
+            // !vote
+            if (message[4].equals("!vote")) {
+                int voteNum = Integer.parseInt(message[5]);
+                return new Prevote(model, channel, voteNum);
+            }
+        }
+        return null;
+    }
+
     //TODO
     @Override
     public void connectToChatroom(String user) {

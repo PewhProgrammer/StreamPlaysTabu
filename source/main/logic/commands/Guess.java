@@ -43,4 +43,24 @@ public class Guess extends Command {
         }
         return true;
     }
+
+    public String getUser() {
+        return name;
+    }
+
+    public String getGuess() {
+        return guess;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        Guess g = (Guess) o;
+
+        return name.equals(g.getUser()) && guess.equals(g.getGuess()) && thisChannel.equals(g.getChannel());
+    }
 }

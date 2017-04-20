@@ -20,4 +20,8 @@ public abstract class Command {
     public abstract void execute();
 
     public abstract boolean validate();
+
+    public String getChannel() {
+        return thisChannel;
+    }
 }

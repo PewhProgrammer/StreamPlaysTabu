@@ -29,4 +29,19 @@ public class CategoryChosen extends Command {
     public boolean validate() {
         return true;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        CategoryChosen cg = (CategoryChosen) o;
+        return category.equals(cg.getCategory());
+    }
 }

@@ -25,4 +25,20 @@ public class Explanation extends Command {
         //TODO anti cheating meachanism
         return true;
     }
+
+    public String getExplanation() {
+        return explanation;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        Explanation e = (Explanation) o;
+
+        return explanation.equals(e.getExplanation());
+    }
 }

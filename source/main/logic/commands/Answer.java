@@ -35,4 +35,24 @@ public class Answer extends Command {
 
         return true;
     }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        Answer a = (Answer) o;
+
+        return answer.equals(a.getAnswer()) && question.equals(a.getQuestion()) && thisChannel.equals(a.getChannel());
+    }
 }

@@ -24,4 +24,12 @@ public class Skip extends Command {
     public boolean validate() {
      return true;
     }
+
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+        return true;
+    }
 }

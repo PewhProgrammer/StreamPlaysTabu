@@ -39,6 +39,8 @@ public class BeamBot extends Bot {
     private final BeamChat beamChatBot;
     private final BeamChatConnectable chatConnectable;
 
+    private String sender = "";
+
     /**
      * Jede Bot Instanz kann nur einmal zum Chat connecten, da chatConnectable final sein muss und
      * nicht überschrieben werden kann
@@ -89,93 +91,84 @@ public class BeamBot extends Bot {
     public void run(){
 
         chatConnectable.on(IncomingMessageEvent.class, event -> {
-
-            String[] message = event.data.message.message.get(0).text.split(" ");
-
-            /* !register */
-            if(message[0].equals("!register")) {
-                /*SAVE NAME*/
-                Command cmd = new Register(model, channel, event.data.userName);
+            sender = event.data.userName;
+            Command cmd = parseLine(event.data.message.message.get(0).text);
+            if (cmd != null) {
                 model.pushCommand(cmd);
-
-            }
-
-            /* !guess */
-            if (message[0].equals("!guess")) {
-                /* SAVE GUESS AND USERNAME*/
-                Command cmd = new Guess(model, channel,event.data.userName, message[1]);
-                model.pushCommand(cmd);
-
-            }
-
-            /* !ask */
-            if (message[0].equals("!ask")) {
-                /*SAVE ASK SEND GUI*/
-                Command cmd = new Ask(model, channel, message[1]);
-                model.pushCommand(cmd);
-
-            }
-
-            /* !rules */
-            if (message[0].equals("!rules")) {
-                /*SAVE NAME WHISPEr RULES*/
-                Command cmd = new Rules(model, channel, event.data.userName);
-                model.pushCommand(cmd);
-
-            }
-
-            /* !score */
-            if (message[0].equals("!score")) {
-                /*CHAT RANK*/
-                Command cmd = new Rank(model, channel, event.data.userName);
-                model.pushCommand(cmd);
-
-            }
-
-            /* !votekick */
-            if (message[0].equals("!votekick")) {
-                /* VOTEKICK DAT ASS*/
-                Command cmd = new Votekick(model, channel, event.data.userName);
-                model.pushCommand(cmd);
-
-            }
-
-            /* !streamerexplains*/
-            if (message[0].equals("!streamerexplains")) {
-                /* CHECKNAME CHANGE GAMEMODE*/
-                Command cmd = new StreamerExplains(model, channel,event.data.userName);
-                model.pushCommand(cmd);
-
-            }
-
-            /* validate */
-            if (message[0].equals("!validate")) {
-                /* GET ID AND SCORE */
-                int ID = Integer.parseInt(message[1]);
-                int valScore = Integer.parseInt(message[2]);
-                Command cmd =  new Validate(model, channel, ID, valScore);
-                model.pushCommand(cmd);
-
-            }
-
-            /* !taboo */
-            if (message[0].equals("!taboo")) {
-                /* SAVE TABOO WORD */
-                Command cmd = new Taboo(model, channel, message[1]);
-                model.pushCommand(cmd);
-
-            }
-
-            /* !vote */
-            if (message[0].equals("!vote")) {
-                /* GET VOTES */
-                int voteNum = Integer.parseInt(message[1]);
-                Command cmd = new Prevote(model, channel, voteNum);
-                model.pushCommand(cmd);
-
             }
 
         });
+    }
+
+    @Override
+    public Command parseLine(String line) {
+
+        String[] message = line.split(" ");
+
+            /* !register */
+        if(message[0].equals("!register")) {
+            return new Register(model, channel, sender);
+        }
+
+            /* !guess */
+        if (message[0].equals("!guess")) {
+                /* SAVE GUESS AND USERNAME*/
+            return new Guess(model, channel,sender, message[1]);
+        }
+
+            /* !ask */
+        if (message[0].equals("!ask")) {
+                /*SAVE ASK SEND GUI*/
+            return new Ask(model, channel, message[1]);
+        }
+
+            /* !rules */
+        if (message[0].equals("!rules")) {
+                /*SAVE NAME WHISPEr RULES*/
+            return new Rules(model, channel, sender);
+        }
+
+            /* !score */
+        if (message[0].equals("!score")) {
+                /*CHAT RANK*/
+            return new Rank(model, channel, sender);
+        }
+
+            /* !votekick */
+        if (message[0].equals("!votekick")) {
+                /* VOTEKICK DAT ASS*/
+            return new Votekick(model, channel, sender);
+
+        }
+
+            /* !streamerexplains*/
+        if (message[0].equals("!streamerexplains")) {
+                /* CHECKNAME CHANGE GAMEMODE*/
+            return new StreamerExplains(model, channel, sender);
+        }
+
+            /* validate */
+        if (message[0].equals("!validate")) {
+                /* GET ID AND SCORE */
+            int ID = Integer.parseInt(message[1]);
+            int valScore = Integer.parseInt(message[2]);
+            return new Validate(model, channel, ID, valScore);
+        }
+
+            /* !taboo */
+        if (message[0].equals("!taboo")) {
+                /* SAVE TABOO WORD */
+            return new Taboo(model, channel, message[1]);
+        }
+
+            /* !vote */
+        if (message[0].equals("!vote")) {
+                /* GET VOTES */
+            int voteNum = Integer.parseInt(message[1]);
+            return new Prevote(model, channel, voteNum);
+        }
+        return null;
+
     }
 
     private int getUserId(String user) throws MalformedURLException,IOException {

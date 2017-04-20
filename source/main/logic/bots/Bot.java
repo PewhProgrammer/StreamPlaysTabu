@@ -1,5 +1,6 @@
 package logic.bots;
 
+import logic.commands.Command;
 import model.GameModel;
 
 import java.io.BufferedReader;
@@ -41,4 +42,6 @@ public abstract class Bot {
     public abstract void announceRegistration();
 
     public abstract void announceScore(String user, int score);
+
+    public abstract Command parseLine(String line);
 }

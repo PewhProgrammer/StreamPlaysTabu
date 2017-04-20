@@ -23,4 +23,21 @@ public class Host extends Command {
     public boolean validate() {
         return true;
     }
+
+    public String getHost() {
+        return host;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        Host h = (Host) o;
+
+        return host.equals(h.getHost());
+    }
+
 }

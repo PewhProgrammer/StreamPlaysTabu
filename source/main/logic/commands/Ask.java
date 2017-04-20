@@ -30,7 +30,22 @@ public class Ask extends Command {
         if (!gameModel.getGameState().equals(GameState.GameStarted)) {
             return false;
         }
-
         return true;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        Ask a = (Ask) o;
+
+        return question.equals(a.getQuestion()) && thisChannel.equals(a.getChannel());
     }
 }

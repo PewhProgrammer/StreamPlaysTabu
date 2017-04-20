@@ -24,4 +24,20 @@ public class Prevote extends Command {
     public boolean validate() {
         return gameModel.getGameState().equals(GameState.Registration);
     }
+
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        Prevote p = (Prevote) o;
+
+        return id == p.getId();
+    }
 }

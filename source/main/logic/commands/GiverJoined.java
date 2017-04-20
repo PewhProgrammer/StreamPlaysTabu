@@ -42,4 +42,13 @@ public class GiverJoined extends Command {
 
         return true;
     }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -33,4 +33,19 @@ public class Votekick extends Command {
     public boolean validate() {
         return !gameModel.getVotekick().contains(votingUser);
     }
+
+    public String getVotingUser() {
+        return votingUser;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        Votekick v = (Votekick) o;
+        return votingUser.equals(v.getVotingUser()) && thisChannel.equals(v.getChannel());
+    }
 }
