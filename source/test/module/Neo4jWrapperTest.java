@@ -28,6 +28,10 @@ public class Neo4jWrapperTest extends TestCase {
         Log.setLevel(Log.Level.TRACE);
     }
 
+    public void testDoReset(){
+
+    }
+
     public void testCreateNode(){
         try {
             database.createNode("Nautilus");

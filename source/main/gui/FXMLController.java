@@ -13,6 +13,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import logic.bots.AltTwitchBot;
 import logic.bots.BeamBot;
 import logic.bots.TwitchBot;
 import model.GameState;
@@ -90,7 +91,8 @@ public class FXMLController implements Initializable, IObserver {
                 //initialize bots
                 if(platform.equals("twitch"))
                     try {
-                      GuiAnchor.gameModel.setBot(new TwitchBot(GuiAnchor.gameModel, chn));
+                      //GuiAnchor.gameModel.setBot(new TwitchBot(GuiAnchor.gameModel, chn));
+                        GuiAnchor.gameModel.setBot(new AltTwitchBot());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

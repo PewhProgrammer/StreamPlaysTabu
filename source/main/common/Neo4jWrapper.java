@@ -19,7 +19,7 @@ public class Neo4jWrapper {
     // whereas 7687 is the default for binary bolt protocol.
     private StringBuilder neo4jbindAddr = new StringBuilder();
     private final boolean legacy ;
-    private final String userLabel = "userNode";
+    private String userLabel = "userNode";
     private final int DEL_TRESHHOLD = 5;
     private final String label;
     private final Driver driver;
@@ -41,8 +41,10 @@ public class Neo4jWrapper {
         if(simulation){
             resetDatabase();
             label = "Node";
+            userLabel = "userNode";
         }
-        else label = "legacyNode";
+        else {label = "legacyNode";
+        userLabel = "legacyUserNode";}
 
     }
 
@@ -320,7 +322,6 @@ public class Neo4jWrapper {
                 tx.success();
                 return true;
             }
-
         }
     }
 
@@ -335,8 +336,9 @@ public class Neo4jWrapper {
 
             try ( Transaction tx = session.beginTransaction() )
             {
-                tx.run("MATCH (n:Node) MATCH (e:userNode)\n" +
-                        "DETACH DELETE n DETACH DELETE e"
+                tx.run("MATCH (n)\n" +
+                        "WHERE NOT n:legacyUserNode AND NOT n:legacyNode" +
+                        "DETACH DELETE n"
                 ); // , parameters( "name", nodeName )
 
                 tx.success();

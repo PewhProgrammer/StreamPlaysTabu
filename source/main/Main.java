@@ -65,7 +65,7 @@ public class Main {
         else  Log.info("Connecting to neo4j legacy database with " + neo4jbindAddr); //Diese datenbank benutzten wir für unsere studie
         //TODO instanziiere Neo4jWrapper. Frage ob man immer connecten soll
 
-        Neo4jWrapper neoWrapper = new Neo4jWrapper(defaultDatbase,neo4jbindAddr);
+        Neo4jWrapper neoWrapper = new Neo4jWrapper(defaultDatbase,neo4jbindAddr,seed);
 
         GameModel model = new GameModel(language,(short)players,neoWrapper, new SiteBot());
         mTHREAD = new Thread() {

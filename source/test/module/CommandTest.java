@@ -25,7 +25,7 @@ public class CommandTest extends TestCase{
     private final Language lang = Language.Ger;
     private final Neo4jWrapper neo =
             new Neo4jWrapper(true,
-                    "localhost:7687");
+                    "localhost:7687",20);
     private final SiteBot sBot = new SiteBot();
 
     @org.junit.Test
