@@ -24,4 +24,20 @@ public class Taboo extends Command {
     public boolean validate() {
         return gameModel.getGameState().equals(GameState.Registration);
     }
+
+    public String getSuggestion() {
+        return suggestion;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        Taboo t = (Taboo) o;
+
+        return suggestion.equals(t.getSuggestion()) && thisChannel.equals(t.getChannel());
+    }
 }
