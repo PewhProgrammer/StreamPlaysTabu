@@ -1,4 +1,6 @@
 # StreamPlaysTabu
+Developer Branch Status:
+
 
 [![Build Status](https://travis-ci.com/PewhProgrammer/StreamPlaysTabu.svg?token=3Kr2aEJKCmDsLsuKytEz&branch=development)](https://travis-ci.com/PewhProgrammer/StreamPlaysTabu)
 
@@ -9,9 +11,7 @@ A students' project for a seminar about livestreaming
 
 Install Gradle.
 
-Compile build.gradle file
-
-[If needed] add missing libraries[junit] to classpath
+Compile build wrapper.
 
 
 
@@ -27,9 +27,9 @@ For details on our code of conduct and the process for submitting pull requests 
 
 ## Authors
 
-* **Marc Schubhan** - *Ongoing work* - [mcdaschu](https://github.com/mcdaschu)
+* **Marc Schubhan** - *Ongoing work* - [mcdaschu](https://github.com/s8mcschu)
 * **Tim Düwel** - *Ongoing work* - [s8tiduew](https://github.com/s8tiduew)
 * **Ba Thinh Tran** - *Ongoing work* - [PewhProgrammer](https://github.com/PewhProgrammer)
-* **Tuan Manh Ho** - *Ongoing work*
+* **Manh Tuan Ho** - *Ongoing work* - [Wasaberino](https://github.com/Wasaberino)
 
-See also the list of [contributors](https://github.com/PewhProgrammer/Membran/graphs/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/PewhProgrammer/StreamPlaysTabu/graphs/contributors) who participated in this project.
