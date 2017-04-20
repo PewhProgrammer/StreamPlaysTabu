@@ -23,4 +23,19 @@ public class StreamerExplains extends Command {
     public boolean validate() {
         return user.equals(thisChannel);
     }
+
+    public String getUser() {
+        return user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        StreamerExplains se = (StreamerExplains) o;
+        return user.equals(se.getUser()) && thisChannel.equals(se.getChannel());
+    }
 }

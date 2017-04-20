@@ -8,8 +8,12 @@ import model.GameModel;
  */
 public class Validate extends Command {
 
+    private int ID, score;
+
     public Validate(GameModel gm, String ch, int ID, int valScore) {
         super(gm, ch);
+        this.ID = ID;
+        this.score = valScore;
     }
 
     @Override
@@ -22,4 +26,24 @@ public class Validate extends Command {
         return false;
         //anything to do here?
     }
+
+    public int getID() {
+        return ID;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this.getClass() != o.getClass()) {
+            return false;
+        }
+
+        Validate v = (Validate) o;
+        return v.getID() == getID() && v.getScore() == getScore();
+    }
+
+
 }

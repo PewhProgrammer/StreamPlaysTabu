@@ -4,8 +4,7 @@ import org.neo4j.driver.v1.*;
 import org.neo4j.driver.v1.exceptions.*;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.neo4j.driver.v1.Values.parameters;
 
@@ -20,16 +19,20 @@ public class Neo4jWrapper {
     // whereas 7687 is the default for binary bolt protocol.
     private StringBuilder neo4jbindAddr = new StringBuilder();
     private final boolean legacy ;
+    private final String userLabel = "userNode";
     private final int DEL_TRESHHOLD = 5;
     private final String label;
-    Driver driver;
+    private final Driver driver;
+    private final Random randomizer;
 
-    public Neo4jWrapper(boolean simulation, String neo4jbind){
+
+    public Neo4jWrapper(boolean simulation, String neo4jbind,int seed){
 
         //baut enkryptische Verbindung, um uns gegen "man-in-the-middle" attacken zu schützen
         config = Config.build().withEncryptionLevel( Config.EncryptionLevel.REQUIRED ).toConfig() ;
         neo4jbindAddr.append(neo4jbind);
         legacy = simulation;
+        randomizer = new Random(seed);
 
         driver = acquireDriver("bolt://" + neo4jbindAddr,
                 AuthTokens.basic( "neo4j", "streamplaystabu" ),config);
@@ -55,7 +58,7 @@ public class Neo4jWrapper {
         try {
             createNode(node1);
             createNode(node2);
-        }catch(ServiceUnavailableException e){
+        }catch(ServiceUnavailableException | DatabaseException e){
             Log.debug(e.getLocalizedMessage());
             return false;
         }
@@ -63,27 +66,96 @@ public class Neo4jWrapper {
         return createRelationship(node1,node2,relationship);
     }
 
-    public int updateUserPoints(String user, int i)
-    throws Neo4jException{
-        return getUserPoints(user) + i;
+    public int updateUserPoints(String user, int i) {
+
+        try {
+            return updateUserPropertiesFromDatabase(user,"points",i);
+        }catch(DatabaseException e){
+            Log.debug(e.getMessage());
+            createUser(user);
+        }
+        return 0; //if new user is created
     }
 
 
+    /**
+     * if no user was found, then a user will be created
+     * @param user
+     * @return Points of user as in database
+     * @throws Neo4jException
+     */
     public int getUserPoints(String user) throws Neo4jException{
-        //parse user points from database
-        return 0;
+        try {
+            return fetchUserPropertiesFromDatabase(user,"points");
+        }catch(DatabaseException e){
+            Log.debug(e.getMessage());
+            createUser(user);
+        }
+        return 0; //if new user is created
     }
 
+    /**
+     * Increase the error any user made by one
+     * @param user
+     * @return updated count of mistakes the user now have
+     * @throws Neo4jException
+     */
     public int increaseUserError(String user) throws Neo4jException{
+        try {
+            return updateUserPropertiesFromDatabase(user,"mistakes",1);
+        }catch(DatabaseException e){
+            Log.debug(e.getMessage());
+            createUser(user);
+        }
+        return 0; //if new user is created
+    }
 
-        //parse user error and increment it
-        return 0;
+    public int getUserError(String user) throws Neo4jException{
+        try {
+            return fetchUserPropertiesFromDatabase(user,"mistakes");
+        }catch(DatabaseException e){
+            Log.debug(e.getMessage());
+            createUser(user);
+        }
+        return 0; //if new user is created
+    }
+
+    /**
+     * retrieves categories for pre-voting
+     * @param i capacity of categories
+     * @return
+     */
+    public Set<String> getCategories(int i){
+        return fetchFilteredCategoryFromDatabase(i);
+    }
+
+    /**
+     * randomly fetch high-validated words connected to the category
+     * @param category from which the explain word inherits
+     * @return
+     */
+    public String getExplainWord(String category){
+        return fetchConnectedWordFromDatabase(category);
+    }
+
+
+    /**
+     * UserNode will be created in Database, if not already existing
+     * @param str
+     */
+    public void createUser(String str){
+        try {
+            generateUserNodeInDatabase(str);
+            Log.trace("Created Node: \""+str+"\" userNode");
+        }catch(DatabaseException e){
+            Log.trace(e.getMessage());
+        }
     }
 
     //** TODO: Missing Logging system for user's activity
 
 
-    /**************************** INTERN PUBLIC METHOD ****************************/
+    /**************************** INTERN CYPHER MANAGEMENT METHOD ****************************/
 
     /**
      * creates a Node in our ontology. Dependent on legacy or not.
@@ -91,16 +163,15 @@ public class Neo4jWrapper {
      * @return
      * @throws ServiceUnavailableException
      */
-    public boolean createNode(String nodeName) throws ServiceUnavailableException{
+    public void createNode(String nodeName) throws ServiceUnavailableException,DatabaseException{
 
         try ( Session session = driver.session() )
         {
 
             try ( Transaction tx = session.beginTransaction() )
             {
-                if(lookUpNode(nodeName)){
-                    Log.info(nodeName + " is already in the database!");
-                    return false;
+                if(lookUpNode(nodeName,"legacyNode") || lookUpNode(nodeName,"Node")){
+                    throw new DatabaseException("Node: " + nodeName + " is already in the database!");
                 }
                 tx.run( "CREATE (a: "+label+" {name: {name} })",
                         parameters( "name", nodeName ) );
@@ -109,8 +180,8 @@ public class Neo4jWrapper {
 
         }
 
-
-        return true;
+        Log.trace("Created Node: " + nodeName +" "+label);
+        return;
     }
 
     /**
@@ -118,11 +189,12 @@ public class Neo4jWrapper {
      * @param nodeName
      * @return
      */
-    public boolean lookUpNode(String nodeName){
+    public boolean lookUpNode(String nodeName, String label){
+        StringBuilder builder = new StringBuilder();
         try ( Session session = driver.session() ) {
             try (Transaction tx = session.beginTransaction()) {
 
-                StatementResult result = tx.run("MATCH (n) WHERE n.name = {name} " +
+                StatementResult result = tx.run("MATCH (n:"+label+") WHERE n.name = {name} " +
                                 "RETURN n",
                         parameters("name", nodeName));
                 if(!result.hasNext()) return false;
@@ -132,13 +204,15 @@ public class Neo4jWrapper {
                     Value name = val.get(0).asNode().get("name");
 
                     val.get(0).asNode().labels().forEach(t -> {
-                        Log.info("Found Node: " + String.format("%s %s", name,
+                        builder.append("Found Node: " + String.format("%s %s ", name,
                                 t.toString()));
                     });
 
                 }
+
             }
         }
+        Log.trace(builder.toString());
 
         return true;
     }
@@ -261,8 +335,8 @@ public class Neo4jWrapper {
 
             try ( Transaction tx = session.beginTransaction() )
             {
-                tx.run("        MATCH (n:Node)\n" +
-                        "        DETACH DELETE n"
+                tx.run("MATCH (n:Node) MATCH (e:userNode)\n" +
+                        "DETACH DELETE n DETACH DELETE e"
                 ); // , parameters( "name", nodeName )
 
                 tx.success();
@@ -270,6 +344,113 @@ public class Neo4jWrapper {
 
         }
         return true;
+    }
+
+    /**
+     * Cypher request for all categories with high validation
+     * @return
+     */
+    public Set<String> fetchFilteredCategoryFromDatabase(int cap){
+        Set<String> result = new HashSet<>(cap);
+
+        try ( Session session = driver.session() )
+        {
+            //TODO: CYPHER STATEMENT REQUEST
+            try ( Transaction tx = session.beginTransaction() )
+            {
+                tx.run(""
+                ); // , parameters( "name", nodeName )
+
+                tx.success();
+            }
+
+        }
+
+        return result ;
+    }
+
+    private int fetchUserPropertiesFromDatabase(String user,String property) throws DatabaseException{
+        int result = 0 ;
+        StringBuilder builder = new StringBuilder();
+
+        try ( Session session = driver.session() )
+        {
+            try ( Transaction tx = session.beginTransaction() )
+            {
+                StatementResult sResult = tx.run("MATCH (n:"+userLabel+") WHERE n.name = {name} " +
+                                "RETURN n",
+                        parameters("name",user));
+                if(!sResult.hasNext()) throw new DatabaseException("No User "+user+" found!");
+                while (sResult.hasNext()) {
+                    Record record = sResult.next();
+                    List<Value> val = record.values();
+                    Value name = val.get(0).asNode().get(property);
+                    result = name.asInt();
+
+                    builder.append("Fetched "+property+": " + String.format("%s %s ", user,
+                            result));
+                }
+            }
+        }
+        Log.trace(builder.toString());
+        return result ;
+    }
+
+    private int updateUserPropertiesFromDatabase(String user,String property,int i) throws DatabaseException{
+        int oldPoints = fetchUserPropertiesFromDatabase(user,property) ;
+        int result = oldPoints + i ;
+        StringBuilder builder = new StringBuilder();
+
+        try ( Session session = driver.session() )
+        {
+            try ( Transaction tx = session.beginTransaction() )
+            {
+                StatementResult sResult = tx.run("MATCH (n:"+userLabel+") WHERE n.name = {name} " +
+                                "SET n."+property+"={propertyvalue}" +
+                                "RETURN n",
+                        parameters("name",user,"propertyvalue",result));
+
+
+                builder.append("Updated "+property+": " + String.format("%s -> %s %s", oldPoints,
+                            result ,user));
+            }
+        }
+        Log.trace(builder.toString());
+        return result ;
+    }
+
+    private void generateUserNodeInDatabase(String user) throws DatabaseException{
+
+        try ( Session session = driver.session() )
+        {
+            try ( Transaction tx = session.beginTransaction() )
+            {
+                if(lookUpNode(user,userLabel)){
+                    throw new DatabaseException("User "+ user + " is already in the database!");
+                }
+
+                tx.run( "CREATE (a: "+userLabel+" {name: {name}," +
+                                "points: 0,mistakes: 0 })",
+                        parameters( "name", user,"points",0 ) );
+                tx.success();
+            }
+
+        }
+
+        return ;
+    }
+
+    /**
+     * Take the best ten arc from category and choose arbitrarily
+     * @param category
+     * @return
+     */
+    private String fetchConnectedWordFromDatabase(String category) {
+        String result = "";
+        int index = randomizer.nextInt(10);
+
+
+        return result;
     }
 
     private Driver acquireDriver(String uri, AuthToken authToken, Config config)
