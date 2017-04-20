@@ -15,7 +15,7 @@ import java.net.Socket;
  */
 public class TwitchBot extends Bot {
 
-    final String accessToken = "k5ye8k6cwa3gifz451u4terjkl82a5"; //TODO get twitch account + token for our bot!
+    final String accessToken = "o63lke534mk921wdqawn62bqetfovb"; //TODO get twitch account + token for our bot!
 
     public TwitchBot(GameModel model, String channel) {
 
@@ -31,7 +31,7 @@ public class TwitchBot extends Bot {
 
             //login
             out.println("PASS oauth:" + accessToken);
-            out.println("NICK k3uleeeBot"); //TODO change to our Botname!
+            out.println("NICK StreamPlaysTaboo"); //TODO change to our Botname!
 
             String serverResponse;
             for(int i = 0; i < 7; i++) {
@@ -43,29 +43,26 @@ public class TwitchBot extends Bot {
 
             connectToChatroom(channel);
 
-            Thread mTHREAD = new Thread() {
+            new Thread() {
                 @Override
                 public void run() {
-                    TwitchBot.this.run();
+                    super.run();
                 }
-
-            } ;
-
-            mTHREAD.start();
+            }.start();
 
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
 
-    @Override
+
     public void run() {
 
         //TODO sleep until connected to chatroom, multithreading stuff (locks, wait, notify etc.)
 
+        String line = null;
         while (joined) {
             Log.info("while entered");
-            String line = "";
 
             try {
                 line = in.readLine();
@@ -75,7 +72,7 @@ public class TwitchBot extends Bot {
             }
 
             if (line.startsWith("PING")) {
-                out.println("PONG"+" "+ line.substring(5)+ "\r\n");
+                out.println("PONG :tmi.twitch.tv");
                 continue;
             }
 
@@ -209,7 +206,7 @@ public class TwitchBot extends Bot {
         return null;
     }
 
-    //TODO
+
     @Override
     public void connectToChatroom(String user) {
         try {
@@ -222,19 +219,17 @@ public class TwitchBot extends Bot {
                         System.out.println("TwitchBot: > " + serverResponse);
                         out.println("PONG :tmi.twitch.tv");
                         i--;
-                    } else System.out.println("TwitchBot: > " + serverResponse);
+                    }
+                    else System.out.println("TwitchBot: > " + serverResponse);
             }
 
-            System.out.println("TwitchBot: Accessed " + channel + "Chatroom");
-            out.println("PRIVMSG #" + channel + "Hallooooo");
+            System.out.println("TwitchBot: Accessed " + channel + " Chatroom");
+            out.println("PRIVMSG #" + channel + " :Hallooooo");
 
             joined = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
 
     }
     //TODO
