@@ -295,9 +295,6 @@ public class GameModel extends Observable{
     }
 
     public String getExplainWord() {
-        String exp = "";
-        //TODO db query for word
-        word = exp;
         return word;
     }
 

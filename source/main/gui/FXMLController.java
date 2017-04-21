@@ -68,7 +68,7 @@ public class FXMLController implements Initializable, IObserver {
     public static int resX = 1280, resY = 720;
 
     private String platform = "twitch";
-    private String chn = "pewhTV";
+    private String chn = "#realwasabimc";
 
 
     @Override
@@ -98,7 +98,7 @@ public class FXMLController implements Initializable, IObserver {
                     }
                 else
                     try {
-                      GuiAnchor.gameModel.setBot(new BeamBot(chn, GuiAnchor.gameModel));
+                      GuiAnchor.gameModel.setBot(new BeamBot(GuiAnchor.gameModel, chn));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

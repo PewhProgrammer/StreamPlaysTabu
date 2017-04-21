@@ -19,6 +19,11 @@ public abstract class Bot {
     protected GameModel model;
     protected String channel;
 
+    public Bot(GameModel gm, String channel) {
+        this.model = gm;
+        this.channel = channel;
+    }
+
     protected final String rules = "rules!";
 
     boolean terminate = false;
@@ -43,5 +48,5 @@ public abstract class Bot {
 
     public abstract void announceScore(String user, int score);
 
-    public abstract Command parseLine(String line, String sender);
+    public abstract Command parseLine(String line);
 }

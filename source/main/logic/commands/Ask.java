@@ -22,12 +22,17 @@ public class Ask extends Command {
      */
     @Override
     public void execute() {
+
         gameModel.getSiteBot().sendQuestion(question);
     }
 
     @Override
     public boolean validate() {
         if (!gameModel.getGameState().equals(GameState.GameStarted)) {
+            return false;
+        }
+
+        if (getQuestion().equals("")) {
             return false;
         }
         return true;

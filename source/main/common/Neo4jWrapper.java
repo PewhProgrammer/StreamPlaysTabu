@@ -39,7 +39,7 @@ public class Neo4jWrapper {
 
         //non-legacy nodes are used experimentally
         if(simulation){
-            resetDatabase();
+            //resetDatabase();
             label = "Node";
             userLabel = "userNode";
         }
@@ -467,6 +467,7 @@ public class Neo4jWrapper {
 
                     List<Value> val = record.values();
                     Value name = val.get(0).asNode().get("name");
+                    result = name.toString();
 
                     builder.append("Fetched ExplainWord: " + String.format("%s", name.toString()));
                     tx.success();
@@ -475,7 +476,7 @@ public class Neo4jWrapper {
             }
         }
 
-        Log.trace(builder.toString());
+        Log.info(builder.toString());
         return result;
     }
 

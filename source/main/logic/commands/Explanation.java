@@ -17,6 +17,7 @@ public class Explanation extends Command {
 
     @Override
     public void execute() {
+
         gameModel.addExplanation(explanation);
     }
 

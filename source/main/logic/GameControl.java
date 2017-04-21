@@ -107,7 +107,7 @@ public class GameControl extends Observable{
                 //change this to 30 sec.
                 Log.info("30 seconds are running...");
                 mModel.notifyRegistrationTime();
-                Thread.sleep(30000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -125,8 +125,10 @@ public class GameControl extends Observable{
         }
 
         Log.info("Starting the round");
-        mModel.getCommands().push(new CategoryChosen(mModel,"","simulation"));
+        //mModel.getCommands().push(new CategoryChosen(mModel,"","simulation"));
+        new CategoryChosen(mModel,"","simulation").execute();
         mModel.notifyGameState();
+        String explain = mModel.getExplainWord() ;
         mModel.getBot().whisperLink(mModel.getGiver(),mModel.getExplainWord());
 
         mModel.clearRegisteredPlayers();

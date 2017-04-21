@@ -31,6 +31,8 @@ README.md
 # Gradle:
 .idea/gradle.xml
 .idea/libraries
+/build/classes/
+/build/resources/
 
 # Mongo Explorer plugin:
 .idea/mongoSettings.xml
