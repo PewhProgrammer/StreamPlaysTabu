@@ -43,17 +43,26 @@ public class GameControl extends Observable{
      */
     private void runGame(){
 
-        Log.trace("Control started the game");
-        isStarted = (mModel.getGameState() == GameState.GameStarted);
+        //isStarted = (mModel.getGameState() == GameState.GameStarted);
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         while(isStarted){
             //processNextCommand();
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             if(mModel.getGameState() == GameState.Registration) {
-               //mModel.notifyGameState();
-               waitingForPlayers();
+                break;
             }
         }
-        Log.trace("Control ends the game");
+        waitingForPlayers();
 
     }
 
@@ -95,11 +104,10 @@ public class GameControl extends Observable{
 
                 if(mModel.getGiver().equals("")){
                     chooseNewGiver();
-                    mModel.getBot().whisperLink(mModel.getGiver(),"opfer");
+                    break;
                 } //no previous giver
                 else
                     chooseNewGiver();
-
             }
 
             mModel.setTimeStamp();
@@ -117,18 +125,15 @@ public class GameControl extends Observable{
                     mModel.getGiver()
             )){
                 // then send link
-                mModel.getBot().whisperLink("pewhTV","opfer");
+                break;
+                //mModel.getBot().whisperLink("pewhTV","<Link>");
             }
-
-
 
         }
 
         Log.info("Starting the round");
         //mModel.getCommands().push(new CategoryChosen(mModel,"","simulation"));
         new CategoryChosen(mModel,"","simulation").execute();
-        mModel.notifyGameState();
-        String explain = mModel.getExplainWord() ;
         mModel.getBot().whisperLink(mModel.getGiver(),mModel.getExplainWord());
 
         mModel.clearRegisteredPlayers();
@@ -158,7 +163,7 @@ public class GameControl extends Observable{
             }catch(NullPointerException n){
                 try {
 
-                    Log.trace("No commands to be processed. sleeping...");
+                    //Log.trace("No commands to be processed. sleeping...");
                     Thread.sleep(1500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

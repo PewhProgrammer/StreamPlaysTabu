@@ -29,12 +29,10 @@ public class AltTwitchBot extends Bot {
         public void onMessage(String channel, String sender,
                               String login, String hostname, String message) {
             //sendMessage(channel,"@" + sender + " " +curse.get(r.nextInt(curse.size())));
-
-            Log.info("Received");
-            sendMessage(channel, "halts maul");
             if (message.equalsIgnoreCase("PING")) {
                 sendMessage(channel, "PONG");
             }
+
 
             Command cmd = parseLine(message, sender);
             if (cmd != null) {
@@ -88,7 +86,7 @@ public class AltTwitchBot extends Bot {
     }
 
     public void sendPrivMessage(String msg,String user){
-        bot.sendMessage(user, msg);
+        sendChatMessage("/w "+user+" " +msg);
     }
 
     @Override
@@ -99,7 +97,8 @@ public class AltTwitchBot extends Bot {
     @Override
     public void whisperLink(String user, String link) {
         //sendChatMessage(" " + user + " You are the giver! Here is your link, please click it! " + link);
-        sendPrivMessage("/w " + user + " You are the giver! Here is your link, please click it! " + link,user);
+        //sendPrivMessage("You are the giver! Here is your link, please click it! " + link,user);
+        sendPrivMessage("Your Explain word: " + model.getExplainWord(),user);
         model.getSiteBot().onGiverJoined();
     }
 

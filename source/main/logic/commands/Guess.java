@@ -1,5 +1,6 @@
 package logic.commands;
 
+import common.Log;
 import logic.bots.Bot;
 import model.GameModel;
 import model.GameState;
@@ -28,10 +29,12 @@ public class Guess extends Command {
     @Override
     public void execute() {
 
+        Log.trace("Guess received: " + guess);
         if (guess.equals(gameModel.getExplainWord())) {
             gameModel.win(name);
             gameModel.generateVotingCategories();
             gameModel.setGameState(GameState.Registration);
+            Log.trace("Winner found: "+name);
         } else {
             gameModel.guess(guess);
         }

@@ -468,8 +468,9 @@ public class Neo4jWrapper {
                     List<Value> val = record.values();
                     Value name = val.get(0).asNode().get("name");
                     result = name.toString();
+                    result = result.replaceAll("\"", "");
 
-                    builder.append("Fetched ExplainWord: " + String.format("%s", name.toString()));
+                    builder.append("Fetched ExplainWord: " + String.format("%s", result));
                     tx.success();
                 }
 

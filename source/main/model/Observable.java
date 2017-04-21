@@ -71,12 +71,7 @@ public abstract class Observable {
 
     public void notifyGuess() {
         for (IObserver ob : listIObserver) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    ob.onNotifyGuess();
-                }
-            });
+            ob.onNotifyGuess(); //platform in der methode
         }
     }
     

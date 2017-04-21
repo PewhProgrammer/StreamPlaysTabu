@@ -321,7 +321,7 @@ public class GameModel extends Observable{
         notifyWinner();
         getSiteBot().finish();
         getBot().announceWinner(winner);
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3 && i < guesses.size(); i++) {
             mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, guesses.get(i).getGuess(), "isRelatedTo");
         }
         clear();
