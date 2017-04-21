@@ -2,6 +2,7 @@ package logic.bots;
 
 import common.Log;
 import logic.commands.*;
+import model.GameModel;
 import org.jibble.pircbot.PircBot;
 
 /**
@@ -10,12 +11,15 @@ import org.jibble.pircbot.PircBot;
 public class AltTwitchBot extends Bot {
 
     private Pirc bot;
+    private String sender;
 
-    public AltTwitchBot() {
-        connectToChatroom("pewhtv");
+    public AltTwitchBot(GameModel gm, String channel) {
+        super(gm, channel);
+        connectToChatroom(channel);
     }
 
     private class Pirc extends PircBot {
+
         public Pirc(String user) {
             this.setName(user);
             this.setLogin("[" + user + "]");
@@ -31,7 +35,7 @@ public class AltTwitchBot extends Bot {
                 sendMessage(channel, "PONG");
             }
 
-            Command cmd = parseLine(message,sender);
+            Command cmd = parseLine(message, sender);
             if (cmd != null) {
                 model.pushCommand(cmd);
 
@@ -48,9 +52,8 @@ public class AltTwitchBot extends Bot {
                 }
             }
         }
-
-
     }
+
     @Override
     public void run() {
 
@@ -112,8 +115,13 @@ public class AltTwitchBot extends Bot {
         sendChatMessage(user + " You have " + score + " Points!");
     }
 
-    @Override
     public Command parseLine(String message, String sender) {
+        this.sender = sender;
+        return parseLine(message);
+    }
+
+    @Override
+    public Command parseLine(String message) {
 
         String[] parts = message.split(" ");
 
@@ -141,34 +149,34 @@ public class AltTwitchBot extends Bot {
         }
 
         // !score
-        if (parts[0].equals(":!score")) {
+        if (parts[0].equals("!score")) {
             return new Rank(model, channel, sender);
         }
 
         // !votekick
-        if (parts[0].equals(":!votekick")) {
+        if (parts[0].equals("!votekick")) {
             return new Votekick(model, channel, sender);
         }
 
         // !streamerexplains
-        if (parts[1].equals(":!streamerexplains")) {
+        if (parts[0].equals("!streamerExplains")) {
             return new StreamerExplains(model, channel, sender);
         }
 
         // !validate
-        if (parts[0].equals(":!validate")) {
+        if (parts[0].equals("!validate")) {
             int ID = Integer.parseInt(parts[1]);
             int valScore = Integer.parseInt(parts[2]);
             return new Validate(model, channel, ID, valScore);
         }
 
         // !taboo
-        if (parts[0].equals(":!taboo")) {
+        if (parts[0].equals("!taboo")) {
             return new Taboo(model, channel, parts[1]);
         }
 
         // !vote
-        if (parts[0].equals(":!vote")) {
+        if (parts[0].equals("!vote")) {
             int voteNum = Integer.parseInt(parts[1]);
             return new Prevote(model, channel, new int[3]);
         }

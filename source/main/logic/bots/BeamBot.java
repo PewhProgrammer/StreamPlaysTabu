@@ -47,9 +47,9 @@ public class BeamBot extends Bot {
      * @throws ExecutionException
      * @throws InterruptedException
      */
-    public BeamBot(String user, GameModel model) throws ExecutionException, InterruptedException {
-        channel = user;
-        this.model = model;
+    public BeamBot(GameModel model, String user) throws ExecutionException, InterruptedException {
+
+        super(model, user);
 
         /*TODO Change token to our Bot*/
         api = new BeamAPI("IlIBO49aTNglsEkhvhLwTsUbHW8j7gKZXtEE8sCQC0boEkjg2CSaLTHUByVDrqFo");
@@ -92,7 +92,7 @@ public class BeamBot extends Bot {
 
         chatConnectable.on(IncomingMessageEvent.class, event -> {
             sender = event.data.userName;
-            Command cmd = parseLine(event.data.message.message.get(0).text, sender);
+            Command cmd = parseLine(event.data.message.message.get(0).text);
             if (cmd != null) {
                 model.pushCommand(cmd);
             }
@@ -101,7 +101,7 @@ public class BeamBot extends Bot {
     }
 
     @Override
-    public Command parseLine(String line, String sender) {
+    public Command parseLine(String line) {
 
         String[] message = line.split(" ");
 
@@ -144,7 +144,7 @@ public class BeamBot extends Bot {
         }
 
             /* !streamerexplains*/
-        if (message[0].equals("!streamerexplains")) {
+        if (message[0].equals("!streamerExplains")) {
                 /* CHECKNAME CHANGE GAMEMODE*/
             return new StreamerExplains(model, channel, sender);
         }

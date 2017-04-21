@@ -98,7 +98,7 @@ public class FXMLController implements Initializable, IObserver {
                     }
                 else
                     try {
-                      GuiAnchor.gameModel.setBot(new BeamBot(chn, GuiAnchor.gameModel));
+                      GuiAnchor.gameModel.setBot(new BeamBot(GuiAnchor.gameModel, chn));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

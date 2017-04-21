@@ -19,6 +19,8 @@ public class TwitchBot extends Bot {
 
     public TwitchBot(GameModel model, String channel) {
 
+        super(model, channel);
+
         this.model = model;
         this.channel = channel;
 
@@ -79,7 +81,7 @@ public class TwitchBot extends Bot {
                 continue;
             }
 
-            Command cmd = parseLine(line,"");
+            Command cmd = parseLine(line);
             if (cmd != null) {
                 model.pushCommand(cmd);
             }
@@ -89,7 +91,7 @@ public class TwitchBot extends Bot {
     }
 
     @Override
-    public Command parseLine(String line, String filler) {
+    public Command parseLine(String line) {
 
         String[] message = line.split(" ");
         String sender = message[0].substring(1).split("!")[0];
