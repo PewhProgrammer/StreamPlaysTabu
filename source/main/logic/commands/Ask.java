@@ -30,6 +30,10 @@ public class Ask extends Command {
         if (!gameModel.getGameState().equals(GameState.GameStarted)) {
             return false;
         }
+
+        if (getQuestion().equals("")) {
+            return false;
+        }
         return true;
     }
 

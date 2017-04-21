@@ -54,6 +54,12 @@ public class BotTest extends TestCase{
         String msg = getTwitchMessage(user, content, channel);
         Guess g = new Guess(null, channel, user, guess);
         parseInput(tb, msg, g);
+
+        content = "!guess Geralt von Riva";
+        guess = "Geralt von Riva";
+        msg = getTwitchMessage(user, content, channel);
+        g = new Guess(null, channel, user, guess);
+        parseInput(tb, msg, g);
     }
 
     public void testRulesCommand() {
@@ -66,7 +72,7 @@ public class BotTest extends TestCase{
 
     public void testScoreCommand() {
         String user = "Karl";
-        String content = "!rank";
+        String content = "!score";
         String msg = getTwitchMessage(user, content, channel);
         Rank r = new Rank(null, channel, user);
         parseInput(tb, msg, r);

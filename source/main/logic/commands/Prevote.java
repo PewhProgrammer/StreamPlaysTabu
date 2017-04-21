@@ -17,8 +17,8 @@ public class Prevote extends Command {
 
     @Override
     public void execute() {
-        for (int i : id) {
-            gameModel.prevote(i);
+        for (int i = 0; i < id.length && i < 5; i++) {
+            gameModel.prevote(id[i]);
         }
     }
 

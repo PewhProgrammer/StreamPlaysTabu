@@ -129,7 +129,7 @@ public class TwitchBot extends Bot {
             }
 
             // !streamerexplains
-            if (message[3].equals(":!streamerexplains")) {
+            if (message[3].equals(":!streamerExplains")) {
                 return new StreamerExplains(model, channel, sender);
             }
 

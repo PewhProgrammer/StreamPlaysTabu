@@ -22,6 +22,7 @@ public class Guess extends Command {
     public Guess(GameModel gm, String ch, String name, String guess) {
         super(gm, ch);
         this.name = name;
+        this.guess = guess;
     }
 
     @Override

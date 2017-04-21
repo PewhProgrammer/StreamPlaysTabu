@@ -12,6 +12,7 @@ public class Votekick extends Command {
 
     public Votekick(GameModel gm, String ch, String votingUser) {
         super(gm, ch);
+        this.votingUser = votingUser;
     }
 
     @Override
