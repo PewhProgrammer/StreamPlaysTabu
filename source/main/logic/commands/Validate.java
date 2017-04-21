@@ -1,6 +1,5 @@
 package logic.commands;
 
-import logic.bots.Bot;
 import model.GameModel;
 
 /**
