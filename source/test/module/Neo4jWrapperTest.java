@@ -95,6 +95,8 @@ public class Neo4jWrapperTest extends TestCase {
                 0,database.getUserPoints(user));
         assertEquals("Points were incorrect!",
                 200,database.updateUserPoints(user,200));
+        assertEquals("Points were incorrect!",
+                200,database.getUserPoints(user));
     }
 
     public void testGetUserErrors(){

@@ -51,17 +51,15 @@ public class GameControl extends Observable{
             e.printStackTrace();
         }
 
-        while(isStarted){
+        while(mModel.getGameState() == GameState.GameStarted){
             //processNextCommand();
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if(mModel.getGameState() == GameState.Registration) {
-                break;
-            }
         }
+        isStarted = false;
         waitingForPlayers();
 
     }
@@ -94,7 +92,7 @@ public class GameControl extends Observable{
      * @param
      * @return NULL
      */
-    public void waitingForPlayers(){
+    private void waitingForPlayers(){
         Log.info("Control is waiting for Players");
         while(mModel.getGameState() == GameState.Registration){
 
@@ -128,6 +126,7 @@ public class GameControl extends Observable{
                 break;
                 //mModel.getBot().whisperLink("pewhTV","<Link>");
             }
+            else mModel.setGiver(""); //s.t. there is no current giver and we have to choose new one
 
         }
 
@@ -144,7 +143,7 @@ public class GameControl extends Observable{
     /**
      * handles new giver
      */
-    public void chooseNewGiver(){
+    private void chooseNewGiver(){
         Log.info("New giver has been chosen");
         int index = rand.nextInt(mModel.getRegisteredPlayers().size());
         String newGiver =  mModel.getRegisteredPlayers().get(index);

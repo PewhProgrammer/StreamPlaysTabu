@@ -408,10 +408,11 @@ public class Neo4jWrapper {
         {
             try ( Transaction tx = session.beginTransaction() )
             {
-                StatementResult sResult = tx.run("MATCH (n:"+userLabel+") WHERE n.name = {name} " +
+                tx.run("MATCH (n:"+userLabel+") WHERE n.name = {name} " +
                                 "SET n."+property+"={propertyvalue}" +
-                                "RETURN n",
+                                "",
                         parameters("name",user,"propertyvalue",result));
+                tx.success();
 
 
                 builder.append("Updated "+property+": " + String.format("%s -> %s %s", oldPoints,
