@@ -110,7 +110,7 @@ public class FXMLController implements Initializable, IObserver {
                     root = loader.load();
                     GuiAnchor.cont = loader.getController();
                     gameModel.updateObserver(cont);
-                    //gameModel.addObserver(cont);
+                    onNotifyRegistrationTime();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
