@@ -67,7 +67,10 @@ public class Main {
 
         Neo4jWrapper neoWrapper = new Neo4jWrapper(defaultDatbase,neo4jbindAddr,seed);
 
-        GameModel model = new GameModel(language,(short)players,neoWrapper, new SiteBot());
+        SiteBot sBot = new SiteBot();
+        GameModel model = new GameModel(language,(short)players,neoWrapper, sBot);
+        sBot.setGameModel(model);
+
         mTHREAD = new Thread() {
             @Override
             public void run() {

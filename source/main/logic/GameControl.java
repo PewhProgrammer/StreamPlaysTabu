@@ -5,6 +5,7 @@ import common.Neo4jWrapper;
 import javafx.application.Platform;
 import logic.bots.Bot;
 import logic.bots.SiteBot;
+import logic.commands.CategoryChosen;
 import logic.commands.Command;
 import logic.commands.Register;
 import model.GameModel;
@@ -70,6 +71,7 @@ public class GameControl extends Observable{
             public void run() {
                 Log.info("Starting new thread for commands processing...");
                 processNextCommand();
+                Log.info("Canceled Command processing");
             }
 
         } ;
@@ -86,31 +88,46 @@ public class GameControl extends Observable{
     public void waitingForPlayers(){
         Log.info("Control is waiting for Players");
         while(mModel.getGameState() == GameState.Registration){
+
+
             //if user is registered but no giver, then new giver
             if(mModel.getRegisteredPlayers().size() > 0){
-                chooseNewGiver();
+
+                if(mModel.getGiver().equals("")){
+                    chooseNewGiver();
+                    mModel.getBot().whisperLink(mModel.getGiver(),"opfer");
+                } //no previous giver
+                else
+                    chooseNewGiver();
+
             }
-            //mModel.notifyRegistrationTime();
 
             mModel.setTimeStamp();
             try {
                 //change this to 30 sec.
-                Log.info("10 seconds are running...");
+                Log.info("30 seconds are running...");
+                mModel.notifyRegistrationTime();
                 Thread.sleep(30000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
+
             if(mModel.getRegisteredPlayers().contains(
                     mModel.getGiver()
             )){
                 // then send link
+                mModel.getBot().whisperLink("pewhTV","opfer");
             }
+
+
 
         }
 
         Log.info("Starting the round");
+        mModel.getCommands().push(new CategoryChosen(mModel,"","simulation"));
         mModel.notifyGameState();
+        mModel.getBot().whisperLink(mModel.getGiver(),mModel.getExplainWord());
 
         mModel.clearRegisteredPlayers();
         isStarted = true;

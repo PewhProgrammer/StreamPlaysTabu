@@ -1,5 +1,6 @@
 package model;
 
+import common.DatabaseException;
 import common.Neo4jWrapper;
 import logic.bots.Bot;
 import logic.bots.SiteBot;
@@ -41,7 +42,7 @@ public class GameModel extends Observable{
     private LinkedList<Guess> guesses;
     private LinkedList<String[]> qAndA;
 
-    private String category, giver, word, winner;
+    private String category, giver = "", word, winner;
 
     private ArrayList<PrevoteCategory> prevoting;
 
@@ -302,6 +303,13 @@ public class GameModel extends Observable{
 
     public String generateExplainWord() {
         //TODO query db for explain word that is not contained in usedWords
+        try {
+            word = mOntologyDataBase.getExplainWord(category,usedWords);
+        }catch(DatabaseException e){
+            e.getMessage();
+
+        }
+        usedWords.add(word);
         return word;
     }
 
@@ -393,7 +401,7 @@ public class GameModel extends Observable{
             sortedSuggestions.add(ts);
         }
         Collections.sort(sortedSuggestions);
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < sortedSuggestions.size(); i++) {
             mOntologyDataBase.insertNodesAndRelationshipIntoOntology(sortedSuggestions.get(i).getExplanation(),
                     sortedSuggestions.get(i).getContent(), "isRelatedTo");
         }

@@ -1,7 +1,9 @@
 package logic.bots;
 
+import logic.commands.GiverJoined;
+import model.GameModel;
+
 import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Set;
@@ -15,6 +17,8 @@ public class SiteBot {
     private PrintWriter out;
     private BufferedReader in;
 
+    private GameModel gameModel ;
+
     public SiteBot() {
         //connect to our server for the external webpage.
         try {
@@ -23,6 +27,14 @@ public class SiteBot {
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void setGameModel(GameModel model){
+        this.gameModel = model;
+    }
+
+    public void onGiverJoined(){
+        gameModel.getCommands().push(new GiverJoined(gameModel,""));
     }
 
     public void sendQuestion(String question) {

@@ -91,8 +91,8 @@ public class FXMLController implements Initializable, IObserver {
                 //initialize bots
                 if(platform.equals("twitch"))
                     try {
-                        GuiAnchor.gameModel.setBot(new TwitchBot(GuiAnchor.gameModel, chn));
-                        //GuiAnchor.gameModel.setBot(new AltTwitchBot());
+                        //GuiAnchor.gameModel.setBot(new TwitchBot(GuiAnchor.gameModel, chn));
+                        GuiAnchor.gameModel.setBot(new AltTwitchBot(GuiAnchor.gameModel,chn));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

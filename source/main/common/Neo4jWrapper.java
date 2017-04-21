@@ -136,7 +136,8 @@ public class Neo4jWrapper {
      * @param category from which the explain word inherits
      * @return
      */
-    public String getExplainWord(String category){
+    public String getExplainWord(String category,Set<String> usedWords) throws DatabaseException
+    {
         return fetchConnectedWordFromDatabase(category);
     }
 
@@ -447,11 +448,34 @@ public class Neo4jWrapper {
      * @param category
      * @return
      */
-    private String fetchConnectedWordFromDatabase(String category) {
+    private String fetchConnectedWordFromDatabase(String category) throws DatabaseException{
+        StringBuilder builder = new StringBuilder();
         String result = "";
-        int index = randomizer.nextInt(10);
 
+        if(category.equals("simulation")){
+            try ( Session session = driver.session() )
+            {
+                try ( Transaction tx = session.beginTransaction() )
+                {
 
+                    StatementResult sResult = tx.run( "MATCH (n:Node) RETURN n");
+
+                    if(!sResult.hasNext())
+                        throw new DatabaseException("No Explain Word available!");
+                    List<Record> list = sResult.list();
+                    Record record = list.get(randomizer.nextInt(list.size()));
+
+                    List<Value> val = record.values();
+                    Value name = val.get(0).asNode().get("name");
+
+                    builder.append("Fetched ExplainWord: " + String.format("%s", name.toString()));
+                    tx.success();
+                }
+
+            }
+        }
+
+        Log.trace(builder.toString());
         return result;
     }
 

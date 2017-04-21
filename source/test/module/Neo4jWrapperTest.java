@@ -107,4 +107,45 @@ public class Neo4jWrapperTest extends TestCase {
                 1,database.increaseUserError(user));
     }
 
+    public void testGetExplainWord(){
+        String user ="Manuel";
+        database.createUser(user);
+
+        String explain = "";
+
+        try {
+            database.getExplainWord("simulation",null);
+            fail();
+        }catch(DatabaseException e){
+            Log.trace(e.getMessage());
+        }
+
+        try{
+            database.createNode("Hextech Gunblade");
+            explain = database.getExplainWord("simulation",null);
+        }catch(DatabaseException e){
+            Log.trace(e.getMessage());
+            fail();
+        }
+
+    }
+
+    public void testSetUpNodes(){
+        String user ="Manuel";
+        database.createUser(user);
+
+        try{
+            database.createNode("Hextech Gunblade");
+            database.createNode("Mass Effect: Andromeda");
+            database.createNode("Friendly Fire");
+            database.createNode("Spell");
+            database.createNode("Smart Cast");
+            database.createNode("Overwatch");
+        }catch(DatabaseException e){
+            Log.trace(e.getMessage());
+            fail();
+        }
+
+    }
+
 }

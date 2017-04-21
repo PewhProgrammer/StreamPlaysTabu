@@ -2,6 +2,7 @@ package logic.bots;
 
 import common.Log;
 import logic.commands.*;
+import model.GameModel;
 import org.jibble.pircbot.PircBot;
 
 /**
@@ -11,8 +12,9 @@ public class AltTwitchBot extends Bot {
 
     private Pirc bot;
 
-    public AltTwitchBot() {
-        connectToChatroom("pewhtv");
+    public AltTwitchBot(GameModel model, String room) {
+        this.model = model ;
+        connectToChatroom("realwasabimc");
     }
 
     private class Pirc extends PircBot {
@@ -25,11 +27,11 @@ public class AltTwitchBot extends Bot {
                               String login, String hostname, String message) {
             //sendMessage(channel,"@" + sender + " " +curse.get(r.nextInt(curse.size())));
 
-            Log.info("Received");
-            sendMessage(channel, "halts maul");
             if (message.equalsIgnoreCase("PING")) {
-                sendMessage(channel, "PONG");
+                sendMessage(channel, "PONG :tmi.twitch.tv");
             }
+
+            sendChatMessage("Registriert!");
 
             Command cmd = parseLine(message,sender);
             if (cmd != null) {
@@ -68,8 +70,8 @@ public class AltTwitchBot extends Bot {
             System.exit(1);
         }
 
-        bot.joinChannel("#realwasabimc");
-        Log.info("connected");
+        bot.joinChannel("#"+user);
+        Log.info("TwitchBot connected");
     }
 
     @Override
@@ -90,6 +92,7 @@ public class AltTwitchBot extends Bot {
     @Override
     public void whisperLink(String user, String link) {
         sendChatMessage("/w " + user + " You are the giver! Here is your link, please click it! " + link);
+        model.getSiteBot().onGiverJoined();
     }
 
     @Override
