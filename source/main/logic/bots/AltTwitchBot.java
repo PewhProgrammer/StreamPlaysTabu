@@ -33,7 +33,6 @@ public class AltTwitchBot extends Bot {
                 sendMessage(channel, "PONG");
             }
 
-
             Command cmd = parseLine(message, sender);
             if (cmd != null) {
                 model.pushCommand(cmd);
@@ -112,6 +111,10 @@ public class AltTwitchBot extends Bot {
         sendChatMessage("The Winner is " + user + "Congratulations!"); //PogChamp?
     }
 
+    public void announceNoWinner() {
+        sendChatMessage("There is no Winner!! Next time :)"); //PogChamp?
+    }
+
     @Override
     public void announceRegistration() {
         sendChatMessage("A new round will start soon. Type !register to get into the giver pool!");
@@ -148,6 +151,19 @@ public class AltTwitchBot extends Bot {
         if (parts[0].equals("!ask")) {
             String[] question = message.split("!ask ");
             return new Ask(model, channel, question[1]);
+        }
+
+        // !answer
+        if(parts[0].equals("!answer")){
+            String[] qAnda = message.split("!answer ");
+            qAnda = qAnda[1].split("(->)+");
+            return new Answer(model,channel,qAnda[0],qAnda[1]);
+        }
+
+        // !explain
+        if (parts[0].equals("!explain")) {
+            String[] qAnda = message.split("!explain ");
+            return new Explanation(model,channel,qAnda[1]);
         }
 
         // !rules

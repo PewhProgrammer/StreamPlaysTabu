@@ -80,7 +80,6 @@ public class FXMLController implements Initializable, IObserver {
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                gameModel.setGameState(GameState.Registration);
                 if(!channelInput.getText().equals(""))
                     chn = channelInput.getText();
 
@@ -119,6 +118,8 @@ public class FXMLController implements Initializable, IObserver {
                 stage.centerOnScreen();
                 if(FXMLController.fullscreen)
                     stage.setFullScreen(true);
+
+                gameModel.setGameState(GameState.Registration);
             }
         });
 

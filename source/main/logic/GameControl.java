@@ -3,6 +3,7 @@ package logic;
 import common.Log;
 import common.Neo4jWrapper;
 import javafx.application.Platform;
+import logic.bots.AltTwitchBot;
 import logic.bots.Bot;
 import logic.bots.SiteBot;
 import logic.commands.CategoryChosen;
@@ -18,6 +19,8 @@ import java.util.Date;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import common.Util;
 
 /**
  * Created by Thinh-Laptop on 26.03.2017.
@@ -50,9 +53,15 @@ public class GameControl extends Observable{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        Date d = mModel.getTimeStamp();
 
         while(mModel.getGameState() == GameState.GameStarted){
             //processNextCommand();
+            if(Util.diffTimeStamp(new Date(),d) > 90){
+                ((AltTwitchBot)mModel.getBot()).announceNoWinner();
+                mModel.setGameState(GameState.GameStarted.Registration);
+                break;
+            }
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -94,6 +103,7 @@ public class GameControl extends Observable{
      */
     private void waitingForPlayers(){
         Log.info("Control is waiting for Players");
+        mModel.getBot().announceRegistration();
         while(mModel.getGameState() == GameState.Registration){
 
 
@@ -131,9 +141,11 @@ public class GameControl extends Observable{
         }
 
         Log.info("Starting the round");
+        mModel.getBot().announceNewRound();
         //mModel.getCommands().push(new CategoryChosen(mModel,"","simulation"));
         new CategoryChosen(mModel,"","simulation").execute();
         mModel.getBot().whisperLink(mModel.getGiver(),mModel.getExplainWord());
+        mModel.setTimeStamp();
 
         mModel.clearRegisteredPlayers();
         isStarted = true;

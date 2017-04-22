@@ -1,5 +1,7 @@
 package common;
 
+import java.util.Date;
+
 /**
  * Created by Tim on 19.04.2017.
  */
@@ -40,5 +42,11 @@ public class Util {
         }
 
         return dp[x][y];
+    }
+
+    public static double diffTimeStamp(Date set,Date current){
+        long diff = current.getTime() - set.getTime();
+        double q = (double) diff / 1000.0 * 90.0;
+        return q;
     }
 }
