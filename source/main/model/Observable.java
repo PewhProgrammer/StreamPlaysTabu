@@ -1,6 +1,6 @@
 package model;
 
-import gui.FXMLController;
+import gui.ProtoController;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
@@ -120,7 +120,7 @@ public abstract class Observable {
     }
 
     public void updateObserver(IObserver ob){
-        if(ob instanceof FXMLController) {
+        if(ob instanceof ProtoController) {
             listIObserver.remove(0);
             listIObserver.add(0, ob);
             return;

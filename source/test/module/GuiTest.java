@@ -1,9 +1,8 @@
 package module;
 
-import gui.GuiAnchor;
+import gui.ProtoAnchor;
 import javafx.application.Platform;
 import junit.framework.TestCase;
-import model.GameMode;
 import model.GameModel;
 import model.GameState;
 
@@ -13,17 +12,17 @@ import model.GameState;
 public class GuiTest extends TestCase {
 
     GameModel gm;
-    GuiAnchor ga;
+    ProtoAnchor ga;
 
     @org.junit.Test
     public void setUp() throws Exception {
         gm = new GameModel(null, (short)2, null, null);
-        ga = new GuiAnchor();
+        ga = new ProtoAnchor();
     }
 
     public void test() {
         ga.setModel(gm);
-        GuiAnchor.gameModel.setGiver("k3uleee");
+        ProtoAnchor.gameModel.setGiver("k3uleee");
 
         Thread t = new Thread() {
             public void run() {
@@ -42,7 +41,7 @@ public class GuiTest extends TestCase {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                GuiAnchor.cont.onNotifyRegistrationTime();
+                ProtoAnchor.cont.onNotifyRegistrationTime();
             }
         });
 
@@ -52,11 +51,11 @@ public class GuiTest extends TestCase {
             e.printStackTrace();
         }
 
-        GuiAnchor.gameModel.setGameState(GameState.GameStarted);
+        ProtoAnchor.gameModel.setGameState(GameState.GameStarted);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                GuiAnchor.cont.onNotifyGameState();
+                ProtoAnchor.cont.onNotifyGameState();
             }
         });
 
@@ -67,11 +66,11 @@ public class GuiTest extends TestCase {
         }
 
         //add guesses, explanations etc...
-        GuiAnchor.gameModel.addExplanation("It is sweet.");
+        ProtoAnchor.gameModel.addExplanation("It is sweet.");
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                GuiAnchor.cont.onNotifyExplanation();
+                ProtoAnchor.cont.onNotifyExplanation();
             }
         });
 
@@ -82,11 +81,11 @@ public class GuiTest extends TestCase {
             e.printStackTrace();
         }
 
-        GuiAnchor.gameModel.guess("banane");
+        ProtoAnchor.gameModel.guess("banane");
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                GuiAnchor.cont.onNotifyGuess();
+                ProtoAnchor.cont.onNotifyGuess();
             }
         });
 
@@ -97,11 +96,11 @@ public class GuiTest extends TestCase {
             e.printStackTrace();
         }
 
-        GuiAnchor.gameModel.guess("schaschlik");
+        ProtoAnchor.gameModel.guess("schaschlik");
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                GuiAnchor.cont.onNotifyGuess();
+                ProtoAnchor.cont.onNotifyGuess();
             }
         });
 
@@ -112,11 +111,11 @@ public class GuiTest extends TestCase {
             e.printStackTrace();
         }
 
-        GuiAnchor.gameModel.addExplanation("It used to be trololol");
+        ProtoAnchor.gameModel.addExplanation("It used to be trololol");
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                GuiAnchor.cont.onNotifyExplanation();
+                ProtoAnchor.cont.onNotifyExplanation();
             }
         });
 
@@ -126,11 +125,11 @@ public class GuiTest extends TestCase {
             e.printStackTrace();
         }
 
-        GuiAnchor.gameModel.addQAndA("Is it sexy?", "Yes it is very sexy!");
+        ProtoAnchor.gameModel.addQAndA("Is it sexy?", "Yes it is very sexy!");
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                GuiAnchor.cont.onNotifiyQandA();
+                ProtoAnchor.cont.onNotifiyQandA();
             }
         });
 

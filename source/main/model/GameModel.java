@@ -5,12 +5,8 @@ import common.Neo4jWrapper;
 import logic.bots.Bot;
 import logic.bots.SiteBot;
 import logic.commands.Command;
-import logic.commands.Prevote;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static gui.GuiAnchor.gameModel;
 
 
 public class GameModel extends Observable{

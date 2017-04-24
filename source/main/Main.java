@@ -1,6 +1,6 @@
 import common.Log;
 import common.Neo4jWrapper;
-import gui.GuiAnchor;
+import gui.ProtoAnchor;
 import logic.GameControl;
 import logic.bots.SiteBot;
 import model.GameModel;
@@ -86,7 +86,7 @@ public class Main {
         String[] param = {"testparam"};
         if(guiSimulation) {
             Log.info("Launching prototype GUI...");
-            GuiAnchor anchor = new GuiAnchor();
+            ProtoAnchor anchor = new ProtoAnchor();
             anchor.setModel(model);
             anchor.main(param);
         }

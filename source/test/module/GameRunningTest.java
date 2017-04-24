@@ -2,13 +2,12 @@ package module;
 
 import common.Log;
 import common.Neo4jWrapper;
-import gui.GuiAnchor;
+import gui.ProtoAnchor;
 import junit.framework.TestCase;
 import logic.GameControl;
 import logic.bots.SiteBot;
 import logic.commands.GiverJoined;
 import logic.commands.Register;
-import model.GameMode;
 import model.GameModel;
 import model.Language;
 
@@ -54,7 +53,7 @@ public class GameRunningTest extends TestCase {
         String[] param = {"testparam"};
         if(true) {
             Log.info("Launching prototype GUI...");
-            GuiAnchor anchor = new GuiAnchor();
+            ProtoAnchor anchor = new ProtoAnchor();
             anchor.setModel(gModel);
             anchor.main(param);
         }
