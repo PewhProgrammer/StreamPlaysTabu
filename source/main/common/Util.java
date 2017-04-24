@@ -46,7 +46,7 @@ public class Util {
 
     public static double diffTimeStamp(Date set,Date current){
         long diff = current.getTime() - set.getTime();
-        double q = (double) diff / 1000.0 * 90.0;
+        double q = (double) diff / (1000.0);
         return q;
     }
 }

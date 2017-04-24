@@ -57,7 +57,7 @@ public class GameControl extends Observable{
 
         while(mModel.getGameState() == GameState.GameStarted){
             //processNextCommand();
-            if(Util.diffTimeStamp(new Date(),d) > 90){
+            if(Util.diffTimeStamp(d,new Date()) > 90){
                 ((AltTwitchBot)mModel.getBot()).announceNoWinner();
                 mModel.setGameState(GameState.GameStarted.Registration);
                 break;
@@ -149,6 +149,11 @@ public class GameControl extends Observable{
 
         mModel.clearRegisteredPlayers();
         isStarted = true;
+        Log.info("Sending message block");
+        mModel.getBot().sendChatMessage("/w k3uleee sdad");
+        mModel.getBot().sendChatMessage("k3uleee");
+        mModel.getBot().sendChatMessage("/w ");
+        mModel.getBot().sendChatMessage("w k3uleee");
         runGame();
     }
 
@@ -169,8 +174,8 @@ public class GameControl extends Observable{
         for (; ; ) {
             Command c = mModel.pollNextCommand();
             try {
-                c.validate();
-                c.execute();
+                if(c.validate())
+                    c.execute();
             }catch(NullPointerException n){
                 try {
 

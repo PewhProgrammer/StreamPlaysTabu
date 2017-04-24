@@ -25,7 +25,8 @@ public class Register extends Command {
 
     @Override
     public boolean validate() {
-        return gameModel.getGameState().equals(GameState.Registration);
+        return
+                gameModel.getGameState().equals(GameState.Registration);
     }
 
     public String getUser() {
