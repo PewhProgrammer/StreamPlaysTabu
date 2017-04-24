@@ -10,6 +10,7 @@ import pro.beam.api.resource.chat.BeamChat;
 import pro.beam.api.resource.chat.events.IncomingMessageEvent;
 import pro.beam.api.resource.chat.methods.AuthenticateMessage;
 import pro.beam.api.resource.chat.methods.ChatSendMethod;
+import pro.beam.api.resource.chat.methods.WhisperMethod;
 import pro.beam.api.resource.chat.replies.AuthenticationReply;
 import pro.beam.api.resource.chat.replies.ReplyHandler;
 import pro.beam.api.resource.chat.ws.BeamChatConnectable;
@@ -51,8 +52,8 @@ public class BeamBot extends Bot {
 
         super(model, user);
 
-        /*TODO Change token to our Bot*/
-        api = new BeamAPI("IlIBO49aTNglsEkhvhLwTsUbHW8j7gKZXtEE8sCQC0boEkjg2CSaLTHUByVDrqFo");
+        /*StreamPlaysTaboo*/
+        api = new BeamAPI("uy9mwJ8iWQ9O1VzPeK6M4D1akfWOpDTh69ejyeBwP5hPrItSWkY5NUSXjxGFFUtE");
 
         //api interface
         beamBot = api.use(UsersService.class).getCurrent().get();
@@ -77,6 +78,7 @@ public class BeamBot extends Bot {
             chatConnectable.send(AuthenticateMessage.from(beamChannel, beamBot, beamChatBot.authkey), new ReplyHandler<AuthenticationReply>() {
                 public void onSuccess(AuthenticationReply reply) {
                     chatConnectable.send(ChatSendMethod.of("Hello World! I'm StreamPlaysBot!"));
+                    //announceNewRound();
                     Log.info("Succesfully connected!");
                 }
 
@@ -85,6 +87,8 @@ public class BeamBot extends Bot {
                 }
             });
         }
+
+        run(); //starts new thread
     }
 
     @Override
@@ -96,6 +100,7 @@ public class BeamBot extends Bot {
             if (cmd != null) {
                 model.pushCommand(cmd);
             }
+
 
         });
     }
@@ -215,17 +220,30 @@ public class BeamBot extends Bot {
 
     @Override
     public void whisperLink(String user, String link) {
-        chatConnectable.send(ChatSendMethod.of(String.format("/whisper %s You are the giver! Here is your link, please click it!: %s", user, link)));
+        Log.trace("Send link to giver!");
+        chatConnectable.send(ChatSendMethod.of(String.format(
+                "/whisper %s You are the giver! " +
+                        "Here is your link, please click it!: %s", user, link)));
+        chatConnectable.send(ChatSendMethod.of("Sended Link!"));
+        model.getSiteBot().onGiverJoined();
     }
 
     @Override
     public void announceNewRound() {
         chatConnectable.send(ChatSendMethod.of(String.format("A new round has started. Good Luck and let them guesses flow!!!")));
+        WhisperMethod.builder().to(beamBot);
+        WhisperMethod.builder().send("lol");
+        chatConnectable.send(ChatSendMethod.of("/whisper pewhBot dasd"));
     }
 
     @Override
     public void announceWinner(String user) {
         chatConnectable.send(ChatSendMethod.of(String.format("%s IS THE WINNER! CONGRATULATIONS!!!", user))); /*PogChamp?*/
+    }
+
+    @Override
+    public void announceNoWinner() {
+        chatConnectable.send(ChatSendMethod.of("There is no Winner!! Next time :)")); /*PogChamp?*/
     }
 
     @Override

@@ -59,11 +59,13 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void connectToChatroom(String user) {
-        bot = new Pirc("pewhtv");
+        bot = new Pirc("streamplaystaboo");
 
         // Connect to the IRC server.
         try {
-            bot.connect("irc.chat.twitch.tv", 6667, "oauth:" + "a7cc5zbe6gc7uj5uzz8p97zjkijy54");
+            bot.connect("irc.chat.twitch.tv",
+                    6667,
+                    "oauth:" + "ksfaxec4iil2ao18nf2d91ua9she0z"); //streamplaystaboo
         } catch (Exception e) {
             Log.trace("HTTPResponse bot connection failure");
             System.exit(1);

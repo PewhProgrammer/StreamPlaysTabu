@@ -271,6 +271,11 @@ public class TwitchBot extends Bot {
     }
 
     @Override
+    public void announceNoWinner() {
+
+    }
+
+    @Override
     public void announceRegistration() {
         out.println("PRIVMSG" + " " + "#" + channel + " :A new round will start soon. Type !register to get into the giver pool!");
     }

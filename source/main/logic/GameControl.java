@@ -57,8 +57,9 @@ public class GameControl extends Observable{
 
         while(mModel.getGameState() == GameState.GameStarted){
             //processNextCommand();
-            if(Util.diffTimeStamp(d,new Date()) > 90){
-                ((AltTwitchBot)mModel.getBot()).announceNoWinner();
+            if(Util.diffTimeStamp(d,new Date()) > 120){
+                mModel.setGiver("");
+                mModel.getBot().announceNoWinner();
                 mModel.setGameState(GameState.GameStarted.Registration);
                 break;
             }
@@ -103,9 +104,7 @@ public class GameControl extends Observable{
      */
     private void waitingForPlayers(){
         Log.info("Control is waiting for Players");
-        mModel.getBot().announceRegistration();
         while(mModel.getGameState() == GameState.Registration){
-
 
             //if user is registered but no giver, then new giver
             if(mModel.getRegisteredPlayers().size() > 0){
@@ -121,16 +120,17 @@ public class GameControl extends Observable{
             mModel.setTimeStamp();
             try {
                 //change this to 30 sec.
+                mModel.getBot().announceRegistration();
                 Log.info("30 seconds are running...");
                 mModel.notifyRegistrationTime();
-                Thread.sleep(5000);
+                Thread.sleep(30000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
 
             if(mModel.getRegisteredPlayers().contains(
-                    mModel.getGiver()
+                    mModel.getWinner()
             )){
                 // then send link
                 break;
@@ -140,6 +140,7 @@ public class GameControl extends Observable{
 
         }
 
+        mModel.setGameState(GameState.WaitingForGiver);
         Log.info("Starting the round");
         mModel.getBot().announceNewRound();
         //mModel.getCommands().push(new CategoryChosen(mModel,"","simulation"));
@@ -149,11 +150,6 @@ public class GameControl extends Observable{
 
         mModel.clearRegisteredPlayers();
         isStarted = true;
-        Log.info("Sending message block");
-        mModel.getBot().sendChatMessage("/w k3uleee sdad");
-        mModel.getBot().sendChatMessage("k3uleee");
-        mModel.getBot().sendChatMessage("/w ");
-        mModel.getBot().sendChatMessage("w k3uleee");
         runGame();
     }
 

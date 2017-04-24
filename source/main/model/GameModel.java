@@ -321,6 +321,7 @@ public class GameModel extends Observable{
             mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, guesses.get(i).getGuess(), "isRelatedTo");
         }
         clear();
+        setGiver(winner);
     }
 
     public String getWinner() {

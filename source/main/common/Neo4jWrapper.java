@@ -59,13 +59,20 @@ public class Neo4jWrapper {
         //create two nodes if not already
         try {
             createNode(node1);
+        }catch(ServiceUnavailableException | DatabaseException e){
+            Log.debug(e.getLocalizedMessage());
+        }
+
+        try {
             createNode(node2);
         }catch(ServiceUnavailableException | DatabaseException e){
             Log.debug(e.getLocalizedMessage());
-            return false;
         }
+
+
         //creates a binding connection between node1 and node2
-        return createRelationship(node1,node2,relationship);
+        return
+                createRelationship(node1,node2,relationship);
     }
 
     public int updateUserPoints(String user, int i) {
@@ -261,15 +268,21 @@ public class Neo4jWrapper {
                     count = record.get("rating").asInt();
                 }
 
-                tx.run( "MATCH (ee) WHERE ee.name =  {name1} "+
-                                "MATCH (js) WHERE ee.name = {name2} " +
-                        "CREATE UNIQUE (ee)-[:"+relationship+" {rating: "+ ++count +"," +
-                                "legacy: "+legacy+"} " +
-                                "]->(js)"
+                tx.run( "MATCH (ee) WHERE ee.name =  \""+node1+"\" "+
+                                "MATCH (js) WHERE js.name = \""+node2+"\" " +
+                                "CREATE (ee)-[rel:"+relationship+" {rating: 2," +
+                                "legacy: "+!legacy+"} " +
+                                "]->(js)");
 
-                        , parameters( "name1",node1,"name2",node2 )); //
+                /*tx.run( "MATCH (ee) WHERE ee.name =  \""+node1+"\" "+
+                                "MATCH (js) WHERE ee.name = \"" + node2 + "\"  " +
+                        "CREATE (ee)-[rel:"+relationship+" {rating: "+ ++count +"," +
+                                "legacy: "+!legacy+"} " +
+                                "]->(js)"
+                        , parameters( "name1",node1,"name2",node2 )); //*/
 
                 tx.success();
+                Log.trace("Created Relationship: "+node1 + " -> " + node2);
                 return true;
             }
 
