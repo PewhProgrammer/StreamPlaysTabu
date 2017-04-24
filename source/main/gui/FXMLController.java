@@ -68,7 +68,7 @@ public class FXMLController implements Initializable, IObserver {
     public static int resX = 1280, resY = 720;
 
     private String platform = "twitch";
-    private String chn = "#realwasabimc";
+    private String chn = "realwasabimc";
 
 
     @Override
@@ -91,7 +91,7 @@ public class FXMLController implements Initializable, IObserver {
                 if(platform.equals("twitch"))
                     try {
                         //GuiAnchor.gameModel.setBot(new TwitchBot(GuiAnchor.gameModel, chn));
-                        GuiAnchor.gameModel.setBot(new AltTwitchBot(GuiAnchor.gameModel,chn));
+                        GuiAnchor.gameModel.setBot(new AltTwitchBot(GuiAnchor.gameModel,"#"+chn));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -104,8 +104,8 @@ public class FXMLController implements Initializable, IObserver {
 
                 Parent root = null;
                 try {
-                    //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/idle.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
+                    //FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/idle.fxml"));
                     root = loader.load();
                     GuiAnchor.cont = loader.getController();
                     gameModel.updateObserver(cont);
@@ -173,8 +173,8 @@ public class FXMLController implements Initializable, IObserver {
         if (GuiAnchor.gameModel.getGameState() == GameState.GameStarted) {
             Parent root = null;
             try {
-                //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/game.fxml"));
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/game.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/game.fxml"));
+                //FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/game.fxml"));
                   root = loader.load();
                 GuiAnchor.cont = loader.getController();
                 gameModel.updateObserver(cont);
@@ -206,8 +206,8 @@ public class FXMLController implements Initializable, IObserver {
         else if(GuiAnchor.gameModel.getGameState() == GameState.Registration) {
             Parent root = null;
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/idle.fxml"));
-                //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
+                //FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/idle.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/idle.fxml"));
                 root = loader.load();
                 GuiAnchor.cont = loader.getController();
                 gameModel.updateObserver(cont);
@@ -286,10 +286,24 @@ public class FXMLController implements Initializable, IObserver {
         new Thread() {
             public void run() {
                 for(int i=30; i>=0; i--) {
-                    if(i>=10)
-                        timer.setText("00:"+i);
-                    else
-                        timer.setText("00:0"+i);
+                    if(i>=10) {
+                        final int j = i;
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                timer.setText("00:" + j);
+                            }
+                        });
+                    }
+                    else {
+                        final int j = i;
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                timer.setText("00:0" + j);
+                            }
+                        });
+                    }
                     try {
                         sleep(1000);
                     } catch (InterruptedException e) {

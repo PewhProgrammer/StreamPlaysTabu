@@ -111,13 +111,7 @@ public abstract class Observable {
 
     public void notifyRegistrationTime() {
         for (IObserver ob : listIObserver) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    ob.onNotifyRegistrationTime();
-                }
-            });
-
+                ob.onNotifyRegistrationTime();
         }
     }
 
