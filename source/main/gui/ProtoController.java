@@ -66,6 +66,8 @@ public class ProtoController implements Initializable, IObserver {
     public static boolean fullscreen = false;
     public static int resX = 1280, resY = 720;
 
+    public static Thread gameTimerThread = new Thread() {};
+
     private String platform = "twitch";
     private String chn = "realwasabimc";
 
@@ -188,19 +190,22 @@ public class ProtoController implements Initializable, IObserver {
             if(ProtoController.fullscreen)
                 stage.setFullScreen(true);
 
-            new Thread() {
+            while(ProtoController.gameTimerThread.isAlive())
+                ProtoController.gameTimerThread.interrupt();
+
+            ProtoController.gameTimerThread  = new Thread() {
                 public void run() {
                     for(int i=120; i>=0; i--) {
-                            cont.gameTimer.setText(i + "s");
+                        cont.gameTimer.setText(i + "s");
                         try {
                             sleep(1000);
                         } catch (InterruptedException e) {
-                            e.printStackTrace();
+                            break;
                         }
                     }
                 }
-            }.start();
-
+            };
+            ProtoController.gameTimerThread.start();
         }
         else if(ProtoAnchor.gameModel.getGameState() == GameState.Registration) {
             Parent root = null;

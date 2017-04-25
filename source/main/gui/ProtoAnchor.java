@@ -34,12 +34,10 @@ public class ProtoAnchor extends Application {
         gameModel.addObserver(cont);
         //setup scene
         Scene scene = new Scene(root, 400, 600);
-        stage.setTitle("StreamPlaysTabu");
+        stage.setTitle("StreamPlaysTaboo");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
-
-
     }
 
     public void setModel(GameModel gm) {
