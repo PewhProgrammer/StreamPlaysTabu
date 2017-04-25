@@ -26,8 +26,8 @@ public class ProtoAnchor extends Application {
         ProtoAnchor.stage = primaryStage;
         //load the start.fxml
 
-        //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/start.fxml"));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFILES/start.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/Proto/start.fxml"));
+        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFILES/start.fxml"));
 
         Parent root = loader.load();
         cont = loader.getController();
