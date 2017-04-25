@@ -1,6 +1,7 @@
 package logic.commands;
 
 import model.GameModel;
+import model.GameState;
 
 /**
  * Created by Marc on 04.04.2017.
@@ -8,10 +9,12 @@ import model.GameModel;
 public class Explanation extends Command {
 
     private String explanation;
+    private String user;
 
-    public Explanation(GameModel gm, String ch, String explanation) {
+    public Explanation(GameModel gm, String ch, String explanation, String user) {
         super(gm, ch);
         this.explanation = explanation;
+        this.user = user;
     }
 
 
@@ -23,8 +26,12 @@ public class Explanation extends Command {
 
     @Override
     public boolean validate() {
-        //TODO anti cheating meachanism
-        return true;
+
+        if (!user.equals(gameModel.getGiver())) {
+            return false;
+        }
+
+        return gameModel.getGameState().equals(GameState.GameStarted);
     }
 
     public String getExplanation() {

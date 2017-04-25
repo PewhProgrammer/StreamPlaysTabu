@@ -1,6 +1,7 @@
 package logic.commands;
 
 import common.Log;
+import common.Util;
 import logic.bots.Bot;
 import model.GameModel;
 import model.GameState;
@@ -23,14 +24,14 @@ public class Guess extends Command {
     public Guess(GameModel gm, String ch, String name, String guess) {
         super(gm, ch);
         this.name = name;
-        this.guess = guess;
+        this.guess = guess.toLowerCase();
     }
 
     @Override
     public void execute() {
 
         Log.trace("Guess received: " + guess);
-        if (guess.equals(gameModel.getExplainWord())) {
+        if (Util.guessEquals(guess,gameModel.getExplainWord())) {
             gameModel.win(name);
             gameModel.generateVotingCategories();
             gameModel.setGameState(GameState.Registration);
@@ -45,6 +46,12 @@ public class Guess extends Command {
         if (!gameModel.getGameState().equals(GameState.GameStarted)) {
             return false;
         }
+
+        if (name.equals(gameModel.getGiver())) {
+            //TODO bestrafen
+            return false;
+        }
+
         return true;
     }
 

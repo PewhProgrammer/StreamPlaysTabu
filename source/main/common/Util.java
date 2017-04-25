@@ -44,9 +44,56 @@ public class Util {
         return dp[x][y];
     }
 
-    public static double diffTimeStamp(Date set,Date current){
+    public static double diffTimeStamp(Date set, Date current) {
         long diff = current.getTime() - set.getTime();
         double q = (double) diff / (1000.0);
         return q;
+    }
+
+    public static String[] parseTemplate(String tmp) {
+        return null;
+    }
+
+    /**
+     * Checks whether given string is equal to target
+     * string ignoring sensitive,whitespace case
+     *
+     * @param origin
+     * @param target
+     * @return
+     */
+    public static boolean guessEquals(String origin, String target) {
+        String regex = "[^a-zA-Z0-9]";
+        origin = origin.replaceAll(regex, "");
+        target = target.replaceAll(regex, "");
+        if (origin.replaceAll("\\s", "").equalsIgnoreCase(
+                target.replaceAll("\\s", "")
+        )) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Primarily used in Database. Reduced to lower case
+     * and replaces multiple whitespace with one single
+     * @param origin
+     * @return
+     */
+    public static String reduceStringToMinimum(String origin) {
+        origin = origin.trim().replaceAll(" +"," ");
+        String regex = "[^a-zA-Z0-9]\\s";
+        origin = origin.replaceAll(regex,"");
+
+        return origin.toLowerCase();
+    }
+
+    public static String reduceStringToMinimumWithoutWhitespaces(String origin) {
+        origin = origin.trim().replaceAll(" +","");
+        String regex = "[^a-zA-Z0-9]\\s";
+        origin = origin.replaceAll(regex,"");
+
+        return origin.toLowerCase();
     }
 }
