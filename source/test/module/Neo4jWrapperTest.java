@@ -61,6 +61,7 @@ public class Neo4jWrapperTest extends TestCase {
                 database.lookUpNode("Maokai",label));
         try {
             database.createNode("Maokai");
+            database.createNode("nau tilus");
         }catch(DatabaseException e){
             e.getMessage();
             fail();
@@ -68,6 +69,12 @@ public class Neo4jWrapperTest extends TestCase {
         assertEquals("lookUp could not find the node!"
                 ,true,
                 database.lookUpNode("Maokai",label));
+
+        //lookup with whitespaces
+        assertEquals("lookUp could not find the node!"
+                ,true,
+                database.lookUpNode("Nautilus",label));
+
     }
 
     public void testCreateRelationship(){

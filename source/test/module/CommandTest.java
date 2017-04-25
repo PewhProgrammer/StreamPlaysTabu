@@ -66,8 +66,8 @@ public class CommandTest extends TestCase{
 
     public void testExplanation(){
         String explanation = "It is used for killing mobs.";
-        String dummy = "negatve";
-        Command expCommand = new Explanation(gModel,"",explanation);
+        String dummy = "negative";
+        Command expCommand = new Explanation(gModel,"",explanation,"John");
         gModel.setGameState(GameState.WaitingForGiver);
         assertFalse("Validation passed @ " +
                 getName(), expCommand.validate());

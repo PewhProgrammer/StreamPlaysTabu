@@ -175,7 +175,9 @@ public class Neo4jWrapper {
      */
     public void createNode(String nodeName) throws ServiceUnavailableException,DatabaseException{
 
-        nodeName = nodeName.toLowerCase();
+        String nodeNameNoWhitespace = Util.reduceStringToMinimumWithoutWhitespaces(nodeName);
+        nodeName = Util.reduceStringToMinimum(nodeName);
+
         try ( Session session = driver.session() )
         {
 
@@ -201,11 +203,15 @@ public class Neo4jWrapper {
      * @return
      */
     public boolean lookUpNode(String nodeName, String label){
+        nodeName = Util.reduceStringToMinimum(nodeName);
+
         StringBuilder builder = new StringBuilder();
         try ( Session session = driver.session() ) {
             try (Transaction tx = session.beginTransaction()) {
 
-                StatementResult result = tx.run("MATCH (n:"+label+") WHERE n.name = {name} " +
+                //neglects whitespaces
+                StatementResult result = tx.run("MATCH (n:"+label+") WHERE " +
+                                "replace(n.name,\" \",\"\") = {name} " +
                                 "RETURN n",
                         parameters("name", nodeName));
                 if(!result.hasNext()) return false;
@@ -256,7 +262,9 @@ public class Neo4jWrapper {
      * @return
      */
     public boolean createRelationship(String node1, String node2, String relationship){
-        node1 = node1.toLowerCase(); node2 = node2.toLowerCase() ; relationship = relationship.toLowerCase();
+        node1 = Util.reduceStringToMinimum(node1);
+        node2 = Util.reduceStringToMinimum(node2);
+        relationship = Util.reduceStringToMinimum(relationship);
         try ( Session session = driver.session() )
         {
 
