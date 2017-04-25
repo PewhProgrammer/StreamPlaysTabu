@@ -24,7 +24,6 @@ public class GiverJoined extends Command {
         gameModel.setGameState(GameState.GameStarted);
         gameModel.setTimeStamp();
         gameModel.transferTabooSuggestions();
-        //TODO validate von zwischenschirm in db
     }
 
     @Override

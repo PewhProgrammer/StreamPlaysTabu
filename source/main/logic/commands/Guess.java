@@ -23,7 +23,7 @@ public class Guess extends Command {
     public Guess(GameModel gm, String ch, String name, String guess) {
         super(gm, ch);
         this.name = name;
-        this.guess = guess;
+        this.guess = guess.toLowerCase();
     }
 
     @Override
@@ -45,6 +45,12 @@ public class Guess extends Command {
         if (!gameModel.getGameState().equals(GameState.GameStarted)) {
             return false;
         }
+
+        if (name.equals(gameModel.getGiver())) {
+            //TODO bestrafen
+            return false;
+        }
+
         return true;
     }
 

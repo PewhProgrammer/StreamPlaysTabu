@@ -49,4 +49,8 @@ public class Util {
         double q = (double) diff / (1000.0);
         return q;
     }
+
+    public static String[] parseTemplate(String tmp) {
+        return null;
+    }
 }

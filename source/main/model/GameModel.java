@@ -2,6 +2,7 @@ package model;
 
 import common.DatabaseException;
 import common.Neo4jWrapper;
+import common.Util;
 import logic.bots.Bot;
 import logic.bots.SiteBot;
 import logic.commands.Command;
@@ -84,14 +85,6 @@ public class GameModel extends Observable{
 
     public int getNumPlayers(){
         return mNumPlayers;
-    }
-
-    public short getMIN_PLAYERS() {
-        return MIN_PLAYERS;
-    }
-
-    public void setMIN_PLAYERS(short MIN_PLAYERS) {
-        this.MIN_PLAYERS = MIN_PLAYERS;
     }
 
     public Language getLang() {
@@ -189,11 +182,11 @@ public class GameModel extends Observable{
         explanations.add(explanation);
 
         notifyExplanation();
-        //TODO parse answer template
-        String targetNode = "";
-        String relation = "";
+        String[] content = Util.parseTemplate(explanation);
+        String relation = content[0].toLowerCase();
+        String targetNode = content[1].toLowerCase();
 
-        //mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation);
+        //TODO mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation);
     }
 
     public void clearExplanations() {
@@ -237,11 +230,13 @@ public class GameModel extends Observable{
         qAndA.push(new String[]{question, answer});
         notifyQandA();
 
-        //TODO parse answer template
-        String targetNode = "";
-        String relation = "";
+        if (!(answer.equals("yes") || answer.equals("no"))) {
+            String[] content = Util.parseTemplate(answer);
+            String relation = content[0].toLowerCase();
+            String targetNode = content[1].toLowerCase();
 
-//        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation);
+            //TODO mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation);
+        }
     }
 
     public LinkedList<String[]> getQAndA() {
@@ -314,6 +309,7 @@ public class GameModel extends Observable{
         double q = (double) diff / ROUND_TIME;
         int score = (int) ((tabooWords.size() + 1) * 100 - q * (tabooWords.size() + 1) * 100);
         updateScore(winner, score);
+        updateScore(giver, score);
         notifyWinner();
         getSiteBot().finish();
         getBot().announceWinner(winner);

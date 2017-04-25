@@ -28,8 +28,9 @@ public class BotTest extends TestCase{
     }
 
     public void test(){
+        BeamBot bot = null;
         try {
-            BeamBot Bot = new BeamBot(null, "k3uleeebot");
+            bot = new BeamBot(null, "k3uleeebot");
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

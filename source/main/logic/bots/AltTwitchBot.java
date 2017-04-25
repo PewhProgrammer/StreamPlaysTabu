@@ -110,7 +110,7 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void announceWinner(String user) {
-        sendChatMessage("The Winner is " + user + "Congratulations!"); //PogChamp?
+        sendChatMessage("The Winner is " + user + ". Congratulations!"); //PogChamp?
     }
 
     public void announceNoWinner() {
@@ -165,7 +165,7 @@ public class AltTwitchBot extends Bot {
         // !explain
         if (parts[0].equals("!explain")) {
             String[] qAnda = message.split("!explain ");
-            return new Explanation(model,channel,qAnda[1]);
+            return new Explanation(model,channel,qAnda[1], sender);
         }
 
         // !rules
