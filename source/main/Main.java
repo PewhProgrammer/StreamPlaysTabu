@@ -1,5 +1,6 @@
 import common.Log;
 import common.Neo4jWrapper;
+import gui.GuiAnchor;
 import gui.ProtoAnchor;
 import logic.GameControl;
 import logic.bots.SiteBot;
@@ -7,6 +8,7 @@ import model.GameModel;
 import model.Language;
 import org.apache.commons.cli.*;
 
+import java.util.Date;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -19,14 +21,14 @@ public class Main {
 
     private final Options mOptions = new Options();
     private String neo4jbindAddr = "";
-    private int seed = (short) new Random().nextInt(Integer.MAX_VALUE);
+    private int seed;
     private int players = 0;
     private Language language ;
 
     private int mVerbosity = INFO;
     private boolean guiSimulation = true;
-
     private boolean defaultDatbase = true;
+    private boolean setSeed = false;
 
     Thread mTHREAD ;
 
@@ -36,9 +38,24 @@ public class Main {
      * @param args
      *          CommandLine args
      */
-    public static void main(String[] args){new Main().parseCommandLine(args);}
+    public static void main(String[] args){
+        new Main().parseCommandLine(args);}
 
     public void doSemantics(){
+
+        StringBuilder sBuild = new StringBuilder();
+
+        sBuild.append("Following Command Lines have been processed: \n")
+                .append("- Neo4j Bind Address: " + neo4jbindAddr + "\n");
+
+        if(defaultDatbase) sBuild.append("- Default Data Processing in Database\n");
+        else sBuild.append("- Release Data Processing in Database\n");
+
+        if(language == Language.Ger) sBuild.append("- Language Mode is set to German\n");
+        else sBuild.append("- Language Mode is set to English\n");
+
+        if(guiSimulation) sBuild.append("- Using Prototype Graphical User Interface\n");
+        else sBuild.append("- Using Release Graphical User Interface\n");
 
         switch(mVerbosity) {
             case TRACE: Log.setLevel(Log.Level.TRACE);
@@ -51,13 +68,13 @@ public class Main {
                 Log.error("Unknown verbosity level");
         }
 
-        Log.trace("Following Command Lines have been processed: \n" +
-                "- neo4j bind address: " + neo4jbindAddr + "\n" +
-                "- neo4j default database: " + defaultDatbase + "\n"+
-                "- language mode is " + language + "\n" +
-                "- minimum players is " + players + "\n" +
-                "- gui prototype: "+ guiSimulation + "\n" +
-                "- verbosity level is " + Log.getLevel());
+        sBuild.append("- Verbosity Level is set to " +Log.getLevel() + "\n");
+
+        if(setSeed) sBuild.append("- Seed has been set to " + seed + "\n");
+        else sBuild.append("- Seed has been randomized\n");
+
+        Log.info(sBuild.toString());
+
 
 
         if(defaultDatbase)
@@ -85,13 +102,16 @@ public class Main {
 
         String[] param = {"testparam"};
         if(guiSimulation) {
-            Log.info("Launching prototype GUI...");
+            Log.info("Launching Prototype GUI...");
             ProtoAnchor anchor = new ProtoAnchor();
             anchor.setModel(model);
             anchor.main(param);
         }
         else {
             Log.info("Launching experimental GUI...");
+            GuiAnchor anchor = new GuiAnchor();
+            anchor.setGameModel(model); //TODO SET MODEL
+            anchor.main(param);
         }
 
 
@@ -100,12 +120,17 @@ public class Main {
     }
 
     public void parseCommandLine(String[] args){
+        //initiates seed
+        Random rand = new Random();
+        rand.setSeed(new Date().getTime());
+        seed = rand.nextInt();
+
         // create the command line parser
         CommandLineParser parser = new GnuParser();
 
         mOptions.addOption(
                 OptionBuilder.withLongOpt( "neo4jserver" )
-                .withDescription( "aquires database driver" )
+                .withDescription( "Aquires Database Driver" )
                 .hasArg()
                 .withType(Number.class)
                 .withArgName("HOST:PORT")
@@ -118,35 +143,29 @@ public class Main {
                 .create("defaultdata") );
         mOptions.addOption(
                 OptionBuilder.withLongOpt( "lang" )
-                        .withDescription( "set ups language mode for either ger or eng" )
+                        .withDescription( "Sets up Language Mode for either Ger or Eng" )
                         .hasArg()
                         .withType(Number.class)
                         .withArgName("LANGUAGE")
                         .create() );
         mOptions.addOption( OptionBuilder
-                .withDescription( "rng seed <server only>" )
+                .withDescription( "Set deterministic RNG Seed <server only>" )
                 .hasArg()
                 .withType(Number.class)
                 .withArgName("SEED")
                 .create('s') );
         mOptions.addOption( OptionBuilder
-                .withDescription( "verbosity level: DEBUG(2), TRACE(1), INFO(3)" )
+                .withDescription( "Verbosity Level: DEBUG(2), TRACE(1), INFO(3)" )
                 .hasArg()
                 .withType(Number.class)
                 .withArgName("VERBOSITY")
                 .create('v') );
         mOptions.addOption( OptionBuilder
-                .withDescription( "if not used, will default to prototype gui" )
+                .withDescription( "If not used, will default to Prototype GUI" )
                 .hasOptionalArg()
                 .withType(Number.class)
                 .withArgName("")
                 .create("gui") );
-        mOptions.addOption( OptionBuilder
-                .withDescription( "number of min. players" )
-                .hasArg()
-                .withType(Number.class)
-                .withArgName("PLAYERS")
-                .create('p') );
 
         CommandLine line;
         try {
@@ -159,16 +178,14 @@ public class Main {
                     neo4jbindAddr = line.getOptionValue("neo4jserver");
                     if(!checkBindAddrFormat(neo4jbindAddr))
                         throw new ParseException(neo4jbindAddr + " malicious bind address format for neo4j!");
-                    if (line.hasOption("s"))
-                        seed = ((Number)line.getParsedOptionValue("s")).intValue();
+                    if (line.hasOption("s")) {
+                        seed = ((Number) line.getParsedOptionValue("s")).intValue();
+                        setSeed = true;
+                    }
                     if (line.hasOption("defaultdata"))
                         defaultDatbase = Boolean.valueOf(line.getOptionValue("defaultdata"));
                     else
                         throw new ParseException("-defaultdata not specified!");
-                    if (line.hasOption('p'))
-                        players = ((Number)line.getParsedOptionValue("p")).intValue();
-                    else
-                        throw new ParseException("-p not specified!");
                     if(line.hasOption("lang")) {
                         if (line.getOptionValue("lang").equals("ger"))
                             language = Language.Ger;
@@ -223,7 +240,7 @@ public class Main {
     private void abort(String message) {
         Log.error(message);
         System.err.println(
-                "java <jarfile> --neo4jserver <host>:<port> -defaultdata <boolean> [-s <seed>] -p <num min. player>\n" +
+                "[java <jarfile>] --neo4jserver <host>:<port> -defaultdata <boolean> [-s <seed>] \n" +
                         "               -gui --lang <language>\n" +
                         "               [-v (1-3)]");
         System.err.println();

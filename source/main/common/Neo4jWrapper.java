@@ -175,6 +175,7 @@ public class Neo4jWrapper {
      */
     public void createNode(String nodeName) throws ServiceUnavailableException,DatabaseException{
 
+        nodeName = nodeName.toLowerCase();
         try ( Session session = driver.session() )
         {
 
@@ -255,22 +256,29 @@ public class Neo4jWrapper {
      * @return
      */
     public boolean createRelationship(String node1, String node2, String relationship){
+        node1 = node1.toLowerCase(); node2 = node2.toLowerCase() ; relationship = relationship.toLowerCase();
         try ( Session session = driver.session() )
         {
 
             try ( Transaction tx = session.beginTransaction() )
             {
-                int count = 0;
-                StatementResult result = tx.run( "MATCH (n)-[rel:rating]->(r)" +
-                        "RETURN rel");
-                while (result.hasNext()) {
+                int count = 1;
+                StatementResult result = tx.run( "MATCH (s)-[rel]->(t)" +
+                        "WHERE s.name = {n1} AND t.name = {n2}" +
+                        "" +
+                        "RETURN rel",parameters("n1",node1,"n2",node2));
+                if (result.hasNext()) {
                     Record record = result.next();
-                    count = record.get("rating").asInt();
+                    count = record.get("rel").asRelationship().get("rating").asInt() +1;
+                    tx.run( "MATCH (s)-[rel]->(t)" +
+                            "WHERE s.name = {n1} AND t.name = {n2}" +
+                            "SET rel.rating = {c}" +
+                            "RETURN rel",parameters("n1",node1,"n2",node2,"c",count));
                 }
-
+                else
                 tx.run( "MATCH (ee) WHERE ee.name =  \""+node1+"\" "+
                                 "MATCH (js) WHERE js.name = \""+node2+"\" " +
-                                "CREATE (ee)-[rel:"+relationship+" {rating: 2," +
+                                "CREATE UNIQUE (ee)-[rel:"+relationship+" {rating: "+count+"," +
                                 "legacy: "+!legacy+"} " +
                                 "]->(js)");
 

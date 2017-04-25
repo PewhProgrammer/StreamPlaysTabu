@@ -23,7 +23,7 @@ public class Neo4jWrapperTest extends TestCase {
     @org.junit.Test
     public void setUp() throws Exception {
         database = new Neo4jWrapper(simulation,neo4jbindAddr,20);
-        database.resetRelationships();
+        database.resetRelationships(); //TODO doesnt work properly on userNode
         database.resetDatabase();
         Log.setLevel(Log.Level.TRACE);
     }
@@ -82,6 +82,11 @@ public class Neo4jWrapperTest extends TestCase {
                 ,true,
                 database.createRelationship("Nautilus","Hallo",
                         "RATING"));
+        database.createRelationship("Nautilus","Hallo",
+                "RATING");
+        database.createRelationship("Nautilus","Hallo",
+                "RATING");
+
     }
 
     public void testClearRelationships(){
@@ -144,25 +149,30 @@ public class Neo4jWrapperTest extends TestCase {
         database.createUser(user);
 
         try{
-            database.createNode("Hextech Gunblade");
-            database.createNode("Mass Effect: Andromeda");
-            database.createNode("Friendly Fire");
-            database.createNode("Spell");
-            database.createNode("Smart Cast");
-            database.createNode("Overwatch");
-            database.createNode("Alistar");
-            database.createNode("Morgana");
-            database.createNode("AK-47");
-            database.createNode("Heroes of the storm");
-            database.createNode("Spellthief");
-            database.createNode("Infinity Edge");
             database.createNode("LCS");
             database.createNode("Dota 2");
-            database.createNode("MP-9");
+            database.createNode("MP9");
             database.createNode("Rush B");
             database.createNode("Spellthief");
             database.createNode("Infinity Edge");
             database.createNode("Worlds Championship");
+            database.createNode("Lag");
+            database.createNode("Player versus Environment");
+            database.createNode("Strafing");
+            database.createNode("Mob");
+            database.createNode("Spawn point");
+            database.createNode("Tank");
+            database.createNode("Train Simulator");
+            database.createNode("Open World");
+            database.createNode("Buff");
+            database.createNode("Deathmatch");
+            database.createNode("Camping");
+            database.createNode("Avatar");
+            database.createNode("Hitbox");
+            database.createNode("HUD");
+            database.createNode("Hack and Slash");
+            database.createNode("Player versus Player");
+
         }catch(DatabaseException e){
             Log.trace(e.getMessage());
             fail();
