@@ -3,8 +3,6 @@ package module;
 import junit.framework.TestCase;
 import logic.bots.AltTwitchBot;
 import logic.bots.BeamBot;
-import logic.bots.Bot;
-import logic.bots.TwitchBot;
 import logic.commands.*;
 
 import java.util.concurrent.ExecutionException;
@@ -14,16 +12,14 @@ import java.util.concurrent.ExecutionException;
  */
 public class BotTest extends TestCase{
 
-    private TwitchBot tb;
     private BeamBot bb;
     private AltTwitchBot atb;
-    private String channel = "RealWasabiMC";
+    private String channel = "streamplaystaboo";
     private String user = "Karl";
 
     @org.junit.Test
     public void setUp() throws Exception {
-        tb = new TwitchBot(null, channel);
-    //    bb = new BeamBot(null, channel);
+        bb = new BeamBot(null, channel);
         atb = new AltTwitchBot(null, channel);
     }
 
@@ -100,8 +96,8 @@ public class BotTest extends TestCase{
     }
 
     public void testVoteCommand() {
-        String content = "!vote 3 4 5 6 7";
-        int[] id = {3, 4, 5, 6, 7};
+        String content = "!vote 3 4 5 6";
+        int[] id = {3, 4, 5, 6};
         Prevote p = new Prevote(null, channel, id);
         parseInput(content, p);
     }
@@ -112,11 +108,9 @@ public class BotTest extends TestCase{
 
     /* :nickname!username@nickname.tmi.twitch.tv PRIVMSG #channel :message*/
     private void parseInput(String content, Command cmd) {
-        Command parsedCmd = tb.parseLine(getTwitchMessage(content));
+        Command parsedCmd = bb.parseLine(content, user);
         assertEquals(cmd, parsedCmd);
-       // parsedCmd = bb.parseLine(content);
-       // assertEquals(cmd, parsedCmd);
-        parsedCmd = atb.parseLine(content, user);
-        assertEquals(cmd, parsedCmd);
+        //Command parsedCmd = atb.parseLine(content, user);
+        //assertEquals(cmd, parsedCmd);
     }
 }

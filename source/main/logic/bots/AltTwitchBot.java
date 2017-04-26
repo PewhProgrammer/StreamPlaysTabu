@@ -105,7 +105,7 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void announceNewRound() {
-        sendChatMessage("A new round has started. Good Luck!!!");
+        sendChatMessage("-------------------------------------------------       A new round has started. Good Luck!!!       -------------------------------------------------");
     }
 
     @Override
@@ -202,8 +202,12 @@ public class AltTwitchBot extends Bot {
 
         // !vote
         if (parts[0].equals("!vote")) {
-            int voteNum = Integer.parseInt(parts[1]);
-            return new Prevote(model, channel, new int[3]);
+            int[] preVotes = new int[parts.length-1];
+            for (int i = 1; i < parts.length; i++){
+                int vote = Integer.parseInt(parts[i]);
+                preVotes[i-1] = vote;
+            }
+            return new Prevote(model, channel, preVotes);
         }
 
 

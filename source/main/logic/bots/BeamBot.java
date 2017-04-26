@@ -105,6 +105,11 @@ public class BeamBot extends Bot {
         });
     }
 
+    public Command parseLine(String message, String sender) {
+        this.sender = sender;
+        return parseLine(message);
+    }
+
     @Override
     public Command parseLine(String line) {
 
@@ -171,8 +176,12 @@ public class BeamBot extends Bot {
             /* !vote */
         if (message[0].equals("!vote")) {
                 /* GET VOTES */
-            int voteNum = Integer.parseInt(message[1]);
-            return new Prevote(model, channel, new int[3]);
+            int[] preVotes = new int[message.length-1];
+            for (int i = 1; i < message.length; i++){
+                int vote = Integer.parseInt(message[i]);
+                preVotes[i-1] = vote;
+            }
+            return new Prevote(model, channel,preVotes);
         }
         return null;
 

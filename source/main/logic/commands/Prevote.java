@@ -41,6 +41,10 @@ public class Prevote extends Command {
         Prevote p = (Prevote) o;
         int[] reference = p.getId();
 
+        if (getId().length != reference.length) {
+            return false;
+        }
+
         for (int i = 0; i < id.length; i++) {
             if (id[i] != reference[i]) {
                 return false;

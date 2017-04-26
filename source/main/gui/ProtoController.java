@@ -91,7 +91,6 @@ public class ProtoController implements Initializable, IObserver {
                 //initialize bots
                 if(platform.equals("twitch"))
                     try {
-                        //ProtoAnchor.gameModel.setBot(new TwitchBot(ProtoAnchor.gameModel, chn));
                         ProtoAnchor.gameModel.setBot(new AltTwitchBot(ProtoAnchor.gameModel,"#"+chn));
                     } catch (Exception e) {
                         e.printStackTrace();
