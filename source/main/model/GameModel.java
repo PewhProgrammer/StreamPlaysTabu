@@ -3,10 +3,22 @@ package model;
 import common.DatabaseException;
 import common.Neo4jWrapper;
 import common.Util;
+import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.ling.CoreLabel;
+import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import edu.stanford.nlp.util.CoreMap;
 import logic.bots.Bot;
 import logic.bots.SiteBot;
 import logic.commands.Command;
+import org.languagetool.JLanguageTool;
+import org.languagetool.language.BritishEnglish;
+import org.languagetool.language.English;
+import org.languagetool.language.German;
+import org.languagetool.language.GermanyGerman;
+import org.languagetool.rules.RuleMatch;
 
+import java.io.IOException;
 import java.util.*;
 
 
@@ -18,7 +30,7 @@ public class GameModel extends Observable{
     private static final int LEVEL_5 = 1200;
     private static final int LEVEL_6 = 1800;
 
-    private static final double ROUND_TIME = 1000.0 * 90.0;
+    private static final double ROUND_TIME = 1000.0 * 120.0;
 
     private GameState mGameState;
     private int mNumPlayers;
@@ -43,13 +55,15 @@ public class GameModel extends Observable{
 
     private ArrayList<PrevoteCategory> prevoting;
 
-
     private Date timeStamp;
 
     private Bot bot;
     private SiteBot sBot;
 
     private Set<String> hosts;
+
+    private StanfordCoreNLP pipeline;
+    private JLanguageTool langTool;
 
     public GameModel(Language l, short minPlayers, Neo4jWrapper neo, SiteBot siteBot){
         mGameState = GameState.Registration;
@@ -68,6 +82,16 @@ public class GameModel extends Observable{
         votekick = new HashSet<>();
         guesses = new LinkedList<>();
         tabooSuggestions = new HashMap<>();
+
+        Properties props = new Properties();
+        props.setProperty("annotators", "tokenize,ssplit,pos,lemma,parse,natlog");
+        pipeline = new StanfordCoreNLP(props);
+
+        if (lang.equals(Language.Eng)) {
+            langTool = new JLanguageTool(new BritishEnglish());
+        } else {
+            langTool = new JLanguageTool(new GermanyGerman());
+        }
     }
 
     public GameState getGameState(){
@@ -201,12 +225,11 @@ public class GameModel extends Observable{
         Iterator<Guess> it = guesses.iterator();
         while (it.hasNext()) {
             Guess g = it.next();
+            g.decreaseScore();
             if (g.getGuess().equals(guess)) {
                 g.occured();
                 g.increaseScore();
-                Collections.sort(guesses);
                 contained = true;
-                break;
             }
         }
 
@@ -214,6 +237,7 @@ public class GameModel extends Observable{
             guesses.add(new Guess(guess));
         }
 
+        Collections.sort(guesses);
         notifyGuess();
     }
 
@@ -405,5 +429,37 @@ public class GameModel extends Observable{
 
     public void setTimeStamp() {
         timeStamp = new Date();
+    }
+
+    public List<String> lemmatize(String text) {
+        Annotation document = new Annotation(text);
+        pipeline.annotate(document);
+
+        List<String> lemmas = new LinkedList<>();
+        List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
+        for(CoreMap sentence: sentences) {
+            // Iterate over all tokens in a sentence
+            for (CoreLabel token: sentence.get(CoreAnnotations.TokensAnnotation.class)) {
+                // Retrieve and add the lemma for each word into the list of lemmas
+                lemmas.add(token.get(CoreAnnotations.LemmaAnnotation.class));
+            }
+        }
+
+        return lemmas;
+    }
+
+    public void checkSpelling(String text) {
+        try {
+            List<RuleMatch> matches = langTool.check(text);
+            for (RuleMatch match : matches) {
+                System.out.println("Potential error at characters " +
+                        match.getFromPos() + "-" + match.getToPos() + ": " +
+                        match.getMessage());
+                System.out.println("Suggested correction(s): " +
+                        match.getSuggestedReplacements());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

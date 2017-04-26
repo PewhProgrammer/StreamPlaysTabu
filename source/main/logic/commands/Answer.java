@@ -1,7 +1,12 @@
 package logic.commands;
 
+import common.Log;
+import common.Util;
 import model.GameModel;
 import model.GameState;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by Marc on 04.04.2017.
@@ -22,13 +27,13 @@ public class Answer extends Command {
      */
     @Override
     public void execute() {
+
+        //TODO apply anti-cheating mechanism to input:
         gameModel.addQAndA(question, answer);
     }
 
     @Override
     public boolean validate() {
-        //TODO anti cheating mechanism
-
         if (!gameModel.getGameState().equals(GameState.GameStarted)) {
             return false;
         }
