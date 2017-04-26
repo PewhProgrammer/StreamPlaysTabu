@@ -1,6 +1,12 @@
 package gui;
 
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import model.IObserver;
 
 import java.net.URL;
@@ -11,9 +17,12 @@ import java.util.ResourceBundle;
  */
 public class GuiController implements Initializable, IObserver {
 
+    @FXML
+    ToggleButton fullscreenToggle = new ToggleButton();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        fullscreenToggle.setGraphic(new ImageView(new Image(getClass().getResourceAsStream("pictures/american-flag.png"))));
     }
 
     @Override
