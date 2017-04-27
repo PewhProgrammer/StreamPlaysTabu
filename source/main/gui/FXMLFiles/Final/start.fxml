@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
@@ -15,22 +16,30 @@
    <children>
       <StackPane alignment="TOP_CENTER" layoutX="540.0" layoutY="285.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
+            <ImageView fitHeight="640.0" fitWidth="835.0" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 0.8;" StackPane.alignment="BOTTOM_RIGHT">
+               <image>
+                  <Image url="@../../pictures/start.png" />
+               </image>
+            </ImageView>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="StreamPlaysTaboo">
                <font>
-                  <Font size="64.0" />
+                  <Font name="AR JULIAN" size="64.0" />
                </font>
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
             </Text>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Settings" StackPane.alignment="TOP_CENTER">
                <StackPane.margin>
                   <Insets top="100.0" />
                </StackPane.margin>
                <font>
-                  <Font size="40.0" />
+                  <Font name="AR JULIAN" size="40.0" />
                </font>
             </Text>
             <ComboBox fx:id="fullscreenComboBox" prefWidth="150.0" promptText="On" StackPane.alignment="CENTER_LEFT">
                <StackPane.margin>
-                  <Insets left="170.0" top="-300.0" />
+                  <Insets left="180.0" top="-300.0" />
                </StackPane.margin>
             </ComboBox>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fullscreen:" StackPane.alignment="CENTER_LEFT">
@@ -38,12 +47,12 @@
                   <Insets left="50.0" top="-300.0" />
                </StackPane.margin>
                <font>
-                  <Font size="24.0" />
+                  <Font name="AR JULIAN" size="24.0" />
                </font>
             </Text>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Platform:" StackPane.alignment="CENTER_LEFT">
                <font>
-                  <Font size="24.0" />
+                  <Font name="AR JULIAN" size="24.0" />
                </font>
                <StackPane.margin>
                   <Insets left="50.0" top="-100.0" />
@@ -56,7 +65,7 @@
             </ComboBox>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your channelname:" StackPane.alignment="CENTER_LEFT">
                <font>
-                  <Font size="24.0" />
+                  <Font name="AR JULIAN" size="24.0" />
                </font>
                <StackPane.margin>
                   <Insets left="50.0" top="100.0" />
@@ -69,7 +78,7 @@
             </TextField>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gamemode:" StackPane.alignment="CENTER_LEFT">
                <font>
-                  <Font size="24.0" />
+                  <Font name="AR JULIAN" size="24.0" />
                </font>
                <StackPane.margin>
                   <Insets left="50.0" top="300.0" />
@@ -77,9 +86,17 @@
             </Text>
             <ComboBox fx:id="gamemodeComboBox" prefWidth="150.0" promptText="Free for all" StackPane.alignment="CENTER_LEFT">
                <StackPane.margin>
-                  <Insets left="200.0" top="300.0" />
+                  <Insets left="180.0" top="300.0" />
                </StackPane.margin>
             </ComboBox>
+            <Button fx:id="startGameButton" mnemonicParsing="false" text="Start Game" StackPane.alignment="BOTTOM_CENTER">
+               <StackPane.margin>
+                  <Insets bottom="80.0" />
+               </StackPane.margin>
+               <font>
+                  <Font name="AR JULIAN" size="24.0" />
+               </font>
+            </Button>
          </children>
       </StackPane>
    </children>

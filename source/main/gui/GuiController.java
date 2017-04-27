@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -31,6 +32,9 @@ public class GuiController implements Initializable, IObserver {
 
     @FXML
     TextField channelNameField = new TextField();
+
+    @FXML
+    Button startGameButton = new Button();
 
     private boolean fullscreen = true;
     private String platform = "Twitch", channel = "k3uleee", gamemode = "Free for all";
@@ -70,7 +74,6 @@ public class GuiController implements Initializable, IObserver {
             @Override
             public void handle(ActionEvent event) {
                 gamemode = gamemodeComboBox.getValue().toString();
-                System.out.println(gamemode);
             }
         });
     }
