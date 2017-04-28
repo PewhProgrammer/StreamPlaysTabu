@@ -23,8 +23,8 @@ public class GuiAnchor extends Application {
         GuiAnchor.stage = primaryStage;
         //load the start.fxml
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/Final/start.fxml"));
-        //FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFILES/start.fxml"));
+        //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/Final/start.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFILES/start.fxml"));
 
         Parent root = loader.load();
 //        cont = loader.getController();

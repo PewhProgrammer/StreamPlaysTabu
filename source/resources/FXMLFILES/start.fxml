@@ -1,31 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProtoController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GuiController">
    <children>
-      <CheckBox fx:id="fullscreenBox" layoutX="38.0" layoutY="86.0" mnemonicParsing="false" prefHeight="21.0" prefWidth="107.0" text="Fullscreen" />
-      <Button fx:id="startButton" layoutX="162.0" layoutY="536.0" mnemonicParsing="false" text="Start Game" />
-      <Text layoutX="136.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Settings" AnchorPane.leftAnchor="135.916015625" AnchorPane.rightAnchor="136.083984375">
-         <font>
-            <Font size="36.0" />
-         </font>
-      </Text>
-      <Text layoutX="38.0" layoutY="134.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resolution:" />
-      <RadioButton fx:id="fullHDRadio" layoutX="38.0" layoutY="147.0" mnemonicParsing="false" text="1920x1080" />
-      <RadioButton fx:id="HDRadio" layoutX="157.0" layoutY="147.0" mnemonicParsing="false" text="1280x720" />
-      <Text layoutX="38.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Platform:" />
-      <RadioButton fx:id="twitchRadio" layoutX="38.0" layoutY="222.0" mnemonicParsing="false" text="Twitch" />
-      <RadioButton fx:id="beamRadio" layoutX="162.0" layoutY="222.0" mnemonicParsing="false" text="Beam" />
-      <TextField fx:id="channelInput" layoutX="38.0" layoutY="269.0" promptText="channel name here" />
+      <StackPane alignment="TOP_CENTER" layoutX="540.0" layoutY="285.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="640.0" fitWidth="835.0" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 0.8;" StackPane.alignment="BOTTOM_RIGHT">
+               <image>
+                  <Image url="@../../main/gui/pictures/start.png" />
+               </image>
+            </ImageView>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="StreamPlaysTaboo">
+               <font>
+                  <Font name="AR JULIAN" size="64.0" />
+               </font>
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Settings" StackPane.alignment="TOP_CENTER">
+               <StackPane.margin>
+                  <Insets top="100.0" />
+               </StackPane.margin>
+               <font>
+                  <Font name="AR JULIAN" size="40.0" />
+               </font>
+            </Text>
+            <ComboBox fx:id="fullscreenComboBox" prefWidth="150.0" promptText="On" StackPane.alignment="CENTER_LEFT">
+               <StackPane.margin>
+                  <Insets left="180.0" top="-300.0" />
+               </StackPane.margin>
+            </ComboBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Fullscreen:" StackPane.alignment="CENTER_LEFT">
+               <StackPane.margin>
+                  <Insets left="50.0" top="-300.0" />
+               </StackPane.margin>
+               <font>
+                  <Font name="AR JULIAN" size="24.0" />
+               </font>
+            </Text>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Platform:" StackPane.alignment="CENTER_LEFT">
+               <font>
+                  <Font name="AR JULIAN" size="24.0" />
+               </font>
+               <StackPane.margin>
+                  <Insets left="50.0" top="-100.0" />
+               </StackPane.margin>
+            </Text>
+            <ComboBox fx:id="platformComboBox" prefWidth="150.0" promptText="Twitch" StackPane.alignment="CENTER_LEFT">
+               <StackPane.margin>
+                  <Insets left="170.0" top="-100.0" />
+               </StackPane.margin>
+            </ComboBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Your channelname:" StackPane.alignment="CENTER_LEFT">
+               <font>
+                  <Font name="AR JULIAN" size="24.0" />
+               </font>
+               <StackPane.margin>
+                  <Insets left="50.0" top="100.0" />
+               </StackPane.margin>
+            </Text>
+            <TextField fx:id="channelNameField" maxWidth="200.0" prefHeight="31.0" prefWidth="201.0" promptText="StreamPlaysTaboo" StackPane.alignment="CENTER_LEFT">
+               <StackPane.margin>
+                  <Insets left="280.0" top="100.0" />
+               </StackPane.margin>
+            </TextField>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Gamemode:" StackPane.alignment="CENTER_LEFT">
+               <font>
+                  <Font name="AR JULIAN" size="24.0" />
+               </font>
+               <StackPane.margin>
+                  <Insets left="50.0" top="300.0" />
+               </StackPane.margin>
+            </Text>
+            <ComboBox fx:id="gamemodeComboBox" prefWidth="150.0" promptText="Free for all" StackPane.alignment="CENTER_LEFT">
+               <StackPane.margin>
+                  <Insets left="180.0" top="300.0" />
+               </StackPane.margin>
+            </ComboBox>
+            <Button fx:id="startGameButton" mnemonicParsing="false" text="Start Game" StackPane.alignment="BOTTOM_CENTER">
+               <StackPane.margin>
+                  <Insets bottom="80.0" />
+               </StackPane.margin>
+               <font>
+                  <Font name="AR JULIAN" size="24.0" />
+               </font>
+            </Button>
+         </children>
+      </StackPane>
    </children>
 </AnchorPane>
