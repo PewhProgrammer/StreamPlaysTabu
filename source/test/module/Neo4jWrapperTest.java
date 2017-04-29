@@ -81,18 +81,20 @@ public class Neo4jWrapperTest extends TestCase {
         try {
             database.createNode("Nautilus");
             database.createNode("Hallo");
+            database.createNode("Hallo2");
+            database.createNode("Hallo mein Freund");
         }
         catch(ServiceUnavailableException | DatabaseException e){
             Log.info(e.getMessage());
         }
-        assertEquals("No such relationshio could be created!"
+        assertEquals("No such relationship could be created!"
                 ,true,
                 database.createRelationship("Nautilus","Hallo",
                         "RATING"));
-        database.createRelationship("Nautilus","Hallo",
+        database.createRelationship("Nautilus","Hallo2",
                 "RATING");
-        database.createRelationship("Nautilus","Hallo",
-                "RATING");
+        database.createRelationship("Nautilus","Hallo mein Freund",
+                "IS RELATED TO");
 
     }
 
@@ -152,8 +154,6 @@ public class Neo4jWrapperTest extends TestCase {
     }
 
     public void testSetUpNodes(){
-        String user ="Manuel";
-        database.createUser(user);
 
         try{
             database.createNode("lcs");

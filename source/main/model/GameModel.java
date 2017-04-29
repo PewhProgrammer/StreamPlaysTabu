@@ -211,7 +211,7 @@ public class GameModel extends Observable{
         String relation = content[0].toLowerCase();
         String targetNode = content[1].toLowerCase();
 
-        //TODO mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation);
+        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation);
     }
 
     public void clearExplanations() {
@@ -260,7 +260,7 @@ public class GameModel extends Observable{
             String relation = content[0].toLowerCase();
             String targetNode = content[1].toLowerCase();
 
-            //TODO mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation);
+            mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation);
         }
     }
 

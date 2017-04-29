@@ -286,7 +286,7 @@ public class Neo4jWrapper {
                 else
                 tx.run( "MATCH (ee) WHERE ee.name =  \""+node1+"\" "+
                                 "MATCH (js) WHERE js.name = \""+node2+"\" " +
-                                "CREATE UNIQUE (ee)-[rel:"+relationship+" {rating: "+count+"," +
+                                "CREATE UNIQUE (ee)-[rel:`"+relationship+"` {rating: "+count+"," +
                                 "legacy: "+!legacy+"} " +
                                 "]->(js)");
 
