@@ -20,7 +20,7 @@ public class Explanation extends Command {
 
     @Override
     public void execute() {
-
+        gameModel.getBot().sendChatMessage("Explanation given: " + explanation);
         gameModel.addExplanation(explanation);
     }
 

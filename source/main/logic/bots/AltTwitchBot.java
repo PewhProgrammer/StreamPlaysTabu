@@ -50,6 +50,22 @@ public class AltTwitchBot extends Bot {
                 }
             }
         }
+
+        public void onPrivateMessage(String sender, String login, String hostname, String message) {
+            Command cmd = parseLine(message, sender);
+            if (cmd != null) {
+                model.pushCommand(cmd);
+            }
+        }
+
+        protected void onUnknown(String line){
+            Log.info(line);
+        }
+
+        protected  void onAction(String sender, String login,
+                                 String hostname, String target, String action){
+            Log.info(action);
+        }
     }
 
     @Override
@@ -105,7 +121,9 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void announceNewRound() {
-        sendChatMessage("-------------------------------------------------       A new round has started. Good Luck!!!       -------------------------------------------------");
+        sendChatMessage("------------------------------------------------------------------" +
+                " A new round has started. Good Luck!!!" +
+                " ------------------------------------------------------------------");
     }
 
     @Override
@@ -119,7 +137,8 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void announceRegistration() {
-        sendChatMessage("A new round will start soon. Type !register to get into the giver pool!");
+        sendChatMessage("" +
+                "------------------------------------------------- A new round will start soon. Type !register to get into the giver pool! -------------------------------------------------");
     }
 
     @Override
@@ -214,3 +233,4 @@ public class AltTwitchBot extends Bot {
         return null;
     }
 }
+

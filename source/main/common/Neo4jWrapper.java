@@ -430,7 +430,7 @@ public class Neo4jWrapper {
 
     private int updateUserPropertiesFromDatabase(String user,String property,int i) throws DatabaseException{
         int oldPoints = fetchUserPropertiesFromDatabase(user,property) ;
-        int result = oldPoints + i ;
+        int result =  i ;
         StringBuilder builder = new StringBuilder();
 
         try ( Session session = driver.session() )
