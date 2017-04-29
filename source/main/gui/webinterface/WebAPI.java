@@ -10,9 +10,4 @@ public class WebAPI {
     public String settings() {
         return "setup";
     }
-
-    @RequestMapping("/register")
-    public String register() {
-        return "register";
-    }
 }
