@@ -104,8 +104,8 @@ public class ProtoController implements Initializable, IObserver {
 
                 Parent root = null;
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/Proto/idle.fxml"));
-                    //FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/idle.fxml"));
+                    //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/Proto/idle.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/idle.fxml"));
                     root = loader.load();
                     ProtoAnchor.cont = loader.getController();
                     gameModel.updateObserver(cont);
@@ -173,8 +173,8 @@ public class ProtoController implements Initializable, IObserver {
         if (ProtoAnchor.gameModel.getGameState() == GameState.GameStarted) {
             Parent root = null;
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/Proto/game.fxml"));
-                //FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/game.fxml"));
+                //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/Proto/game.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/game.fxml"));
                   root = loader.load();
                 ProtoAnchor.cont = loader.getController();
                 gameModel.updateObserver(cont);
@@ -209,8 +209,8 @@ public class ProtoController implements Initializable, IObserver {
         else if(ProtoAnchor.gameModel.getGameState() == GameState.Registration) {
             Parent root = null;
             try {
-                //FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/idle.fxml"));
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/Proto/idle.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/FXMLFiles/idle.fxml"));
+                //FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/Proto/idle.fxml"));
                 root = loader.load();
                 ProtoAnchor.cont = loader.getController();
                 gameModel.updateObserver(cont);
@@ -261,8 +261,9 @@ public class ProtoController implements Initializable, IObserver {
             @Override
             public void run() {
                 String s = "Guesses:\n\n";
+                int i = 0 ;
                 for(Guess g : ProtoAnchor.gameModel.getGuesses()) {
-                    s = s + "- " + g.getGuess() + "\n";
+                    s = s + (++i)+". " + g.getGuess() + "\n";
                 }
                 guesses.setText(s);
             }

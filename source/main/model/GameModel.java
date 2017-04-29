@@ -1,6 +1,7 @@
 package model;
 
 import common.DatabaseException;
+import common.Log;
 import common.Neo4jWrapper;
 import common.Util;
 import edu.stanford.nlp.ling.CoreAnnotations;
@@ -332,13 +333,18 @@ public class GameModel extends Observable{
         long diff = joinedTime.getTime() - referenceTime.getTime();
         double q = (double) diff / ROUND_TIME;
         int score = (int) ((tabooWords.size() + 1) * 100 - q * (tabooWords.size() + 1) * 100);
+
+        Log.trace("Q: " + q + " and "+getTimeStamp() + " joined: " + joinedTime);
+        Log.trace(winner + " gained Points: " + score);
+
         updateScore(winner, score);
         updateScore(giver, score);
         notifyWinner();
         getSiteBot().finish();
         getBot().announceWinner(winner);
         for (int i = 0; i < 3 && i < guesses.size(); i++) {
-            mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, guesses.get(i).getGuess(), "isRelatedTo");
+            if(guesses.get(i).getScore() > 1)
+                mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, guesses.get(i).getGuess(), "isRelatedTo");
         }
         clear();
         setGiver(winner);

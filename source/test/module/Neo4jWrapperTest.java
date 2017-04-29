@@ -156,29 +156,33 @@ public class Neo4jWrapperTest extends TestCase {
         database.createUser(user);
 
         try{
-            database.createNode("LCS");
-            database.createNode("Dota 2");
-            database.createNode("MP9");
-            database.createNode("Rush B");
-            database.createNode("Spellthief");
-            database.createNode("Infinity Edge");
-            database.createNode("Worlds Championship");
-            database.createNode("Lag");
-            database.createNode("Player versus Environment");
-            database.createNode("Strafing");
-            database.createNode("Mob");
-            database.createNode("Spawn point");
-            database.createNode("Tank");
-            database.createNode("Train Simulator");
-            database.createNode("Open World");
-            database.createNode("Buff");
-            database.createNode("Deathmatch");
-            database.createNode("Camping");
-            database.createNode("Avatar");
-            database.createNode("Hitbox");
-            database.createNode("HUD");
-            database.createNode("Hack and Slash");
-            database.createNode("Player versus Player");
+            database.createNode("lcs");
+            database.createNode("dota 2");
+            database.createNode("mp9");
+            database.createNode("rush b");
+            database.createNode("spellthief");
+            database.createNode("infinity edge");
+            database.createNode("worlds championship");
+            database.createNode("lag");
+            database.createNode("player versus environment");
+            database.createNode("strafing");
+            database.createNode("mob");
+            database.createNode("spawn point");
+            database.createNode("tank");
+            database.createNode("train simulator");
+            database.createNode("open world");
+            database.createNode("buff");
+            database.createNode("deathmatch");
+            database.createNode("camping");
+            database.createNode("avatar");
+            database.createNode("hitbox");
+            database.createNode("hud");
+            database.createNode("hack and slash");
+            database.createNode("player versus player");
+            database.createNode("mario kart");
+            database.createNode("mario star");
+            database.createNode("geralt of rivia");
+            //database.createNode("");
 
         }catch(DatabaseException e){
             Log.trace(e.getMessage());
