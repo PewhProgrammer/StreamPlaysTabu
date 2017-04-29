@@ -55,7 +55,7 @@ public class Neo4jWrapper {
      * @param relationship
      * @return
      */
-    public boolean insertNodesAndRelationshipIntoOntology(String node1, String node2, String relationship){
+    public boolean insertNodesAndRelationshipIntoOntology(String node1, String node2, String relationship,Boolean reliableFlag){
         //create two nodes if not already
         try {
             createNode(node1);
@@ -72,7 +72,7 @@ public class Neo4jWrapper {
 
         //creates a binding connection between node1 and node2
         return
-                createRelationship(node1,node2,relationship);
+                createRelationship(node1,node2,relationship,reliableFlag);
     }
 
     public int updateUserPoints(String user, int i) {
@@ -261,7 +261,9 @@ public class Neo4jWrapper {
      * @param relationship
      * @return
      */
-    public boolean createRelationship(String node1, String node2, String relationship){
+    public boolean createRelationship(String node1, String node2, String relationship, Boolean reliableFlag){
+
+
         node1 = Util.reduceStringToMinimum(node1);
         node2 = Util.reduceStringToMinimum(node2);
         relationship = Util.reduceStringToMinimum(relationship);
@@ -278,7 +280,17 @@ public class Neo4jWrapper {
                 if (result.hasNext()) {
                     Record record = result.next();
                     count = record.get("rel").asRelationship().get("rating").asInt() +1;
-                    tx.run( "MATCH (s)-[rel]->(t)" +
+                    if(count >= 3) reliableFlag = true;
+                    if(!record.get("rel").asRelationship().get("reliableFlag").asBoolean() &&
+                            reliableFlag) {
+                        tx.run("MATCH (s)-[rel]->(t)" +
+                                "WHERE s.name = {n1} AND t.name = {n2}" +
+                                "SET rel.rating = {c}" +
+                                "SET rel.reliableFlag = {flag}" +
+                                "RETURN rel", parameters("n1", node1, "n2", node2, "c", count,
+                                "flag",reliableFlag));
+                    }
+                    else tx.run( "MATCH (s)-[rel]->(t)" +
                             "WHERE s.name = {n1} AND t.name = {n2}" +
                             "SET rel.rating = {c}" +
                             "RETURN rel",parameters("n1",node1,"n2",node2,"c",count));
@@ -287,7 +299,7 @@ public class Neo4jWrapper {
                 tx.run( "MATCH (ee) WHERE ee.name =  \""+node1+"\" "+
                                 "MATCH (js) WHERE js.name = \""+node2+"\" " +
                                 "CREATE UNIQUE (ee)-[rel:`"+relationship+"` {rating: "+count+"," +
-                                "legacy: "+!legacy+"} " +
+                                "legacy: "+!legacy+", reliableFlag: "+reliableFlag+"} " +
                                 "]->(js)");
 
                 /*tx.run( "MATCH (ee) WHERE ee.name =  \""+node1+"\" "+

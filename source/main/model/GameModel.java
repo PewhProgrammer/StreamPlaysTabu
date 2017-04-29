@@ -211,7 +211,7 @@ public class GameModel extends Observable{
         String relation = content[0].toLowerCase();
         String targetNode = content[1].toLowerCase();
 
-        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation);
+        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation,true);
     }
 
     public void clearExplanations() {
@@ -260,7 +260,7 @@ public class GameModel extends Observable{
             String relation = content[0].toLowerCase();
             String targetNode = content[1].toLowerCase();
 
-            mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation);
+            mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation,false);
         }
     }
 
@@ -344,7 +344,7 @@ public class GameModel extends Observable{
         getBot().announceWinner(winner);
         for (int i = 0; i < 3 && i < guesses.size(); i++) {
             if(guesses.get(i).getScore() > 1)
-                mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, guesses.get(i).getGuess(), "isRelatedTo");
+                mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, guesses.get(i).getGuess(), "is related to",true);
         }
         clear();
         setGiver(winner);
@@ -423,7 +423,7 @@ public class GameModel extends Observable{
         Collections.sort(sortedSuggestions);
         for (int i = 0; i < sortedSuggestions.size(); i++) {
             mOntologyDataBase.insertNodesAndRelationshipIntoOntology(sortedSuggestions.get(i).getExplanation(),
-                    sortedSuggestions.get(i).getContent(), "isRelatedTo");
+                    sortedSuggestions.get(i).getContent(), "isRelatedTo",true);
         }
 
         tabooSuggestions.clear();

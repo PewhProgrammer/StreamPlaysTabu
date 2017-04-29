@@ -19,6 +19,7 @@ public class Neo4jWrapperTest extends TestCase {
     private final Language language = Language.Ger;
     private Neo4jWrapper database ;
     private final String label = "Node";
+    private final int RATING_TRESHOLD = 3 ; // How many rating to validate a connection
 
     @org.junit.Test
     public void setUp() throws Exception {
@@ -81,8 +82,7 @@ public class Neo4jWrapperTest extends TestCase {
         try {
             database.createNode("Nautilus");
             database.createNode("Hallo");
-            database.createNode("Hallo2");
-            database.createNode("Hallo mein Freund");
+            database.createNode("hallO");
         }
         catch(ServiceUnavailableException | DatabaseException e){
             Log.info(e.getMessage());
@@ -90,11 +90,13 @@ public class Neo4jWrapperTest extends TestCase {
         assertEquals("No such relationship could be created!"
                 ,true,
                 database.createRelationship("Nautilus","Hallo",
-                        "RATING"));
-        database.createRelationship("Nautilus","Hallo2",
-                "RATING");
-        database.createRelationship("Nautilus","Hallo mein Freund",
-                "IS RELATED TO");
+                        "IS RELATED TO",false));
+        //test increase of rating And false flag override
+        database.createRelationship("Nautilus","Hallo",
+                "IS RELATED TO",false);
+        database.createRelationship("Nautilus","Hallo",
+                "IS RELATED TO",false);
+
 
     }
 
@@ -102,7 +104,7 @@ public class Neo4jWrapperTest extends TestCase {
         assertEquals("No such relationshio could be created!"
                 ,true,
                 database.createRelationship("Nautilus","Nautilus",
-                        "RATING"));
+                        "RATING",true));
         assertEquals("Something went wrong when clearing the ratings!"
                 ,true,
                 database.clearFailedRelationships());
