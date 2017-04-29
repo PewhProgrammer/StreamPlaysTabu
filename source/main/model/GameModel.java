@@ -194,7 +194,7 @@ public class GameModel extends Observable{
             lvl = 6;
         }
 
-        //TODO db query for taboo words
+        tabooWords.addAll(mOntologyDataBase.getTabooWords(getExplainWord(),lvl-1));
 
         return tabooWords;
     }

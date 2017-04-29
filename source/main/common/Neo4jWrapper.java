@@ -5,6 +5,7 @@ import org.neo4j.driver.v1.exceptions.*;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.neo4j.driver.v1.Values.parameters;
 
@@ -141,10 +142,12 @@ public class Neo4jWrapper {
     /**
      * randomly fetch high-validated words connected to the category
      * @param category from which the explain word inherits
+     * @param usedWords already skipped words
      * @return
      */
     public String getExplainWord(String category,Set<String> usedWords) throws DatabaseException
     {
+        //TODO include usedWords param
         return fetchConnectedWordFromDatabase(category);
     }
 
@@ -161,6 +164,23 @@ public class Neo4jWrapper {
             Log.trace(e.getMessage());
         }
     }
+
+    /**
+     *
+     * @param explain explain word to retrieve taboo words from
+     * @param i describes how many taboo words to retrieve
+     * @return
+     */
+    public Set<String> getTabooWords(String explain, int i){
+        //could happen that we have too less connected words in database!!
+
+        Set<String> result = fetchConnectedWordsFromDatabase(Util.reduceStringToMinimum(explain),i);
+        Log.trace("Retieved Taboo Words: " + result.toString());
+        if(result.size() < i)
+            Log.trace("Could not retrieve enough taboo words. " + (i - result.size()));
+        return result;
+    }
+
 
     //** TODO: Missing Logging system for user's activity
 
@@ -203,7 +223,7 @@ public class Neo4jWrapper {
      * @return
      */
     public boolean lookUpNode(String nodeName, String label){
-        nodeName = Util.reduceStringToMinimum(nodeName);
+        nodeName = Util.reduceStringToMinimumWithoutWhitespaces(nodeName);
 
         StringBuilder builder = new StringBuilder();
         try ( Session session = driver.session() ) {
@@ -256,12 +276,13 @@ public class Neo4jWrapper {
 
     /**
      * Creates a connection between two nodes while also incrementing the rating by 1
+     * DONT USE THIS BESIDE IN TESTS
      * @param node1
      * @param node2
      * @param relationship
      * @return
      */
-    public boolean createRelationship(String node1, String node2, String relationship, Boolean reliableFlag){
+    private boolean createRelationship(String node1, String node2, String relationship, Boolean reliableFlag){
 
 
         node1 = Util.reduceStringToMinimum(node1);
@@ -518,6 +539,51 @@ public class Neo4jWrapper {
 
             }
         }
+
+        Log.info(builder.toString());
+        return result;
+    }
+
+    private Set<String> fetchConnectedWordsFromDatabase(String explainWord,int count){
+        StringBuilder builder = new StringBuilder();
+        Set<String> result = new HashSet<>(count);
+
+            try ( Session session = driver.session() )
+            {
+                try ( Transaction tx = session.beginTransaction() )
+                {
+
+                    StatementResult sResult = tx.run(
+                                    "MATCH (s)-[rel]->(t) WHERE t.name = {name} " +
+                                    "AND rel.reliableFlag = true " +
+                                    "RETURN rel,s"
+                    ,parameters("name",explainWord));
+
+                    List<Record> list = sResult.list();
+                    list = list.stream().sorted((o2,o1) -> ((Integer)o1.get("rel").asRelationship().get("rating").asInt())
+                    .compareTo((Integer)o2.get("rel").asRelationship().get("rating").asInt())).
+                            limit(count).collect(Collectors.toList());
+
+
+
+
+                    int taboo = list.get(0).get("rel").asRelationship().get("rating").asInt();
+
+                    /*List<Value> val = record.values();
+                    Value name = val.get(0).asNode().get("name");
+                    result = name.toString();
+                    result = result.replaceAll("\"", "");*/
+
+                    builder.append("Fetched Taboo Words: ");
+                    for(Record s: list){
+                        String name = s.get("s").asNode().get("name").toString() ;
+                        result.add(name);
+                        builder.append(name+", ");
+                    }
+                    tx.success();
+                }
+
+            }
 
         Log.info(builder.toString());
         return result;

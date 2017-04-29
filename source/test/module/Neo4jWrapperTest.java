@@ -8,6 +8,9 @@ import model.Language;
 import org.junit.Test;
 import org.neo4j.driver.v1.exceptions.ServiceUnavailableException;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by Thinh-Laptop on 16.04.2017.
  */
@@ -79,22 +82,15 @@ public class Neo4jWrapperTest extends TestCase {
     }
 
     public void testCreateRelationship(){
-        try {
-            database.createNode("Nautilus");
-            database.createNode("Hallo");
-            database.createNode("hallO");
-        }
-        catch(ServiceUnavailableException | DatabaseException e){
-            Log.info(e.getMessage());
-        }
+
         assertEquals("No such relationship could be created!"
                 ,true,
-                database.createRelationship("Nautilus","Hallo",
+                database.insertNodesAndRelationshipIntoOntology("Nautilus","Hallo",
                         "IS RELATED TO",false));
         //test increase of rating And false flag override
-        database.createRelationship("Nautilus","Hallo",
+        database.insertNodesAndRelationshipIntoOntology("Nautilus","Hallo",
                 "IS RELATED TO",false);
-        database.createRelationship("Nautilus","Hallo",
+        database.insertNodesAndRelationshipIntoOntology("Nautilus","Hallo",
                 "IS RELATED TO",false);
 
 
@@ -103,7 +99,7 @@ public class Neo4jWrapperTest extends TestCase {
     public void testClearRelationships(){
         assertEquals("No such relationshio could be created!"
                 ,true,
-                database.createRelationship("Nautilus","Nautilus",
+                database.insertNodesAndRelationshipIntoOntology("Nautilus","Nautilus",
                         "RATING",true));
         assertEquals("Something went wrong when clearing the ratings!"
                 ,true,
@@ -153,6 +149,29 @@ public class Neo4jWrapperTest extends TestCase {
             fail();
         }
 
+    }
+
+    public void testGetTabooWords(){
+
+        String explain = "Mario Kart";
+        String relation1 = "is a character of";
+        Set<String> result = new HashSet<>();
+        int i = 3 ;
+
+        database.insertNodesAndRelationshipIntoOntology("Peach",explain,relation1,true);
+        database.insertNodesAndRelationshipIntoOntology("Peach",explain,relation1,true);
+        database.insertNodesAndRelationshipIntoOntology("Bowser",explain,relation1,true);
+        database.insertNodesAndRelationshipIntoOntology("Luigi",explain,relation1,true);
+        database.insertNodesAndRelationshipIntoOntology("Luigi",explain,relation1,true);
+        database.insertNodesAndRelationshipIntoOntology("Luigi",explain,relation1,true);
+        database.insertNodesAndRelationshipIntoOntology("Toad",explain,relation1,true);
+        database.insertNodesAndRelationshipIntoOntology("Toad",explain,relation1,true);
+
+        result = database.getTabooWords(explain,i); //fetch three words
+        for(String r:result){
+            assertFalse(r.equals("Bowser")); //Bowser only got one rating therefore is not
+            //included
+        }
     }
 
     public void testSetUpNodes(){
