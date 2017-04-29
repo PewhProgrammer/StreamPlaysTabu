@@ -1,0 +1,35 @@
+.upperBar{
+    position: fixed;
+    top: 0;
+    width: 99%;
+    left: 0.5%;
+    height: 8%;
+}
+
+.highscore{
+    position: fixed;
+    left: 0.5%;
+    top: 9%;
+    width: 65%;
+    height: 70%;
+}
+
+.rightBar{
+    position: fixed;
+    top: 9%;
+    right: 0.5%;
+    width: 33.5%;
+    height: 90%;
+}
+
+.lowerBar{
+    position: fixed;
+    bottom: 1%;
+    left: 0.5%;
+    width: 65%;
+    height: 19%;
+}
+
+.header{
+
+}
