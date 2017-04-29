@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="author" content="Marc Schubhan">
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="author" content="Marc Schubhan"/>
 
     <title>StreamPlaysTaboo</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
     <!-- Custom styles for this template -->
-    <link href="../css/setup.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/css/setup.css" th:href="@{/css/setup.css}"/>
 </head>
 
 <body>
 
 <div class="backgroundImg">
-    <img src="../pictures/start.png">
+    <img src="../static/images/start.png" th:src="@{images/start.png}"/>
 </div>
 
 <div class="container">
@@ -49,13 +49,13 @@
             </label>
         </div>
         <label for="inputEmail" class="sr-only">Channelname</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Channelname..." required autofocus>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Channelname..." required="required"/>
         <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="startGame()">Start Game</button>
     </form>
 
 </div> <!-- /container -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/setup.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
+    <script src="../static/js/setup.js"></script>
 </body>
 </html>
