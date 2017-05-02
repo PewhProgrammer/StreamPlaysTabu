@@ -7,9 +7,9 @@
 }
 
 .explanationsText {
-    left: 22.5%;
+    left: 20.5%;
     top: 9%;
-    width: 56.5%;
+    width: 55.5%;
     height: 70%;
 
     background-image: url("../images/light_red.jpg");
@@ -18,7 +18,7 @@
 .guessesText{
     top: 9%;
     right: 0.5%;
-    width: 19.5%;
+    width: 23%;
     height: 70%;
 
     background-image: url("../images/middle_red.jpg");
@@ -57,5 +57,5 @@
 }
 
 #giverInfo{
-    font-size: 10vw;
+    font-size: 5vw;
 }
