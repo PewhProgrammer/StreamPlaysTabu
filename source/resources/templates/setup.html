@@ -24,34 +24,38 @@
     <form class="form-signin">
         <h1 class="form-signin-heading">StreamPlaysTaboo</h1>
         <h2 class="form-signin-heading">Settings</h2>
+
+        <!-- Dropdown for Gamemode -->
         <div class="dropdown">
-            <label>
-                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMode" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    Free for all
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMode">
-                    <li><a href="#">Free for all</a></li>
-                    <li><a href="#">Streamer explains</a></li>
-                </ul>
-            </label>
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMode" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Free for all
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMode">
+                <li onclick="setGameMode('Free for all')"><a href="#">Free for all</a></li>
+                <li onclick="setGameMode('Streamer Explains')"><a href="#">Streamer explains</a></li>
+            </ul>
         </div>
+        <br/>
+        <!-- Dropdown for Platforms -->
         <div class="dropdown">
-            <label>
-                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownPlatform" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    Twitch
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownPlatform">
-                    <li><a href="#">Twitch</a></li>
-                    <li><a href="#">Beam</a></li>
-                </ul>
-            </label>
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownPlatform" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Twitch
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <li onclick="setPlatform('Twitch')"><a href="#">Twitch</a></li>
+                <li onclick="setPlatform('Beam')"><a href="#">Beam</a></li>
+            </ul>
         </div>
-        <label for="inputEmail" class="sr-only">Channelname</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Channelname..." required="required"/>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" onclick="startGame()">Start Game</button>
+        <br/>
+        <!-- Textbox for Channel -->
+        <label for="channelName" class="sr-only">Channelname</label>
+        <input type="text" id="channelName" class="form-control" placeholder="Channelname..." required="required"/>
+        <br/>
+        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="startGame()">Start Game</button>
     </form>
+
 
 </div> <!-- /container -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

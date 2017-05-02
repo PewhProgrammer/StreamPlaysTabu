@@ -7,7 +7,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class WebAPI {
 
     @RequestMapping("/")
-    public String settings() {
+    public String start() {
         return "setup";
+    }
+
+    @RequestMapping("/settings")
+    public String settings(String gameMode, String platform, String channel) {
+        System.out.println("Channel: " + channel);
+        System.out.println("Platform: " + platform);
+        System.out.println("Mode: " + gameMode);
+        return "registerFFA";
     }
 }
