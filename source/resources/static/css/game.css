@@ -1,0 +1,61 @@
+.explanationsText, .guessesText,
+.qAndAText, .giverInfoText,
+.levelText{
+    position: fixed;
+    z-index: -1;
+    padding: 1%;
+}
+
+.explanationsText {
+    left: 22.5%;
+    top: 9%;
+    width: 56.5%;
+    height: 70%;
+
+    background-image: url("../images/light_red.jpg");
+}
+
+.guessesText{
+    top: 9%;
+    right: 0.5%;
+    width: 19.5%;
+    height: 70%;
+
+    background-image: url("../images/middle_red.jpg");
+}
+
+
+.qAndAText{
+    bottom: 1%;
+    left: 0.5%;
+    width: 99%;
+    height: 19%;
+
+    background-image: url("../images/middle_red.jpg");
+}
+
+.giverInfoText{
+    top: 9%;
+    left: 0.5%;
+    width: 19.5%;
+    height: 34.5%;
+
+    background-image: url("../images/middle_red.jpg");
+}
+
+.levelText{
+    top: 44.5%;
+    left: 0.5%;
+    width: 19.5%;
+    height: 34.5%;
+
+    background-image: url("../images/middle_red.jpg");
+}
+
+#guesses, #qAndA{
+    font-size: 3vmin;
+}
+
+#giverInfo{
+    font-size: 10vw;
+}

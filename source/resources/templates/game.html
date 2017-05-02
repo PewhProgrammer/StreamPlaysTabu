@@ -10,6 +10,7 @@
     <!-- Bootstrap core CSS -->
     <link href="../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
     <link href="../static/css/registerFFA.css" rel="stylesheet" th:href="@{/css/registerFFA.css}"/>
+    <link href="../static/css/game.css" rel="stylesheet" th:href="@{/css/game.css}"/>
 </head>
 
 <body>
@@ -18,8 +19,8 @@
 
 <div>
     <h1 id="heading">StreamPlaysTaboo</h1>
-    <h2 id="hscrHeading">Highscore</h2>
-    <h2 id="countdown">30s</h2>
+    <h2 id="hscrHeading">Free for All</h2>
+    <h2 id="countdown">90s</h2>
     <img class="header" src="../static/images/header.png" th:href="@{/images/header.png}"/>
     <div class="barspace">
         <div class="progress" style="background-color: #eb131e;">
@@ -30,20 +31,27 @@
     </div>
 </div>
 
-<div class="highscoreText">
+<div class="explanationsText">
 
 </div>
 
-<div class="hintsText">
-    <p id="hintText"><big>Did you know?</big><br><small>You can type !register to get into the giver pool. A giver has the chance to explain a word and get points based on his time.</small></p>
+<div class="giverInfoText">
+    <p class="giverInfo">PewhTV<br>704Pts.</p>
 </div>
 
-<div class="rightText">
-    <p id="categoryText">!vote &lt;number&gt; <small>for the category of the next word!</small></p>
-    <p id="validateText"><small>Help us to</small> !validate &lt;ID&gt; &lt;1-5&gt;<small> our taboo words! <br>(1 = bad, 5 = good)</small></p>
-    <p id="tabooText"><small>Do you have an idea for a new taboo word? <br>Type</small> !taboo &lt;word&gt;<small> to tell us.</small></p>
+<div class="levelText">
+
 </div>
 
-<script src="../static/js/registration.js" th:src="@{/js/registration.js}"></script>
+<div class="qAndAText">
+    <p id="qAndA"><big>Q:</big> Does the game have a corresponding movie?<br><br><big>A:</big> Yes, it has.</p>
+</div>
+
+<div class="guessesText">
+    <p id="guesses">!guess &lt;word&gt; <small>to submit a guess!</small></p>
+</div>
+
+<script src="../static/js/game.js" th:src="@{/js/registration.js}"></script>
+
 </body>
 </html>
