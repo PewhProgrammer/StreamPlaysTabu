@@ -1,0 +1,47 @@
+#first, #second, #third, #fourth, #fifth, #sixth, #seventh, #eighth, #ninth, #tenth{
+    width:20%;
+    position: relative;
+    font-size:17px;
+    text-align: center;
+}
+
+#first{
+    margin-top: 10%;
+    left: 40%;
+}
+
+#second {
+    left:30%;
+}
+
+#third{
+    right:30%;
+}
+
+#fourth{
+    left:20%
+}
+
+#fifth{
+    right:40%
+}
+
+#sixth{
+    right:0%
+}
+
+#seventh{
+    left:10%
+}
+
+#eighth{
+    right:50%
+}
+
+#ninth{
+    right:10%
+}
+
+#tenth{
+    right:-30%
+}
