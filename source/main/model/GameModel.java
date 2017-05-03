@@ -210,8 +210,10 @@ public class GameModel extends Observable{
         String[] content = Util.parseTemplate(explanation);
         String relation = content[0].toLowerCase();
         String targetNode = content[1].toLowerCase();
+        boolean isExplain = true; //TODO is targetNode reliable as explain word?
 
-        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation,true);
+
+        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,true, relation,true);
     }
 
     public void clearExplanations() {
@@ -259,8 +261,9 @@ public class GameModel extends Observable{
             String[] content = Util.parseTemplate(answer);
             String relation = content[0].toLowerCase();
             String targetNode = content[1].toLowerCase();
+            boolean isExplain = false; //TODO is the target node reliable as explain word?
 
-            mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, relation,false);
+            mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,false);
         }
     }
 
@@ -344,7 +347,7 @@ public class GameModel extends Observable{
         getBot().announceWinner(winner);
         for (int i = 0; i < 3 && i < guesses.size(); i++) {
             if(guesses.get(i).getScore() > 1)
-                mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, guesses.get(i).getGuess(), "is related to",true);
+                mOntologyDataBase.insertNodesAndRelationshipIntoOntology(guesses.get(i).getGuess(),word,true, "is related to",true);
         }
         clear();
         setGiver(winner);
@@ -422,8 +425,9 @@ public class GameModel extends Observable{
         }
         Collections.sort(sortedSuggestions);
         for (int i = 0; i < sortedSuggestions.size(); i++) {
+            //TODO tim fragen wies funktioniert
             mOntologyDataBase.insertNodesAndRelationshipIntoOntology(sortedSuggestions.get(i).getExplanation(),
-                    sortedSuggestions.get(i).getContent(), "isRelatedTo",true);
+                    sortedSuggestions.get(i).getContent(),true, "isRelatedTo",true);
         }
 
         tabooSuggestions.clear();

@@ -220,7 +220,7 @@ public class Util {
      * Extracts the meaning of a template. Example: tmp = "It is used for killing monsters" returns new String {"tool to kill", "monsters"s}
      *
      * @param tmp template to parse
-     * @return String array holding the meaning of the tamplate and the target
+     * @return String array holding the meaning of the template and the target
      */
     public static String[] parseTemplate(String tmp, String userInput, String userInput2) {
 

@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.neo4j.driver.v1.Values.parameters;
+import org.neo4j.driver.v1.types.Node;
 
 /**
  * Created by Thinh-Laptop on 08.04.2017.
@@ -19,12 +20,14 @@ public class Neo4jWrapper {
     //You're using the wrong port number. 7474 is by default used for http
     // whereas 7687 is the default for binary bolt protocol.
     private StringBuilder neo4jbindAddr = new StringBuilder();
-    private final boolean legacy ;
+    private final boolean isDeletable ;
     private String userLabel = "userNode";
-    private final int DEL_TRESHHOLD = 5;
+    private final int DEL_TRESHHOLD = 2; //
+    private final int CATEGORY_TRESHOLD = 3; //word qualifies as category if more equal than 3 incoming arcs are available
     private final String label;
     private final Driver driver;
     private final Random randomizer;
+
 
 
     public Neo4jWrapper(boolean simulation, String neo4jbind,int seed){
@@ -32,41 +35,52 @@ public class Neo4jWrapper {
         //baut enkryptische Verbindung, um uns gegen "man-in-the-middle" attacken zu schützen
         config = Config.build().withEncryptionLevel( Config.EncryptionLevel.REQUIRED ).toConfig() ;
         neo4jbindAddr.append(neo4jbind);
-        legacy = simulation;
         randomizer = new Random(seed);
 
         driver = acquireDriver("bolt://" + neo4jbindAddr,
                 AuthTokens.basic( "neo4j", "streamplaystabu" ),config);
 
         //non-legacy nodes are used experimentally
-        if(simulation){
-            //resetDatabase();
-            label = "Node";
-            userLabel = "userNode";
-        }
-        else {label = "legacyNode";
-        userLabel = "legacyUserNode";}
+        label = "Node";
+        userLabel = "userNode";
+        isDeletable = simulation ;
 
     }
 
     /**
      * This method is mainly called to build our ontology
+     * FROM node1 TO node2 : node1 -rel-> node2
      * @param node1
      * @param node2
      * @param relationship
      * @return
      */
-    public boolean insertNodesAndRelationshipIntoOntology(String node1, String node2, String relationship,Boolean reliableFlag){
+    public boolean insertNodesAndRelationshipIntoOntology(String node1, String node2,Boolean node2Explain, String relationship,Boolean reliableFlag){
+        boolean isNode1Explain = false ;
+
         //create two nodes if not already
         try {
-            createNode(node1);
+            createNode(node1,isNode1Explain);
+
         }catch(ServiceUnavailableException | DatabaseException e){
+            //if it exists, check upon explain
             Log.debug(e.getLocalizedMessage());
         }
 
+        String type = "";
         try {
-            createNode(node2);
+            type = fetchNodePropertiesFromDatabase(node1, "type");
+        }catch(DatabaseException i){
+            Log.debug(i.getLocalizedMessage());
+        }
+        if(type.equals("explain")) isNode1Explain = true;
+
+        try {
+            createNode(node2,node2Explain);
         }catch(ServiceUnavailableException | DatabaseException e){
+            if(isNode1Explain && node2Explain){ //If the start node is from type explain, update end node to potential category
+                setExplainWordToCategory(node2);
+            }
             Log.debug(e.getLocalizedMessage());
         }
 
@@ -147,8 +161,7 @@ public class Neo4jWrapper {
      */
     public String getExplainWord(String category,Set<String> usedWords) throws DatabaseException
     {
-        //TODO include usedWords param
-        return fetchConnectedWordFromDatabase(category);
+        return fetchConnectedWordFromDatabase(category,usedWords);
     }
 
 
@@ -193,7 +206,10 @@ public class Neo4jWrapper {
      * @return
      * @throws ServiceUnavailableException
      */
-    public void createNode(String nodeName) throws ServiceUnavailableException,DatabaseException{
+    public void createNode(String nodeName,Boolean explain) throws ServiceUnavailableException,DatabaseException{
+        String type ;
+        if(explain) type = "explain";
+        else type = "basic";
 
         String nodeNameNoWhitespace = Util.reduceStringToMinimumWithoutWhitespaces(nodeName);
         nodeName = Util.reduceStringToMinimum(nodeName);
@@ -203,11 +219,11 @@ public class Neo4jWrapper {
 
             try ( Transaction tx = session.beginTransaction() )
             {
-                if(lookUpNode(nodeName,"legacyNode") || lookUpNode(nodeName,"Node")){
+                if(lookUpNode(nodeName,"Node")){
                     throw new DatabaseException("Node: " + nodeName + " is already in the database!");
                 }
-                tx.run( "CREATE (a: "+label+" {name: {name} })",
-                        parameters( "name", nodeName ) );
+                tx.run( "CREATE (a: "+label+" {name: {name}, type: {type}, deletable:{deletable} })",
+                        parameters( "name", nodeName,"type",type,"deletable",isDeletable ) );
                 tx.success();
             }
 
@@ -223,7 +239,8 @@ public class Neo4jWrapper {
      * @return
      */
     public boolean lookUpNode(String nodeName, String label){
-        nodeName = Util.reduceStringToMinimumWithoutWhitespaces(nodeName);
+        if(label.equals("Node"))
+            nodeName = Util.reduceStringToMinimumWithoutWhitespaces(nodeName);
 
         StringBuilder builder = new StringBuilder();
         try ( Session session = driver.session() ) {
@@ -265,7 +282,6 @@ public class Neo4jWrapper {
                     Record record = result.next();
                     System.out.println(String.format("%s %s", record.get("title").asString(), record.get("name").asString()));
                     Object test = record.asMap();
-                    nodes.add(new Node());
                 }
             }
         }
@@ -320,7 +336,7 @@ public class Neo4jWrapper {
                 tx.run( "MATCH (ee) WHERE ee.name =  \""+node1+"\" "+
                                 "MATCH (js) WHERE js.name = \""+node2+"\" " +
                                 "CREATE UNIQUE (ee)-[rel:`"+relationship+"` {rating: "+count+"," +
-                                "legacy: "+!legacy+", reliableFlag: "+reliableFlag+"} " +
+                                "deletable: "+isDeletable+", reliableFlag: "+reliableFlag+"} " +
                                 "]->(js)");
 
                 /*tx.run( "MATCH (ee) WHERE ee.name =  \""+node1+"\" "+
@@ -379,7 +395,7 @@ public class Neo4jWrapper {
             try ( Transaction tx = session.beginTransaction() )
             {
                 tx.run( "MATCH (n)-[rel]->(r) \n" +
-                        "WHERE NOT EXISTS (rel.legacy) OR NOT (rel.legacy = true) " +
+                        "WHERE NOT EXISTS (rel.deletable) OR NOT (rel.deletable = false) " +
                         "DELETE rel");
 
                 tx.success();
@@ -399,8 +415,8 @@ public class Neo4jWrapper {
 
             try ( Transaction tx = session.beginTransaction() )
             {
-                tx.run("MATCH (n)\n" +
-                        "WHERE NOT n:legacyUserNode AND NOT n:legacyNode" +
+                tx.run("MATCH (n:Node)\n" +
+                        "WHERE n.deletable = true " +
                         "DETACH DELETE n"
                 ); // , parameters( "name", nodeName )
 
@@ -417,20 +433,32 @@ public class Neo4jWrapper {
      */
     public Set<String> fetchFilteredCategoryFromDatabase(int cap){
         Set<String> result = new HashSet<>(cap);
+        StringBuilder builder = new StringBuilder();
 
         try ( Session session = driver.session() )
         {
-            //TODO: CYPHER STATEMENT REQUEST
             try ( Transaction tx = session.beginTransaction() )
             {
-                tx.run(""
-                ); // , parameters( "name", nodeName )
 
+                StatementResult sResult = tx.run(
+                        "MATCH (s:Node) WHERE s.type = {cat} " +
+                                "RETURN s",parameters("cat","category"));
+
+                List<Record> list = sResult.list();
+                list = list.stream().limit(cap).collect(Collectors.toList());
+
+                builder.append("Fetched Categories: ");
+                for(Record s: list){
+                    String name = s.get("s").asNode().get("name").toString().replaceAll("\"", "");
+                    result.add(name);
+                    builder.append(name+", ");
+                }
                 tx.success();
             }
 
         }
 
+        Log.trace(builder.toString());
         return result ;
     }
 
@@ -459,6 +487,33 @@ public class Neo4jWrapper {
         }
         Log.trace(builder.toString());
         return result ;
+    }
+
+    private String fetchNodePropertiesFromDatabase(String nodeName,String property) throws DatabaseException{
+        String result = "";
+        StringBuilder builder = new StringBuilder();
+
+        try ( Session session = driver.session() )
+        {
+            try ( Transaction tx = session.beginTransaction() )
+            {
+                StatementResult sResult = tx.run("MATCH (n:"+label+") WHERE n.name = {name} " +
+                                "RETURN n",
+                        parameters("name",nodeName));
+                if(!sResult.hasNext()) throw new DatabaseException("No Node "+nodeName+" found!");
+                while (sResult.hasNext()) {
+                    Record record = sResult.next();
+                    List<Value> val = record.values();
+                    Value name = val.get(0).asNode().get(property);
+                    result = name.toString();
+
+                    builder.append("Fetched "+property+": " + String.format("%s %s ", nodeName,
+                            result));
+                }
+            }
+        }
+        Log.trace(builder.toString());
+        return result.replaceAll("\"", "");
     }
 
     private int updateUserPropertiesFromDatabase(String user,String property,int i) throws DatabaseException{
@@ -507,11 +562,12 @@ public class Neo4jWrapper {
     }
 
     /**
-     * Take the best ten arc from category and choose arbitrarily
+     * Take the best ten arc from a category to an explain word and choose arbitrarily
      * @param category
+     * @param usedWords Words already skipped
      * @return
      */
-    private String fetchConnectedWordFromDatabase(String category) throws DatabaseException{
+    private String fetchConnectedWordFromDatabase(String category,Set<String> usedWords) throws DatabaseException{
         StringBuilder builder = new StringBuilder();
         String result = "";
 
@@ -525,13 +581,17 @@ public class Neo4jWrapper {
 
                     if(!sResult.hasNext())
                         throw new DatabaseException("No Explain Word available!");
-                    List<Record> list = sResult.list();
-                    Record record = list.get(randomizer.nextInt(list.size()));
 
-                    List<Value> val = record.values();
-                    Value name = val.get(0).asNode().get("name");
-                    result = name.toString();
-                    result = result.replaceAll("\"", "");
+                    for(Record r: sResult.list()){ //Iterate over all possible word connected to category
+                        Node node = r.values().get(0).asNode();
+                        String type = node.get("type").toString().replaceAll("\"", "");
+                        String name = node.get("name").toString().replaceAll("\"", "");
+                        if(type.toString().equals("explain") && !usedWords.contains(name)){ //if its an explain word and not in usedWord
+                            if(result.equals("") || randomizer.nextBoolean()){
+                                result = name ;
+                            }
+                        }
+                    }
 
                     builder.append("Fetched ExplainWord: " + String.format("%s", result));
                     tx.success();
@@ -540,10 +600,17 @@ public class Neo4jWrapper {
             }
         }
 
+        if(result.equals("")) throw new DatabaseException("No more explain words available!");
         Log.info(builder.toString());
         return result;
     }
 
+    /**
+     * Used for fetching taboo words
+     * @param explainWord
+     * @param count
+     * @return
+     */
     private Set<String> fetchConnectedWordsFromDatabase(String explainWord,int count){
         StringBuilder builder = new StringBuilder();
         Set<String> result = new HashSet<>(count);
@@ -589,6 +656,76 @@ public class Neo4jWrapper {
         return result;
     }
 
+    /**
+     * We know that start node was an explain word and check if end word qualifies for category
+     * @param nodeName
+     */
+    private void setExplainWordToCategory(String nodeName){
+        nodeName = Util.reduceStringToMinimum(nodeName);
+
+        StringBuilder builder = new StringBuilder();
+        int count = 1 ;
+            try ( Session session = driver.session() )
+            {
+                try ( Transaction tx = session.beginTransaction() )
+                {
+
+                    StatementResult sResult = tx.run( "MATCH (s)-[rel]->(t) WHERE t.name = {name} " +
+                                    "AND rel.reliableFlag = true " +
+                                    "RETURN s",
+                            parameters("name",nodeName));
+
+                    for(Record r: sResult.list()){ //Iterate over all possible word connected to category
+                        Node node = r.get("s").asNode();
+                        String type = node.get("type").toString().replaceAll("\"", "");
+                        String name = node.get("name").toString().replaceAll("\"", "");
+                        if(type.toString().equals("explain") ){ //if its an explain word and not in usedWord
+                            count++;
+                        }
+                    }
+                    if(count >= CATEGORY_TRESHOLD){
+                        tx.run("MATCH (s:Node)" +
+                                "WHERE s.name = {n1}"+
+                                "SET s.type = {c}" +
+                                "RETURN s",parameters("n1",nodeName,"c","category"));
+
+                        builder.append(nodeName + " did qualifiy as category with " + count + " incoming edges");
+                    }
+                    else builder.append(nodeName + " did not qualifiy as category with " + count + " incoming edges");
+                    tx.success();
+                }
+
+            }
+
+        Log.info(builder.toString());
+    }
+
+    /**
+     * virtual method to set Category
+     * @param nodeName
+     */
+    public void setCategory(String nodeName){
+        nodeName = Util.reduceStringToMinimum(nodeName);
+        StringBuilder builder = new StringBuilder();
+
+        try ( Session session = driver.session() )
+        {
+            try ( Transaction tx = session.beginTransaction() )
+            {
+
+                StatementResult sResult =
+                    tx.run("MATCH (s:Node)" +
+                            "WHERE s.name = {n1}"+
+                            "SET s.type = {c}" +
+                            "RETURN s",parameters("n1",nodeName,"c","category"));
+
+                builder.append("Set type of " +nodeName + " to Category");
+                tx.success();
+            }
+
+        }
+    }
+
     private Driver acquireDriver(String uri, AuthToken authToken, Config config)
     {
 
@@ -604,8 +741,5 @@ public class Neo4jWrapper {
 
     }
 
-    public class Node{
-
-    }
 
 }
