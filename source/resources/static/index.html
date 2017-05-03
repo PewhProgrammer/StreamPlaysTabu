@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="author" content="Marc Schubhan"/>
+
+    <title>StreamPlaysTaboo</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css" href="css/setup.css" th:href="@{/css/setup.css}"/>
+</head>
+
+<body>
+
+<div class="backgroundImg">
+    <img src="images/start.png" th:src="@{images/start.png}"/>
+</div>
+
+<div class="container">
+
+    <form class="form-signin">
+        <h1 class="form-signin-heading">StreamPlaysTaboo</h1>
+        <h2 class="form-signin-heading">Settings</h2>
+
+        <!-- Dropdown for Gamemode -->
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMode" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Free for all
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMode">
+                <li onclick="setGameMode('Free for all')"><a href="#">Free for all</a></li>
+                <li onclick="setGameMode('Streamer Explains')"><a href="#">Streamer explains</a></li>
+            </ul>
+        </div>
+        <br/>
+        <!-- Dropdown for Platforms -->
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownPlatform" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Twitch
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                <li onclick="setPlatform('Twitch')"><a href="#">Twitch</a></li>
+                <li onclick="setPlatform('Beam')"><a href="#">Beam</a></li>
+            </ul>
+        </div>
+        <br/>
+        <!-- Textbox for Channel -->
+        <label for="channelName" class="sr-only">Channelname</label>
+        <input type="text" id="channelName" class="form-control" placeholder="Channelname..." required="required"/>
+        <br/>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="startGame">Start Game</button>
+    </form>
+
+
+</div> <!-- /container -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="js/setup.js" th:src="@{/js/setup.js}"></script>
+    <script src="js/communicationLocal.js" th:src="@{/js/communicationLocal.js}"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+</body>
+</html>

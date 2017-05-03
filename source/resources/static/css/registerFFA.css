@@ -1,0 +1,117 @@
+body {
+    font-family: "Franklin Gothic Medium";
+    font-weight: normal;
+    color: #000000;
+    background-color: #fefefe;
+}
+
+.upperBar{
+    position: fixed;
+    top: 0;
+    width: 99%;
+    left: 0.5%;
+    height: 8%;
+    z-index: 0;
+
+    background-color: #eb131e;
+}
+
+.header{
+    position: fixed;
+    top: 0;
+    width: 50%;
+    height: 11%;
+    left: 25%;
+    z-index: 0;
+}
+
+#heading{
+    width: 50%;
+    line-height: 6vh;
+    left: 25%;
+    font-size: 8vmin;
+    z-index: 1;
+}
+
+#hscrHeading, #countdown,
+#heading{
+    position: fixed;
+    text-align: center;
+}
+
+#hscrHeading{
+    line-height: 3vh;
+    left: 2%;
+    font-size: 6vmin;
+}
+
+#countdown{
+    line-height: 1vh;
+    right: 2%;
+    font-size: 4vmin;
+}
+
+.barspace{
+    position: fixed;
+    top: 5vh;
+    right: 1%;
+    width: 25%;
+    height: 8%;
+    -moz-transform: scale(-1, 1);
+    -webkit-transform: scale(-1, 1);
+    -o-transform: scale(-1, 1);
+    -ms-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+}
+
+.highscoreText, .rightText,
+.hintsText {
+    position: fixed;
+    z-index: -1;
+    padding: 1%;
+}
+
+.highscoreText {
+    left: 0.5%;
+    top: 9%;
+    width: 65%;
+    height: 70%;
+
+    background-color: #f89da2;
+}
+
+.rightText{
+    top: 9%;
+    right: 0.5%;
+    width: 33.5%;
+    height: 90%;
+
+    background-color: #f2525a;
+}
+
+
+.hintsText{
+    bottom: 1%;
+    left: 0.5%;
+    width: 65%;
+    height: 19%;
+
+    background-color: #f2525a;
+}
+
+#categoryText, #validateText,
+#tabooText, #hintText {
+    font-size: 3vmin;
+}
+
+#categoryText{
+    height: 40%;
+}
+
+#validateText{
+    height: 40%;
+}
+
+#tabooText{
+    height: 20%;
+}

@@ -1,115 +1,61 @@
-body {
-    font-family: "Franklin Gothic Medium";
-    font-weight: normal;
-    color: #000000;
-    background-color: #fefefe;
-}
-
-.upperBar{
-    position: fixed;
-    top: 0;
-    width: 99%;
-    left: 0.5%;
-    height: 8%;
-    z-index: -1;
-}
-
-.header{
-    position: fixed;
-    top: 0;
-    width: 50%;
-    height: 11%;
-    left: 25%;
-    z-index: 0;
-}
-
-#heading{
-    width: 50%;
-    line-height: 6vh;
-    left: 25%;
-    font-size: 8vmin;
-    z-index: 1;
-}
-
-#hscrHeading, #countdown,
-#heading{
-    position: fixed;
-    text-align: center;
-}
-
-#hscrHeading{
-    line-height: 3vh;
-    left: 2%;
-    font-size: 6vmin;
-}
-
-#countdown{
-    line-height: 1vh;
-    right: 2%;
-    font-size: 4vmin;
-}
-
-.barspace{
-    position: fixed;
-    top: 5vh;
-    right: 1%;
-    width: 25%;
-    height: 8%;
-    -moz-transform: scale(-1, 1);
-    -webkit-transform: scale(-1, 1);
-    -o-transform: scale(-1, 1);
-    -ms-transform: scale(-1, 1);
-    transform: scale(-1, 1);
-}
-
-.highscoreText, .rightText,
-.hintsText {
+.explanationsText, .guessesText,
+.qAndAText, .giverInfoText,
+.levelText{
     position: fixed;
     z-index: -1;
     padding: 1%;
 }
 
-.highscoreText {
-    left: 0.5%;
+.explanationsText {
+    left: 20.5%;
     top: 9%;
-    width: 65%;
+    width: 55.5%;
     height: 70%;
 
-    background-image: url("../images/light_red.jpg");
+    background-color: #f89da2;
 }
 
-.rightText{
+.guessesText{
     top: 9%;
     right: 0.5%;
-    width: 33.5%;
-    height: 90%;
+    width: 23%;
+    height: 70%;
 
-    background-image: url("../images/middle_red.jpg");
+    background-color: #f2525a;
 }
 
 
-.hintsText{
+.qAndAText{
     bottom: 1%;
     left: 0.5%;
-    width: 65%;
+    width: 99%;
     height: 19%;
 
-    background-image: url("../images/middle_red.jpg");
+    background-color: #f2525a;
 }
 
-#categoryText, #validateText,
-#tabooText, #hintText {
+.giverInfoText{
+    top: 9%;
+    left: 0.5%;
+    width: 19.5%;
+    height: 34.5%;
+
+    background-color: #f2525a;
+}
+
+.levelText{
+    top: 44.5%;
+    left: 0.5%;
+    width: 19.5%;
+    height: 34.5%;
+
+    background-color: #f2525a;
+}
+
+#guesses, #qAndA{
     font-size: 3vmin;
 }
 
-#categoryText{
-    height: 40%;
-}
-
-#validateText{
-    height: 40%;
-}
-
-#tabooText{
-    height: 20%;
+#giverInfo{
+    font-size: 5vw;
 }
