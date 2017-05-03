@@ -202,7 +202,7 @@ public class AltTwitchBot extends Bot {
             return new Votekick(model, channel, sender);
         }
 
-        // !streamerexplains
+        // !streamerins
         if (parts[0].equals("!streamerExplains")) {
             return new StreamerExplains(model, channel, sender);
         }
