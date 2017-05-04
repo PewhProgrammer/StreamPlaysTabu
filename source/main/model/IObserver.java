@@ -9,7 +9,7 @@ public interface IObserver {
     public void onNotifyGameState();
 
     //called when new question, answer pair is available
-    public void onNotifiyQandA();
+    public void onNotifyQandA();
 
     //called when giver chose category
     public void onNotifyCategoryChosen();

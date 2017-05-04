@@ -129,7 +129,7 @@ public class GuiTest extends TestCase {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                ProtoAnchor.cont.onNotifiyQandA();
+                ProtoAnchor.cont.onNotifyQandA();
             }
         });
 

@@ -46,8 +46,8 @@ public class GameModel extends Observable{
     private LinkedList<Command> commands = new LinkedList<>();
 
     private List<String> registeredPlayers;
+    private List<String> explanations;
     private Set<String> tabooWords;
-    private Set<String> explanations;
     private Set<String> usedWords;
     private Set<String> votekick;
     private HashMap<String, TabooSuggestion> tabooSuggestions;
@@ -73,7 +73,7 @@ public class GameModel extends Observable{
         mNumPlayers = 0;
         registeredPlayers = new ArrayList<>();
         tabooWords = new HashSet<>();
-        explanations = new HashSet<>();
+        explanations = new LinkedList<>();
         qAndA = new LinkedList<>();
         lang = l;
         MIN_PLAYERS = minPlayers;
@@ -210,7 +210,7 @@ public class GameModel extends Observable{
         return tabooWords;
     }
 
-    public Set<String> getExplanations() {
+    public List<String> getExplanations() {
         return explanations;
     }
 

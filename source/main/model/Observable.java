@@ -26,7 +26,7 @@ public abstract class Observable {
         } */
 
         for (IObserver ob : listIObserver) {
-            ob.onNotifiyQandA();
+            ob.onNotifyQandA();
         }
 
     }

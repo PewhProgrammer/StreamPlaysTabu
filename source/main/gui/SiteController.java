@@ -14,7 +14,7 @@ public class SiteController implements IObserver {
     }
 
     @Override
-    public void onNotifiyQandA() {
+    public void onNotifyQandA() {
 
     }
 

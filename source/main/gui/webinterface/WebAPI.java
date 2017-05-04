@@ -1,8 +1,7 @@
 package gui.webinterface;
 
 import gui.GuiAnchor;
-import gui.webinterface.containers.GameModeContainer;
-import gui.webinterface.containers.GameStateContainer;
+import gui.webinterface.containers.*;
 import logic.GameControl;
 import logic.commands.Setup;
 import model.GameModel;
@@ -34,36 +33,43 @@ public class WebAPI implements IObserver {
 
     public void onNotifyGameState() {
         System.out.println("GameState changed.");
-        send("/GameState", new GameStateContainer(GameControl.mModel.getGameState()));
+        send("/gameState", new GameStateContainer(GameControl.mModel.getGameState()));
     }
 
-    public void onNotifiyQandA() {
+    public void onNotifyQandA() {
         System.out.println("Received Q&A.");
+        String q = GameControl.mModel.getQAndA().getLast()[0];
+        String a = GameControl.mModel.getQAndA().getLast()[1];
+        send("/qAndA", new QandAContainer(q,a));
     }
 
     public void onNotifyCategoryChosen() {
         System.out.println("Category chosen.");
+        //TODO implement
     }
 
     public void onNotifyExplanation() {
-        System.out.println("Explanation!");
+        send("/explanations", new ExplanationsContainer(GameControl.mModel.getExplanations()));
     }
 
     public void onNotifyWinner() {
         System.out.println("Winner!");
+        //TODO implement
     }
 
     public void onNotifyGuess() {
         System.out.println("Guess!");
+        send("/guesses", new GuessesContainer(GameControl.mModel.getGuesses()));
     }
 
     public void onNotifyScoreUpdate() {
         System.out.println("Score!");
+        send("/score", new RankingContainer());
     }
 
     public void onNotifyGameMode() {
         System.out.println("GameMode changed.");
-        send("/GameMode", new GameModeContainer(GameControl.mModel.getGameMode()));
+        send("/gameMode", new GameModeContainer(GameControl.mModel.getGameMode()));
     }
 
     public void onNotifyKick() {

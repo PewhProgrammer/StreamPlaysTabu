@@ -84,7 +84,7 @@ public class GuiController implements Initializable, IObserver {
     }
 
     @Override
-    public void onNotifiyQandA() {
+    public void onNotifyQandA() {
 
     }
 

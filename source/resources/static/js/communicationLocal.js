@@ -6,16 +6,12 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/localJS/GameMode', function (gamemode) {
+        stompClient.subscribe('/localJS/gameMode', function (gamemode) {
             gameMode = JSON.parse(gamemode.body).content;
-            window.alert("Updated game mode to " + gameMode);
-            console.log("Updated game mode to " + gameMode);
             updateMode();
         });
-        stompClient.subscribe('/localJS/GameState', function (gamestate) {
+        stompClient.subscribe('/localJS/gameState', function (gamestate) {
             gameState = JSON.parse(gamestate.body).gameState;
-            window.alert("Updated game state to " + gameState);
-            console.log("Updated game state to " + gameState);
             updateScreen();
         });
         stompClient.subscribe('/localJS/score', function(ranking) {

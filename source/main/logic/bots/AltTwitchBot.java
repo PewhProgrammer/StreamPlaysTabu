@@ -28,6 +28,7 @@ public class AltTwitchBot extends Bot {
         public void onMessage(String channel, String sender,
                               String login, String hostname, String message) {
             //sendMessage(channel,"@" + sender + " " +curse.get(r.nextInt(curse.size())));
+
             if (message.equalsIgnoreCase("PING")) {
                 sendMessage(channel, "PONG");
             }
@@ -87,6 +88,7 @@ public class AltTwitchBot extends Bot {
         }
 
         bot.joinChannel(user);
+        sendChatMessage("I'm here!");
         Log.info("connected");
     }
 

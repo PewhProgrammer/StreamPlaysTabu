@@ -227,7 +227,7 @@ public class ProtoController implements Initializable, IObserver {
     }
 
     @Override
-    public void onNotifiyQandA() {
+    public void onNotifyQandA() {
         String s = "Q. and A.:\n\n";
         for(int i = 0; i < ProtoAnchor.gameModel.getQAndA().size(); i++) {
             String[] QA = ProtoAnchor.gameModel.getQAndA().get(i);
