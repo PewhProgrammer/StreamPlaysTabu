@@ -14,6 +14,9 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/localJS");
         config.setApplicationDestinationPrefixes("/localJava");
+
+
+
     }
 
     @Override
