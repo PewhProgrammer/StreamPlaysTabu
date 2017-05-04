@@ -7,7 +7,7 @@ function connect() {
         console.log('Connected: ' + frame);
         stompClient.subscribe('/localJS/register', function () {
             console.log("localJS");
-            document.location = '/../templates/registerFFA.html';
+            document.location = '/templates/registerFFA.html';
         });
     });
 }

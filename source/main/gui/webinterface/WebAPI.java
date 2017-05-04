@@ -28,8 +28,10 @@ public class WebAPI {
         return true;
     }
 
+    /**
+     * Sends to the server
+     */
     public void fireGreeting() {
-        System.out.println("Fire");
         this.template.convertAndSend("/localJS/register", "Haha");
     }
 
