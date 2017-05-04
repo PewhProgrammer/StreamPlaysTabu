@@ -1,12 +1,22 @@
 var stompClient = null;
+var gameState = "Register";
 
 function connect() {
     var socket = new SockJS('/connection-local-socket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/localJS/register', function (gamemode) {
-            forwardToRegister(JSON.parse(gamemode.body).content);
+        stompClient.subscribe('/localJS/GameMode', function (gamemode) {
+            gameMode = JSON.parse(gamemode.body).content;
+            window.alert("Updated game mode to " + gameMode);
+            console.log("Updated game mode to " + gameMode);
+            updateMode();
+        });
+        stompClient.subscribe('/localJS/GameState', function (gamestate) {
+            gameState = JSON.parse(gamestate.body).gameState;
+            window.alert("Updated game state to " + gameState);
+            console.log("Updated game state to " + gameState);
+            updateScreen();
         });
         stompClient.subscribe('/localJS/score', function(ranking) {
             updateRanking(ranking);
@@ -39,3 +49,15 @@ $(function () {
         }
     );
 });
+
+function updateScreen() {
+    if (gameState == "Game Started") {
+        document.location.href = "/game.html";
+    } else {
+        if (gameMode == "Free for all") {
+            document.location.href = "/registerFFA.html";
+        } else {
+            document.location.href = "/registerSE.html";
+        }
+    }
+}

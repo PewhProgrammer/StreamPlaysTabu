@@ -15,6 +15,7 @@ public abstract class Observable {
     /** TODO mehrere notify methoden */
 
     public void notifyQandA(){
+        /*
         for (IObserver ob: listIObserver) {
             Platform.runLater(new Runnable() {
                 @Override
@@ -22,50 +23,69 @@ public abstract class Observable {
                     ob.onNotifiyQandA();
                 }
             });
+        } */
+
+        for (IObserver ob : listIObserver) {
+            ob.onNotifiyQandA();
         }
+
     }
 
     public void notifyCategoryChosen() {
-        for (IObserver ob: listIObserver) {
+        /*for (IObserver ob: listIObserver) {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
                     ob.onNotifyCategoryChosen();
                 }
             });
+        } */
+
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyCategoryChosen();
         }
     }
 
     public void notifyGameState() {
-        for (IObserver ob : listIObserver) {
+        /*for (IObserver ob : listIObserver) {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
                     ob.onNotifyGameState();
                 }
             });
+        }*/
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyGameState();
         }
     }
 
     public void notifyExplanation() {
-        for (IObserver ob : listIObserver) {
+        /*for (IObserver ob : listIObserver) {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
                     ob.onNotifyExplanation();
                 }
             });
+        }*/
+
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyExplanation();
         }
     }
 
     public void notifyWinner() {
-        for (IObserver ob : listIObserver) {
+        /*for (IObserver ob : listIObserver) {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
                     ob.onNotifyWinner();
                 }
             });
+        }*/
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyWinner();
         }
     }
 
@@ -77,35 +97,45 @@ public abstract class Observable {
     
 
     public void notifyScoreUpdate() {
-        for (IObserver ob : listIObserver) {
+        /*for (IObserver ob : listIObserver) {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
                     ob.onNotifyScoreUpdate();
                 }
             });
+        }*/
+
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyScoreUpdate();
         }
     }
 
     public void notifyGameMode() {
-        for (IObserver ob : listIObserver) {
+        /*for (IObserver ob : listIObserver) {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
                     ob.onNotifyGameMode();
                 }
             });
+        } */
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyGameMode();
         }
     }
 
     public void notifyKick() {
-        for (IObserver ob : listIObserver) {
+        /*for (IObserver ob : listIObserver) {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
                     ob.onNotifyKick();
                 }
             });
+        }*/
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyKick();
         }
     }
 

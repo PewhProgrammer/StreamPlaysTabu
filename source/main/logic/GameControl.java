@@ -2,6 +2,7 @@ package logic;
 
 import common.Log;
 import common.Neo4jWrapper;
+import gui.webinterface.RunInterface;
 import javafx.application.Platform;
 import logic.bots.AltTwitchBot;
 import logic.bots.Bot;
@@ -21,13 +22,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import common.Util;
+import org.springframework.boot.SpringApplication;
 
 /**
  * Created by Thinh-Laptop on 26.03.2017.
  */
 public class GameControl extends Observable{
 
-    private GameModel mModel;
+    public static GameModel mModel;
 
     private boolean isStarted;
     private Random rand ;
