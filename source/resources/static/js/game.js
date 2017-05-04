@@ -15,3 +15,9 @@ var timer = setInterval(function() {
         clearInterval(timer);
     }
 }, 1000);
+
+function updateGiver(giver) {
+    var json = JSON.parse(giver.body);
+
+    document.getElementById("").innerHTML =
+}

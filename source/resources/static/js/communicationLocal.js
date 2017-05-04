@@ -14,6 +14,9 @@ function connect() {
         stompClient.subscribe('/localJS/prevoteCategory', function(categories) {
             updateCategoryVote(categories)
         });
+        stompClient.subscribe('/localJS/giver', function(giver) {
+            updateGiver(giver);
+        });
     });
 }
 
