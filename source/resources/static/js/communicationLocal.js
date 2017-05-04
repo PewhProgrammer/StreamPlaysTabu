@@ -5,9 +5,11 @@ function connect() {
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/localJS/register', function () {
-            console.log("localJS");
-            document.location = '/templates/registerFFA.html';
+        stompClient.subscribe('/localJS/register', function (gamemode) {
+            forwardToRegister(JSON.parse(gamemode.body).content);
+        });
+        stompClient.subscribe('/localJS/score', function(ranking) {
+            updateRanking(ranking);
         });
     });
 }

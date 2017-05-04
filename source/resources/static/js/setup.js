@@ -1,4 +1,3 @@
-
 var gameMode = "Free for all";
 var platform = "Twitch";
 var channel = "StreamPlaysTaboo";
@@ -30,4 +29,12 @@ function sendSetup() {
             'channel': channel
         })
     );
+}
+
+function forwardToRegister(gameMode) {
+    if (gameMode == "Free for all") {
+        document.location = "/templates/registerFFA";
+    } else {
+        window.alert("Forward to stream highscore");
+    }
 }

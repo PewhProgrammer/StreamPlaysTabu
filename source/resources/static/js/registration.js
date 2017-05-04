@@ -11,3 +11,7 @@ var x = setInterval(function() {
         timeLeft = 30;
     }
 }, 1000);
+
+function updateRanking(ranking) {
+
+}
