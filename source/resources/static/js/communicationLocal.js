@@ -11,6 +11,9 @@ function connect() {
         stompClient.subscribe('/localJS/score', function(ranking) {
             updateRanking(ranking);
         });
+        stompClient.subscribe('/localJS/prevoteCategory', function(categories) {
+            updateCategoryVote(categories)
+        });
     });
 }
 
