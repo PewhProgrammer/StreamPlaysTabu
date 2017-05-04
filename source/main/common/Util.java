@@ -50,8 +50,8 @@ public class Util {
         return q;
     }
 
-    public static String[] getPair(String tmp, String userInput, String userInput2) {
-        String[] pair = {tmp+userInput2, userInput};
+    public static String[] getPair(String tmp, String userInput, String userInput2, String isword) {
+        String[] pair = {tmp+userInput2, userInput, isword};
         return pair;
     }
 
@@ -229,126 +229,126 @@ public class Util {
 
         // The color of its ___ is ___
                 if (tmp.equals("The color of its")) {
-                    return getPair("color of its", userInput2, userInput);
+                    return getPair("color of its", userInput2, userInput, "false");
                 }
             // The size of its ___ is ___
                 if (tmp.equals("The size of its")) {
-                    return getPair("size of its", userInput2, userInput);
+                    return getPair("size of its", userInput2, userInput, "false");
                 }
             // The shape of its ___ is ___
                 if (tmp.equals("The shape of its")) {
-                    return getPair("shape of its", userInput2, userInput);
+                    return getPair("shape of its", userInput2, userInput, "false");
                 }
             // It wears a ___
                 if (tmp.equals("It wears a")) {
-                    return getPair("wears a", userInput, "");
+                    return getPair("wears a", userInput, "", "true");
                 }
 
             // It has a ___
                 if (tmp.equals("It has a")) {
-                    return getPair("has a", userInput, "");
+                    return getPair("has a", userInput, "", "true");
                 }
 
         /* Purpose */
 
             // It is used for/to ___
                 if (tmp.equals("It is used for/to")) {
-                    return getPair("is used for/to", userInput, "");
+                    return getPair("is used for/to", userInput, "", "true");
                 }
             // It enhances ___
                 if (tmp.equals("It enhances")) {
-                    return getPair("enhances", userInput, "");
+                    return getPair("enhances", userInput, "", "true");
                 }
 
         /* Characteristics */
 
             // It is typically near ___
                 if (tmp.equals("It is typically near")) {
-                    return getPair("is typically near", userInput, "");
+                    return getPair("is typically near", userInput, "", "true");
                 }
 
             // It is typically in ___
                 if (tmp.equals("It is typically in")) {
-                    return getPair("is typically in", userInput, "");
+                    return getPair("is typically in", userInput, "", "true");
                 }
 
             // It is typically on ___
                 if (tmp.equals("It is typically on")) {
-                    return getPair("is typically on", userInput, "");
+                    return getPair("is typically on", userInput, "", "true");
                 }
 
             // It is the opposite of ___
                 if (tmp.equals("It is the opposite of")) {
-                    return getPair("is the opposite of", userInput, "");
+                    return getPair("is the opposite of", userInput, "", "true");
                 }
 
             // It is related to ___
                 if (tmp.equals("It is related to")) {
-                    return getPair("is related to", userInput, "");
+                    return getPair("is related to", userInput, "", "true");
                 }
 
             // It is ___
                 if (tmp.equals("It is")) {
-                    return getPair("is", userInput, "");
+                    return getPair("is", userInput, "", "true");
                 }
             // It has ___
                 if (tmp.equals("It has")) {
-                    return getPair("has", userInput, "");
+                    return getPair("has", userInput, "", "true");
                 }
             // It appears in ___
                 if (tmp.equals("It appears in")) {
-                    return getPair("appears in", userInput, "");
+                    return getPair("appears in", userInput, "", "true");
                 }
             // It is a part of a ___
                 if (tmp.equals("It is a part of a")) {
-                    return getPair(tmp, userInput, "");
+                    return getPair(tmp, userInput, "", "true");
                 }
             // It requires a ___
                 if (tmp.equals("It requires a")) {
-                    return getPair("requires a", userInput, "");
+                    return getPair("requires a", userInput, "", "true");
                 }
             // It has the ability to ___
                 if (tmp.equals("It has the ability to")) {
-                    return getPair("has the ability to", userInput, "");
+                    return getPair("has the ability to", userInput, "", "true");
                 }
             // It is known for ___
                 if (tmp.equals("It is known for")) {
-                    return getPair("is known for", userInput, "");
+                    return getPair("is known for", userInput, "", "true");
                 }
             // It is known as ___
                 if (tmp.equals("It is known as")) {
-                    return getPair("is known as", userInput, "");
+                    return getPair("is known as", userInput, "", "true");
                 }
             // It can be received from ___
                 if (tmp.equals("It can be received from")) {
-                    return getPair("can be received from", userInput, "");
+                    return getPair("can be received from", userInput, "", "true");
                 }
             // It works as a ___
                 if (tmp.equals("It works as a")) {
-                    return getPair("works as a", userInput, "");
+                    return getPair("works as a", userInput, "", "true");
                 }
             // Its character is ____
                 if (tmp.equals("Its character is")) {
-                    return getPair("character", userInput, "");
+                    return getPair("character", userInput, "", "true");
                 }
 
         /* Game specific */
 
             // Its genre is ___
                 if (tmp.equals("Its genre is")) {
-                    return getPair("genre", userInput, "");
+                    return getPair("genre", userInput, "", "true");
                 }
             // It is set in ___
                 if (tmp.equals("It is set in")) {
-                    return getPair("is set in", userInput, "");
+                    return getPair("is set in", userInput, "", "true");
                 }
             // It is published by ___
                 if (tmp.equals("It is published by")) {
-                    return getPair("is published by", userInput, "");
+                    return getPair("is published by", userInput, "", "true");
                 }
             // It was released in ___
                 if (tmp.equals("It was released in")) {
-                    return getPair("was released in", userInput, "");
+                    return getPair("was released in", userInput, "", "false");
                 }
         return null;
     }

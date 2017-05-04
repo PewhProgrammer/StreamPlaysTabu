@@ -18,11 +18,16 @@ public class AltTwitchBot extends Bot {
         connectToChatroom(channel);
     }
 
+
+
     private class Pirc extends PircBot {
+
+
 
         public Pirc(String user) {
             this.setName(user);
             this.setLogin("[" + user + "]");
+
         }
 
         public void onMessage(String channel, String sender,
@@ -53,12 +58,23 @@ public class AltTwitchBot extends Bot {
 
         public void onPrivateMessage(String sender, String login, String hostname, String message) {
             Command cmd = parseLine(message, sender);
+
+            System.out.println(message);
+            String[] channel = message.split(" ");
+
+            connectToChatroom(channel[0]);
+
+
             if (cmd != null) {
                 model.pushCommand(cmd);
             }
         }
 
-        protected void onUnknown(String line){
+        public void onConnect(){
+            System.out.print("I'm connected!");
+        }
+
+        public void onUnknown(String line){
             Log.info(line);
         }
 
@@ -90,6 +106,7 @@ public class AltTwitchBot extends Bot {
         bot.joinChannel(user);
         sendChatMessage("I'm here!");
         Log.info("connected");
+        Log.info("connected to " + user);
     }
 
     @Override
