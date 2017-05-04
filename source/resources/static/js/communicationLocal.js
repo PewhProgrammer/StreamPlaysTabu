@@ -27,6 +27,15 @@ function connect() {
         stompClient.subscribe('/localJS/giver', function(giver) {
             updateGiver(giver);
         });
+        stompClient.subscribe('/localJS/guesses', function(guesses) {
+           updateGuesses(guesses);
+        });
+        stompClient.subscribe('/localJS/explanations', function(explanations) {
+            updateExplanations(explanations);
+        });
+        stompClient.subscribe('/localJS/qAndA', function(qAndA) {
+           updateQandA(qAndA);
+        });
     });
 }
 

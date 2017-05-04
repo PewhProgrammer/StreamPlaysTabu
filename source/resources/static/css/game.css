@@ -52,7 +52,7 @@
     background-color: #f2525a;
 }
 
-#guesses, #qAndA{
+#guesses, #qAndA, #explanations{
     font-size: 3vmin;
 }
 

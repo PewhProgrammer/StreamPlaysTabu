@@ -1,16 +1,20 @@
 var timeLeft = 30;
 var categoryTopline = "";
-
+var twenties = false;
 // Update the count down every 1 second
 var x = setInterval(function() {
 
     timeLeft = timeLeft - 1;
 
     document.getElementById("countdown").innerHTML = timeLeft + "s";
-    document.getElementById("progressbar").style.width = (timeLeft / 30) * 100 + "%";
-
+    if(!twenties) {
+        document.getElementById("progressbar").style.width = (timeLeft / 30) * 100 + "%";
+    } else {
+        document.getElementById("progressbar").style.width = (timeLeft / 20) * 100 + "%";
+    }
     if (timeLeft == 0) {
         timeLeft = 20;
+        twenties = true;
     }
 }, 1000);
 
@@ -37,7 +41,7 @@ function updateCategoryVote(categories) {
     }
 
     document.getElementById("categoryText").innerHTML =
-        categoryTopline + "\n"
+        categoryTopline + "\n\n"
         + "1. " + json.first + "\t" + "2. " + json.second
         + "3. " + json.third + "\t" + "4. " + json.fourth
         + "5. " + json.fifth + "\t" + "6. " + json.sixth
