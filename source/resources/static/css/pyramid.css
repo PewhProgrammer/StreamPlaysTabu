@@ -1,5 +1,5 @@
 #first, #second, #third, #fourth, #fifth, #sixth, #seventh, #eighth, #ninth, #tenth{
-    width:20%;
+    width:25%;
     position: relative;
     font-size:17px;
     text-align: center;
@@ -7,31 +7,31 @@
 
 #first{
     margin-top: 10%;
-    left: 40%;
+    left: 37.5%;
 }
 
 #second {
-    left:30%;
+    left:25%;
 }
 
 #third{
-    right:30%;
+    right:25%;
 }
 
 #fourth{
-    left:20%
+    left:12.5%
 }
 
 #fifth{
-    right:40%
+    right:37.5%
 }
 
 #sixth{
-    right:0%
+    right:-12.5%
 }
 
 #seventh{
-    left:10%
+    left:0%
 }
 
 #eighth{
@@ -39,9 +39,9 @@
 }
 
 #ninth{
-    right:10%
+    right:0%
 }
 
 #tenth{
-    right:-30%
+    right:-50%
 }
