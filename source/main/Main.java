@@ -2,6 +2,7 @@ import common.Log;
 import common.Neo4jWrapper;
 import gui.GuiAnchor;
 import gui.ProtoAnchor;
+import gui.webinterface.RunInterface;
 import logic.GameControl;
 import logic.bots.SiteBot;
 import model.GameModel;
@@ -99,8 +100,10 @@ public class Main {
 
         mTHREAD.start();
 
+        Log.info("Launching webinterface ...");
+        RunInterface.main(new String[] {});
 
-        String[] param = {"testparam"};
+      /*  String[] param = {"testparam"};
         if(guiSimulation) {
             Log.info("Launching Prototype GUI...");
             ProtoAnchor anchor = new ProtoAnchor();
@@ -108,15 +111,9 @@ public class Main {
             anchor.main(param);
         }
         else {
-            Log.info("Launching experimental GUI...");
-            GuiAnchor anchor = new GuiAnchor();
-            anchor.setGameModel(model); //TODO SET MODEL
-            anchor.main(param);
-        }
-
-
-
-
+            Log.info("Launching webinterface ...");
+            RunInterface.main(new String[] {});
+        } */
     }
 
     public void parseCommandLine(String[] args){

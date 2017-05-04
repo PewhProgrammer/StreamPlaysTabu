@@ -16,7 +16,6 @@ public class AltTwitchBot extends Bot {
     public AltTwitchBot(GameModel gm, String channel) {
         super(gm, channel);
         connectToChatroom(channel);
-
     }
 
     private class Pirc extends PircBot {

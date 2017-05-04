@@ -10,7 +10,7 @@ var x = setInterval(function() {
     document.getElementById("progressbar").style.width = (timeLeft / 30) * 100 + "%";
 
     if (timeLeft == 0) {
-        timeLeft = 30;
+        timeLeft = 20;
     }
 }, 1000);
 

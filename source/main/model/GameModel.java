@@ -9,6 +9,8 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
+import logic.bots.AltTwitchBot;
+import logic.bots.BeamBot;
 import logic.bots.Bot;
 import logic.bots.SiteBot;
 import logic.commands.Command;
@@ -95,6 +97,14 @@ public class GameModel extends Observable{
         }
     }
 
+    public void setBot(String platform, String channel) {
+        try {
+            this.bot = platform.equals("Twitch") ? new AltTwitchBot(this, "#" + channel) : new BeamBot(this, channel);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public GameState getGameState(){
         return mGameState;
     }
@@ -131,6 +141,7 @@ public class GameModel extends Observable{
 
     public void setGameMode(GameMode gm) {
         this.gameMode = gm;
+        notifyGameMode();
     }
 
     public Neo4jWrapper getNeo4jWrapper() {
