@@ -230,6 +230,8 @@ public class BeamBot extends Bot {
     @Override
     public void whisperLink(String user, String link) {
         Log.trace("Send link to giver!");
+        //WhisperMethod.builder().to() <--- TODO
+
         chatConnectable.send(ChatSendMethod.of(String.format(
                 "/whisper %s You are the giver! " +
                         "Here is your link, please click it!: %s", user, link)));

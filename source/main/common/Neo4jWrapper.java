@@ -562,7 +562,7 @@ public class Neo4jWrapper {
     }
 
     /**
-     * Take the best ten arc from a category to an explain word and choose arbitrarily
+     * Take the best ten arc from an explain word to a category and choose arbitrarily
      * @param category
      * @param usedWords Words already skipped
      * @return
@@ -632,16 +632,13 @@ public class Neo4jWrapper {
                             limit(count).collect(Collectors.toList());
 
 
-
-
-                    int taboo = list.get(0).get("rel").asRelationship().get("rating").asInt();
-
                     /*List<Value> val = record.values();
                     Value name = val.get(0).asNode().get("name");
                     result = name.toString();
                     result = result.replaceAll("\"", "");*/
 
                     builder.append("Fetched Taboo Words: ");
+                    if(list.size() < 1) builder.append("none");
                     for(Record s: list){
                         String name = s.get("s").asNode().get("name").toString() ;
                         result.add(name);

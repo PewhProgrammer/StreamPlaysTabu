@@ -16,6 +16,7 @@ public class AltTwitchBot extends Bot {
     public AltTwitchBot(GameModel gm, String channel) {
         super(gm, channel);
         connectToChatroom(channel);
+
     }
 
 
@@ -27,16 +28,12 @@ public class AltTwitchBot extends Bot {
         public Pirc(String user) {
             this.setName(user);
             this.setLogin("[" + user + "]");
-
         }
 
         public void onMessage(String channel, String sender,
                               String login, String hostname, String message) {
-            //sendMessage(channel,"@" + sender + " " +curse.get(r.nextInt(curse.size())));
 
-            if (message.equalsIgnoreCase("PING")) {
-                sendMessage(channel, "PONG");
-            }
+
 
             Command cmd = parseLine(message, sender);
             if (cmd != null) {
@@ -104,8 +101,6 @@ public class AltTwitchBot extends Bot {
         }
 
         bot.joinChannel(user);
-        sendChatMessage("I'm here!");
-        Log.info("connected");
         Log.info("connected to " + user);
     }
 

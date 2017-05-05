@@ -267,6 +267,9 @@ public class Neo4jWrapperTest extends TestCase {
             database.createNode("geralt of rivia",true);
             //database.createNode("");
 
+            database.setCategory("dota 2");
+            database.setCategory("train simulator");
+
         }catch(DatabaseException e){
             Log.trace(e.getMessage());
             fail();
