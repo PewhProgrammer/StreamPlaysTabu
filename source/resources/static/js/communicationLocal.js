@@ -8,7 +8,7 @@ function connect() {
         console.log('Connected: ' + frame);
         stompClient.subscribe('/localJS/gameMode', function (gamemode) {
             gameMode = JSON.parse(gamemode.body).content;
-            updateMode();
+            updateMode(gamemode);
         });
         stompClient.subscribe('/localJS/gameState', function (gamestate) {
             gameState = JSON.parse(gamestate.body).gameState;
@@ -54,6 +54,10 @@ $(function () {
         }
     );
 });
+
+function updateMode(gamemode) {
+    console.log('Game mode changed.');
+}
 
 function updateScreen() {
     if (gameState == "Game Started") {

@@ -8,15 +8,15 @@ public class RankingContainer {
     //TODO: exchange dummy values
 
     private final String firstName = "first";
-    private final String secondName = "second";;
-    private final String thirdName = "third";;
-    private final String fourthName = "fourth";;
-    private final String fifthName = "fifth";;
-    private final String sixthName = "sixth";;
-    private final String seventhName = "seventh";;
-    private final String eighthName = "eighth";;
-    private final String ninthName = "ninth";;
-    private final String tenthName = "tenth";;
+    private final String secondName = "second";
+    private final String thirdName = "third";
+    private final String fourthName = "fourth";
+    private final String fifthName = "fifth";
+    private final String sixthName = "sixth";
+    private final String seventhName = "seventh";
+    private final String eighthName = "eighth";
+    private final String ninthName = "ninth";
+    private final String tenthName = "tenth";
 
     private final int firstPoints = 10;
     private final int secondPoints = 9;

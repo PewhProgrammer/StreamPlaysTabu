@@ -9,6 +9,7 @@ import logic.bots.Bot;
 import logic.bots.SiteBot;
 import logic.commands.CategoryChosen;
 import logic.commands.Command;
+import logic.commands.GiverJoined;
 import logic.commands.Register;
 import model.GameModel;
 import model.GameState;
@@ -139,10 +140,11 @@ public class GameControl extends Observable{
                 //mModel.getBot().whisperLink("pewhTV","<Link>");
             }
             else mModel.setGiver(""); //s.t. there is no current giver and we have to choose new one
-
         }
 
         mModel.setGameState(GameState.WaitingForGiver);
+        //TODO: delete next line!
+        (new GiverJoined(mModel, "")).execute();
         Log.info("Starting the round");
         mModel.getBot().announceNewRound();
         //mModel.getCommands().push(new CategoryChosen(mModel,"","simulation"));
