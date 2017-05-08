@@ -10,11 +10,19 @@ public class GameStateContainer {
 
         switch (gs) {
             case WaitingForGiver: {
-                gameState = "WaitingForGiver";
+                gameState = "Waiting For Giver";
                 break;
             }
             case GameStarted: {
-                gameState = "GameStarted";
+                gameState = "Game Started";
+                break;
+            }
+            case Win: {
+                gameState = "Win";
+                break;
+            }
+            case Lose: {
+                gameState = "Lose";
                 break;
             }
             default:

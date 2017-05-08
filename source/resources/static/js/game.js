@@ -40,6 +40,7 @@ function updateGuesses(guesses) {
 }
 
 function updateExplanations(explanations) {
+    console.log(explanations);
     var incJson = JSON.parse(explanations.body);
 
     var string = "Explanations:\n"
@@ -55,5 +56,20 @@ function updateQandA(qAndA) {
 }
 
 function prepareGame() {
+    requestGameMode();
+    stompClient.send(
+        "/localJava/reqGiverInfo",
+        {},
+        JSON.stringify({})
+    );
 
+    stompClient.send(
+        "/localJava/reqCategory",
+        {},
+        JSON.stringify({})
+    );
+}
+
+function categoryChosen(chosencategory) {
+    console.log(chosencategory);
 }
