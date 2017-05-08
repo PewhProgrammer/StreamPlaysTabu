@@ -21,20 +21,11 @@ var timer = setInterval(function() {
 function updateGiver(giver) {
     var json = JSON.parse(giver.body);
 
-    document.getElementById("giverInfo").innerHTML = giver.name + "\n" + giver.points + " Pts."
+    document.getElementById("giverInfo").innerHTML = giver.name + "<br>" + giver.points + " Pts."
 }
 
 function updateGuesses(guesses) {
-    if(guessesTopline == "") {
-        guessesTopline = document.getElementById("guesses").innerHTML;
-    }
-
     var incJson = JSON.parse(guesses.body);
-
-    var string = guessesTopline + "\n\n";
-    for(var i=0;i<10;i++) {
-        string = string + incJson[i] + "\n";
-    }
 
     document.getElementById("guesses").innerHTML = string;
 }
@@ -43,16 +34,16 @@ function updateExplanations(explanations) {
     console.log(explanations);
     var incJson = JSON.parse(explanations.body);
 
-    var string = "Explanations:\n"
+    var string = "Explanations:<br>"
     for(var i=0;i<10;i++) {
-        string = string + "- " + incJson[i] + "\n";
+        string = string + "- " + incJson[i] + "<br>";
     }
 
 }
 
 function updateQandA(qAndA) {
     var incJson = JSON.parse(qAndA.body);
-    document.getElementById("qAndA").innerHTML = "Q: " + incJson.question + "\n\n" + "A: " + incJson.answer;
+    document.getElementById("qAndA").innerHTML = "Q: " + incJson.question + "<br><br>" + "A: " + incJson.answer;
 }
 
 function prepareGame() {

@@ -6,6 +6,20 @@
     padding: 1%;
 }
 
+.progress {
+    height: 1.5vh;
+}
+.barspace {
+    -moz-transform: scale(-1, 1);
+    -webkit-transform: scale(-1, 1);
+    -o-transform: scale(-1, 1);
+    -ms-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+}
+
+.singleGuesses {
+    text-align: right;
+}
 .explanationsText {
     left: 20.5%;
     top: 9%;
