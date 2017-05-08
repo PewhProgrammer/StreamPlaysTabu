@@ -21,16 +21,16 @@ var x = setInterval(function() {
 function updateRanking(ranking) {
     var json = JSON.parse(ranking.body);
 
-    document.getElementById("first").innerHTML = json.firstName +"\n"+ json.firstPoints;
-    document.getElementById("second").innerHTML = json.secondName +"\n"+ json.secondPoints;
-    document.getElementById("third").innerHTML = json.thirdName +"\n"+ json.thirdPoints;
-    document.getElementById("fourth").innerHTML = json.fourthName +"\n"+ json.fourthPoints;
-    document.getElementById("fifth").innerHTML = json.fifthName +"\n"+ json.fifthPoints;
-    document.getElementById("sixth").innerHTML = json.sixthName +"\n"+ json.sixthPoints;
-    document.getElementById("seventh").innerHTML = json.seventhName +"\n"+ json.seventhPoints;
-    document.getElementById("eighth").innerHTML = json.eighthName +"\n"+ json.eighthPoints;
-    document.getElementById("ninth").innerHTML = json.ninthName +"\n"+ json.ninthPoints;
-    document.getElementById("tenth").innerHTML = json.tenthName +"\n"+ json.tenthPoints;
+    document.getElementById("first").innerHTML = json.firstName +"<br>"+ json.firstPoints;
+    document.getElementById("second").innerHTML = json.secondName +"<br>"+ json.secondPoints;
+    document.getElementById("third").innerHTML = json.thirdName +"<br>"+ json.thirdPoints;
+    document.getElementById("fourth").innerHTML = json.fourthName +"<br>"+ json.fourthPoints;
+    document.getElementById("fifth").innerHTML = json.fifthName +"<br>"+ json.fifthPoints;
+    document.getElementById("sixth").innerHTML = json.sixthName +"<br>"+ json.sixthPoints;
+    document.getElementById("seventh").innerHTML = json.seventhName +"<br>"+ json.seventhPoints;
+    document.getElementById("eighth").innerHTML = json.eighthName +"<br>"+ json.eighthPoints;
+    document.getElementById("ninth").innerHTML = json.ninthName +"<br>"+ json.ninthPoints;
+    document.getElementById("tenth").innerHTML = json.tenthName +"<br>"+ json.tenthPoints;
 }
 
 function updateCategoryVote(categories) {
