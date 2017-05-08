@@ -1,5 +1,6 @@
 var timeLeft = 30;
 var categoryTopline = "";
+var validationTopline="";
 var twenties = false;
 // Update the count down every 1 second
 var x = setInterval(function() {
@@ -19,17 +20,16 @@ var x = setInterval(function() {
 
 function updateRanking(ranking) {
     var json = JSON.parse(ranking.body);
-
-    document.getElementById("first").innerHTML = json.firstName +"<br>"+ json.firstPoints;
-    document.getElementById("second").innerHTML = json.secondName +"<br>"+ json.secondPoints;
-    document.getElementById("third").innerHTML = json.thirdName +"<br>"+ json.thirdPoints;
-    document.getElementById("fourth").innerHTML = json.fourthName +"<br>"+ json.fourthPoints;
-    document.getElementById("fifth").innerHTML = json.fifthName +"<br>"+ json.fifthPoints;
-    document.getElementById("sixth").innerHTML = json.sixthName +"<br>"+ json.sixthPoints;
-    document.getElementById("seventh").innerHTML = json.seventhName +"<br>"+ json.seventhPoints;
-    document.getElementById("eighth").innerHTML = json.eighthName +"<br>"+ json.eighthPoints;
-    document.getElementById("ninth").innerHTML = json.ninthName +"<br>"+ json.ninthPoints;
-    document.getElementById("tenth").innerHTML = json.tenthName +"<br>"+ json.tenthPoints;
+    document.getElementById("first").innerHTML = json.firstName +"<br>"+ json.firstPoints + " Pts.";
+    document.getElementById("second").innerHTML = json.secondName +"<br>"+ json.secondPoints + " Pts.";
+    document.getElementById("third").innerHTML = json.thirdName +"<br>"+ json.thirdPoints + " Pts.";
+    document.getElementById("fourth").innerHTML = json.fourthName +"<br>"+ json.fourthPoints + " Pts.";
+    document.getElementById("fifth").innerHTML = json.fifthName +"<br>"+ json.fifthPoints + " Pts.";
+    document.getElementById("sixth").innerHTML = json.sixthName +"<br>"+ json.sixthPoints + " Pts.";
+    document.getElementById("seventh").innerHTML = json.seventhName +"<br>"+ json.seventhPoints + " Pts.";
+    document.getElementById("eighth").innerHTML = json.eighthName +"<br>"+ json.eighthPoints + " Pts.";
+    document.getElementById("ninth").innerHTML = json.ninthName +"<br>"+ json.ninthPoints + " Pts.";
+    document.getElementById("tenth").innerHTML = json.tenthName +"<br>"+ json.tenthPoints + " Pts.";
 }
 
 function updateCategoryVote(categories) {
@@ -40,16 +40,28 @@ function updateCategoryVote(categories) {
     }
 
     document.getElementById("categoryText").innerHTML =
-        categoryTopline + "\n\n"
-        + "1. " + json.first + "\t" + "2. " + json.second
-        + "3. " + json.third + "\t" + "4. " + json.fourth
-        + "5. " + json.fifth + "\t" + "6. " + json.sixth
-        + "7. " + json.seventh + "\t" + "8. " + json.eighth
-        + "9. " + json.ninth + "\t" + "10. " + json.tenth;
+        categoryTopline + "<br><br>"
+        + "1. " + json.first + getWhitespaces(10) + "2. " + json.second + "<br>"
+        + "3. " + json.third + getWhitespaces(10) + "4. " + json.fourth + "<br>"
+        + "5. " + json.fifth + getWhitespaces(10) + "6. " + json.sixth + "<br>"
+        + "7. " + json.seventh + getWhitespaces(10) + "8. " + json.eighth + "<br>"
+        + "9. " + json.ninth + getWhitespaces(10) + "10. " + json.tenth + "<br>";
 }
 
 function updateValidation(validation) {
-    console.log(validation);
+    if(validationTopline == "") {
+        validationTopline = document.getElementById("validateText").innerHTML;
+    }
+
+    var json = JSON.parse(validation.body);
+    document.getElementById("validateText").innerHTML =
+        validationTopline + "<br>"
+    + json.reference + "<br><small>"
+    + "<ul><li>" + json.taboo1  + "</li>"
+    + "<li>" + json.taboo2  + "</li>"
+    + "<li>" + json.taboo3  + "</li>"
+    + "<li>" + json.taboo4  + "</li>"
+    + "<li>" + json.taboo5  + "</li></ul></small>"
 }
 
 function prepareRegister() {
@@ -59,4 +71,14 @@ function prepareRegister() {
         {},
         JSON.stringify({})
     );
+}
+
+function getWhitespaces(num) {
+
+    var whitespaces ="";
+    for(var i=0;i<num;i++) {
+        whitespaces = whitespaces + "&nbsp;";
+    }
+
+    return whitespaces;
 }

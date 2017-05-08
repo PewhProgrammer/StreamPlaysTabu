@@ -9,11 +9,11 @@ import java.util.Set;
 public class ValidationContainer {
 
     String reference;
-    String taboo1 = "";
-    String taboo2 = "";
-    String taboo3 = "";
-    String taboo4 = "";
-    String taboo5 = "";
+    String taboo1 = "tim";
+    String taboo2 = "tim";
+    String taboo3 = "tim";
+    String taboo4 = "tim";
+    String taboo5 = "tim";
 
     public ValidationContainer(String reference, Set<String> tabooWords) {
         this.reference = reference;
