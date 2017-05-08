@@ -1,6 +1,5 @@
 var stompClient = null;
 var gameState = "Register";
-var connected = false;
 
 function connect() {
     var socket = new SockJS('/connection-local-socket');
@@ -36,6 +35,9 @@ function connect() {
         });
         if (window.location.href == 'http://localhost:8080/registerFFA.html') {
             prepareRegister();
+        }
+        if (window.location.href == 'http://localhost:8080/game.html') {
+            prepareGame();
         }
     });
 }
@@ -74,13 +76,31 @@ function requestGameMode() {
 
 function updateState(gamestate) {
     gameState = JSON.parse(gamestate.body).gameState;
-    if (gameState == "Game Started") {
-        document.location.href = "/game.html";
-    } else {
-        if (gameMode == "Free for all") {
-            document.location.href = "/registerFFA.html";
-        } else {
-            document.location.href = "/registerSE.html";
+
+    switch (gameState) {
+        case "Game Started": {
+            document.location.href = "/game.html";
+            break;
+        }
+        case "Waiting for giver": {
+            twenties = true;
+            timeLeft = 20;
+            break;
+        }
+        case "Win": {
+            window.alert('Winner winner chicken dinner!');
+            break;
+        }
+        case "Lose": {
+            window.alert('Loser loser chicken doser!');
+            break;
+        }
+        default: { //case Register
+            if (gameMode == "Free for all") {
+                document.location.href = "/registerFFA.html";
+            } else {
+                document.location.href = "/registerSE.html";
+            }
         }
     }
 }

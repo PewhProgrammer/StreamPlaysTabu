@@ -35,7 +35,7 @@ public class WebAPI implements IObserver {
     @MessageMapping("/reqRegisterInfo")
     public void requestRegisterInfo() {
         onNotifyScoreUpdate();
-        send("/prevoteCategory", new PrevoteCategoryContainer(GameControl.mModel.getPrevotedCategories()));
+        send("/prevoteCategory", new PrevoteCategoryContainer(GameControl.mModel.getPrevoteCategories()));
         send("/validation", new ValidationContainer(GameControl.mModel.getExplainWord(), GameControl.mModel.getTabooWords()));
     }
 
