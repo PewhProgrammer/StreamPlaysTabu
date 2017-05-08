@@ -20,17 +20,17 @@ public class PrevoteCategoryContainer {
     private final String ninth;
     private final String tenth;
 
-    public PrevoteCategoryContainer(ArrayList<PrevoteCategory> categories) {
-        first = categories.get(0).getCategory();
-        second = categories.get(1).getCategory();
-        third = categories.get(2).getCategory();
-        fourth = categories.get(3).getCategory();
-        fifth = categories.get(4).getCategory();
-        sixth = categories.get(5).getCategory();
-        seventh = categories.get(6).getCategory();
-        eighth = categories.get(7).getCategory();
-        ninth = categories.get(8).getCategory();
-        tenth = categories.get(9).getCategory();
+    public PrevoteCategoryContainer(String[] categories) {
+        first = categories[0];
+        second = categories[1];
+        third = categories[2];
+        fourth = categories[3];
+        fifth = categories[4];
+        sixth = categories[5];
+        seventh = categories[6];
+        eighth = categories[7];
+        ninth = categories[8];
+        tenth = categories[9];
     }
 
     public String getFirst() {

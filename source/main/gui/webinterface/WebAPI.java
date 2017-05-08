@@ -27,6 +27,18 @@ public class WebAPI implements IObserver {
             (new Setup(si, GameControl.mModel, si.getChannel())).execute();
     }
 
+    @MessageMapping("/reqGameMode")
+    public void requestGameMode() {
+        send("/gameMode", new GameModeContainer(GameControl.mModel.getGameMode()));
+    }
+
+    @MessageMapping("/reqRegisterInfo")
+    public void requestRegisterInfo() {
+        onNotifyScoreUpdate();
+        send("/prevoteCategory", new PrevoteCategoryContainer(GameControl.mModel.getPrevotedCategories()));
+        send("/validation", new ValidationContainer(GameControl.mModel.getExplainWord(), GameControl.mModel.getTabooWords()));
+    }
+
     public void send(String path, Object o) {
         this.template.convertAndSend("/localJS" + path, o);
     }

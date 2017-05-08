@@ -7,12 +7,10 @@ function connect() {
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe('/localJS/gameMode', function (gamemode) {
-            gameMode = JSON.parse(gamemode.body).content;
-            updateMode(gamemode);
+           updateMode(gamemode);
         });
         stompClient.subscribe('/localJS/gameState', function (gamestate) {
-            gameState = JSON.parse(gamestate.body).gameState;
-            updateScreen();
+            updateState(gamestate);
         });
         stompClient.subscribe('/localJS/score', function(ranking) {
             updateRanking(ranking);
@@ -32,6 +30,9 @@ function connect() {
         stompClient.subscribe('/localJS/qAndA', function(qAndA) {
            updateQandA(qAndA);
         });
+        stompClient.subscribe('/localJS/validation', function validation(validation) {
+            updateValidation(validation);
+        });
     });
 }
 
@@ -49,17 +50,26 @@ $(function () {
     $( "#startGame" ).click(
         function() {
             setChannel();
-            connect();
-            setTimeout(sendSetup, 1000);
+            sendSetup();
         }
     );
 });
 
 function updateMode(gamemode) {
-    console.log('Game mode changed.');
+    gameState = JSON.parse(gamestate.body).gameState;
+    gameMode = JSON.parse(gamemode.body).content;
+    console.log('Game mode changed to ' + gameMode + '.');
 }
 
-function updateScreen() {
+function requestGameMode() {
+    stompClient.send(
+        "/localJava/reqGameMode",
+        {},
+        JSON.stringify({})
+    );
+}
+
+function updateState() {
     if (gameState == "Game Started") {
         document.location.href = "/game.html";
     } else {

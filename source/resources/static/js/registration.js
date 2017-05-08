@@ -48,3 +48,17 @@ function updateCategoryVote(categories) {
         + "7. " + json.seventh + "\t" + "8. " + json.eighth
         + "9. " + json.ninth + "\t" + "10. " + json.tenth;
 }
+
+function updateValidation(validation) {
+    console.log(validation);
+}
+
+function prepareRegister() {
+    connect();
+    setTimeout(requestGameMode(),10000);
+    stompClient.send(
+        "/localJava/reqRegisterInfo",
+        {},
+        JSON.stringify({})
+    );
+}
