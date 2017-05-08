@@ -1,5 +1,6 @@
 var stompClient = null;
 var gameState = "Register";
+var connected = false;
 
 function connect() {
     var socket = new SockJS('/connection-local-socket');
@@ -33,6 +34,9 @@ function connect() {
         stompClient.subscribe('/localJS/validation', function validation(validation) {
             updateValidation(validation);
         });
+        if (window.location.href == 'http://localhost:8080/registerFFA.html') {
+            prepareRegister();
+        }
     });
 }
 
@@ -56,7 +60,6 @@ $(function () {
 });
 
 function updateMode(gamemode) {
-    gameState = JSON.parse(gamestate.body).gameState;
     gameMode = JSON.parse(gamemode.body).content;
     console.log('Game mode changed to ' + gameMode + '.');
 }
@@ -69,7 +72,8 @@ function requestGameMode() {
     );
 }
 
-function updateState() {
+function updateState(gamestate) {
+    gameState = JSON.parse(gamestate.body).gameState;
     if (gameState == "Game Started") {
         document.location.href = "/game.html";
     } else {

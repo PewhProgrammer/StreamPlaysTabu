@@ -54,8 +54,7 @@ function updateValidation(validation) {
 }
 
 function prepareRegister() {
-    connect();
-    setTimeout(requestGameMode(),10000);
+    requestGameMode();
     stompClient.send(
         "/localJava/reqRegisterInfo",
         {},
