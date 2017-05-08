@@ -26,8 +26,13 @@ function updateGiver(giver) {
 
 function updateGuesses(guesses) {
     var incJson = JSON.parse(guesses.body);
-
-    document.getElementById("guesses").innerHTML = string;
+    document.getElementById("1stGuess").innerHTML = incJson.guess1;
+    document.getElementById("2ndGuess").innerHTML = incJson.guess2;
+    document.getElementById("3rdGuess").innerHTML = incJson.guess3;
+    document.getElementById("4thGuess").innerHTML = incJson.guess4;
+    document.getElementById("5thGuess").innerHTML = incJson.guess5;
+    document.getElementById("6thGuess").innerHTML = incJson.guess6;
+    document.getElementById("7thGuess").innerHTML = incJson.guess7;
 }
 
 function updateExplanations(explanations) {
