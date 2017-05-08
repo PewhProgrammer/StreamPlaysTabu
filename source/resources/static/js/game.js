@@ -51,7 +51,9 @@ function updateExplanations(explanations) {
 
 function updateQandA(qAndA) {
     var incJson = JSON.parse(qAndA.body);
-
-
     document.getElementById("qAndA").innerHTML = "Q: " + incJson.question + "\n\n" + "A: " + incJson.answer;
+}
+
+function prepareGame() {
+
 }

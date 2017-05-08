@@ -13,8 +13,7 @@ var x = setInterval(function() {
         document.getElementById("progressbar").style.width = (timeLeft / 20) * 100 + "%";
     }
     if (timeLeft == 0) {
-        timeLeft = 20;
-        twenties = true;
+        timeLeft = 30;
     }
 }, 1000);
 

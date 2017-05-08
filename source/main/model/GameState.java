@@ -8,4 +8,6 @@ public enum GameState {
         GameStarted,
         Registration,
         Config,
+        Win,
+        Lose
 }
