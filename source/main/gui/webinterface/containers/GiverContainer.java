@@ -7,10 +7,12 @@ public class GiverContainer {
 
     private final String name;
     private final int points;
+    private final int level;
 
-    public GiverContainer(String name, int points) {
+    public GiverContainer(String name, int points, int lvl) {
         this.name = name;
         this.points = points;
+        this.level = lvl;
     }
 
     public String getName() {
@@ -19,5 +21,9 @@ public class GiverContainer {
 
     public int getPoints() {
         return points;
+    }
+
+    public int getLevel() {
+        return level;
     }
 }

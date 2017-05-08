@@ -183,6 +183,13 @@ public class GameModel extends Observable{
 
     public Set<String> generateTabooWords() {
         int score = mOntologyDataBase.getUserPoints(getGiver());
+        int lvl = getLevel(score);
+        tabooWords.addAll(mOntologyDataBase.getTabooWords(getExplainWord(),lvl-1));
+
+        return tabooWords;
+    }
+
+    public int getLevel(int score) {
         int lvl = 1;
 
         if (score >= LEVEL_2 && score < LEVEL_3) {
@@ -205,9 +212,7 @@ public class GameModel extends Observable{
             lvl = 6;
         }
 
-        tabooWords.addAll(mOntologyDataBase.getTabooWords(getExplainWord(),lvl-1));
-
-        return tabooWords;
+        return lvl;
     }
 
     public List<String> getExplanations() {

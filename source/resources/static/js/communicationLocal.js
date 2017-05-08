@@ -30,8 +30,11 @@ function connect() {
         stompClient.subscribe('/localJS/qAndA', function(qAndA) {
            updateQandA(qAndA);
         });
-        stompClient.subscribe('/localJS/validation', function validation(validation) {
+        stompClient.subscribe('/localJS/validation', function(validation) {
             updateValidation(validation);
+        });
+        stompClient.subscribe('/localJS/category', function(categorychosen) {
+            categoryChosen(categorychosen);
         });
         if (window.location.href == 'http://localhost:8080/registerFFA.html') {
             prepareRegister();
@@ -82,7 +85,7 @@ function updateState(gamestate) {
             document.location.href = "/game.html";
             break;
         }
-        case "Waiting for giver": {
+        case "Waiting For Giver": {
             twenties = true;
             timeLeft = 20;
             break;

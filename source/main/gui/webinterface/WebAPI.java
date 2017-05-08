@@ -3,6 +3,7 @@ package gui.webinterface;
 import gui.GuiAnchor;
 import gui.webinterface.containers.*;
 import logic.GameControl;
+import logic.commands.CategoryChosen;
 import logic.commands.Setup;
 import model.GameModel;
 import model.IObserver;
@@ -39,6 +40,19 @@ public class WebAPI implements IObserver {
         send("/validation", new ValidationContainer(GameControl.mModel.getExplainWord(), GameControl.mModel.getTabooWords()));
     }
 
+    @MessageMapping("/reqGiverInfo")
+    public void requestGiverInfo() {
+        String giver = GameControl.mModel.getGiver();
+        int score = GameControl.mModel.getNeo4jWrapper().getUserPoints(giver);
+        int lvl = GameControl.mModel.getLevel(score);
+        send("/giver", new GiverContainer(giver, score, lvl));
+    }
+
+    @MessageMapping("/reqCategory")
+    public void requestCategory() {
+        onNotifyCategoryChosen();
+    }
+
     public void send(String path, Object o) {
         this.template.convertAndSend("/localJS" + path, o);
     }
@@ -57,7 +71,7 @@ public class WebAPI implements IObserver {
 
     public void onNotifyCategoryChosen() {
         System.out.println("Category chosen.");
-        //TODO implement
+        send("/category", new CategoryChosenContainer(GameControl.mModel.getCategory()));
     }
 
     public void onNotifyExplanation() {
