@@ -21,7 +21,7 @@ var timer = setInterval(function() {
 function updateGiver(giver) {
     var json = JSON.parse(giver.body);
 
-    document.getElementById("giverInfo").innerHTML = giver.name + "<br>" + giver.points + " Pts."
+    document.getElementById("giverInfo").innerHTML = json.name + "<br>" + json.points + " Pts."
 }
 
 function updateGuesses(guesses) {
