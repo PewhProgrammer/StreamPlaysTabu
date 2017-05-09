@@ -10,59 +10,77 @@ import java.util.LinkedList;
  */
 public class GuessesContainer {
 
-    private String guess1;
-    private String guess2;
-    private String guess3;
-    private String guess4;
-    private String guess5;
-    private String guess6;
-    private String guess7;
-    private String guess8;
-    private String guess9;
-    private String guess10;
+    private String guess1 = "";
+    private String guess2 = "";
+    private String guess3 = "";
+    private String guess4 = "";
+    private String guess5 = "";
+    private String guess6 = "";
+    private String guess7 = "";
+    private String guess8 = "";
+
+    private double nr1 = 0;
+    private double nr2 = 0;
+    private double nr3 = 0;
+    private double nr4 = 0;
+    private double nr5 = 0;
+    private double nr6 = 0;
+    private double nr7 = 0;
+    private double nr8 = 0;
 
     public GuessesContainer(LinkedList<Guess> guesses) {
         Iterator<Guess> it = guesses.iterator();
+        Guess g;
 
         if (it.hasNext()) {
-            guess1 = it.next().getGuess();
+            g = it.next();
+            guess1 = g.getGuess();
+            nr1 = g.getScore();
         }
 
         if (it.hasNext()) {
-            guess2 = it.next().getGuess();
+            g = it.next();
+            guess2 = g.getGuess();
+            nr2 = g.getScore() / nr1;
         }
 
         if (it.hasNext()) {
-            guess3 = it.next().getGuess();
+            g = it.next();
+            guess3 = g.getGuess();
+            nr3 = g.getScore() / nr1;
         }
 
         if (it.hasNext()) {
-            guess4 = it.next().getGuess();
+            g = it.next();
+            guess4 = g.getGuess();
+            nr4 = g.getScore() / nr1;
         }
 
         if (it.hasNext()) {
-            guess5 = it.next().getGuess();
+            g = it.next();
+            guess5 = g.getGuess();
+            nr5 = g.getScore() / nr1;
         }
 
         if (it.hasNext()) {
-            guess6 = it.next().getGuess();
+            g = it.next();
+            guess6 = g.getGuess();
+            nr6 = g.getScore() / nr1;
         }
 
         if (it.hasNext()) {
-            guess7 = it.next().getGuess();
+            g = it.next();
+            guess7 = g.getGuess();
+            nr7 = g.getScore() / nr1;
         }
 
         if (it.hasNext()) {
-            guess8 = it.next().getGuess();
+            g = it.next();
+            guess8 = g.getGuess();
+            nr8 = g.getScore() / nr1;
         }
 
-        if (it.hasNext()) {
-            guess9 = it.next().getGuess();
-        }
-
-        if (it.hasNext()) {
-            guess10 = it.next().getGuess();
-        }
+        nr1 = 1.0;
     }
 
     public String getGuess1() {
@@ -97,11 +115,36 @@ public class GuessesContainer {
         return guess8;
     }
 
-    public String getGuess9() {
-        return guess9;
+
+    public double getNr1() {
+        return nr1;
     }
 
-    public String getGuess10() {
-        return guess10;
+    public double getNr2() {
+        return nr2;
+    }
+
+    public double getNr3() {
+        return nr3;
+    }
+
+    public double getNr4() {
+        return nr4;
+    }
+
+    public double getNr5() {
+        return nr5;
+    }
+
+    public double getNr6() {
+        return nr6;
+    }
+
+    public double getNr7() {
+        return nr7;
+    }
+
+    public double getNr8() {
+        return nr8;
     }
 }

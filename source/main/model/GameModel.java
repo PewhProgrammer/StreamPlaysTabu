@@ -338,10 +338,12 @@ public class GameModel extends Observable{
     }
 
     public void generateVotingCategories() {
+        Set<String> categories= mOntologyDataBase.getCategories(10);
+        Iterator<String> it = categories.iterator();
         for (int i = 0; i < 10; i++) {
-            prevoting.add(i, new PrevoteCategory("Category " + Integer.toString(i + 1)));
+            String category = it.next();
+            prevoting.add(i, new PrevoteCategory(category + Integer.toString(i + 1)));
         }
-        //TODO get voting categories from db, create corresponding PrevoteCategory objects and fill arraylist
     }
 
     public String getGiver() {
@@ -357,7 +359,6 @@ public class GameModel extends Observable{
     }
 
     public String generateExplainWord() {
-        //TODO query db for explain word that is not contained in usedWords
         try {
             word = mOntologyDataBase.getExplainWord(category,usedWords);
         }catch(DatabaseException e){

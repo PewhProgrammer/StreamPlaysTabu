@@ -79,8 +79,7 @@ public class WebAPI implements IObserver {
     }
 
     public void onNotifyWinner() {
-        System.out.println("Winner!");
-        //TODO implement
+        //nothing to do here.
     }
 
     public void onNotifyGuess() {

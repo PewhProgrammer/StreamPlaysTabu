@@ -43,6 +43,7 @@ public class Guess extends Command {
 
     @Override
     public boolean validate() {
+
         if (!gameModel.getGameState().equals(GameState.GameStarted)) {
             return false;
         }
