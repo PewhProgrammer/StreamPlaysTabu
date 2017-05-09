@@ -1,13 +1,9 @@
 package logic.commands;
 
-import logic.bots.Bot;
-import logic.bots.SiteBot;
 import model.GameModel;
 import model.GameState;
 
-/**
- * Created by Marc on 03.04.2017.
- */
+
 public class Ask extends Command {
 
     private String question;
@@ -28,14 +24,7 @@ public class Ask extends Command {
 
     @Override
     public boolean validate() {
-        if (!gameModel.getGameState().equals(GameState.GameStarted)) {
-            return false;
-        }
-
-        if (getQuestion().equals("")) {
-            return false;
-        }
-        return true;
+        return gameModel.getGameState().equals(GameState.GameStarted) && !getQuestion().equals("");
     }
 
     public String getQuestion() {
