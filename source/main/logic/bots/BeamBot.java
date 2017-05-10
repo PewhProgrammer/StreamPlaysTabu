@@ -58,6 +58,7 @@ public class BeamBot extends Bot {
         //api interface
         beamBot = api.use(UsersService.class).getCurrent().get();
 
+
         // 'user' -> id des users um uns damit channel und chat instanz zu holen
 
         //ID von user zu dem wir connecten wollen
@@ -201,20 +202,17 @@ public class BeamBot extends Bot {
         rd.close();
 
         return id;
-
-
-
     }
 
     @Override
     public void connectToChatroom(String user) {
 
         Log.info("Sollte niemals benutzt werden!!");
-}
+    }
 
     @Override
     public void disconnectFromChatroom(String user) {
-
+        //TODO implement
     }
 
     @Override
@@ -224,19 +222,32 @@ public class BeamBot extends Bot {
 
     @Override
     public void whisperRules(String user) {
-        chatConnectable.send(ChatSendMethod.of(String.format("/whisper %s Rules Rules Rules Rules", user)));
+        whisper(user, rules);
     }
 
     @Override
     public void whisperLink(String user, String link) {
         Log.trace("Send link to giver!");
-        //WhisperMethod.builder().to() <--- TODO
+        whisper(user, link);
 
-        chatConnectable.send(ChatSendMethod.of(String.format(
-                "/whisper %s You are the giver! " +
-                        "Here is your link, please click it!: %s", user, link)));
-        chatConnectable.send(ChatSendMethod.of("Sended Link!"));
-        model.getSiteBot().onGiverJoined();
+        //TODO why onGiverJoined() at this point? i guess it is just in order to make the game run
+        //model.getSiteBot().onGiverJoined();
+        model.getSiteController().giverJoined();
+    }
+
+    private void whisper(String receiver, String content) {
+
+        BeamUser rec;
+
+        try {
+            int targetId = getUserId(receiver);
+            rec = api.use(ChannelsService.class).findOne(targetId).get().user;
+            WhisperMethod.Builder builder = WhisperMethod.builder().to(rec);
+            builder.send(content);
+            chatConnectable.send(builder.build());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -266,7 +277,4 @@ public class BeamBot extends Bot {
     public void announceScore(String user, int score) {
         chatConnectable.send(ChatSendMethod.of(String.format("%s. You have %d Points!", user, score)));
     }
-
-
-
 }

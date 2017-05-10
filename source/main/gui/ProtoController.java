@@ -317,4 +317,14 @@ public class ProtoController implements Initializable, IObserver {
             }
         }.start();
     }
+
+    @Override
+    public void onNotifyExplainWord() {
+
+    }
+
+    @Override
+    public void onNotifyTabooWords() {
+
+    }
 }

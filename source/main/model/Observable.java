@@ -145,6 +145,18 @@ public abstract class Observable {
         }
     }
 
+    public void notifyExplainWord() {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyExplainWord();
+        }
+    }
+
+    public void notifyTabooWords() {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyTabooWords();
+        }
+    }
+
     public void addObserver(IObserver ob){
         listIObserver.add(0,ob);
     }

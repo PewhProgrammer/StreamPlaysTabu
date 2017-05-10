@@ -129,7 +129,10 @@ public class AltTwitchBot extends Bot {
         //sendChatMessage(" " + user + " You are the giver! Here is your link, please click it! " + link);
         //sendPrivMessage("You are the giver! Here is your link, please click it! " + link,user);
         sendPrivMessage("Your Explain word: " + model.getExplainWord(),user);
-        model.getSiteBot().onGiverJoined();
+
+        //TODO: why onGiverJoined() at this point? think it is just to don't crash the game
+        //model.getSiteBot().onGiverJoined();
+        model.getSiteController().giverJoined();
     }
 
     @Override

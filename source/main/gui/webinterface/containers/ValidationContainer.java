@@ -8,7 +8,7 @@ import java.util.Set;
  */
 public class ValidationContainer {
 
-    private String reference = "";
+    private String reference = "Geilster mofuk EUW";
     private String taboo1 = "tim";
     private String taboo2 = "tim";
     private String taboo3 = "tim";

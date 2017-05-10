@@ -25,7 +25,6 @@ public class Votekick extends Command {
             gameModel.clear();
             gameModel.generateVotingCategories();
             gameModel.setGameState(GameState.Registration);
-            gameModel.getSiteBot().kick();
             gameModel.notifyKick();
         }
     }

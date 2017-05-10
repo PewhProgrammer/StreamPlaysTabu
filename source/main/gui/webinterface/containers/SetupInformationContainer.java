@@ -1,6 +1,6 @@
-package gui.webinterface;
+package gui.webinterface.containers;
 
-public class SetupInformation {
+public class SetupInformationContainer {
 
     private String gameMode;
     private String platform;

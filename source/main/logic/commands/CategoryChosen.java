@@ -22,7 +22,8 @@ public class CategoryChosen extends Command {
     @Override
     public void execute() {
         gameModel.setCategory(category);
-        gameModel.getSiteBot().sendWord(gameModel.generateExplainWord(), gameModel.generateTabooWords());
+        gameModel.generateExplainWord();
+        gameModel.generateTabooWords();
     }
 
     @Override

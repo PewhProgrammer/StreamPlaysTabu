@@ -1,6 +1,7 @@
 package logic.commands;
 
-import gui.webinterface.SetupInformation;
+
+import gui.webinterface.containers.SetupInformationContainer;
 import model.GameMode;
 import model.GameModel;
 import model.GameState;
@@ -14,7 +15,7 @@ public class Setup extends Command {
     private final String platform;
     private final String gameMode;
 
-    public Setup(SetupInformation si, GameModel gm, String channel) {
+    public Setup(SetupInformationContainer si, GameModel gm, String channel) {
         super(gm, channel);
         this.channel = si.getChannel();
         this.platform = si.getPlatform();

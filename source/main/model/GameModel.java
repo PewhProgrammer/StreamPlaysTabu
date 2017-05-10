@@ -9,6 +9,7 @@ import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
+import gui.webinterface.SiteController;
 import logic.bots.AltTwitchBot;
 import logic.bots.BeamBot;
 import logic.bots.Bot;
@@ -61,7 +62,7 @@ public class GameModel extends Observable{
     private Date timeStamp;
 
     private Bot bot;
-    private SiteBot sBot;
+    private SiteController sCon;
 
     private Set<String> hosts;
 
@@ -78,7 +79,6 @@ public class GameModel extends Observable{
         lang = l;
         MIN_PLAYERS = minPlayers;
         mOntologyDataBase = neo;
-        sBot = siteBot;
         hosts = new HashSet<>();
         prevoting = new ArrayList<>(10);
         usedWords = new HashSet<>();
@@ -184,7 +184,10 @@ public class GameModel extends Observable{
     public Set<String> generateTabooWords() {
         int score = mOntologyDataBase.getUserPoints(getGiver());
         int lvl = getLevel(score);
+        tabooWords.clear();
         tabooWords.addAll(mOntologyDataBase.getTabooWords(getExplainWord(),lvl-1));
+
+        notifyTabooWords();
 
         return tabooWords;
     }
@@ -361,6 +364,7 @@ public class GameModel extends Observable{
     public String generateExplainWord() {
         try {
             word = mOntologyDataBase.getExplainWord(category,usedWords);
+            notifyExplainWord();
         }catch(DatabaseException e){
             e.getMessage();
 
@@ -383,7 +387,6 @@ public class GameModel extends Observable{
         updateScore(winner, score);
         updateScore(giver, score);
         notifyWinner();
-        getSiteBot().finish();
         getBot().announceWinner(winner);
         for (int i = 0; i < 3 && i < guesses.size(); i++) {
             if(guesses.get(i).getScore() > 1)
@@ -405,8 +408,12 @@ public class GameModel extends Observable{
         this.bot = bot;
     }
 
-    public SiteBot getSiteBot() {
-        return sBot;
+    public void setSiteController(SiteController sc) {
+        this.sCon = sc;
+    }
+
+    public SiteController getSiteController() {
+        return sCon;
     }
 
     public void clear() {

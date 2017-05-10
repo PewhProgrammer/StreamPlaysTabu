@@ -34,4 +34,8 @@ public interface IObserver {
 
     public void onNotifyRegistrationTime();
 
+    public void onNotifyExplainWord();
+
+    public void onNotifyTabooWords();
+
 }

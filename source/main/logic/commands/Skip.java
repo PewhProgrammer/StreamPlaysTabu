@@ -14,7 +14,8 @@ public class Skip extends Command {
     }
 
     public void execute() {
-        gameModel.getSiteBot().sendWord(gameModel.generateExplainWord(), gameModel.generateTabooWords());
+        gameModel.generateExplainWord();
+        gameModel.generateTabooWords();
         gameModel.updateScore(gameModel.getGiver(), SKIP_COST);
         gameModel.clearQAndA();
         gameModel.clearExplanations();

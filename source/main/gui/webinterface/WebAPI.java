@@ -24,8 +24,9 @@ public class WebAPI implements IObserver {
     private SimpMessagingTemplate template;
 
     @MessageMapping("/startGame")
-    public void startGame(SetupInformation si) {
+    public void startGame(SetupInformationContainer si) {
             (new Setup(si, GameControl.mModel, si.getChannel())).execute();
+            GameControl.mModel.generateVotingCategories();
     }
 
     @MessageMapping("/reqGameMode")
@@ -98,10 +99,21 @@ public class WebAPI implements IObserver {
     }
 
     public void onNotifyKick() {
+        //TODO finish game with proper message
         System.out.println("Kickvote!");
     }
 
     public void onNotifyRegistrationTime() {
-        System.out.println("RegistrationTime!");
+        //Nothing to do here
+    }
+
+    @Override
+    public void onNotifyExplainWord() {
+        //Nothing to do here
+    }
+
+    @Override
+    public void onNotifyTabooWords() {
+        //Nothing to do here
     }
 }

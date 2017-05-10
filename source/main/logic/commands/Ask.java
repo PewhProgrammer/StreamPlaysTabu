@@ -19,7 +19,7 @@ public class Ask extends Command {
     @Override
     public void execute() {
 
-        gameModel.getSiteBot().sendQuestion(question);
+        gameModel.getSiteController().sendQuestion(question);
     }
 
     @Override

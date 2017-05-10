@@ -5,7 +5,9 @@ package gui.webinterface.containers;
  */
 public class CategoryChosenContainer {
 
-    private final String category;
+    private String category;
+
+    public CategoryChosenContainer() {}
 
     public CategoryChosenContainer(String category) {
         this.category = category;
@@ -13,5 +15,9 @@ public class CategoryChosenContainer {
 
     public String getCategory() {
         return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
