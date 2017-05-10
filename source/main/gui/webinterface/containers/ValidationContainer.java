@@ -8,12 +8,12 @@ import java.util.Set;
  */
 public class ValidationContainer {
 
-    private String reference = "Geilster mofuk EUW";
-    private String taboo1 = "tim";
-    private String taboo2 = "tim";
-    private String taboo3 = "tim";
-    private String taboo4 = "tim";
-    private String taboo5 = "tim";
+    private String reference = "";
+    private String taboo1 = "";
+    private String taboo2 = "";
+    private String taboo3 = "";
+    private String taboo4 = "";
+    private String taboo5 = "";
 
     public ValidationContainer(String reference, Set<String> tabooWords) {
         this.reference = reference;
