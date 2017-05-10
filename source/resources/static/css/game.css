@@ -9,6 +9,7 @@
 .progress {
     height: 1.5vh;
     background-color: #f2525a;
+    visibility: hidden;
     -moz-transform: scale(-1, 1);
     -webkit-transform: scale(-1, 1);
     -o-transform: scale(-1, 1);
@@ -19,6 +20,7 @@
 .singleGuesses {
     font-size: 3vmin;
     text-align: right;
+    visibility: hidden;
 }
 .explanationsText {
     left: 20.5%;

@@ -26,13 +26,41 @@ function updateGiver(giver) {
 
 function updateGuesses(guesses) {
     var incJson = JSON.parse(guesses.body);
-    document.getElementById("1stGuess").innerHTML = incJson.guess1;
-    document.getElementById("2ndGuess").innerHTML = incJson.guess2;
-    document.getElementById("3rdGuess").innerHTML = incJson.guess3;
-    document.getElementById("4thGuess").innerHTML = incJson.guess4;
-    document.getElementById("5thGuess").innerHTML = incJson.guess5;
-    document.getElementById("6thGuess").innerHTML = incJson.guess6;
-    document.getElementById("7thGuess").innerHTML = incJson.guess7;
+    if(incJson.guess1 != "") {
+        document.getElementById("1stGuess").innerHTML = incJson.guess1;
+        document.getElementById("1stGuess").style.visibility = "visible";
+        document.getElementById("Bar1").style.visibility = "visible";
+    }
+    if(incJson.guess2 != "") {
+        document.getElementById("2ndGuess").innerHTML = incJson.guess2;
+        document.getElementById("2ndGuess").style.visibility = "visible";
+        document.getElementById("Bar2").style.visibility = "visible";
+    }
+    if(incJson.guess3 != "") {
+        document.getElementById("3rdGuess").innerHTML = incJson.guess3;
+        document.getElementById("3rdGuess").style.visibility = "visible";
+        document.getElementById("Bar3").style.visibility = "visible";
+    }
+    if(incJson.guess4 != "") {
+        document.getElementById("4thGuess").innerHTML = incJson.guess4;
+        document.getElementById("4thGuess").style.visibility = "visible";
+        document.getElementById("Bar4").style.visibility = "visible";
+    }
+    if(incJson.guess5 != "") {
+        document.getElementById("5thGuess").innerHTML = incJson.guess5;
+        document.getElementById("5thGuess").style.visibility = "visible";
+        document.getElementById("Bar5").style.visibility = "visible";
+    }
+    if(incJson.guess6 != "") {
+        document.getElementById("6thGuess").innerHTML = incJson.guess6;
+        document.getElementById("6thGuess").style.visibility = "visible";
+        document.getElementById("Bar6").style.visibility = "visible";
+    }
+    if(incJson.guess7 != "") {
+        document.getElementById("7thGuess").innerHTML = incJson.guess7;
+        document.getElementById("7thGuess").style.visibility = "visible";
+        document.getElementById("Bar7").style.visibility = "visible";
+    }
 }
 
 function updateExplanations(explanations) {
