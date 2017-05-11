@@ -82,6 +82,11 @@ public class SiteController implements IObserver {
         //TODO: implement validation Logic
     }
 
+    @MessageMapping("/test")
+    public void test(){
+        System.out.println("Got something.");
+    }
+
     @Override
     public void onNotifyGameState() {
         if (gm.getGameState().equals(GameState.Win)) {

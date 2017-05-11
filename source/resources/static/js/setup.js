@@ -20,7 +20,7 @@ function setChannel() {
 }
 
 function sendSetup() {
-    stompClient.send(
+    stompClientLoc.send(
         "/localJava/startGame",
         {},
         JSON.stringify({

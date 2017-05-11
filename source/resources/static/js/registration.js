@@ -66,7 +66,7 @@ function updateValidation(validation) {
 
 function prepareRegister() {
     requestGameMode();
-    stompClient.send(
+    stompClientLoc.send(
         "/localJava/reqRegisterInfo",
         {},
         JSON.stringify({})

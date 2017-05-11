@@ -16,7 +16,7 @@ public class GuiTest extends TestCase {
 
     @org.junit.Test
     public void setUp() throws Exception {
-        gm = new GameModel(null, (short)2, null, null);
+        gm = new GameModel(null, (short)2, null);
         ga = new ProtoAnchor();
     }
 

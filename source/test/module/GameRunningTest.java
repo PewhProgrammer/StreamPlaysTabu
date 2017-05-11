@@ -5,7 +5,6 @@ import common.Neo4jWrapper;
 import gui.ProtoAnchor;
 import junit.framework.TestCase;
 import logic.GameControl;
-import logic.bots.SiteBot;
 import logic.commands.GiverJoined;
 import logic.commands.Register;
 import model.GameModel;
@@ -22,14 +21,12 @@ public class GameRunningTest extends TestCase {
     private String neo4jbindAddr = "localhost:7687";
     private final Language language = Language.Ger;
     private Neo4jWrapper database ;
-    private SiteBot siteBot = new SiteBot();
     private GameModel gModel ;
 
     @org.junit.Test
     public void setUp() throws Exception {
         database = new Neo4jWrapper(simulation,neo4jbindAddr,20);
-        gModel = new GameModel(language,(short)2,database,
-                siteBot);
+        gModel = new GameModel(language,(short)2,database);
         controller = new GameControl(gModel, 1337);
         Thread mTHREAD = new Thread() {
             @Override

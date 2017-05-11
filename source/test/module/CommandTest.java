@@ -2,17 +2,12 @@ package module;
 
 import common.Neo4jWrapper;
 import junit.framework.TestCase;
-import logic.bots.SiteBot;
 import logic.commands.*;
 import model.GameMode;
 import model.GameModel;
 import model.GameState;
 import model.Language;
-import org.junit.Rule;
-import org.junit.rules.TestName;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -26,12 +21,11 @@ public class CommandTest extends TestCase{
     private final Neo4jWrapper neo =
             new Neo4jWrapper(true,
                     "localhost:7687",20);
-    private final SiteBot sBot = new SiteBot();
 
     @org.junit.Test
     public void setUp() throws Exception {
         gModel = new GameModel(lang,MIN_PLAYERS
-        ,neo, new SiteBot());
+        ,neo);
     }
 
     public void testAnswer(){

@@ -1,39 +1,39 @@
-var stompClient = null;
+var stompClientLoc = null;
 var gameState = "Register";
 
-function connect() {
+function connectLoc() {
     var socket = new SockJS('/connection-local-socket');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
+    stompClientLoc = Stomp.over(socket);
+    stompClientLoc.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/localJS/gameMode', function (gamemode) {
+        stompClientLoc.subscribe('/localJS/gameMode', function (gamemode) {
            updateMode(gamemode);
         });
-        stompClient.subscribe('/localJS/gameState', function (gamestate) {
+        stompClientLoc.subscribe('/localJS/gameState', function (gamestate) {
             updateState(gamestate);
         });
-        stompClient.subscribe('/localJS/score', function(ranking) {
+        stompClientLoc.subscribe('/localJS/score', function(ranking) {
             updateRanking(ranking);
         });
-        stompClient.subscribe('/localJS/prevoteCategory', function(categories) {
+        stompClientLoc.subscribe('/localJS/prevoteCategory', function(categories) {
             updateCategoryVote(categories)
         });
-        stompClient.subscribe('/localJS/giver', function(giver) {
+        stompClientLoc.subscribe('/localJS/giver', function(giver) {
             updateGiver(giver);
         });
-        stompClient.subscribe('/localJS/guesses', function(guesses) {
+        stompClientLoc.subscribe('/localJS/guesses', function(guesses) {
            updateGuesses(guesses);
         });
-        stompClient.subscribe('/localJS/explanations', function(explanations) {
+        stompClientLoc.subscribe('/localJS/explanations', function(explanations) {
             updateExplanations(explanations);
         });
-        stompClient.subscribe('/localJS/qAndA', function(qAndA) {
+        stompClientLoc.subscribe('/localJS/qAndA', function(qAndA) {
            updateQandA(qAndA);
         });
-        stompClient.subscribe('/localJS/validation', function(validation) {
+        stompClientLoc.subscribe('/localJS/validation', function(validation) {
             updateValidation(validation);
         });
-        stompClient.subscribe('/localJS/category', function(categorychosen) {
+        stompClientLoc.subscribe('/localJS/category', function(categorychosen) {
             categoryChosen(categorychosen);
         });
         if (window.location.href == 'http://localhost:8080/registerFFA.html') {
@@ -46,8 +46,8 @@ function connect() {
 }
 
 function disconnect() {
-    if (stompClient != null) {
-        stompClient.disconnect();
+    if (stompClientLoc != null) {
+        stompClientLoc.disconnect();
     }
     console.log("Disconnected");
 }
@@ -70,7 +70,7 @@ function updateMode(gamemode) {
 }
 
 function requestGameMode() {
-    stompClient.send(
+    stompClientLoc.send(
         "/localJava/reqGameMode",
         {},
         JSON.stringify({})

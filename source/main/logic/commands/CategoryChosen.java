@@ -1,6 +1,5 @@
 package logic.commands;
 
-import logic.bots.SiteBot;
 import model.GameModel;
 
 /**

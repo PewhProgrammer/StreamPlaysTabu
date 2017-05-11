@@ -118,13 +118,13 @@ function updateQandA(qAndA) {
 
 function prepareGame() {
     requestGameMode();
-    stompClient.send(
+    stompClientLoc.send(
         "/localJava/reqGiverInfo",
         {},
         JSON.stringify({})
     );
 
-    stompClient.send(
+    stompClientLoc.send(
         "/localJava/reqCategory",
         {},
         JSON.stringify({})

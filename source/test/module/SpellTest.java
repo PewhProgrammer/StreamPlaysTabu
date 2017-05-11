@@ -13,7 +13,7 @@ public class SpellTest extends TestCase {
 
     public void testEnSimple() {
         short length = 2;
-        this.gm = new GameModel(Language.Eng, length, null, null);
+        this.gm = new GameModel(Language.Eng, length, null);
         checkSpelling("paernts");
         checkSpelling("smrat cast");
         checkSpelling("afk");
@@ -22,7 +22,7 @@ public class SpellTest extends TestCase {
 
     public void testGerSimple() {
         short length = 2;
-        this.gm = new GameModel(Language.Ger, length, null, null);
+        this.gm = new GameModel(Language.Ger, length, null);
         checkSpelling("Hunt");
         checkSpelling("Tretis");
         checkSpelling("Karte");

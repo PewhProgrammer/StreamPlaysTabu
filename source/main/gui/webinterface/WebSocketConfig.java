@@ -12,16 +12,14 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/localJS");
-        config.setApplicationDestinationPrefixes("/localJava");
-
-
-
+        config.enableSimpleBroker("/localJS", "externalJS");
+        config.setApplicationDestinationPrefixes("/localJava", "/externalJava");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/connection-local-socket").withSockJS();
+        registry.addEndpoint("/connection-external-socket").withSockJS();
     }
 
 }

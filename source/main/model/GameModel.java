@@ -13,12 +13,9 @@ import gui.webinterface.SiteController;
 import logic.bots.AltTwitchBot;
 import logic.bots.BeamBot;
 import logic.bots.Bot;
-import logic.bots.SiteBot;
 import logic.commands.Command;
 import org.languagetool.JLanguageTool;
 import org.languagetool.language.BritishEnglish;
-import org.languagetool.language.English;
-import org.languagetool.language.German;
 import org.languagetool.language.GermanyGerman;
 import org.languagetool.rules.RuleMatch;
 
@@ -69,7 +66,7 @@ public class GameModel extends Observable{
     private StanfordCoreNLP pipeline;
     private JLanguageTool langTool;
 
-    public GameModel(Language l, short minPlayers, Neo4jWrapper neo, SiteBot siteBot){
+    public GameModel(Language l, short minPlayers, Neo4jWrapper neo){
         mGameState = GameState.Registration;
         mNumPlayers = 0;
         registeredPlayers = new ArrayList<>();
@@ -344,6 +341,9 @@ public class GameModel extends Observable{
         Set<String> categories= mOntologyDataBase.getCategories(10);
         Iterator<String> it = categories.iterator();
         for (int i = 0; i < 10; i++) {
+            if (!it.hasNext()) {
+                break;
+            }
             String category = it.next();
             prevoting.add(i, new PrevoteCategory(category + Integer.toString(i + 1)));
         }
