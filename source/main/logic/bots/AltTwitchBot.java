@@ -17,6 +17,7 @@ public class AltTwitchBot extends Bot {
         super(gm, channel);
         connectToChatroom(channel);
 
+
     }
 
 
@@ -24,10 +25,14 @@ public class AltTwitchBot extends Bot {
     private class Pirc extends PircBot {
 
 
+        GameModel model;
 
-        public Pirc(String user) {
+        public Pirc(String user, GameModel gm) {
+
             this.setName(user);
             this.setLogin("[" + user + "]");
+            this.model = gm;
+
         }
 
         public void onMessage(String channel, String sender,
@@ -59,7 +64,7 @@ public class AltTwitchBot extends Bot {
             System.out.println(message);
             String[] channel = message.split(" ");
 
-            connectToChatroom(channel[0]);
+            new AltTwitchBot(model, "#"+channel[0]);
 
 
             if (cmd != null) {
@@ -88,7 +93,8 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void connectToChatroom(String user) {
-        bot = new Pirc("streamplaystaboo");
+        bot = new Pirc("streamplaystaboo", this.model);
+        bot.setVerbose(true);
 
         // Connect to the IRC server.
         try {
