@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="css/setup.css" th:href="@{/css/setup.css}"/>
 </head>
 
-<body onload="connectLoc(); connectExt()">
+<body onload="connectLoc()">
 
 <div class="backgroundImg">
     <img src="images/start.png" th:src="@{images/start.png}"/>
@@ -62,7 +62,6 @@
     <script src="js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
     <script src="js/setup.js" th:src="@{/js/setup.js}"></script>
     <script src="js/communicationLocal.js" th:src="@{/js/communicationLocal.js}"></script>
-<script src="js/communicationExternal.js" th:src="@{/js/communicationExternal.js}"></script>
     <script src="/webjars/sockjs-client/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 </body>
