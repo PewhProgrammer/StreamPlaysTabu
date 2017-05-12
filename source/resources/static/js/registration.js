@@ -60,7 +60,7 @@ function updateValidation(validation) {
     if (json.taboo5 != "") {
         string = string + "<li>" + json.taboo2 + "</li></ul></small>"
     }
-    
+
     document.getElementById("validateText").innerHTML = string;
 }
 

@@ -13,15 +13,16 @@ body {
     height: 8%;
     z-index: 0;
 
-    background-color: #eb131e;
+    background-image: url("../images/block.jpeg");
+    background-size: 100%;
 }
 
 .header{
     position: fixed;
     top: 0;
-    width: 50%;
-    height: 11%;
-    left: 25%;
+    width: 35%;
+    height: 12.5%;
+    left: 32.5%;
     z-index: 0;
 }
 
