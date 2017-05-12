@@ -21,7 +21,9 @@ function updateGiver(giver) {
     var json = JSON.parse(giver.body);
 
     document.getElementById("giverInfo").innerHTML = json.name + "<br>" + json.points + " Pts."
+    document.getElementById("level").innerHTML = json.level;
 }
+
 
 function updateGuesses(guesses) {
     var incJson = JSON.parse(guesses.body);

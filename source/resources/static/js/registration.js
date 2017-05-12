@@ -1,6 +1,4 @@
 var timeLeft = 30;
-var categoryTopline = "";
-var validationTopline="";
 var twenties = false;
 // Update the count down every 1 second
 var x = setInterval(function() {
@@ -35,13 +33,8 @@ function updateRanking(ranking) {
 function updateCategoryVote(categories) {
     var json = JSON.parse(categories.body);
 
-    if(categoryTopline ==  "") {
-        categoryTopline = document.getElementById("categoryText").innerHTML;
-    }
-
     document.getElementById("categoryText").innerHTML =
-        categoryTopline + "<br><br>"
-        + "1. " + json.first + getWhitespaces(10) + "2. " + json.second + "<br>"
+        "1. " + json.first + getWhitespaces(10) + "2. " + json.second + "<br>"
         + "3. " + json.third + getWhitespaces(10) + "4. " + json.fourth + "<br>"
         + "5. " + json.fifth + getWhitespaces(10) + "6. " + json.sixth + "<br>"
         + "7. " + json.seventh + getWhitespaces(10) + "8. " + json.eighth + "<br>"
@@ -49,19 +42,26 @@ function updateCategoryVote(categories) {
 }
 
 function updateValidation(validation) {
-    if(validationTopline == "") {
-        validationTopline = document.getElementById("validateText").innerHTML;
-    }
 
     var json = JSON.parse(validation.body);
-    document.getElementById("validateText").innerHTML =
-        validationTopline + "<br>"
-    + json.reference + "<br><small>"
-    + "<ul><li>" + json.taboo1  + "</li>"
-    + "<li>" + json.taboo2  + "</li>"
-    + "<li>" + json.taboo3  + "</li>"
-    + "<li>" + json.taboo4  + "</li>"
-    + "<li>" + json.taboo5  + "</li></ul></small>"
+    var string = json.reference + "<br><small>";
+    if (json.taboo1 != "") {
+        string = string + "<ul><li>" + json.taboo1 + "</li>"
+    }
+    if (json.taboo2 != "") {
+        string = string + "<li>" + json.taboo2 + "</li>"
+    }
+    if (json.taboo3 != "") {
+        string = string + "<li>" + json.taboo2 + "</li>"
+    }
+    if (json.taboo4 != "") {
+        string = string + "<li>" + json.taboo2 + "</li>"
+    }
+    if (json.taboo5 != "") {
+        string = string + "<li>" + json.taboo2 + "</li></ul></small>"
+    }
+    
+    document.getElementById("validateText").innerHTML = string;
 }
 
 function prepareRegister() {

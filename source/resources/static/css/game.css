@@ -72,6 +72,10 @@
     font-size: 3vmin;
 }
 
-#giverInfo{
+#giverInfo, #level{
     font-size: 4vw;
+}
+
+#level {
+    text-align: center;
 }

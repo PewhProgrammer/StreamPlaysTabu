@@ -108,11 +108,11 @@ body {
 }
 
 #categoryText{
-    height: 40%;
+    text-align: center;
 }
 
 #validateText{
-    height: 40%;
+    text-align: center;
 }
 
 #tabooText{
