@@ -8,7 +8,7 @@
 
 .progress {
     height: 1.5vh;
-    background-color: #f2525a;
+    background-color: #14bc22;
     visibility: hidden;
     -moz-transform: scale(-1, 1);
     -webkit-transform: scale(-1, 1);
@@ -28,7 +28,8 @@
     width: 55.5%;
     height: 70%;
 
-    background-color: #f89da2;
+    background-image: url("../images/explanations.jpg");
+    background-size: cover;
 }
 
 .guessesText{
@@ -37,7 +38,8 @@
     width: 23%;
     height: 70%;
 
-    background-color: #f2525a;
+    background-image: url("../images/guesses.jpg");
+    background-size: cover;
 }
 
 
@@ -47,7 +49,8 @@
     width: 99%;
     height: 19%;
 
-    background-color: #f2525a;
+    background-image: url("../images/qAndA.jpg");
+    background-size: cover;
 }
 
 .giverInfoText{
@@ -56,7 +59,8 @@
     width: 19.5%;
     height: 34.5%;
 
-    background-color: #f2525a;
+    background-image: url("../images/playerinfo.jpg");
+    background-size: cover;
 }
 
 .levelText{
@@ -65,7 +69,8 @@
     width: 19.5%;
     height: 34.5%;
 
-    background-color: #f2525a;
+    background-image: url("../images/playerinfo.jpg");
+    background-size: cover;
 }
 
 #guesses, #qAndA, #explanations{

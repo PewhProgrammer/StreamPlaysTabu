@@ -33,12 +33,18 @@ function updateRanking(ranking) {
 function updateCategoryVote(categories) {
     var json = JSON.parse(categories.body);
 
-    document.getElementById("categoryText").innerHTML =
-        "1. " + json.first + getWhitespaces(10) + "2. " + json.second + "<br>"
-        + "3. " + json.third + getWhitespaces(10) + "4. " + json.fourth + "<br>"
-        + "5. " + json.fifth + getWhitespaces(10) + "6. " + json.sixth + "<br>"
-        + "7. " + json.seventh + getWhitespaces(10) + "8. " + json.eighth + "<br>"
-        + "9. " + json.ninth + getWhitespaces(10) + "10. " + json.tenth + "<br>";
+    document.getElementById("categoryText1").innerHTML =
+        "1. " + json.first + "<br>"
+        + "3. " + json.third + "<br>"
+        + "5. " + json.fifth + "<br>"
+        + "7. " + json.seventh + "<br>"
+        + "9. " + json.ninth + "<br>";
+    document.getElementById("categoryText2").innerHTML =
+        "2. " + json.second + "<br>"
+        + "4. " + json.fourth + "<br>"
+        + "6. " + json.sixth + "<br>"
+        + "8. " + json.eighth + "<br>"
+        + "10. " + json.tenth + "<br>";
 }
 
 function updateValidation(validation) {

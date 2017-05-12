@@ -13,8 +13,8 @@ body {
     height: 8%;
     z-index: 0;
 
-    background-image: url("../images/block.jpeg");
-    background-size: 100%;
+    background-image: url("../images/upperBar.jpg");
+    background-size: cover;
 }
 
 .header{
@@ -30,7 +30,7 @@ body {
     width: 50%;
     line-height: 6vh;
     left: 25%;
-    font-size: 8vmin;
+    font-size: 6vmin;
     z-index: 1;
 }
 
@@ -81,7 +81,8 @@ body {
     width: 65%;
     height: 70%;
 
-    background-color: #f89da2;
+    background-image: url("../images/highscore.jpg");
+    background-size: cover;
 }
 
 .rightText{
@@ -90,7 +91,8 @@ body {
     width: 33.5%;
     height: 90%;
 
-    background-color: #f2525a;
+    background-image: url("../images/rightBar.jpg");
+    background-size: cover;
 }
 
 
@@ -100,16 +102,13 @@ body {
     width: 65%;
     height: 19%;
 
-    background-color: #f2525a;
+    background-image: url("../images/hints.jpg");
+    background-size: cover;
 }
 
-#categoryText, #validateText,
+#categoryText1, #categoryText2, #validateText,
 #tabooText, #hintText {
     font-size: 3vmin;
-}
-
-#categoryText{
-    text-align: center;
 }
 
 #validateText{
