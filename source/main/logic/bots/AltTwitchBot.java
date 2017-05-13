@@ -44,15 +44,13 @@ public class AltTwitchBot extends Bot {
             if (cmd != null) {
                 model.pushCommand(cmd);
 
-                if (sender.equals("pewhtv")) {
-                    if (message.startsWith("!print")) {
-                        Log.debug("Print command received!");
-                        sendMessage(channel, String.format("@" + sender + ": Ping! I've counted %d occurences on twitch! Kappa"));
-                    }
+                if (sender.equals("streamplaystaboo") | sender.equals(channel)){
                     if (message.startsWith("!shutdown")) {
-                        Log.debug("Shutdown command received!");
-                        sendMessage(channel, "Ping! I'm going offline!!");
-                        System.exit(1);
+                        Log.debug("shutdown command received!");
+                        sendMessage(channel, String.format("@" + sender + ": BYE BYE"));
+                        partChannel(sender);
+                        Thread.interrupted();
+
                     }
                 }
             }
