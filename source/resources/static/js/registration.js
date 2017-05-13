@@ -32,19 +32,41 @@ function updateRanking(ranking) {
 
 function updateCategoryVote(categories) {
     var json = JSON.parse(categories.body);
+    var uneven= "";
+    if(json.first != null) {
+        uneven = uneven + "1. " + json.first + "<br>";
+    }
+    if(json.third != null) {
+        uneven = uneven + "3. " + json.third + "<br>";
+    }
+    if(json.fifth != null) {
+        uneven = uneven + "5. " + json.fifth + "<br>";
+    }
+    if(json.seventh != null) {
+        uneven = uneven + "7. " + json.seventh + "<br>";
+    }
+    if(json.ninth != null) {
+        uneven = uneven + "9. " + json.ninth;
+    }
+    document.getElementById("categoryText1").innerHTML = uneven;
 
-    document.getElementById("categoryText1").innerHTML =
-        "1. " + json.first + "<br>"
-        + "3. " + json.third + "<br>"
-        + "5. " + json.fifth + "<br>"
-        + "7. " + json.seventh + "<br>"
-        + "9. " + json.ninth + "<br>";
-    document.getElementById("categoryText2").innerHTML =
-        "2. " + json.second + "<br>"
-        + "4. " + json.fourth + "<br>"
-        + "6. " + json.sixth + "<br>"
-        + "8. " + json.eighth + "<br>"
-        + "10. " + json.tenth + "<br>";
+    var even = "";
+    if(json.second != null) {
+        even = even + "2. " + json.second + "<br>";
+    }
+    if(json.fourth != null) {
+        even = even + "4. " + json.fourth + "<br>";
+    }
+    if(json.sixth != null) {
+        even = even + "6. " + json.sixth + "<br>";
+    }
+    if(json.eighth != null) {
+        even = even + "8. " + json.eighth + "<br>";
+    }
+    if(json.tenth != null) {
+        even = even + "10. " + json.tenth;
+    }
+    document.getElementById("categoryText2").innerHTML = even;
 }
 
 function updateValidation(validation) {
