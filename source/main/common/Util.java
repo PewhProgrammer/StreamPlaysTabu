@@ -64,25 +64,25 @@ public class Util {
 
         if (tmp.startsWith("The color of its ")){
             newTmp = "The color of its";
-            userInput =tmp.split(" is ");
-            return parseTemplate(newTmp, userInput[0], " "+userInput[1]);
+            userInput =tmp.split(" ");
+            return parseTemplate(newTmp, userInput[4], " "+userInput[6]);
         }
 
         if (tmp.startsWith("The size of its ")){
             newTmp = "The size of its";
-            userInput =tmp.split(" is ");
-            return parseTemplate(newTmp, userInput[0], " "+userInput[1]);
+            userInput =tmp.split(" ");
+            return parseTemplate(newTmp, userInput[4], " "+userInput[6]);
         }
 
         if (tmp.startsWith("The shape of its ")){
             newTmp = "The shape of its";
-            userInput =tmp.split(" is ");
-            return parseTemplate(newTmp, userInput[0], " "+userInput[1]);
+            userInput =tmp.split(" ");
+            return parseTemplate(newTmp, userInput[4], " "+userInput[6]);
         }
 
-        if (tmp.startsWith("It wears ")){
-            newTmp = "It wears";
-            userInput =tmp.split("It wears ");
+        if (tmp.startsWith("It wears a ")){
+            newTmp = "It wears a";
+            userInput =tmp.split("It wears a ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -110,9 +110,9 @@ public class Util {
             return parseTemplate(newTmp, userInput[1], "");
         }
 
-        if (tmp.startsWith("It is a part of ")){
-            newTmp = "It is a part of";
-            userInput =tmp.split("It is a part of ");
+        if (tmp.startsWith("It is a part of a ")){
+            newTmp = "It is a part of a";
+            userInput =tmp.split("It is a part of a ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -241,7 +241,7 @@ public class Util {
                 }
             // It wears a ___
                 if (tmp.equals("It wears a")) {
-                    return getPair("wears a", userInput, "", "true");
+                    return getPair("wears a(n)", userInput, "", "true");
                 }
 
             // It has a ___
@@ -252,7 +252,7 @@ public class Util {
         /* Purpose */
 
             // It is used for/to ___
-                if (tmp.equals("It is used for/to")) {
+                if (tmp.equals("It is used for")) {
                     return getPair("is used for/to", userInput, "", "true");
                 }
             // It enhances ___
@@ -339,7 +339,7 @@ public class Util {
                     return getPair("genre", userInput, "", "true");
                 }
             // It is set in ___
-                if (tmp.equals("It is set in")) {
+                if (tmp.equals("It sets in")) {
                     return getPair("is set in", userInput, "", "true");
                 }
             // It is published by ___
