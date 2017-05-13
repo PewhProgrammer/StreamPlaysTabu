@@ -204,7 +204,7 @@ public class Neo4jWrapper {
         //could happen that we have too less connected words in database!!
 
         Set<String> taboo = fetchConnectedWordsFromDatabase(Util.reduceStringToMinimum(explain),i);
-        HashMap<String,Set<String>> result ;
+        HashMap<String,Set<String>> result = new HashMap<>();
         if(taboo.size() > 0) {
             //Log.trace("Retieved Taboo Words: " + taboo.toString());
             result = new HashMap<>() ;
