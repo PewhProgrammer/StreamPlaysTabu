@@ -200,24 +200,28 @@ public class Neo4jWrapper {
      * @param i describes how many taboo words to retrieve
      * @return
      */
-    public Set<String> getTabooWordsForValidation(String explain, int i){
+    public HashMap<String,Set<String>> getTabooWordsForValidation(String explain, int i){
         //could happen that we have too less connected words in database!!
 
-        Set<String> result = fetchConnectedWordsFromDatabase(Util.reduceStringToMinimum(explain),i);
-        if(result.size() > 0) {
-            Log.trace("Retieved Taboo Words: " + result.toString());
+        Set<String> taboo = fetchConnectedWordsFromDatabase(Util.reduceStringToMinimum(explain),i);
+        HashMap<String,Set<String>> result ;
+        if(taboo.size() > 0) {
+            //Log.trace("Retieved Taboo Words: " + taboo.toString());
+            result = new HashMap<>() ;
+            result.put(explain,taboo);
             return result;
         }
         //Force it!
         Set<String> cat = fetchFilteredCategoryFromDatabase(10);
+        String newExplain = explain;
         for(String str: cat){
-            if(randomizer.nextBoolean()){
+            if(randomizer.nextBoolean() || newExplain.equals(explain)){
                 explain = str ;
                 break;
             }
         }
 
-        result = fetchConnectedWordsFromDatabase(Util.reduceStringToMinimum(explain),i);
+        result.put(explain,fetchConnectedWordsFromDatabase(Util.reduceStringToMinimum(newExplain),i));
         return result;
     }
 
