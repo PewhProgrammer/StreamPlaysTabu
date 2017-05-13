@@ -77,10 +77,15 @@
     font-size: 3vmin;
 }
 
-#giverInfo, #level{
+#giverInfo{
     font-size: 4vw;
 }
 
 #level {
     text-align: center;
+    position: fixed;
+    left: 2.5%;
+    top: 51%;
+    width: 28vmin;
+    font-size: 8vw;
 }
