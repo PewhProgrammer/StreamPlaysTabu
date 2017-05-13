@@ -33,9 +33,13 @@ function connectLoc() {
         stompClientLoc.subscribe('/localJS/validation', function(validation) {
             updateValidation(validation);
         });
+        stompClientLoc.subscribe('/localJS/endGame', function(endGame) {
+            updateEndGame(endGame);
+        });
         stompClientLoc.subscribe('/localJS/category', function(categorychosen) {
             categoryChosen(categorychosen);
         });
+
         if (window.location.href == 'http://localhost:8080/registerFFA.html') {
             prepareRegister();
         }

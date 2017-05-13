@@ -108,14 +108,13 @@ function updateExplanations(explanations) {
     }
 
     document.getElementById("explanations").innerHTML = string;
-
-
-
 }
 
 function updateQandA(qAndA) {
     var incJson = JSON.parse(qAndA.body);
-    document.getElementById("qAndA").innerHTML = "Q: " + incJson.question + "<br><br>" + "A: " + incJson.answer;
+    document.getElementById("qAndA3").innerHTML = document.getElementById("qAndA2").innerHTML;
+    document.getElementById("qAndA2").innerHTML = document.getElementById("qAndA1").innerHTML;
+    document.getElementById("qAndA1").innerHTML = "<big>Q: </big>" + incJson.question + "<br><br>" + "<big>A: </big>" + incJson.answer;
 }
 
 function prepareGame() {
@@ -135,4 +134,14 @@ function prepareGame() {
 
 function categoryChosen(chosencategory) {
     console.log(chosencategory);
+}
+
+function updateEndGame(endGame) {
+    var incJson = JSON.parse(endGame.body);
+    document.getElementById("explanations").style.visibility = "hidden";
+    if(incJson.status == "Win") {
+        document.getElementById("endGame").innerHTML = "Winner: " + endGame.winner + "<br> Points: +" + endGame.points;
+    } else if (incJson.status == "Lose" || incJson.status =="Kick") {
+        document.getElementById("endGame").innerHTML = "This round is over! :( <br> No winner.";
+    }
 }

@@ -73,7 +73,7 @@
     background-size: cover;
 }
 
-#guesses, #qAndA, #explanations{
+#guesses, #qAndA1, #qAndA2, #qAndA3, #explanations{
     font-size: 3vmin;
 }
 
@@ -88,4 +88,12 @@
     top: 51%;
     width: 28vmin;
     font-size: 8vw;
+}
+
+#qAndA1, #qAndA2, #qAndA3 {
+    margin-right: 40px;
+}
+
+#endGame {
+    font-size: 4vw;
 }
