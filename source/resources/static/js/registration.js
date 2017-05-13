@@ -88,3 +88,20 @@ function getWhitespaces(num) {
 
     return whitespaces;
 }
+
+var  tips = ["Type !register to get into the giver pool! Being registered you have the chance to explain the next word!",
+"You can type !score to see your points. The top 3 players with the most points will be granted a badge!",
+"You can take a guess by using the !guess command. The faster you guess the right word, the more points you will get!",
+"Do you want to ask the giver anything? Type !ask and the giver can answer your question.",
+"Is a player not behaving right? Start a !votekick.",
+"As a giver you can get extra time by validating some taboo words.",
+"Try giving short and simple explanations! The faster someone guesses your word, the more points both of you will receive!",
+"Some templates can only be used once per round! Be careful when choosing a template for explaining.",
+"Always keep an eye on the chat and their guesses. It will help you to find the right explanations!"];
+
+var  y = setInterval(function() {
+
+    document.getElementById("hintText").innerHTML = "<big>Did you know?</big><br><small>"
+    + tips[Math.round((Math.random() * 8))] + "</small>";
+
+}, 10000);
