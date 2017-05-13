@@ -345,7 +345,7 @@ public class GameModel extends Observable{
                 break;
             }
             String category = it.next();
-            prevoting.add(i, new PrevoteCategory(category + Integer.toString(i + 1)));
+            prevoting.add(i, new PrevoteCategory(category));
         }
     }
 
@@ -474,7 +474,7 @@ public class GameModel extends Observable{
         for (int i = 0; i < sortedSuggestions.size(); i++) {
             //TODO tim fragen wies funktioniert
             mOntologyDataBase.insertNodesAndRelationshipIntoOntology(sortedSuggestions.get(i).getExplanation(),
-                    sortedSuggestions.get(i).getContent(),true, "isRelatedTo",true);
+                    sortedSuggestions.get(i).getContent(),false, "isRelatedTo",true);
         }
 
         tabooSuggestions.clear();

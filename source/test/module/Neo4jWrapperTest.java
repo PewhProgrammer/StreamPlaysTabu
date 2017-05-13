@@ -5,11 +5,15 @@ import common.Log;
 import common.Neo4jWrapper;
 import junit.framework.TestCase;
 import model.Language;
-import org.junit.Test;
 import org.neo4j.driver.v1.exceptions.ServiceUnavailableException;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
+import java.util.Date;
 
 /**
  * Created by Thinh-Laptop on 16.04.2017.
@@ -23,10 +27,13 @@ public class Neo4jWrapperTest extends TestCase {
     private Neo4jWrapper database ;
     private final String label = "Node";
     private final int RATING_TRESHOLD = 3 ; // How many rating to validate a connection
+    private final Random randomizer = new Random(new Date().getTime());
+    private static final String FILENAME = "database_config.txt";
 
     @org.junit.Test
     public void setUp() throws Exception {
-        database = new Neo4jWrapper(simulation,neo4jbindAddr,20);
+        int seed = randomizer.nextInt(100);
+        database = new Neo4jWrapper(simulation,neo4jbindAddr,seed);
         database.resetRelationships(); //TODO doesnt work properly on userNode
         database.resetDatabase();
         Log.setLevel(Log.Level.TRACE);
@@ -136,32 +143,57 @@ public class Neo4jWrapperTest extends TestCase {
     }
 
     public void testGetExplainWord(){
-        String user ="Manuel";
-        database.createUser(user);
         String explain = "";
         String category = "simulation";
         Set<String> usedWords = new HashSet<>();
-        usedWords.add("alistar");
 
-        //Test among all nodes
+        //test taboo word as explain word
         try {
-            database.createNode("alistar",true);
+            database.createNode("nautilus",false);
+            assertEquals("Should not retrieve an explain word!","",database.getExplainWord(category,usedWords));
+        }catch(DatabaseException e){
+            Log.trace(e.getMessage());
+        }
+
+        //test category as explain word
+        try {
+            database.createNode("maokai",false);
+            database.setCategory("maokai");
+            assertEquals("Should retrieve an explain word!","maokai",database.getExplainWord(category,usedWords));
+            usedWords.add("maokai");
             database.getExplainWord(category,usedWords);
             fail();
         }catch(DatabaseException e){
             Log.trace(e.getMessage());
         }
 
-        try{
-            database.createNode("Hextech Gunblade",true);
-            explain = database.getExplainWord(category,usedWords);
+        //Test among all nodes
+        try {
+            database.createNode("alistar",true);
+            assertEquals("Should retrieve an explain word!","alistar",database.getExplainWord(category,usedWords));
+            usedWords.add("alistar");
+            database.getExplainWord(category,usedWords);
+            fail();
         }catch(DatabaseException e){
             Log.trace(e.getMessage());
-            fail();
         }
 
-        //Test with right categories
+    }
 
+    public void testExplainWordRandomizer(){
+        String category = "simulation";
+        Set<String> usedWords = new HashSet<>();
+
+        //MANUAL TEST
+        try {
+            database.createNode("nautilus",true);
+            database.createNode("Maokai",true);
+            database.createNode("alistar",true);
+            database.createNode("Yorick",true);
+            database.getExplainWord(category,usedWords);
+        }catch(DatabaseException e){
+            Log.trace(e.getMessage());
+        }
     }
 
     public void testSetCategory(){
@@ -206,13 +238,13 @@ public class Neo4jWrapperTest extends TestCase {
         database.setCategory(explain[1]);
         database.setCategory(explain[2]);
 
-        Set<String> result = database.getCategories(3);
+        Set<String> result = database.getCategories(10);
         assertTrue("given Categories are in size not equal 3" , result.size() == 3);
     }
 
     public void testGetTabooWords(){
 
-        String explain = "Mario Kart";
+        String explain = "Mario";
         String relation1 = "It appears in ";
         Set<String> result = new HashSet<>();
         int i = 3 ;
@@ -235,55 +267,30 @@ public class Neo4jWrapperTest extends TestCase {
 
     public void testSetUpNodes(){
 
-        String explain = "Mario Kart";
-        String[] relation =
-                {"none","is a character of"};
+        try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
 
-        try{
-            database.createNode("lcs",true);
-            database.createNode("dota 2",true);
-            database.createNode("mp9",true);
-            database.createNode("rush b",true);
-            database.createNode("spellthief",true);
-            database.createNode("infinity edge",true);
-            database.createNode("worlds championship",true);
-            database.createNode("lag",true);
-            database.createNode("player versus environment",true);
-            database.createNode("strafing",true);
-            database.createNode("mob",true);
-            database.createNode("spawn point",true);
-            database.createNode("tank",true);
-            database.createNode("train simulator",true);
-            database.createNode("open world",true);
-            database.createNode("buff",true);
-            database.createNode("deathmatch",true);
-            database.createNode("camping",true);
-            database.createNode("avatar",true);
-            database.createNode("hitbox",true);
-            database.createNode("hud",true);
-            database.createNode("hack and slash",true);
-            database.createNode("player versus player",true);
-            database.createNode("mario star",true);
-            database.createNode("geralt of rivia",true);
-            //database.createNode("");
+            String sCurrentLine = br.readLine();
+            sCurrentLine = br.readLine();
 
-            database.setCategory("dota 2");
-            database.setCategory("train simulator");
+            while(!sCurrentLine.equals("CreateNodesAndRelationships:")){
+                    try{
+                        database.createNode(sCurrentLine,true);
+                    }catch(DatabaseException e){
+                        Log.trace(e.getMessage());
+                        fail();
+                    }
+                sCurrentLine = br.readLine();
+            }
+            sCurrentLine = br.readLine();
+            while(sCurrentLine != null){
+                String[] parts = sCurrentLine.split(";");
+                database.insertNodesAndRelationshipIntoOntology(parts[0],parts[2],true,parts[1],true);
+                sCurrentLine = br.readLine();
+            }
 
-        }catch(DatabaseException e){
-            Log.trace(e.getMessage());
-            fail();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        database.insertNodesAndRelationshipIntoOntology("Mini Bowser",explain,true,relation[1],true);
-        database.insertNodesAndRelationshipIntoOntology("Peach",explain,true,relation[1],true);
-        database.insertNodesAndRelationshipIntoOntology("Bowser",explain,true,relation[1],true);
-        database.insertNodesAndRelationshipIntoOntology("Luigi",explain,true,relation[1],true);
-        database.insertNodesAndRelationshipIntoOntology("Mario",explain,true,relation[1],true);
-        database.insertNodesAndRelationshipIntoOntology("Wario",explain,true,relation[1],true);
-        database.insertNodesAndRelationshipIntoOntology("Daisy",explain,true,relation[1],true);
-        database.insertNodesAndRelationshipIntoOntology("Toad",explain,true,relation[1],true);
-
 
 
     }

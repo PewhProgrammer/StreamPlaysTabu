@@ -36,6 +36,7 @@ public class Neo4jWrapper {
         config = Config.build().withEncryptionLevel( Config.EncryptionLevel.REQUIRED ).toConfig() ;
         neo4jbindAddr.append(neo4jbind);
         randomizer = new Random(seed);
+        randomizer.setSeed(seed);
 
         driver = acquireDriver("bolt://" + neo4jbindAddr,
                 AuthTokens.basic( "neo4j", "streamplaystabu" ),config);
@@ -188,9 +189,39 @@ public class Neo4jWrapper {
         //could happen that we have too less connected words in database!!
 
         Set<String> result = fetchConnectedWordsFromDatabase(Util.reduceStringToMinimum(explain),i);
-        Log.trace("Retieved Taboo Words: " + result.toString());
         if(result.size() < i)
-            Log.trace("Could not retrieve enough taboo words. " + (i - result.size()));
+            Log.trace("Could not retrieve enough taboo words. Missing -> Expected " + i  + "; Actual " + result.size());
+        return result;
+    }
+
+    /**
+     * FORCES TABOO WORDS
+     * @param explain explain word to retrieve taboo words from
+     * @param i describes how many taboo words to retrieve
+     * @return
+     */
+    public HashMap<String,Set<String>> getTabooWordsForValidation(String explain, int i){
+        //could happen that we have too less connected words in database!!
+
+        Set<String> taboo = fetchConnectedWordsFromDatabase(Util.reduceStringToMinimum(explain),i);
+        HashMap<String,Set<String>> result = new HashMap<>();
+        if(taboo.size() > 0) {
+            //Log.trace("Retieved Taboo Words: " + taboo.toString());
+            result = new HashMap<>() ;
+            result.put(explain,taboo);
+            return result;
+        }
+        //Force it!
+        Set<String> cat = fetchFilteredCategoryFromDatabase(10);
+        String newExplain = explain;
+        for(String str: cat){
+            if(randomizer.nextBoolean() || newExplain.equals(explain)){
+                explain = str ;
+                break;
+            }
+        }
+
+        result.put(explain,fetchConnectedWordsFromDatabase(Util.reduceStringToMinimum(newExplain),i));
         return result;
     }
 
@@ -447,12 +478,13 @@ public class Neo4jWrapper {
                 List<Record> list = sResult.list();
                 list = list.stream().limit(cap).collect(Collectors.toList());
 
-                builder.append("Fetched Categories: ");
+                builder.append("Fetched Categories: [");
                 for(Record s: list){
                     String name = s.get("s").asNode().get("name").toString().replaceAll("\"", "");
                     result.add(name);
                     builder.append(name+", ");
                 }
+                builder.append("]");
                 tx.success();
             }
 
@@ -492,6 +524,7 @@ public class Neo4jWrapper {
     private String fetchNodePropertiesFromDatabase(String nodeName,String property) throws DatabaseException{
         String result = "";
         StringBuilder builder = new StringBuilder();
+        nodeName = Util.reduceStringToMinimum(nodeName);
 
         try ( Session session = driver.session() )
         {
@@ -586,14 +619,46 @@ public class Neo4jWrapper {
                         Node node = r.values().get(0).asNode();
                         String type = node.get("type").toString().replaceAll("\"", "");
                         String name = node.get("name").toString().replaceAll("\"", "");
-                        if(type.toString().equals("explain") && !usedWords.contains(name)){ //if its an explain word and not in usedWord
+                        if(!type.equals("basic") && !usedWords.contains(name)){ //if its an explain word and not in usedWord
                             if(result.equals("") || randomizer.nextBoolean()){
                                 result = name ;
                             }
                         }
                     }
 
-                    builder.append("Fetched ExplainWord: " + String.format("%s", result));
+                    builder.append("Fetched ExplainWord: " + String.format("[%s]", result));
+                    tx.success();
+                }
+
+            }
+        }
+        else{
+            try ( Session session = driver.session() )
+            {
+                try ( Transaction tx = session.beginTransaction() )
+                {
+
+                    StatementResult sResult = tx.run( "MATCH (s:Node)-[rel]->(t:Node) WHERE t.name ={category} RETURN s",
+                            parameters("category",category));
+
+                    if(!sResult.hasNext())
+                        throw new DatabaseException("No Explain Word available!");
+
+                    builder.append("Fetched ExplainWord: [");
+
+                    for(Record r: sResult.list()){ //Iterate over all possible word connected to category
+                        Node node = r.values().get(0).asNode();
+                        String type = node.get("type").toString().replaceAll("\"", "");
+                        String name = node.get("name").toString().replaceAll("\"", "");
+                        if(!type.equals("basic") && !usedWords.contains(name)){ //if its an explain word and not in usedWord
+                            builder.append(","+name);
+                            if(result.equals("") || randomizer.nextBoolean()){
+                                result = name ;
+                            }
+                        }
+                    }
+                    builder.append("] -> " + result );
+
                     tx.success();
                 }
 
@@ -637,13 +702,14 @@ public class Neo4jWrapper {
                     result = name.toString();
                     result = result.replaceAll("\"", "");*/
 
-                    builder.append("Fetched Taboo Words: ");
-                    if(list.size() < 1) builder.append("none");
+                    builder.append("Fetched Taboo Words: [");
+                    if(list.size() < 1) builder.append("EMPTY");
                     for(Record s: list){
                         String name = s.get("s").asNode().get("name").toString() ;
                         result.add(name);
                         builder.append(name+", ");
                     }
+                    builder.append("]");
                     tx.success();
                 }
 
@@ -676,7 +742,7 @@ public class Neo4jWrapper {
                         Node node = r.get("s").asNode();
                         String type = node.get("type").toString().replaceAll("\"", "");
                         String name = node.get("name").toString().replaceAll("\"", "");
-                        if(type.toString().equals("explain") ){ //if its an explain word and not in usedWord
+                        if(type.toString().equals("explain") ){ //if its an explain word
                             count++;
                         }
                     }

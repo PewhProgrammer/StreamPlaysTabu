@@ -6,6 +6,8 @@ import model.GameModel;
 import pro.beam.api.BeamAPI;
 import pro.beam.api.resource.BeamUser;
 import pro.beam.api.resource.channel.BeamChannel;
+import pro.beam.api.resource.chat.AbstractChatDatagram;
+import pro.beam.api.resource.chat.AbstractChatMethod;
 import pro.beam.api.resource.chat.BeamChat;
 import pro.beam.api.resource.chat.events.IncomingMessageEvent;
 import pro.beam.api.resource.chat.methods.AuthenticateMessage;
@@ -38,6 +40,7 @@ public class BeamBot extends Bot {
     private final BeamUser beamBot;
     private final BeamChannel beamChannel;
     private final BeamChat beamChatBot;
+    private final BeamUser channelOwner;
     private final BeamChatConnectable chatConnectable;
 
     private String sender = "";
@@ -71,6 +74,7 @@ public class BeamBot extends Bot {
         }
         //channel auf den wir connecten wollen
         beamChannel = api.use(ChannelsService.class).findOne(targetId).get();
+        channelOwner = beamChannel.user ;
         //chat zu dem wir connecten wollen
         beamChatBot = api.use(ChatService.class).findOne(targetId).get();
         chatConnectable = beamChatBot.connectable(api);
@@ -79,6 +83,7 @@ public class BeamBot extends Bot {
             chatConnectable.send(AuthenticateMessage.from(beamChannel, beamBot, beamChatBot.authkey), new ReplyHandler<AuthenticationReply>() {
                 public void onSuccess(AuthenticationReply reply) {
                     chatConnectable.send(ChatSendMethod.of("Hello World! I'm StreamPlaysBot!"));
+                    chatConnectable.send(WhisperMethod.builder().send("wichsa").to(channelOwner).build());
                     //announceNewRound();
                     Log.info("Succesfully connected!");
                 }
@@ -86,6 +91,7 @@ public class BeamBot extends Bot {
                 public void onFailure(Throwable var1) {
                     var1.printStackTrace();
                 }
+
             });
         }
 
@@ -96,6 +102,7 @@ public class BeamBot extends Bot {
     public void run(){
 
         chatConnectable.on(IncomingMessageEvent.class, event -> {
+
             sender = event.data.userName;
             Command cmd = parseLine(event.data.message.message.get(0).text);
             if (cmd != null) {
@@ -252,10 +259,8 @@ public class BeamBot extends Bot {
 
     @Override
     public void announceNewRound() {
+
         chatConnectable.send(ChatSendMethod.of(String.format("A new round has started. Good Luck and let them guesses flow!!!")));
-        WhisperMethod.builder().to(beamBot);
-        WhisperMethod.builder().send("lol");
-        chatConnectable.send(ChatSendMethod.of("/whisper pewhBot dasd"));
     }
 
     @Override

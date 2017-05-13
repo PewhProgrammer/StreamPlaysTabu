@@ -124,6 +124,7 @@ public class GameControl extends Observable{
                     mModel.getWinner()
             )){
                 // then send link
+                mModel.setGiver(mModel.getWinner());
                 break;
                 //mModel.getBot().whisperLink("pewhTV","<Link>");
             }
@@ -132,11 +133,12 @@ public class GameControl extends Observable{
 
         mModel.setGameState(GameState.WaitingForGiver);
         //TODO: delete next line!
+        String[] votes = mModel.getPrevotedCategories();
         (new GiverJoined(mModel, "")).execute();
         Log.info("Starting the round");
         mModel.getBot().announceNewRound();
         //mModel.getCommands().push(new CategoryChosen(mModel,"","simulation"));
-        new CategoryChosen(mModel,"","simulation").execute();
+        new CategoryChosen(mModel,"",mModel.getPrevotedCategories()[0]).execute();
         mModel.getBot().whisperLink(mModel.getGiver(),mModel.getExplainWord());
         mModel.setTimeStamp();
 
