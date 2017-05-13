@@ -18,12 +18,14 @@ public class Prevote extends Command {
     @Override
     public void execute() {
         for (int i = 0; i < id.length && i < 5; i++) {
-            gameModel.prevote(id[i]);
+            if(!(id[i] < 0 || id[i] > 10))
+                gameModel.prevote(id[i]-1);
         }
     }
 
     @Override
     public boolean validate() {
+
         return gameModel.getGameState().equals(GameState.Registration);
     }
 

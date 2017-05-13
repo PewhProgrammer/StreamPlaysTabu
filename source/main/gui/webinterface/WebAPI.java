@@ -65,8 +65,11 @@ public class WebAPI implements IObserver {
 
     public void onNotifyQandA() {
         System.out.println("Received Q&A.");
-        String q = GameControl.mModel.getQAndA().getLast()[0];
-        String a = GameControl.mModel.getQAndA().getLast()[1];
+        String q ="", a = "";
+        if(GameControl.mModel.getQAndA().size() > 0) {
+            q = GameControl.mModel.getQAndA().getLast()[0];
+            a = GameControl.mModel.getQAndA().getLast()[1];
+        }
         send("/qAndA", new QandAContainer(q,a));
     }
 

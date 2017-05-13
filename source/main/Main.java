@@ -69,7 +69,7 @@ public class Main {
         sBuild.append("- Verbosity Level is set to " +Log.getLevel() + "\n");
 
         if(setSeed) sBuild.append("- Seed has been set to " + seed + "\n");
-        else sBuild.append("- Seed has been randomized\n");
+        else sBuild.append("- Seed has been randomized to "+ seed +"\n");
 
         Log.info(sBuild.toString());
 
@@ -115,7 +115,7 @@ public class Main {
         //initiates seed
         Random rand = new Random();
         rand.setSeed(new Date().getTime());
-        seed = rand.nextInt();
+        seed = rand.nextInt(100);
 
         // create the command line parser
         CommandLineParser parser = new GnuParser();

@@ -1,0 +1,24 @@
+CreateExplainNode:
+dota2
+league of legends
+heroes of the storm
+peach
+mario
+luigi
+wario
+bowser
+CreateNodesAndRelationships:
+dota2;is a;moba
+league of legends;is a;moba
+heroes of the storm;is a;moba
+alistar;is a character in;league of legends
+juggernaut;is a role in;dota 2
+mario;is a character in;super mario bros.
+luigi;is a character in;super mario bros.
+Bowser;is a character in;super mario bros.
+super mario bros.;is published by;nintendo
+splatoon;is published by;nintendo
+Link;is a character in;the legend of zelda
+the legend of zelda;is published by; nintendo
+samus;is a character in;super smash bros.
+super smash bros.;is published by;nintendo
