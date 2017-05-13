@@ -1,0 +1,16 @@
+{
+  "name": "streamplaystaboo-nodejs-server-app",
+  "description": "Server to connect explanation page with java application",
+  "author": "Tim Duewel",
+  "dependencies": {
+    "express": "^3.21.2",
+    "socket.io": "^2.0.1"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "version": "1.0.0",
+  "main": "server.js",
+  "devDependencies": {},
+  "license": "ISC"
+}
