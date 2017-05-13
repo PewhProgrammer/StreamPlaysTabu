@@ -3,6 +3,7 @@ package module;
 import common.DatabaseException;
 import common.Log;
 import common.Neo4jWrapper;
+import common.Util;
 import junit.framework.TestCase;
 import model.Language;
 import org.neo4j.driver.v1.exceptions.ServiceUnavailableException;
@@ -290,6 +291,35 @@ public class Neo4jWrapperTest extends TestCase {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+
+    }
+
+    public void testOntology(){
+
+        String explainWord = "Mario";
+        String[] explanation = {"The color of its suit is red","The size of its body is small"
+        ,"The shape of its body is big","It wears an overall","It has a wrench","It is used for controlling",
+                "It enhances gameplay","It appears in nintendo games","It is a part of a retro game","It requires a friend",
+                "It has the ability to shoot fireballs","It is known for being a plumber","It is known as a hero",
+                "It can be received from the beginning","It works as a player","Its character is charming","Its genre is avatar",
+                "It sets in a game", "It is published by nintendo","It was released in earlier videogames day","It is typically near luigi",
+                "It is typically on a ground","It is typically in the game","It is the opposite of wario","It is related to peach"};
+
+        for(String exp:explanation){
+            String[] content = Util.parseTemplate(exp);
+            if(content == null) {
+                Log.setLevel(Log.Level.INFO);
+                Log.info("ERROR: "+ exp);
+                continue;
+            }
+            String relation = content[0].toLowerCase();
+            String targetNode = content[1].toLowerCase();
+            boolean isExplain = Boolean.parseBoolean(content[2]);
+
+            database.insertNodesAndRelationshipIntoOntology(explainWord,
+                    targetNode,isExplain, relation,true);
         }
 
 

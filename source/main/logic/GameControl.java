@@ -138,6 +138,7 @@ public class GameControl extends Observable{
         Log.info("Starting the round");
         mModel.getBot().announceNewRound();
         //mModel.getCommands().push(new CategoryChosen(mModel,"","simulation"));
+
         new CategoryChosen(mModel,"",mModel.getPrevotedCategories()[0]).execute();
         mModel.getBot().whisperLink(mModel.getGiver(),mModel.getExplainWord());
         mModel.setTimeStamp();
