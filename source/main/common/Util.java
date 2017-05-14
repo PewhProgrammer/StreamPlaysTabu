@@ -86,6 +86,12 @@ public class Util {
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("It wears an ")){
+            newTmp = "It wears an";
+            userInput =tmp.split("It wears an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         if (tmp.startsWith("It has a ")){
             newTmp = "It has a";
             userInput =tmp.split("It has a ");
@@ -241,7 +247,11 @@ public class Util {
                 }
             // It wears a ___
                 if (tmp.equals("It wears a")) {
-                    return getPair("wears a(n)", userInput, "", "true");
+                    return getPair("wears a", userInput, "", "true");
+                }
+            // It wears an ___
+                if (tmp.equals("It wears an")) {
+                    return getPair("wears an", userInput, "", "true");
                 }
 
             // It has a ___

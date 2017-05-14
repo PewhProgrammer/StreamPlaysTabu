@@ -4,6 +4,7 @@ import common.Log;
 import logic.commands.*;
 import model.GameModel;
 import org.jibble.pircbot.PircBot;
+import org.jibble.pircbot.User;
 
 /**
  * Created by Thinh-Laptop on 20.04.2017.
@@ -70,8 +71,13 @@ public class AltTwitchBot extends Bot {
             }
         }
 
+
+
+
+
         public void onConnect(){
-            System.out.print("I'm connected!");
+            System.out.println("I'm connected!");
+
         }
 
         public void onUnknown(String line){
