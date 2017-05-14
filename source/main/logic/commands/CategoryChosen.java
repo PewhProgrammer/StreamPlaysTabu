@@ -11,10 +11,7 @@ public class CategoryChosen extends Command {
 
     public CategoryChosen(GameModel gm, String ch, String category) {
         super(gm, ch);
-        //TODO: replace
-        // this.category = category;
-        this.category = "simulation";
-
+        this.category = category;
     }
 
     /**
