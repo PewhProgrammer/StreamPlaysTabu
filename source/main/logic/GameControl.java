@@ -134,12 +134,14 @@ public class GameControl extends Observable{
         mModel.setGameState(GameState.WaitingForGiver);
         //TODO: delete next line!
         String[] votes = mModel.getPrevotedCategories();
-        (new GiverJoined(mModel, "")).execute();
+        //(new GiverJoined(mModel, "")).execute();
         Log.info("Starting the round");
         mModel.getBot().announceNewRound();
         //mModel.getCommands().push(new CategoryChosen(mModel,"","simulation"));
         //new CategoryChosen(mModel,"","simulation").execute();
-        mModel.getBot().whisperLink(mModel.getGiver(),mModel.getExplainWord());
+
+        //TODO: create link
+        mModel.getBot().whisperLink(mModel.getGiver(),"m.schubhan.de:1337");
         mModel.setTimeStamp();
 
         mModel.clearRegisteredPlayers();

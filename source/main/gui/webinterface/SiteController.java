@@ -35,7 +35,7 @@ public class SiteController implements IObserver {
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-
+                System.out.println("Connected to the server!");
             }
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override

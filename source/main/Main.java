@@ -74,8 +74,6 @@ public class Main {
 
         Log.info(sBuild.toString());
 
-
-
         if(defaultDatbase)
             Log.info("Connecting to neo4j default database with " + neo4jbindAddr);
         else  Log.info("Connecting to neo4j legacy database with " + neo4jbindAddr); //Diese datenbank benutzten wir für unsere studie
@@ -100,7 +98,7 @@ public class Main {
         RunInterface.main(new String[] {});
 
         //TODO: get server uri as program argument
-        String uri = "http://localhost:1337/";
+        String uri = "http://m.schubhan.de:1337/";
         try {
             SiteController st = new SiteController(model, uri);
         } catch (Exception e) {
