@@ -141,7 +141,14 @@ public class GameControl extends Observable{
         //new CategoryChosen(mModel,"","simulation").execute();
 
         //TODO: create link
-        mModel.getBot().whisperLink(mModel.getGiver(),"m.schubhan.de:1337");
+        while(mModel.getGameState() == GameState.WaitingForGiver){
+            mModel.getBot().whisperLink(mModel.getGiver(),"m.schubhan.de:1337");
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         mModel.setTimeStamp();
 
         mModel.clearRegisteredPlayers();

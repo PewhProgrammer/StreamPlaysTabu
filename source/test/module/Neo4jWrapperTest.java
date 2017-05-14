@@ -11,10 +11,7 @@ import org.neo4j.driver.v1.exceptions.ServiceUnavailableException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by Thinh-Laptop on 16.04.2017.
@@ -131,6 +128,12 @@ public class Neo4jWrapperTest extends TestCase {
                 200,database.updateUserPoints(user,200));
         assertEquals("Points were incorrect!",
                 200,database.getUserPoints(user));
+    }
+
+    public void testGetUserRankings(){
+
+        LinkedHashMap<String,Integer> list = database.getHighScoreList(3);
+
     }
 
     public void testGetUserErrors(){

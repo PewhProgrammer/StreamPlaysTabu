@@ -120,6 +120,14 @@ public class Neo4jWrapper {
     }
 
     /**
+     * retrieves best players
+     * @return
+     */
+    public LinkedHashMap<String, Integer> getHighScoreList(int cap){
+        return fetchUserWithHighestPoints(cap);
+    }
+
+    /**
      * Increase the error any user made by one
      * @param user
      * @return updated count of mistakes the user now have
@@ -519,6 +527,34 @@ public class Neo4jWrapper {
         }
         Log.trace(builder.toString());
         return result ;
+    }
+
+    private LinkedHashMap<String,Integer> fetchUserWithHighestPoints(int cap){
+        LinkedHashMap<String,Integer> ranking = new LinkedHashMap<>();
+        StringBuilder builder = new StringBuilder();
+
+        try ( Session session = driver.session() )
+        {
+            try ( Transaction tx = session.beginTransaction() )
+            {
+                StatementResult sResult = tx.run("MATCH (n:"+userLabel+") " +
+                                "RETURN n " +
+                                "ORDER BY n.points DESC " +
+                                "LIMIT " + cap);
+                while (sResult.hasNext()) {
+                    Record record = sResult.next();
+                    List<Value> val = record.values();
+                    Value name = val.get(0).asNode().get("points");
+                    int points = name.asInt();
+                    name = val.get(0).asNode().get("name");
+                    String user = name.toString();
+                    ranking.put(user,points);
+
+                }
+            }
+        }
+        Log.trace(ranking.toString());
+        return ranking ;
     }
 
     private String fetchNodePropertiesFromDatabase(String nodeName,String property) throws DatabaseException{
