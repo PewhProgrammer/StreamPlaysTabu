@@ -8,7 +8,7 @@ luigi
 wario
 bowser
 splatoon
-CreateNodesAndRelationships:
+CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
 dota2;is a;moba
 league of legends;is a;moba
 heroes of the storm;is a;moba

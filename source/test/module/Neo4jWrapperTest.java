@@ -292,8 +292,6 @@ public class Neo4jWrapperTest extends TestCase {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void testOntology(){

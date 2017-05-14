@@ -422,6 +422,7 @@ public class GameModel extends Observable{
         clearQAndA();
         clearGuesses();
 
+        prevoting.clear();
         usedWords.clear();
         setNumPlayers(0);
         clearRegisteredPlayers();
