@@ -1,6 +1,7 @@
 package gui.webinterface.containers;
 
 import model.Guess;
+import org.json.JSONObject;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -146,5 +147,29 @@ public class GuessesContainer {
 
     public double getNr8() {
         return nr8;
+    }
+
+    public JSONObject toJSONObject() {
+
+        JSONObject obj = new JSONObject();
+
+        obj.put("guess1", guess1);
+        obj.put("nr1", nr1);
+        obj.put("guess2", guess2);
+        obj.put("nr2", nr2);
+        obj.put("guess3", guess3);
+        obj.put("nr3", nr3);
+        obj.put("guess4", guess4);
+        obj.put("nr4", nr4);
+        obj.put("guess5", guess5);
+        obj.put("nr5", nr5);
+        obj.put("guess6", guess6);
+        obj.put("nr6", nr6);
+        obj.put("guess7", guess7);
+        obj.put("nr7", nr7);
+        obj.put("guess8", guess8);
+        obj.put("nr8", nr8);
+
+        return obj;
     }
 }

@@ -136,7 +136,7 @@ public class AltTwitchBot extends Bot {
 
         //TODO: why onGiverJoined() at this point? think it is just to don't crash the game
         //model.getSiteBot().onGiverJoined();
-        model.getSiteController().giverJoined();
+        //model.getSiteController().giverJoined();
     }
 
     @Override

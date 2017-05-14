@@ -1,5 +1,7 @@
 package gui.webinterface.containers;
 
+import org.json.JSONObject;
+
 /**
  * Created by Lenovo on 04.05.2017.
  */
@@ -25,5 +27,14 @@ public class GiverContainer {
 
     public int getLevel() {
         return level;
+    }
+
+    public JSONObject toJSONObject() {
+
+        JSONObject obj = new JSONObject();
+        obj.put("name", this.name);
+        obj.put("points", this.points);
+        obj.put("level", this.level);
+        return obj;
     }
 }

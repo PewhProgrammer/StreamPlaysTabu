@@ -1,59 +1,46 @@
+var socket;
 var base = '/connection-server-external';
 
 $(document).ready(function() {
 
-    var socket = io.connect();
+    socket = io.connect();
 
-    socket.on('/connection-server-external', function(data) {
-        console.log(data);
+    socket.on(base, function(data) {
+        console.log('Connected to server: ' + JSON.stringify(data));
+    });
+    socket.on(base + '/prevotedCategories', function(data) {
+        showPrevotedCategories(JSON.stringify(data));
+    });
+    socket.on(base + '/giver', function(data) {
+        showGiverInfo(JSON.stringify(data));
+    });
+    socket.on(base + '/close', function(data) {
+        closeGame(JSON.stringify(data));
+    });
+    socket.on(base + '/guesses', function(data) {
+        showGuesses(JSON.stringify(data));
+    });
+    socket.on(base + '/explainWord', function(data) {
+        showExplainWord(JSON.stringify(data));
+    });
+    socket.on(base + '/tabooWords', function(data) {
+        showTabooWords(JSON.stringify(data));
+    });
+    socket.on(base + '/question', function(data) {
+        showQuestion(JSON.stringify(data));
+    });
+    socket.on(base + '/chatMessage', function(data) {
+        showChatMessage(JSON.stringify(data));
+    });
+    socket.on(base + '/validation', function(data) {
+        showValidation(JSON.stringify(data));
     });
 
+    onGiverJoined();
 });
 
-/*
-function connectExt() {
-    var socket = new SockJS('/connection-external-socket');
-    stompClientExt = Stomp.over(socket);
-    stompClientExt.connect({}, function (frame) {
-        console.log('Connected: ' + frame);
-        stompClientExt.subscribe('/externalJS/prevotedCategories', function (prevotedCategories) {
-            showPrevotedCategories(prevotedCategories);
-        });
-        stompClientExt.subscribe('/externalJS/giver', function (giverInfo) {
-            showGiverInfo(giverInfo);
-        });
-        stompClientExt.subscribe('/externalJS/close', function (status) {
-            closeGame(status);
-        });
-        stompClientExt.subscribe('/externalJS/guesses', function (guesses) {
-            showGuesses(guesses);
-        });
-        stompClientExt.subscribe('/externalJS/explainWord', function (explainWord) {
-            showExplainWord(explainWord);
-        });
-        stompClientExt.subscribe('/externalJS/tabooWords', function (tabooWords) {
-            showTabooWords(tabooWords);
-        });
-        stompClientExt.subscribe('/externalJS/question', function (question) {
-            showQuestion(question);
-        });
-        stompClientExt.subscribe('/externalJS/chatMessage', function (msg) {
-            showChatMessage(msg);
-        });
-        stompClientExt.subscribe('/externalJS/validation', function (validation) {
-            showValidation(validation);
-        });
-
-        onGiverJoined();
-    });
-}
-
 function send(target, content) {
-    stompClientExt.send(
-        target,
-        {},
-        content
-    );
+    socket.emit(target, content);
 }
-*/
+
 

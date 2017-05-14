@@ -1,6 +1,8 @@
 package gui.webinterface.containers;
 
 
+import org.json.JSONObject;
+
 import java.util.Iterator;
 import java.util.Set;
 
@@ -54,5 +56,18 @@ public class TabooWordsContainer {
 
     public String getWord5() {
         return word5;
+    }
+
+    public JSONObject toJSONObject() {
+
+        JSONObject obj = new JSONObject();
+
+        obj.put("word1", word1);
+        obj.put("word2", word2);
+        obj.put("word3", word3);
+        obj.put("word4", word4);
+        obj.put("word5", word5);
+
+        return obj;
     }
 }

@@ -1,6 +1,8 @@
 package gui.webinterface.containers;
 
 
+import org.json.JSONObject;
+
 public class MessageContainer {
 
     private final String content;
@@ -29,5 +31,17 @@ public class MessageContainer {
 
     public String getSender() {
         return sender;
+    }
+
+    public JSONObject toJSONObject() {
+
+        JSONObject obj = new JSONObject();
+
+        obj.put("time", time);
+        obj.put("channel", channel);
+        obj.put("sender", sender);
+        obj.put("content", content);
+
+        return obj;
     }
 }

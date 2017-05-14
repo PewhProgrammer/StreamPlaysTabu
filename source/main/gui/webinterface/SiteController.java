@@ -1,100 +1,171 @@
 package gui.webinterface;
 
 import gui.webinterface.containers.*;
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+import jdk.nashorn.internal.parser.JSONParser;
 import logic.GameControl;
 import logic.commands.*;
 import model.GameModel;
 import model.GameState;
 import model.IObserver;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
+import org.json.JSONObject;
 
-@Controller
+
 public class SiteController implements IObserver {
 
-    private GameModel gm;
+    private static final String CORE_BASE = "/connection-server-core";
 
-    public SiteController() {
-        GameControl.mModel.addObserver(this);
+    private GameModel gm;
+    private Socket socket;
+    private JSONParser parser;
+
+    public SiteController(GameModel model, String uri) throws Exception {
+        this.gm = model;
+        gm.addObserver(this);
         gm = GameControl.mModel;
         gm.setSiteController(this);
+
+        socket = IO.socket(uri);
+        initializeSocket();
     }
 
-    @Autowired
-    private SimpMessagingTemplate template;
+    private void initializeSocket() {
+        socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
 
-    public void send(String path, Object o) {
-        this.template.convertAndSend("/externalJS" + path, o);
+            }
+        }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                System.out.println("Disconnected");
+            }
+        }).on(CORE_BASE, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                JSONObject obj = (JSONObject)args[0];
+                System.out.println("Connected to server: " + obj.getString("time"));
+            }
+        }).on(CORE_BASE + "/giverJoined", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                giverJoined();
+            }
+        }).on(CORE_BASE + "/reqPrevotedCategories", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                reqPrevotedCategories();
+            }
+        }).on(CORE_BASE + "/reqGiver", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                reqGiver();
+            }
+        }).on("/reqValidation", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                reqValidation();
+            }
+        }).on(CORE_BASE + "/reqSkip", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                reqSkip();
+            }
+        }).on(CORE_BASE + "/sendCategory", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                JSONObject obj = new JSONObject((String)args[0]);
+                receiveCategory(new CategoryChosenContainer(obj.getString("category")));
+            }
+        }).on(CORE_BASE + "/sendExplanation", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                JSONObject obj = new JSONObject((String)args[0]);
+                receiveExplanation(new ExplanationContainer(obj.getString("giver"), obj.getString("explanation")));
+            }
+        }).on(CORE_BASE + "/sendQandA", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                JSONObject obj = new JSONObject((String)args[0]);
+                receiveQandA(new QandAContainer(obj.getString("q"), obj.getString("a")));
+            }
+        }).on("/sendValidation", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                //TODO implement
+                JSONObject obj = new JSONObject((String)args[0]);
+            }
+        });
+        socket.connect();
     }
 
-    @MessageMapping("/giverJoined")
+    public void send(String event, JSONObject o) {
+        socket.emit(CORE_BASE + event, o);
+    }
+
     public void giverJoined() {
+        System.out.println("Received GiverJoined.");
         Command cmd = new GiverJoined(gm, "giver");
         gm.pushCommand(cmd);
     }
 
-    @MessageMapping("/reqPrevotedCategories")
     public void reqPrevotedCategories() {
-        send("/prevotedCategories", new PrevoteCategoryContainer(gm.getPrevotedCategories()));
+        System.out.println("Received reqPrevotedCategories.");
+        send("/prevotedCategories", new PrevotedCategoriesContainer(gm.getPrevotedCategories()).toJSONObject());
     }
 
-    @MessageMapping("/reqGiver")
     public void reqGiver() {
+        System.out.println("Received reqGiver.");
         String giver = gm.getGiver();
         int score = gm.getScore(giver);
         int lvl = gm.getLevel(score);
-        send("/giver", new GiverContainer(giver, score, lvl));
+        send("/giver", new GiverContainer(giver, score, lvl).toJSONObject());
     }
 
-    @MessageMapping("/reqValidation")
     public void reqValidation() {
+        System.out.println("Received reqValidation.");
         //TODO: implement validation stuff
     }
 
-    @MessageMapping("/reqSkip")
     public void reqSkip() {
+        System.out.println("Received reqSkip.");
         Command cmd = new Skip(gm, "giver");
         gm.pushCommand(cmd);
     }
 
-    @MessageMapping("/sendCategory")
     public void receiveCategory(CategoryChosenContainer cg) {
+        System.out.println("Received category: " + cg.getCategory());
         Command cmd = new CategoryChosen(gm, "giver", cg.getCategory());
         gm.pushCommand(cmd);
     }
 
-    @MessageMapping("/sendExplanation")
     public void receiveExplanation(ExplanationContainer ec) {
+        System.out.println("Received explanation: " + ec.getExplanation() + " by " + ec.getGiver());
         Command cmd = new Explanation(gm, "giver", ec.getExplanation(), ec.getGiver());
         gm.pushCommand(cmd);
     }
 
-    @MessageMapping("/sendQandA")
     public void receiveQandA(QandAContainer qa) {
+        System.out.println("Received question: " + qa.getQuestion() + " and answer " + qa.getAnswer());
         Command cmd = new Answer(gm, "giver", qa.getQuestion(), qa.getAnswer());
         gm.pushCommand(cmd);
     }
 
-    @MessageMapping("/sendValidation")
     public void receiveValidation() {
+        System.out.println("Received sendValidation");
         //TODO: implement validation Logic
-    }
-
-    @MessageMapping("/test")
-    public void test(){
-        System.out.println("Got something.");
     }
 
     @Override
     public void onNotifyGameState() {
         if (gm.getGameState().equals(GameState.Win)) {
-            send("/close", new GameCloseContainer("Win"));
+            send("/close", new GameCloseContainer("Win").toJSONObject());
         }
 
         if (gm.getGameState().equals(GameState.Lose)) {
-            send("/close", new GameCloseContainer("Lose"));
+            send("/close", new GameCloseContainer("Lose").toJSONObject());
         }
     }
 
@@ -120,7 +191,7 @@ public class SiteController implements IObserver {
 
     @Override
     public void onNotifyGuess() {
-        send("/guesses", new GuessesContainer(gm.getGuesses()));
+        send("/guesses", new GuessesContainer(gm.getGuesses()).toJSONObject());
     }
 
     @Override
@@ -135,7 +206,7 @@ public class SiteController implements IObserver {
 
     @Override
     public void onNotifyKick() {
-        send("/close", new GameCloseContainer("Kick"));
+        send("/close", new GameCloseContainer("Kick").toJSONObject());
     }
 
     @Override
@@ -145,19 +216,19 @@ public class SiteController implements IObserver {
 
     @Override
     public void onNotifyExplainWord() {
-        send("/explainWord", new ExplainWordContainer(gm.getExplainWord()));
+        send("/explainWord", new ExplainWordContainer(gm.getExplainWord()).toJSONObject());
     }
 
     @Override
     public void onNotifyTabooWords() {
-        send("/tabooWords", new TabooWordsContainer(gm.getTabooWords()));
+        send("/tabooWords", new TabooWordsContainer(gm.getTabooWords()).toJSONObject());
     }
 
     public void sendChatMessage(String time, String channel, String sender, String msg) {
-        send("/chatMsg", new MessageContainer(time, channel, sender, msg));
+        send("/chatMsg", new MessageContainer(time, channel, sender, msg).toJSONObject());
     }
 
     public void sendQuestion(String question) {
-        send("/question", new QuestionContainer(question));
+        send("/question", new QuestionContainer(question).toJSONObject());
     }
 }

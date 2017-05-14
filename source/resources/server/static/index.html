@@ -14,15 +14,26 @@
 <body>
     <form>
         <!-- Prevoted Categories -->
-        <input type="radio" id="cat1" name="PrevotedCategories" value="Category 1"/>
-        <label for="cat1"> Category 1</label><br/>
-        <input type="radio" id="cat2" name="PrevotedCategories" value="Category 2"/>
-        <label for="cat2"> Category 2</label><br/>
-        <input type="radio" id="cat3" name="PrevotedCategories" value="Category 3"/>
-        <label for="cat3"> Category 3</label>
-        <br/>
-        <button type="submit" id="category">Choose category!</button>
+        <div id="prevoting">
+            <input type="radio" id="cat1" name="PrevotedCategories" value="Category 1"/>
+            <label id="cat1label" for="cat1"> Category 1</label><br/>
+            <input type="radio" id="cat2" name="PrevotedCategories" value="Category 2"/>
+            <label id="cat2label" for="cat2"> Category 2</label><br/>
+            <input type="radio" id="cat3" name="PrevotedCategories" value="Category 3"/>
+            <label id="cat3label" for="cat3"> Category 3</label><br/>
+            <input type="radio" id="cat4" name="PrevotedCategories" value="Category 4"/>
+            <label id="cat4label" for="cat4"> Category 4</label><br/>
+            <input type="radio" id="cat5" name="PrevotedCategories" value="Category 5"/>
+            <label id="cat5label" for="cat5"> Category 5</label><br/>
+            <br/>
+            <button type="submit" id="category">Choose category!</button><br/>
+            <label id="categoryLabel">No category chosen yet.</label>
+        </div>
+
         <br/> <br/>
+        <label id="explainWord">No explain word yet.</label> <br/>
+        <label id="tabooWords">No taboo words given.</label><br/>
+        <lable id="giverInfo">No giver yet.</lable><br/>
 
         <!-- Skip -->
         <button type="submit" id="skip">Skip!</button>
@@ -31,24 +42,31 @@
         <!-- Explanation -->
         <input type="text" id="explanationText" placeholder="Enter an explanation ..."/>
         <br/>
-        <button type="submit" id="explanation">Explain something!</button>
+        <button type="submit" id="explanation">Explain something!</button><br/>
+        <label id="explanationLabel">No explanation given yet.</label>
         <br/> <br/>
 
+        <!-- Guesses -->
+        <label id="guessesLabel">Guesses:</label>
+        <label id="guesses">No guesses yet.</label>
+
+        <br/><br/>
         <!-- Answer -->
         <input type="radio" id="q1" name="Questions" value="Question 1"/>
-        <label for="q1"> Question 1</label><br/>
-        <input type="radio" id="q2" name="Questions" value="Question 2"/>
-        <label for="q2"> Question 2</label><br/>
-        <input type="radio" id="q3" name="Questions" value="Question 3"/>
-        <label for="q3"> Question 3</label>
+        <label id="q1Label" for="q1">No Question yet.</label><br/>
         <br/>
         <input type="text" id="answerText" placeholder="Enter an answer ..."/>
         <br/>
-        <button type="submit" id="answer">Answer a question!</button>
+        <button type="submit" id="answer">Answer a question!</button><br>
+        <label id="answerLabel">No answer given yet.</label>
         <br/> <br/>
 
+        <!-- Chat -->
+        <label id="chatlabel">Streamchat:</label>
+        <textarea id="chat"></textarea>
         <!-- Validation -->
         <!-- UNDER CONSTRUCTION -->
+        <p><b>UNDER CONSTRUCTION!</b></p>
         <input type="radio" id="note1" name="ValidationChoice" value="1 star"/>
         <label for="note1"> 1 star</label><br/>
         <input type="radio" id="note3" name="ValidationChoice" value="2 star"/>

@@ -92,6 +92,7 @@ public class GameModel extends Observable{
         } else {
             langTool = new JLanguageTool(new GermanyGerman());
         }
+        generateVotingCategories();
     }
 
     public void setBot(String platform, String channel) {

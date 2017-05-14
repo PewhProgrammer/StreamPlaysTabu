@@ -1,6 +1,8 @@
 package gui.webinterface.containers;
 
 
+import org.json.JSONObject;
+
 public class ExplainWordContainer {
 
     private final String explainWord;
@@ -11,5 +13,14 @@ public class ExplainWordContainer {
 
     public String getExplainWord() {
         return explainWord;
+    }
+
+    public JSONObject toJSONObject() {
+
+        JSONObject obj = new JSONObject();
+
+        obj.put("explainWord", explainWord);
+
+        return obj;
     }
 }

@@ -1,4 +1,4 @@
-var giver = "dummy giver";
+var giver = "igotabot";
 
 $(function () {
     $("form").on('submit', function (e) {
@@ -59,20 +59,28 @@ function createSkipRequest() {
 }
 
 function createChosenCategoryEvent() {
-    return JSON.stringify({'category' : $("#PrevotedCategories").val()});
+    var chosenCategory = $("input[name = PrevotedCategories]:checked").val();
+    document.getElementById("categoryLabel").innerHTML = "Chosen Category: " + chosenCategory;
+    return JSON.stringify({'category' : chosenCategory});
 }
 
 function createExplanationEvent() {
+    var explanation = $("#explanationText").val();
+    document.getElementById("explanationLabel").innerHTML = "Last Explanation: " + explanation;
     return JSON.stringify({
         'giver' : giver,
-        'explanation' : $("#explanationText").val()
+        'explanation' : explanation
     });
 }
 
 function createAnswerEvent() {
+
+    var q = $("input[name = Questions]:checked").val();
+    var a = $("#answerText").val();
+    document.getElementById("answerLabel").innerHTML = "Question: " + q + "; Answer: " + a;
     return JSON.stringify({
-        'question' : $("#Questions").val(),
-        'answer' : $("#answerText").val()
+        'q' : q,
+        'a' : a
     });
 }
 

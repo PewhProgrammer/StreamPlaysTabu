@@ -1,6 +1,7 @@
 import common.Log;
 import common.Neo4jWrapper;
 import gui.webinterface.RunInterface;
+import gui.webinterface.SiteController;
 import logic.GameControl;
 import model.GameModel;
 import model.Language;
@@ -84,7 +85,7 @@ public class Main {
 
         GameModel model = new GameModel(language,(short)players,neoWrapper);
 
-        mTHREAD = new Thread() {
+         mTHREAD = new Thread() {
             @Override
             public void run() {
                 Log.info("Launching Server...");
@@ -97,6 +98,14 @@ public class Main {
 
         Log.info("Launching webinterface ...");
         RunInterface.main(new String[] {});
+
+        //TODO: get server uri as program argument
+        String uri = "http://localhost:1337/";
+        try {
+            SiteController st = new SiteController(model, uri);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
       /*  String[] param = {"testparam"};
         if(guiSimulation) {

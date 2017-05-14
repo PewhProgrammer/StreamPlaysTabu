@@ -60,5 +60,6 @@ dependencies {
     compile("org.webjars:webjars-locator")
     compile("org.webjars:sockjs-client:1.0.2")
     compile("org.webjars:stomp-websocket:2.3.3")
+    compile("io.socket:socket.io-client:0.8.3")
 
 }

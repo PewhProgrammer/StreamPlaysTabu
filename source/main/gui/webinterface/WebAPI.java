@@ -26,7 +26,6 @@ public class WebAPI implements IObserver {
     @MessageMapping("/startGame")
     public void startGame(SetupInformationContainer si) {
             (new Setup(si, GameControl.mModel, si.getChannel())).execute();
-            GameControl.mModel.generateVotingCategories();
     }
 
     @MessageMapping("/reqGameMode")
