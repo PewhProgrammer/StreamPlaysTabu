@@ -780,7 +780,7 @@ public class Neo4jWrapper {
                     builder.append("Fetched Taboo Words: [");
                     if(list.size() < 1) builder.append("EMPTY");
                     for(Record s: list){
-                        String name = s.get("s").asNode().get("name").toString() ;
+                        String name = s.get("s").asNode().get("name").toString().replaceAll("\"", "") ;
                         result.add(name);
                         builder.append(name+", ");
                     }
