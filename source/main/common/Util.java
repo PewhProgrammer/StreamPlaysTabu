@@ -92,30 +92,6 @@ public class Util {
             return parseTemplate(newTmp, userInput[1], "");
         }
 
-        if (tmp.startsWith("It has a ")){
-            newTmp = "It has a";
-            userInput =tmp.split("It has a ");
-            return parseTemplate(newTmp, userInput[1], "");
-        }
-
-        if (tmp.startsWith("It has an ")){
-            newTmp = "It has an";
-            userInput =tmp.split("It has an ");
-            return parseTemplate(newTmp, userInput[1], "");
-        }
-
-        if (tmp.startsWith("It is ")){
-            newTmp = "It is";
-            userInput = tmp.split("It is ");
-            return parseTemplate(newTmp, userInput[1], "");
-        }
-
-        if (tmp.startsWith("It has ")){
-            newTmp = "It has";
-            userInput = tmp.split("It has ");
-            return parseTemplate(newTmp, userInput[1], "");
-        }
-
         if (tmp.startsWith("It is used for ")){
             newTmp = "It is used for";
             userInput =tmp.split("It is used for ");
@@ -257,6 +233,30 @@ public class Util {
         if (tmp.startsWith("It is related to ")){
             newTmp = "It is related to";
             userInput =tmp.split("It is related to ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It has a ")){
+            newTmp = "It has a";
+            userInput =tmp.split("It has a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It has an ")){
+            newTmp = "It has an";
+            userInput =tmp.split("It has an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is ")){
+            newTmp = "It is";
+            userInput = tmp.split("It is ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It has ")){
+            newTmp = "It has";
+            userInput = tmp.split("It has ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
