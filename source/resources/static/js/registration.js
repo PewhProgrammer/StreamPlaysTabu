@@ -5,7 +5,7 @@ var x = setInterval(function() {
 
     timeLeft = timeLeft - 1;
 
-    document.getElementById("countdown").innerHTML = timeLeft + "s";
+    document.getElementById("progressbar").innerHTML = timeLeft + "s";
     if(!twenties) {
         document.getElementById("progressbar").style.width = (timeLeft / 30) * 100 + "%";
     } else {

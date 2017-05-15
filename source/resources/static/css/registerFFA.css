@@ -1,20 +1,9 @@
-body {
-    font-family: "Franklin Gothic Medium";
-    font-weight: normal;
-    color: #000000;
-    background-color: #fefefe;
-}
-
 .upperBar{
     position: fixed;
     top: 0;
     width: 99%;
     left: 0.5%;
     height: 8%;
-    z-index: 0;
-
-    background-image: url("../images/upperBar.jpg");
-    background-size: cover;
 }
 
 .header{
@@ -58,14 +47,6 @@ body {
     right: 1%;
     width: 25%;
     height: 8%;
-}
-
-.progress {
-    -moz-transform: scale(-1, 1);
-    -webkit-transform: scale(-1, 1);
-    -o-transform: scale(-1, 1);
-    -ms-transform: scale(-1, 1);
-    transform: scale(-1, 1);
 }
 
 .highscoreText, .rightText,
