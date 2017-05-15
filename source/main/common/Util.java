@@ -277,15 +277,15 @@ public class Util {
 
         // The color of its ___ is ___
                 if (tmp.equals("The color of its")) {
-                    return getPair("color of its", userInput2, userInput, "false");
+                    return getPair("its color is", userInput, userInput2, "false");
                 }
             // The size of its ___ is ___
                 if (tmp.equals("The size of its")) {
-                    return getPair("size of its", userInput2, userInput, "false");
+                    return getPair("its size is", userInput, userInput2, "false");
                 }
             // The shape of its ___ is ___
                 if (tmp.equals("The shape of its")) {
-                    return getPair("shape of its", userInput2, userInput, "false");
+                    return getPair("its shape is", userInput, userInput2, "false");
                 }
             // It wears a ___
                 if (tmp.equals("It wears a")) {
