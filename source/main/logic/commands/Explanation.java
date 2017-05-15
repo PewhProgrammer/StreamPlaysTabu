@@ -27,9 +27,9 @@ public class Explanation extends Command {
     @Override
     public boolean validate() {
 
-        if (!user.equals(gameModel.getGiver())) {
+       /* if (!user.equals(gameModel.getGiver())) {
             return false;
-        }
+        }*/
 
         return gameModel.getGameState().equals(GameState.GameStarted);
     }

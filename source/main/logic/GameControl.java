@@ -9,6 +9,7 @@ import model.GameState;
 import model.Observable;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import common.Util;
@@ -22,12 +23,14 @@ public class GameControl extends Observable{
 
     private boolean isStarted;
     private Random rand ;
+    private final String extBindAddr;
 
-    public GameControl(GameModel model,int seed){
+    public GameControl(GameModel model,int seed,String ext_bindaddr){
         mModel = model;
         isStarted = false;
         mModel.setGameState(GameState.Config);
         rand = new Random(seed);
+        extBindAddr = ext_bindaddr ;
     }
 
     /**
@@ -101,11 +104,11 @@ public class GameControl extends Observable{
             if(mModel.getRegisteredPlayers().size() > 0){
 
                 if(mModel.getGiver().equals("")){
-                    chooseNewGiver();
+                    chooseNewGiver(mModel.getRegisteredPlayers());
                     break;
                 } //no previous giver
                 else
-                    chooseNewGiver();
+                    chooseNewGiver(mModel.getRegisteredPlayers());
             }
 
             mModel.setTimeStamp();
@@ -132,19 +135,20 @@ public class GameControl extends Observable{
         }
 
         mModel.setGameState(GameState.WaitingForGiver);
-        //TODO: delete next line!
-        String[] votes = mModel.getPrevotedCategories();
-        //(new GiverJoined(mModel, "")).execute();
         Log.info("Starting the round");
         mModel.getBot().announceNewRound();
-        //mModel.getCommands().push(new CategoryChosen(mModel,"","simulation"));
-        //new CategoryChosen(mModel,"","simulation").execute();
+        mModel.getBot().whisperLink(mModel.getGiver(),extBindAddr); // send link
+        mModel.setTimeStamp();
 
-        //TODO: create link
         while(mModel.getGameState() == GameState.WaitingForGiver){
-            mModel.getBot().whisperLink(mModel.getGiver(),"m.schubhan.de:1337");
+            Date d = mModel.getTimeStamp();
+            if(Util.diffTimeStamp(d,new Date()) > 20){
+                mModel.getBot().announceGiverNotAccepted(mModel.getGiver());
+                mModel.setGiver("");
+                mModel.setGameState(GameState.GameStarted.Registration);
+            }
             try {
-                Thread.sleep(5000);
+                Thread.sleep(20000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -159,10 +163,10 @@ public class GameControl extends Observable{
     /**
      * handles new giver
      */
-    private void chooseNewGiver(){
-        Log.info("New giver has been chosen");
-        int index = rand.nextInt(mModel.getRegisteredPlayers().size());
-        String newGiver =  mModel.getRegisteredPlayers().get(index);
+    private void chooseNewGiver(List<String> users){
+        Log.trace("New giver has been chosen from registration pool");
+        int index = rand.nextInt(users.size());
+        String newGiver =  users.get(index);
         mModel.setGiver(newGiver);
     }
 

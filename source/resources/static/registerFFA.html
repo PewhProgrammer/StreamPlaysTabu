@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-    <meta name="author" content="Marc Schubhan"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="author" content="Marc Schubhan" />
 
     <title>StreamPlaysTaboo</title>
 
@@ -14,13 +15,12 @@
 
 <body onload="connectLoc()" style="margin: 10px;">
 <nav class="navbar navbar-inverse">
-    <div class="navbar-header"><p class="navbar-brand" style="font-size: 5vh">StreamPlaysTaboo</p></div>
-    <p class="navbar-text" style="font-size: 4vh">Highscore</p>
+    <div class="navbar-header"><p class="navbar-brand" style="font-size: 4vh">StreamPlaysTaboo</p></div>
+    <p class="navbar-text" style="font-size: 3vh">Highscore</p>
     <div class="nav navbar-text progress pull-right" style="width: 25%; margin-top:1%">
-        <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" id="progressbar" style="width:100%; font-size: 3vh">30s</div>
+        <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" id="progressbar" style="width:100%; font-size: 2vh">30s</div>
     </div>
 </nav>
-
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -30,4 +30,5 @@
 <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 <script src="js/registration.js" th:src="@{/js/registration.js}"></script>
 </body>
+
 </html>

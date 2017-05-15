@@ -119,7 +119,7 @@ public class SiteController implements IObserver {
     public void reqGiver() {
         System.out.println("Received reqGiver.");
         String giver = gm.getGiver();
-        int score = gm.getScore(giver);
+        int score = gm.getScore(giver,gm.getGuesserChannel());
         int lvl = gm.getLevel(score);
         send("/giver", new GiverContainer(giver, score, lvl).toJSONObject());
     }

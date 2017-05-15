@@ -52,6 +52,8 @@ public class GameModel extends Observable{
     private LinkedList<Guess> guesses;
     private LinkedList<String[]> qAndA;
 
+    private String guesserChannel = "";
+
     private String category, giver = "", word, winner;
 
     private ArrayList<PrevoteCategory> prevoting;
@@ -179,8 +181,8 @@ public class GameModel extends Observable{
         return tabooWords;
     }
 
-    public Set<String> generateTabooWords() {
-        int score = mOntologyDataBase.getUserPoints(getGiver());
+    public Set<String> generateTabooWords(String ch) {
+        int score = mOntologyDataBase.getUserPoints(getGiver(),ch);
         int lvl = getLevel(score);
         tabooWords.clear();
         tabooWords.addAll(mOntologyDataBase.getTabooWords(getExplainWord(),lvl-1));
@@ -374,7 +376,7 @@ public class GameModel extends Observable{
         return word;
     }
 
-    public void win(String winner) {
+    public void win(String winner,String ch) {
         this.winner  = winner;
         Date joinedTime = new Date();
         Date referenceTime = getTimeStamp();
@@ -385,8 +387,8 @@ public class GameModel extends Observable{
         Log.trace("Q: " + q + " and "+getTimeStamp() + " joined: " + joinedTime);
         Log.trace(winner + " gained Points: " + score);
 
-        updateScore(winner, score);
-        updateScore(giver, score);
+        updateScore(winner, score,ch);
+        updateScore(giver, score,ch);
         notifyWinner();
         getBot().announceWinner(winner);
         for (int i = 0; i < 3 && i < guesses.size(); i++) {
@@ -446,14 +448,22 @@ public class GameModel extends Observable{
         }
     }
 
-    public int getScore(String user) {
-        return mOntologyDataBase.getUserPoints(user);
+    public String getGuesserChannel() {
+        return guesserChannel;
     }
 
-    public void updateScore(String user, int value) {
-        int score = getScore(user) + value;
+    public void setGuesserChannel(String guesserChannel) {
+        this.guesserChannel = guesserChannel;
+    }
+
+    public int getScore(String user,String ch) {
+        return mOntologyDataBase.getUserPoints(user,ch);
+    }
+
+    public void updateScore(String user, int value,String ch) {
+        int score = getScore(user,ch) + value;
         score = Integer.max(0, score);
-        mOntologyDataBase.updateUserPoints(user, score);
+        mOntologyDataBase.updateUserPoints(user, score,ch);
         notifyScoreUpdate();
     }
 

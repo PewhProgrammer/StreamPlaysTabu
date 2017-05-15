@@ -27,6 +27,7 @@ public class Neo4jWrapperTest extends TestCase {
     private final int RATING_TRESHOLD = 3 ; // How many rating to validate a connection
     private final Random randomizer = new Random(new Date().getTime());
     private static final String FILENAME = "database_config.txt";
+    private final String channelName = "streamplaystaboo";
 
     @org.junit.Test
     public void setUp() throws Exception {
@@ -98,12 +99,14 @@ public class Neo4jWrapperTest extends TestCase {
         assertEquals("No such relationship could be created!"
                 ,true,
                 database.insertNodesAndRelationshipIntoOntology("Nautilus","Hallo",true,
-                        "IS RELATED TO",false));
+                        "IS",false));
         //test increase of rating And false flag override
         database.insertNodesAndRelationshipIntoOntology("Nautilus","Hallo",true,
                 "IS RELATED TO",false);
         database.insertNodesAndRelationshipIntoOntology("Nautilus","Hallo",true,
                 "IS RELATED TO",false);
+        database.insertNodesAndRelationshipIntoOntology("Nautilus","Hallo",true,
+                "IS NOT RELATED TO",false);
 
 
     }
@@ -120,30 +123,30 @@ public class Neo4jWrapperTest extends TestCase {
 
     public void testGetUserPoints(){
         String user ="John";
-        database.createUser(user);
+        database.createUser(user,channelName);
 
         assertEquals("Points were incorrect!",
-                0,database.getUserPoints(user));
+                0,database.getUserPoints(user,channelName));
         assertEquals("Points were incorrect!",
-                200,database.updateUserPoints(user,200));
+                200,database.updateUserPoints(user,200,channelName));
         assertEquals("Points were incorrect!",
-                200,database.getUserPoints(user));
+                200,database.getUserPoints(user,channelName));
     }
 
     public void testGetUserRankings(){
 
-        LinkedHashMap<String,Integer> list = database.getHighScoreList(3);
+        LinkedHashMap<String,Integer> list = database.getHighScoreList(3,channelName);
 
     }
 
     public void testGetUserErrors(){
         String user ="Manuel";
-        database.createUser(user);
+        database.createUser(user,channelName);
 
         assertEquals("Points were incorrect!",
-                0,database.getUserError(user));
+                0,database.getUserError(user,channelName));
         assertEquals("Points were incorrect!",
-                1,database.increaseUserError(user));
+                1,database.increaseUserError(user,channelName));
     }
 
     public void testGetExplainWord(){
@@ -269,6 +272,17 @@ public class Neo4jWrapperTest extends TestCase {
         }
     }
 
+    public void testValidateExplainTaboo(){
+        database.createStreamNode("streamplaystaboo");
+        String explain = "league of legends";
+        String taboo = "alistar";
+
+        database.insertNodesAndRelationshipIntoOntology(taboo,explain,true,"is used for taboo",true);
+        database.insertNodesAndRelationshipIntoOntology(taboo,explain,true,"has no meaning whatsoever",true);
+
+        database.validateExplainAndTaboo(explain,taboo,2);
+    }
+
     public void testSetUpNodes(){
 
         try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
@@ -276,7 +290,7 @@ public class Neo4jWrapperTest extends TestCase {
             String sCurrentLine = br.readLine();
             sCurrentLine = br.readLine();
 
-            while(!sCurrentLine.equals("CreateNodesAndRelationships:")){
+            while(!sCurrentLine.startsWith("CreateNodesAndRelationships:")){
                     try{
                         database.createNode(sCurrentLine,true);
                     }catch(DatabaseException e){

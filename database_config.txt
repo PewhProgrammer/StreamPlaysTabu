@@ -14,6 +14,7 @@ league of legends;is a;moba
 heroes of the storm;is a;moba
 alistar;is a character in;league of legends
 juggernaut;is a role in;dota 2
+Shadow fiend; is a character in;dota2
 mario;is a character in;super mario bros.
 luigi;is a character in;super mario bros.
 Bowser;is a character in;super mario bros.

@@ -1,4 +1,4 @@
-1.: nodejs installieren (ich hab version 6.10, vlt gehts auch mit 7 oder so)
+﻿1.: nodejs installieren (ich hab version 6.10, vlt gehts auch mit 7 oder so)
 2.: console zu StreamPlaysTabu/source/resources/server -> npm install, sollte alle dependencies installieren
 3.: node server.js startet den server -> localhost:1337 ist externe seite
 

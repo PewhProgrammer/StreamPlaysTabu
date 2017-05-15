@@ -19,6 +19,7 @@ public class GameRunningTest extends TestCase {
 
     private boolean simulation = true;
     private String neo4jbindAddr = "localhost:7687";
+    private String ext_bindAddr = "localhost:1337";
     private final Language language = Language.Ger;
     private Neo4jWrapper database ;
     private GameModel gModel ;
@@ -27,12 +28,12 @@ public class GameRunningTest extends TestCase {
     public void setUp() throws Exception {
         database = new Neo4jWrapper(simulation,neo4jbindAddr,20);
         gModel = new GameModel(language,(short)2,database);
-        controller = new GameControl(gModel, 1337);
+        controller = new GameControl(gModel, 1337,ext_bindAddr);
         Thread mTHREAD = new Thread() {
             @Override
             public void run() {
                 Log.info("Launching Server...");
-                new GameControl(gModel, 1337).waitingForConfig();
+                new GameControl(gModel, 1337,ext_bindAddr).waitingForConfig();
             }
 
         } ;

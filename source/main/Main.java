@@ -20,6 +20,7 @@ public class Main {
 
     private final Options mOptions = new Options();
     private String neo4jbindAddr = "";
+    private String ext_bindAddr = "";
     private int seed;
     private int players = 0;
     private Language language ;
@@ -28,6 +29,7 @@ public class Main {
     private boolean guiSimulation = true;
     private boolean defaultDatbase = true;
     private boolean setSeed = false;
+
 
     Thread mTHREAD ;
 
@@ -45,7 +47,8 @@ public class Main {
         StringBuilder sBuild = new StringBuilder();
 
         sBuild.append("Following Command Lines have been processed: \n")
-                .append("- Neo4j Bind Address: " + neo4jbindAddr + "\n");
+                .append("- Neo4j Bind Address: " + neo4jbindAddr + "\n")
+                .append("- External Webpage Bind Address: " + ext_bindAddr + "\n");
 
         if(defaultDatbase) sBuild.append("- Default Data Processing in Database\n");
         else sBuild.append("- Release Data Processing in Database\n");
@@ -76,8 +79,8 @@ public class Main {
 
         if(defaultDatbase)
             Log.info("Connecting to neo4j default database with " + neo4jbindAddr);
-        else  Log.info("Connecting to neo4j legacy database with " + neo4jbindAddr); //Diese datenbank benutzten wir für unsere studie
-        //TODO instanziiere Neo4jWrapper. Frage ob man immer connecten soll
+        else
+            Log.info("Connecting to neo4j legacy database with " + neo4jbindAddr); //Diese datenbank benutzten wir für unsere studie
 
         Neo4jWrapper neoWrapper = new Neo4jWrapper(defaultDatbase,neo4jbindAddr,seed);
 
@@ -87,7 +90,7 @@ public class Main {
             @Override
             public void run() {
                 Log.info("Launching Server...");
-                new GameControl(model,seed).waitingForConfig();
+                new GameControl(model,seed,ext_bindAddr).waitingForConfig();
             }
 
         } ;
@@ -97,10 +100,9 @@ public class Main {
         Log.info("Launching webinterface ...");
         RunInterface.main(new String[] {});
 
-        //TODO: get server uri as program argument
-        String uri = "http://m.schubhan.de:1337/";
+        //String uri = "http://m.schubhan.de:1337/";
         try {
-            SiteController st = new SiteController(model, uri);
+            SiteController st = new SiteController(model, ext_bindAddr);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -134,6 +136,13 @@ public class Main {
                 .withType(Number.class)
                 .withArgName("HOST:PORT")
                 .create() );
+        mOptions.addOption(
+                OptionBuilder.withLongOpt( "webpageserver" )
+                        .withDescription( "Aquires host:port information" )
+                        .hasArg()
+                        .withType(Number.class)
+                        .withArgName("HOST:PORT")
+                        .create() );
         mOptions.addOption( OptionBuilder
                 .withDescription( "Tell the program if it should use the default data base" )
                 .hasArg()
@@ -167,39 +176,49 @@ public class Main {
                 .create("gui") );
 
         CommandLine line;
-        try {
-            // parse the command line arguments
-            line = parser.parse( mOptions, args );
+        for(String arg: args) {
+            try {
+                // parse the command line arguments
+                line = parser.parse(mOptions, args);
 
-            // Syntactical check and parsing
-            switch (args[0]) {
-                case "--neo4jserver":
-                    neo4jbindAddr = line.getOptionValue("neo4jserver");
-                    if(!checkBindAddrFormat(neo4jbindAddr))
-                        throw new ParseException(neo4jbindAddr + " malicious bind address format for neo4j!");
-                    if (line.hasOption("s")) {
-                        seed = ((Number) line.getParsedOptionValue("s")).intValue();
-                        setSeed = true;
+                // Syntactical check and parsing
+
+                switch (arg) {
+                    case "--webpageserver": {
+                        ext_bindAddr = line.getOptionValue("webpageserver");
+                        if (!checkBindAddrFormat(ext_bindAddr))
+                            throw new ParseException(neo4jbindAddr + " malicious bind address format for the webpage!");
+                        ext_bindAddr = "http://" + line.getOptionValue("webpageserver")+"/";
                     }
-                    if (line.hasOption("defaultdata"))
-                        defaultDatbase = Boolean.valueOf(line.getOptionValue("defaultdata"));
-                    else
-                        throw new ParseException("-defaultdata not specified!");
-                    if(line.hasOption("lang")) {
-                        if (line.getOptionValue("lang").equals("ger"))
-                            language = Language.Ger;
-                        else language = Language.Eng;
-                    }
-                    else throw new ParseException("-lang not specified!");
                     break;
-                default:
-                    abort("No launch mode specified");
+                    case "--neo4jserver":
+                        neo4jbindAddr = line.getOptionValue("neo4jserver");
+                        if (!checkBindAddrFormat(neo4jbindAddr))
+                            throw new ParseException(neo4jbindAddr + " malicious bind address format for neo4j!");
+                        if (line.hasOption("s")) {
+                            seed = ((Number) line.getParsedOptionValue("s")).intValue();
+                            setSeed = true;
+                        }
+                        if (line.hasOption("defaultdata"))
+                            defaultDatbase = Boolean.valueOf(line.getOptionValue("defaultdata"));
+                        else
+                            throw new ParseException("-defaultdata not specified!");
+                        if (line.hasOption("lang")) {
+                            if (line.getOptionValue("lang").equals("ger"))
+                                language = Language.Ger;
+                            else language = Language.Eng;
+                        } else throw new ParseException("-lang not specified!");
+                        break;
+                    default:
+                        //abort("No launch mode specified");
+                }
+                if (line.hasOption("v"))
+                    mVerbosity = ((Number) line.getParsedOptionValue("v")).intValue();
+            } catch (Exception e) {
+                abort(e.getMessage());
             }
-            if (line.hasOption("v"))
-                mVerbosity = ((Number)line.getParsedOptionValue("v")).intValue();
-        } catch (Exception e) {
-            abort(e.getMessage());
         }
+        if(ext_bindAddr.equals("")) abort("Missing --webpageserver <host>:<port> option");
         doSemantics();
     }
 
@@ -239,7 +258,7 @@ public class Main {
     private void abort(String message) {
         Log.error(message);
         System.err.println(
-                "[java <jarfile>] --neo4jserver <host>:<port> -defaultdata <boolean> [-s <seed>] \n" +
+                "[java <jarfile>] --webpageserver <host>:<port> --neo4jserver <host>:<port> -defaultdata <boolean> [-s <seed>] \n" +
                         "               -gui --lang <language>\n" +
                         "               [-v (1-3)]");
         System.err.println();

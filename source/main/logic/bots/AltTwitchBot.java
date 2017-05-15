@@ -4,6 +4,7 @@ import common.Log;
 import logic.commands.*;
 import model.GameModel;
 import org.jibble.pircbot.PircBot;
+import org.jibble.pircbot.User;
 
 /**
  * Created by Thinh-Laptop on 20.04.2017.
@@ -70,8 +71,13 @@ public class AltTwitchBot extends Bot {
             }
         }
 
+
+
+
+
         public void onConnect(){
-            System.out.print("I'm connected!");
+            System.out.println("I'm connected!");
+
         }
 
         public void onUnknown(String line){
@@ -156,6 +162,12 @@ public class AltTwitchBot extends Bot {
     }
 
     @Override
+    public void announceGiverNotAccepted(String user) {
+        sendChatMessage( user + " did not accept his offer to explain the word. New Registration phase!");
+    }
+
+
+    @Override
     public void announceRegistration() {
         sendChatMessage("" +
                 "------------------------------------------------- A new round will start soon. Type !register to get into the giver pool! -------------------------------------------------");
@@ -164,6 +176,11 @@ public class AltTwitchBot extends Bot {
     @Override
     public void announceScore(String user, int score) {
         sendChatMessage(user + " You have " + score + " Points!");
+    }
+
+    @Override
+    public String[] getUsers(String user) {
+        return new String[0];
     }
 
     public Command parseLine(String message, String sender) {

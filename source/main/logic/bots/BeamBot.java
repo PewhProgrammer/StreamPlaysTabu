@@ -274,6 +274,11 @@ public class BeamBot extends Bot {
     }
 
     @Override
+    public void announceGiverNotAccepted(String user) {
+        chatConnectable.send(ChatSendMethod.of(user + " did not accept his offer to explain the word. New Registration phase!"));
+    }
+
+    @Override
     public void announceRegistration() {
         chatConnectable.send(ChatSendMethod.of(String.format("A new round will start soon. Type !register to get into the giver pool!")));
     }
@@ -281,5 +286,10 @@ public class BeamBot extends Bot {
     @Override
     public void announceScore(String user, int score) {
         chatConnectable.send(ChatSendMethod.of(String.format("%s. You have %d Points!", user, score)));
+    }
+
+    @Override
+    public String[] getUsers(String user) {
+        return new String[0];
     }
 }
