@@ -252,9 +252,9 @@ public class Neo4jWrapper {
      * @param explain target
      * @param taboo source
      */
-    public void validateExplainAndTaboo(String explain,String taboo){
+    public void validateExplainAndTaboo(String explain,String taboo,int i){
 
-        updateExplainTabooRelationship(explain,taboo);
+        updateExplainTabooRelationship(explain,taboo,i);
         return;
     }
 
@@ -794,7 +794,7 @@ public class Neo4jWrapper {
         return result;
     }
 
-    private void updateExplainTabooRelationship(String node1,String node2){
+    private void updateExplainTabooRelationship(String node1,String node2,int i){
         node1 = Util.reduceStringToMinimum(node1);
         node2 = Util.reduceStringToMinimum(node2);
 
@@ -806,8 +806,8 @@ public class Neo4jWrapper {
                 int count = 1;
                 StatementResult result = tx.run( "MATCH (s)-[rel]->(t)" +
                         "WHERE s.name = {n2} AND t.name = {n1}" +
-                        "SET rel.rating = rel.rating+1 " +
-                        "RETURN rel",parameters("n1",node1,"n2",node2));
+                        "SET rel.rating = rel.rating+"+i+" " +
+                        "RETURN rel.rating",parameters("n1",node1,"n2",node2));
 
                 tx.success();
                 builder

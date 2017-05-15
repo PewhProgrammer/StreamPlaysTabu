@@ -139,24 +139,20 @@ public class GameControl extends Observable{
         //(new GiverJoined(mModel, "")).execute();
         Log.info("Starting the round");
         mModel.getBot().announceNewRound();
-        //mModel.getCommands().push(new CategoryChosen(mModel,"","simulation"));
-        //new CategoryChosen(mModel,"","simulation").execute();
-        mModel.getBot().whisperLink(mModel.getGiver(),extBindAddr);
+        mModel.getBot().whisperLink(mModel.getGiver(),extBindAddr); // send link
         mModel.setTimeStamp();
 
-        //TODO: create link
         while(mModel.getGameState() == GameState.WaitingForGiver){
-
-            try {
-                Thread.sleep(10000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             Date d = mModel.getTimeStamp();
             if(Util.diffTimeStamp(d,new Date()) > 20){
                 mModel.getBot().announceGiverNotAccepted(mModel.getGiver());
                 mModel.setGiver("");
                 mModel.setGameState(GameState.GameStarted.Registration);
+            }
+            try {
+                Thread.sleep(20000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
         mModel.setTimeStamp();
