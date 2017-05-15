@@ -98,9 +98,33 @@ public class Util {
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("It has an ")){
+            newTmp = "It has an";
+            userInput =tmp.split("It has an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is ")){
+            newTmp = "It is";
+            userInput = tmp.split("It is ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It has ")){
+            newTmp = "It has";
+            userInput = tmp.split("It has ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         if (tmp.startsWith("It is used for ")){
             newTmp = "It is used for";
             userInput =tmp.split("It is used for ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is used to ")){
+            newTmp = "It is used to";
+            userInput =tmp.split("It is used to ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -122,9 +146,21 @@ public class Util {
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("It is a part of an ")){
+            newTmp = "It is a part of an";
+            userInput =tmp.split("It is a part of an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         if (tmp.startsWith("It requires a ")){
             newTmp = "It requires a";
             userInput =tmp.split("It requires a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It requires an ")){
+            newTmp = "It requires an";
+            userInput =tmp.split("It requires ann ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -155,6 +191,12 @@ public class Util {
         if (tmp.startsWith("It works as a ")){
             newTmp = "It works as a";
             userInput =tmp.split("It works as a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It works as an ")){
+            newTmp = "It works as an";
+            userInput =tmp.split("It works as an ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -259,12 +301,23 @@ public class Util {
                     return getPair("has a", userInput, "", "true");
                 }
 
+            // It has an ___
+                if (tmp.equals("It has an")) {
+                    return getPair("has an", userInput, "", "true");
+                }
+
         /* Purpose */
 
-            // It is used for/to ___
+            // It is used for ___
                 if (tmp.equals("It is used for")) {
                     return getPair("is used for/to", userInput, "", "true");
                 }
+
+            // It is used for ___
+                if (tmp.equals("It is used to")) {
+                    return getPair("is used to", userInput, "", "true");
+                }
+
             // It enhances ___
                 if (tmp.equals("It enhances")) {
                     return getPair("enhances", userInput, "", "true");
@@ -313,10 +366,22 @@ public class Util {
                 if (tmp.equals("It is a part of a")) {
                     return getPair(tmp, userInput, "", "true");
                 }
+
+            // It is a part of an ___
+                if (tmp.equals("It is a part of an")) {
+                    return getPair(tmp, userInput, "", "true");
+                }
+
             // It requires a ___
                 if (tmp.equals("It requires a")) {
                     return getPair("requires a", userInput, "", "true");
                 }
+
+            // It requires an ___
+                if (tmp.equals("It requires an")) {
+                    return getPair("requires an", userInput, "", "true");
+                }
+
             // It has the ability to ___
                 if (tmp.equals("It has the ability to")) {
                     return getPair("has the ability to", userInput, "", "true");
@@ -337,6 +402,12 @@ public class Util {
                 if (tmp.equals("It works as a")) {
                     return getPair("works as a", userInput, "", "true");
                 }
+
+            // It works as an ___
+                if (tmp.equals("It works as an")) {
+                    return getPair("works as an", userInput, "", "true");
+                }
+
             // Its character is ____
                 if (tmp.equals("Its character is")) {
                     return getPair("character", userInput, "", "true");
