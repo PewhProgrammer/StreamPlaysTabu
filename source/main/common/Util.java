@@ -310,7 +310,7 @@ public class Util {
 
             // It is used for ___
                 if (tmp.equals("It is used for")) {
-                    return getPair("is used for/to", userInput, "", "true");
+                    return getPair("is used for", userInput, "", "true");
                 }
 
             // It is used for ___
@@ -410,14 +410,14 @@ public class Util {
 
             // Its character is ____
                 if (tmp.equals("Its character is")) {
-                    return getPair("character", userInput, "", "true");
+                    return getPair("character is", userInput, "", "true");
                 }
 
         /* Game specific */
 
             // Its genre is ___
                 if (tmp.equals("Its genre is")) {
-                    return getPair("genre", userInput, "", "true");
+                    return getPair("genre is", userInput, "", "true");
                 }
             // It is set in ___
                 if (tmp.equals("It sets in")) {
