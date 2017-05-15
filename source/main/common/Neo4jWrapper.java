@@ -233,6 +233,7 @@ public class Neo4jWrapper {
                return result;
            }
        }
+       else explain = "";
         //Force it!
         Set<String> cat = fetchFilteredCategoryFromDatabase(10);
         String newExplain = explain;

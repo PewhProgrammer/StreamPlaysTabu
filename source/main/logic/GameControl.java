@@ -9,6 +9,7 @@ import model.GameState;
 import model.Observable;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import common.Util;
@@ -103,11 +104,11 @@ public class GameControl extends Observable{
             if(mModel.getRegisteredPlayers().size() > 0){
 
                 if(mModel.getGiver().equals("")){
-                    chooseNewGiverFromRegistrationPool();
+                    chooseNewGiver(mModel.getRegisteredPlayers());
                     break;
                 } //no previous giver
                 else
-                    chooseNewGiverFromRegistrationPool();
+                    chooseNewGiver(mModel.getRegisteredPlayers());
             }
 
             mModel.setTimeStamp();
@@ -134,9 +135,6 @@ public class GameControl extends Observable{
         }
 
         mModel.setGameState(GameState.WaitingForGiver);
-        //TODO: delete next line!
-        String[] votes = mModel.getPrevotedCategories();
-        //(new GiverJoined(mModel, "")).execute();
         Log.info("Starting the round");
         mModel.getBot().announceNewRound();
         mModel.getBot().whisperLink(mModel.getGiver(),extBindAddr); // send link
@@ -165,20 +163,10 @@ public class GameControl extends Observable{
     /**
      * handles new giver
      */
-    private void chooseNewGiverFromRegistrationPool(){
+    private void chooseNewGiver(List<String> users){
         Log.trace("New giver has been chosen from registration pool");
-        int index = rand.nextInt(mModel.getRegisteredPlayers().size());
-        String newGiver =  mModel.getRegisteredPlayers().get(index);
-        mModel.setGiver(newGiver);
-    }
-
-    /**
-     * handles new giver
-     */
-    private void chooseNewGiverFromEveryone(){
-        Log.trace("New giver has been chosen from Everyone");
-        int index = rand.nextInt(mModel.getRegisteredPlayers().size());
-        String newGiver =  mModel.getRegisteredPlayers().get(index);
+        int index = rand.nextInt(users.size());
+        String newGiver =  users.get(index);
         mModel.setGiver(newGiver);
     }
 
