@@ -21,6 +21,7 @@ public class CommandTest extends TestCase{
     private final Neo4jWrapper neo =
             new Neo4jWrapper(true,
                     "localhost:7687",20);
+    private final String channelName = "streamplaystaboo";
 
     @org.junit.Test
     public void setUp() throws Exception {
@@ -110,14 +111,14 @@ public class CommandTest extends TestCase{
 
     public void testSkip(){
         String giver = "John";
-        int currentScore = neo.getUserPoints(giver);
+        int currentScore = neo.getUserPoints(giver,channelName);
         Command giverJoinedCommand = new GiverJoined(gModel,"");
         Command skipCommand = new Skip(gModel,"");
 
         skipCommand.validate();
         skipCommand.execute();
 
-        int updatedScore = neo.getUserPoints(giver);
+        int updatedScore = neo.getUserPoints(giver,channelName);
         assertNotSame("User's point did not decrease",
                 currentScore,updatedScore);
     }

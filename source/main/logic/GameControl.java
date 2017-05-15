@@ -22,12 +22,14 @@ public class GameControl extends Observable{
 
     private boolean isStarted;
     private Random rand ;
+    private final String extBindAddr;
 
-    public GameControl(GameModel model,int seed){
+    public GameControl(GameModel model,int seed,String ext_bindaddr){
         mModel = model;
         isStarted = false;
         mModel.setGameState(GameState.Config);
         rand = new Random(seed);
+        extBindAddr = ext_bindaddr ;
     }
 
     /**
@@ -139,14 +141,22 @@ public class GameControl extends Observable{
         mModel.getBot().announceNewRound();
         //mModel.getCommands().push(new CategoryChosen(mModel,"","simulation"));
         //new CategoryChosen(mModel,"","simulation").execute();
+        mModel.getBot().whisperLink(mModel.getGiver(),extBindAddr);
+        mModel.setTimeStamp();
 
         //TODO: create link
         while(mModel.getGameState() == GameState.WaitingForGiver){
-            mModel.getBot().whisperLink(mModel.getGiver(),"m.schubhan.de:1337");
+
             try {
-                Thread.sleep(5000);
+                Thread.sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+            Date d = mModel.getTimeStamp();
+            if(Util.diffTimeStamp(d,new Date()) > 20){
+                mModel.getBot().announceGiverNotAccepted(mModel.getGiver());
+                mModel.setGiver("");
+                mModel.setGameState(GameState.GameStarted.Registration);
             }
         }
         mModel.setTimeStamp();

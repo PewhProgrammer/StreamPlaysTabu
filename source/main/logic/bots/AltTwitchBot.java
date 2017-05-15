@@ -162,6 +162,12 @@ public class AltTwitchBot extends Bot {
     }
 
     @Override
+    public void announceGiverNotAccepted(String user) {
+        sendChatMessage( user + " did not accept his offer to explain the word. New Registration phase!");
+    }
+
+
+    @Override
     public void announceRegistration() {
         sendChatMessage("" +
                 "------------------------------------------------- A new round will start soon. Type !register to get into the giver pool! -------------------------------------------------");

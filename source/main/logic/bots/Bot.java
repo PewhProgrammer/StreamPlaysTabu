@@ -46,6 +46,8 @@ public abstract class Bot {
 
     public abstract void announceNoWinner();
 
+    public abstract void announceGiverNotAccepted(String user);
+
     public abstract void announceRegistration();
 
     public abstract void announceScore(String user, int score);

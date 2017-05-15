@@ -32,7 +32,7 @@ public class Guess extends Command {
 
         Log.trace("Guess received: " + guess);
         if (Util.guessEquals(guess,gameModel.getExplainWord())) {
-            gameModel.win(name);
+            gameModel.win(name,getChannel());
             gameModel.generateVotingCategories();
             gameModel.setGameState(GameState.Registration);
             Log.trace("Winner found: "+name);
