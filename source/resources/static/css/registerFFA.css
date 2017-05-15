@@ -1,6 +1,6 @@
 body {
     height: 100%;
-    margin: 10px;
+    margin: 5px 10px 10px;
     color: #fff;
     background: radial-gradient(ellipse farthest-corner at center top, #f39264 0%, #f2606f 100%);
     background-repeat: no-repeat;
@@ -83,9 +83,6 @@ body {
     right: 0.5%;
     width: 33.5%;
     height: 90%;
-
-    background-image: url("../images/rightBar.jpg");
-    background-size: cover;
 }
 
 
@@ -94,9 +91,6 @@ body {
     left: 0.5%;
     width: 65%;
     height: 19%;
-
-    background-image: url("../images/hints.jpg");
-    background-size: cover;
 }
 
 #categoryText1, #categoryText2, #validateText,
