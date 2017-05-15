@@ -103,11 +103,11 @@ public class GameControl extends Observable{
             if(mModel.getRegisteredPlayers().size() > 0){
 
                 if(mModel.getGiver().equals("")){
-                    chooseNewGiver();
+                    chooseNewGiverFromRegistrationPool();
                     break;
                 } //no previous giver
                 else
-                    chooseNewGiver();
+                    chooseNewGiverFromRegistrationPool();
             }
 
             mModel.setTimeStamp();
@@ -177,7 +177,6 @@ public class GameControl extends Observable{
      */
     private void chooseNewGiverFromEveryone(){
         Log.trace("New giver has been chosen from Everyone");
-        String[] users
         int index = rand.nextInt(mModel.getRegisteredPlayers().size());
         String newGiver =  mModel.getRegisteredPlayers().get(index);
         mModel.setGiver(newGiver);
