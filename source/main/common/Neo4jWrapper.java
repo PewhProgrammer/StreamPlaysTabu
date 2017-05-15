@@ -232,19 +232,18 @@ public class Neo4jWrapper {
                result.put(explain, taboo);
                return result;
            }
+           explain = "";
        }
        else explain = "";
         //Force it!
-        Set<String> cat = fetchFilteredCategoryFromDatabase(10);
-        String newExplain = explain;
+        Set<String> cat = fetchFilteredCategoryFromDatabase(5);
         for(String str: cat){
-            if(randomizer.nextBoolean() || newExplain.equals(explain)){
+            if(randomizer.nextBoolean() || explain.equals("")){
                 explain = str ;
-                break;
             }
         }
 
-        result.put(explain,fetchConnectedWordsFromDatabase(Util.reduceStringToMinimum(newExplain),i));
+        result.put(explain,fetchConnectedWordsFromDatabase(Util.reduceStringToMinimum(explain),i));
         return result;
     }
 

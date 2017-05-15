@@ -280,7 +280,7 @@ public class Neo4jWrapperTest extends TestCase {
         database.insertNodesAndRelationshipIntoOntology(taboo,explain,true,"is used for taboo",true);
         database.insertNodesAndRelationshipIntoOntology(taboo,explain,true,"has no meaning whatsoever",true);
 
-        database.validateExplainAndTaboo(explain,taboo);
+        database.validateExplainAndTaboo(explain,taboo,2);
     }
 
     public void testSetUpNodes(){
