@@ -178,6 +178,11 @@ public class AltTwitchBot extends Bot {
         sendChatMessage(user + " You have " + score + " Points!");
     }
 
+    @Override
+    public String[] getUsers(String user) {
+        return new String[0];
+    }
+
     public Command parseLine(String message, String sender) {
         this.sender = sender;
         return parseLine(message);

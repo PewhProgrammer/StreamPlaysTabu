@@ -287,4 +287,9 @@ public class BeamBot extends Bot {
     public void announceScore(String user, int score) {
         chatConnectable.send(ChatSendMethod.of(String.format("%s. You have %d Points!", user, score)));
     }
+
+    @Override
+    public String[] getUsers(String user) {
+        return new String[0];
+    }
 }
