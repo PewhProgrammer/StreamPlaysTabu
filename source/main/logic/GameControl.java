@@ -165,8 +165,19 @@ public class GameControl extends Observable{
     /**
      * handles new giver
      */
-    private void chooseNewGiver(){
-        Log.info("New giver has been chosen");
+    private void chooseNewGiverFromRegistrationPool(){
+        Log.trace("New giver has been chosen from registration pool");
+        int index = rand.nextInt(mModel.getRegisteredPlayers().size());
+        String newGiver =  mModel.getRegisteredPlayers().get(index);
+        mModel.setGiver(newGiver);
+    }
+
+    /**
+     * handles new giver
+     */
+    private void chooseNewGiverFromEveryone(){
+        Log.trace("New giver has been chosen from Everyone");
+        String[] users
         int index = rand.nextInt(mModel.getRegisteredPlayers().size());
         String newGiver =  mModel.getRegisteredPlayers().get(index);
         mModel.setGiver(newGiver);
