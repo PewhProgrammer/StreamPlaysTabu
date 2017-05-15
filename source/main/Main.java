@@ -185,9 +185,10 @@ public class Main {
 
                 switch (arg) {
                     case "--webpageserver": {
-                        ext_bindAddr = "http://" + line.getOptionValue("webpageserver")+"/";
+                        ext_bindAddr = line.getOptionValue("webpageserver");
                         if (!checkBindAddrFormat(ext_bindAddr))
                             throw new ParseException(neo4jbindAddr + " malicious bind address format for the webpage!");
+                        ext_bindAddr = "http://" + line.getOptionValue("webpageserver")+"/";
                     }
                     break;
                     case "--neo4jserver":
