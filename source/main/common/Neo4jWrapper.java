@@ -4,6 +4,7 @@ import org.neo4j.driver.v1.*;
 import org.neo4j.driver.v1.exceptions.*;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -247,12 +248,46 @@ public class Neo4jWrapper {
         return result;
     }
 
+    public ArrayList<ArrayList<String>> getTabooWordsForValidationForGiver(){
+        //could happen that we have too less connected words in database!!
+
+        ArrayList<ArrayList<String>> result = new ArrayList<>();
+
+        //Force it!
+        Set<String> cat = fetchFilteredCategoryFromDatabase(10);
+        int count = 0 ;
+        for(String str: cat){
+            if(randomizer.nextBoolean() || (count < 3)){
+                count++;
+                ArrayList<String> temp = new ArrayList<>();
+                temp.add(str);
+                Set<String> i = fetchConnectedWordsFromDatabase(Util.reduceStringToMinimum(str),1) ;
+                temp.add(i.iterator().next());
+                result.add(temp);
+            }
+        }
+
+        return result;
+    }
+
     /**
      * increases all connection between source and target node
      * @param explain target
      * @param taboo source
      */
     public void validateExplainAndTaboo(String explain,String taboo,int i){
+
+        updateExplainTabooRelationship(explain,taboo,i);
+        return;
+    }
+
+
+    /**
+     * increases all connection between source and target node
+     * @param explain target
+     * @param taboo source
+     */
+    public void validateExplainAndTabooForGiver(String explain,String taboo,int i){
 
         updateExplainTabooRelationship(explain,taboo,i);
         return;

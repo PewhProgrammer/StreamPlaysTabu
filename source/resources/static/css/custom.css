@@ -8,6 +8,7 @@ Body
     box-sizing: border-box;
 }
 
+
 /*--------------------
 Leaderboard
 --------------------*/
@@ -197,7 +198,7 @@ Leaderboard
 }
 
 .leaderboard ol li:nth-child(6) {
-    background: #cd4b4b;
+    background: #c64e4e;
 }
 
 .leaderboard ol li:nth-child(6)::after {
@@ -214,7 +215,7 @@ Leaderboard
 }
 
 .leaderboard ol li:nth-child(7) {
-    background: #cd4b4b;
+    background: #bf4848;
 }
 
 .leaderboard ol li:nth-child(7)::after {
@@ -231,7 +232,7 @@ Leaderboard
 }
 
 .leaderboard ol li:nth-child(8) {
-    background: #cd4b4b;
+    background: #b44444;
 }
 
 .leaderboard ol li:nth-child(8)::after {
@@ -248,7 +249,7 @@ Leaderboard
 }
 
 .leaderboard ol li:nth-child(9) {
-    background: #cd4b4b;
+    background: #963434;
 }
 
 .leaderboard ol li:nth-child(9)::after {
@@ -265,7 +266,7 @@ Leaderboard
 }
 
 .leaderboard ol li:nth-child(10) {
-    background: #cd4b4b;
+    background: #742626;
 }
 
 .leaderboard ol li:nth-child(10)::after {
