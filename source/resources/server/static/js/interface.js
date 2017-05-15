@@ -13,9 +13,9 @@ function requestPrevotedCategories(request) {
 function showPrevotedCategories(prevotedCategories) {
     console.log('>> Received prevoting categories: ' + prevotedCategories);
     var json = JSON.parse(prevotedCategories);
-    document.getElementById("cat1").value = json.cat1;
+
     document.getElementById("cat1label").innerHTML = json.cat1;
-    document.getElementById("cat2").value = json[cat2];
+    document.getElementById("cat2").value = json.cat2;
     document.getElementById("cat2label").innerHTML = json.cat2;
     document.getElementById("cat3").value = json.cat3;
     document.getElementById("cat3label").innerHTML = json.cat3;
@@ -27,7 +27,7 @@ function showPrevotedCategories(prevotedCategories) {
 }
 
 function sendCategory(chosenCategory) {
-    console.log('<< Send chosen category.');
+    console.log('<< Send chosen category: ' + chosenCategory);
     sendToServer('/sendCategory', chosenCategory);
 }
 

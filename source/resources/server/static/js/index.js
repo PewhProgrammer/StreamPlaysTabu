@@ -17,6 +17,8 @@ function onGiverJoined() {
 }
 
 function onCategoryChosen() {
+    var chosenCategory = $("input[name = PrevotedCategories]:checked").val();
+    document.getElementById("categoryLabel").innerHTML = "Chosen Category: " + chosenCategory;
     sendCategory(createChosenCategoryEvent());
     requestGiverInfo(createGiverInfoRequest());
     requestValidation(createValidationRequest());
@@ -59,8 +61,6 @@ function createSkipRequest() {
 }
 
 function createChosenCategoryEvent() {
-    var chosenCategory = $("input[name = PrevotedCategories]:checked").val();
-    document.getElementById("categoryLabel").innerHTML = "Chosen Category: " + chosenCategory;
     return JSON.stringify({'category' : chosenCategory});
 }
 

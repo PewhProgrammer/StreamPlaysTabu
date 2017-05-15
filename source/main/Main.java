@@ -99,6 +99,7 @@ public class Main {
 
         //TODO: get server uri as program argument
         String uri = "http://m.schubhan.de:1337/";
+        //String uri = "http://localhost:1337/";
         try {
             SiteController st = new SiteController(model, uri);
         } catch (Exception e) {
