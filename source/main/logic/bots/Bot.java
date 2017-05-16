@@ -6,7 +6,7 @@ import model.GameModel;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by Marc on 03.04.2017.
@@ -53,7 +53,7 @@ public abstract class Bot {
 
     public abstract void announceScore(String user, int score);
 
-    public abstract String[] getUsers(String user);
+    public abstract List<String> getUsers(String user);
 
     public abstract Command parseLine(String line);
 }

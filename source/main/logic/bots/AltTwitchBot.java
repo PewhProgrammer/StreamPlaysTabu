@@ -6,6 +6,9 @@ import model.GameModel;
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Thinh-Laptop on 20.04.2017.
  */
@@ -14,13 +17,16 @@ public class AltTwitchBot extends Bot {
     private Pirc bot;
     private String sender;
 
+
     public AltTwitchBot(GameModel gm, String channel) {
         super(gm, channel);
+
         connectToChatroom(channel);
 
 
     }
 
+    TwitchAPIRequester requester;
 
 
     private class Pirc extends PircBot {
@@ -33,8 +39,9 @@ public class AltTwitchBot extends Bot {
             this.setName(user);
             this.setLogin("[" + user + "]");
             this.model = gm;
-
         }
+
+
 
         public void onMessage(String channel, String sender,
                               String login, String hostname, String message) {
@@ -95,8 +102,21 @@ public class AltTwitchBot extends Bot {
 
     }
 
+    public static void checkChannelExist(String ch){
+        TwitchAPIRequester requester;
+        requester = new TwitchAPIRequester();
+
+        try{
+            requester.requestChannel(ch.substring(1));
+        }catch(Exception e){
+            Log.info("ERRROR LOLOL");
+        }
+
+    }
+
     @Override
     public void connectToChatroom(String user) {
+        checkChannelExist(user);
         bot = new Pirc("streamplaystaboo", this.model);
         bot.setVerbose(true);
 
@@ -179,9 +199,20 @@ public class AltTwitchBot extends Bot {
     }
 
     @Override
-    public String[] getUsers(String user) {
-        return new String[0];
+    public List<String> getUsers(String user) {
+
+        List<String> channels = new ArrayList<>();
+
+        User[] users = bot.getUsers(user);
+
+        for (int i = 0; i<users.length; i++){
+
+            channels.add(users[i].getNick());
+        }
+
+        return channels;
     }
+
 
     public Command parseLine(String message, String sender) {
         this.sender = sender;
@@ -239,7 +270,7 @@ public class AltTwitchBot extends Bot {
             return new Votekick(model, channel, sender);
         }
 
-        // !streamerins
+        // !streamerExplains
         if (parts[0].equals("!streamerExplains")) {
             return new StreamerExplains(model, channel, sender);
         }
@@ -265,7 +296,6 @@ public class AltTwitchBot extends Bot {
             }
             return new Prevote(model, channel, preVotes);
         }
-
 
         return null;
     }

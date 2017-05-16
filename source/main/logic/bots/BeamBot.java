@@ -6,8 +6,6 @@ import model.GameModel;
 import pro.beam.api.BeamAPI;
 import pro.beam.api.resource.BeamUser;
 import pro.beam.api.resource.channel.BeamChannel;
-import pro.beam.api.resource.chat.AbstractChatDatagram;
-import pro.beam.api.resource.chat.AbstractChatMethod;
 import pro.beam.api.resource.chat.BeamChat;
 import pro.beam.api.resource.chat.events.IncomingMessageEvent;
 import pro.beam.api.resource.chat.methods.AuthenticateMessage;
@@ -27,8 +25,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -289,7 +286,7 @@ public class BeamBot extends Bot {
     }
 
     @Override
-    public String[] getUsers(String user) {
+    public List<String> getUsers(String user) {
         return new String[0];
     }
 }
