@@ -9,5 +9,6 @@ public enum GameState {
         Registration,
         Config,
         Win,
-        Lose
+        Lose,
+        Kick
 }

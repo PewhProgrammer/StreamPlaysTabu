@@ -24,7 +24,7 @@ public class Votekick extends Command {
         if (numVotes > numPlayers * 0.5f) {
             gameModel.clear();
             gameModel.generateVotingCategories();
-            gameModel.setGameState(GameState.Registration);
+            gameModel.setGameState(GameState.Kick);
             gameModel.notifyKick();
         }
     }

@@ -108,6 +108,11 @@ function closeGame(status) {
     console.log('>> Received end of game: ' + status);
 }
 
+function sendPassword(pw) {
+    console.log('<< SEND password: ' + pw);
+    sendToServer('/pw', pw);
+}
+
 function sendToServer(target, content) {
     send(base + target, content);
 }

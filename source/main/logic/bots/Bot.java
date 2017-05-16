@@ -39,7 +39,7 @@ public abstract class Bot {
 
     public abstract void whisperRules(String user);
 
-    public abstract void whisperLink(String user, String link);
+    public abstract void whisperLink(String user, String link, int pw);
 
     public abstract void announceNewRound();
 
@@ -56,4 +56,5 @@ public abstract class Bot {
     public abstract List<String> getUsers(String user);
 
     public abstract Command parseLine(String line);
+
 }

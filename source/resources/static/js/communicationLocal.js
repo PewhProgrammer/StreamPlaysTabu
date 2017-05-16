@@ -39,6 +39,10 @@ function connectLoc() {
         stompClientLoc.subscribe('/localJS/category', function(categorychosen) {
             categoryChosen(categorychosen);
         });
+        stompClientLoc.subscribe('/localJS/err', function(error) {
+            window.alert(error);
+
+        })
 
         if (window.location.href == 'http://localhost:8080/registerFFA.html') {
             prepareRegister();

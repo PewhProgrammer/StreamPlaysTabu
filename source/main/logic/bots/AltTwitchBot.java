@@ -102,16 +102,17 @@ public class AltTwitchBot extends Bot {
 
     }
 
-    public static void checkChannelExist(String ch){
+    public static boolean checkChannelExist(String ch){
         TwitchAPIRequester requester;
         requester = new TwitchAPIRequester();
 
         try{
-            requester.requestChannel(ch.substring(1));
+            return requester.requestChannel(ch);
         }catch(Exception e){
-            Log.info("ERRROR LOLOL");
+            e.printStackTrace();
         }
 
+        return false;
     }
 
     @Override
@@ -155,9 +156,9 @@ public class AltTwitchBot extends Bot {
     }
 
     @Override
-    public void whisperLink(String user, String link) {
+    public void whisperLink(String user, String link, int pw) {
         //sendChatMessage(" " + user + " You are the giver! Here is your link, please click it! " + link);
-        sendPrivMessage("You are the giver! Here is your link, please click it! " + link, user);
+        sendPrivMessage("You are the giver! Here is your link: " + link + ", please click on it and use your password: " + pw + " to start explaining.", user);
         //sendPrivMessage("Your Explain word: " + model.getExplainWord(),user);
 
         //TODO: why onGiverJoined() at this point? think it is just to don't crash the game

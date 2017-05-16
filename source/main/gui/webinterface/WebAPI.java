@@ -6,6 +6,7 @@ import logic.GameControl;
 import logic.commands.CategoryChosen;
 import logic.commands.Setup;
 import model.GameModel;
+import model.GameState;
 import model.IObserver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -32,7 +33,12 @@ public class WebAPI implements IObserver {
     @MessageMapping("/startGame")
     public void startGame(SetupInformationContainer si) {
         channel = si.getChannel();
-            (new Setup(si, GameControl.mModel, si.getChannel())).execute();
+        Setup sCmd = (new Setup(si, GameControl.mModel, si.getChannel()));
+        if (sCmd.validate()) {
+            sCmd.execute();
+        } else {
+            send("/err", "Could not connect to channel '" + si.getChannel() + "'. Please retry with a valid channel on Twitch or Beam.");
+        }
     }
 
     @MessageMapping("/reqGameMode")
@@ -70,8 +76,25 @@ public class WebAPI implements IObserver {
     }
 
     public void onNotifyGameState() {
-        System.out.println("GameState changed.");
-        send("/gameState", new GameStateContainer(GameControl.mModel.getGameState()));
+        GameState state = GameControl.mModel.getGameState();
+        System.out.println("GameState changed to " + state);
+
+        if (state.equals(GameState.Win)) {
+            send("/endGame", new GameCloseContainer("Win"));
+            return;
+        }
+
+        if (state.equals(GameState.Lose)) {
+            send("/endGame", new GameCloseContainer("Lose"));
+            return;
+        }
+
+        if (state.equals(GameState.Kick)) {
+            send("/endGame", new GameCloseContainer("Kick"));
+            return;
+        }
+
+        send("/gameState", new GameStateContainer(state));
     }
 
     public void onNotifyQandA() {
@@ -113,7 +136,7 @@ public class WebAPI implements IObserver {
     }
 
     public void onNotifyKick() {
-        //TODO finish game with proper message
+        //nothing to do here
         System.out.println("Kickvote!");
     }
 

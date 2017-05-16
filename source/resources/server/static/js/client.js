@@ -8,39 +8,72 @@ $(document).ready(function() {
     socket.on(base, function(data) {
         console.log('Connected to server: ' + JSON.stringify(data));
     });
+    socket.on(base + '/pwSucc', function(data) {
+        if (vpw) {
+            console.log('Password accepted.');
+            onGiverJoined();
+        }
+    });
+    socket.on(base + '/pwErr', function(data) {
+        if (vpw) {
+            window.alert('Incorrect password. Please try again.');
+        }
+    });
     socket.on(base + '/prevotedCategories', function(data) {
-        showPrevotedCategories(JSON.stringify(data));
+        if (vpw) {
+            showPrevotedCategories(JSON.stringify(data));
+        }
     });
     socket.on(base + '/giver', function(data) {
-        showGiverInfo(JSON.stringify(data));
+        if (vpw) {
+            showGiverInfo(JSON.stringify(data));
+        }
     });
     socket.on(base + '/close', function(data) {
-        closeGame(JSON.stringify(data));
+        if (vpw) {
+            closeGame(JSON.stringify(data));
+        }
     });
     socket.on(base + '/guesses', function(data) {
-        showGuesses(JSON.stringify(data));
+        if (vpw) {
+            showGuesses(JSON.stringify(data));
+        }
     });
     socket.on(base + '/explainWord', function(data) {
-        showExplainWord(JSON.stringify(data));
+        if (vpw) {
+            showExplainWord(JSON.stringify(data));
+        }
     });
     socket.on(base + '/tabooWords', function(data) {
-        showTabooWords(JSON.stringify(data));
+        if (vpw) {
+            showTabooWords(JSON.stringify(data));
+        }
     });
     socket.on(base + '/question', function(data) {
-        showQuestion(JSON.stringify(data));
+        if (vpw) {
+            showQuestion(JSON.stringify(data));
+        }
     });
     socket.on(base + '/chatMessage', function(data) {
-        showChatMessage(JSON.stringify(data));
+        if (vpw) {
+            showChatMessage(JSON.stringify(data));
+        }
     });
     socket.on(base + '/validation', function(data) {
-        showValidation(JSON.stringify(data));
+        if (vpw) {
+            showValidation(JSON.stringify(data));
+        }
     });
-
-    onGiverJoined();
 });
 
 function send(target, content) {
     socket.emit(target, content);
+}
+
+function vpw(data) {
+    var json = JSON.parse(data);
+    var pw = json["password"];
+    return validatePW(pw);
 }
 
 

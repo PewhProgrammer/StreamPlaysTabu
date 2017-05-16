@@ -23,6 +23,7 @@ public class SiteController implements IObserver {
 
     private GameModel gm;
     private Socket socket;
+    private int pw;
 
     public SiteController(GameModel model, String uri) throws Exception {
         this.gm = model;
@@ -80,32 +81,44 @@ public class SiteController implements IObserver {
             @Override
             public void call(Object... args) {
                 JSONObject obj = new JSONObject((String)args[0]);
-                receiveCategory(new CategoryChosenContainer(obj.getString("category")));
+                if (validatePW(obj.getString("password"))) {
+                    receiveCategory(new CategoryChosenContainer(obj.getString("category")));
+                }
             }
         }).on(CORE_BASE + "/sendExplanation", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 JSONObject obj = new JSONObject((String)args[0]);
-                receiveExplanation(new ExplanationContainer(obj.getString("giver"), obj.getString("explanation")));
+                if (validatePW(obj.getString("password"))) {
+                    receiveExplanation(new ExplanationContainer(obj.getString("giver"), obj.getString("explanation")));
+                }
             }
         }).on(CORE_BASE + "/sendQandA", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 JSONObject obj = new JSONObject((String)args[0]);
-                receiveQandA(new QandAContainer(obj.getString("q"), obj.getString("a")));
+                if (validatePW(obj.getString("password"))) {
+                    receiveQandA(new QandAContainer(obj.getString("q"), obj.getString("a")));
+                }
             }
         }).on("/sendValidation", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 JSONObject obj = new JSONObject((String)args[0]);
-                receiveValidation(obj.getString("reference"), obj.getString("taboo"), Integer.getInteger(obj.getString("score")));
+                if (validatePW(obj.getString("password"))) {
+                    receiveValidation(obj.getString("reference"), obj.getString("taboo"), Integer.getInteger(obj.getString("score")));
+                }
             }
         });
         socket.connect();
     }
 
+    private boolean validatePW(String pw) {
+        return(Integer.parseInt(pw) == this.pw);
+    }
+
     public void send(String event, JSONObject o) {
-        socket.emit(CORE_BASE + event, o);
+        socket.emit(CORE_BASE + event, o.put("password", pw));
     }
 
     public void giverJoined() {
@@ -198,6 +211,10 @@ public class SiteController implements IObserver {
         if (gm.getGameState().equals(GameState.Lose)) {
             send("/close", new GameCloseContainer("Lose").toJSONObject());
         }
+
+        if (gm.getGameState().equals(GameState.Kick)) {
+            send("/close", new GameCloseContainer("Kick").toJSONObject());
+        }
     }
 
     @Override
@@ -237,7 +254,7 @@ public class SiteController implements IObserver {
 
     @Override
     public void onNotifyKick() {
-        send("/close", new GameCloseContainer("Kick").toJSONObject());
+       //nothing to do here
     }
 
     @Override
@@ -261,5 +278,12 @@ public class SiteController implements IObserver {
 
     public void sendQuestion(String question) {
         send("/question", new QuestionContainer(question).toJSONObject());
+    }
+
+    public int generatePW() {
+        int i = this.pw;
+        pw = 1000 + (int)(Math.random() * 8999);
+        send("/updatePW", new JSONObject().put("old", i).put("new", pw));
+        return pw;
     }
 }

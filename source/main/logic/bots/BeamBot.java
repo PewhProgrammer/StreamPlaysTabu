@@ -219,6 +219,11 @@ public class BeamBot extends Bot {
         //TODO implement
     }
 
+    public static boolean checkChannelExists(String channel) {
+        //TODO implement
+        return false;
+    }
+
     @Override
     public void sendChatMessage(String msg) {
         chatConnectable.send(ChatSendMethod.of(String.format(msg)));
@@ -230,13 +235,10 @@ public class BeamBot extends Bot {
     }
 
     @Override
-    public void whisperLink(String user, String link) {
+    public void whisperLink(String user, String link, int pw) {
         Log.trace("Send link to giver!");
-        whisper(user, link);
-
-        //TODO why onGiverJoined() at this point? i guess it is just in order to make the game run
-        //model.getSiteBot().onGiverJoined();
-        model.getSiteController().giverJoined();
+        //TODO send proper message
+        whisper(user, link + " ; " + pw);
     }
 
     private void whisper(String receiver, String content) {
@@ -287,6 +289,8 @@ public class BeamBot extends Bot {
 
     @Override
     public List<String> getUsers(String user) {
-        return new String[0];
+        //TODO implement
+        //return new String[0];
+        return null;
     }
 }

@@ -1,9 +1,11 @@
 var giver = "igotabot";
+var pw;
 
 $(function () {
     $("form").on('submit', function (e) {
         e.preventDefault();
     });
+    $( "#pw" ).click(function() { onPassword(); });
     $( "#category" ).click(function() { onCategoryChosen(); });
     $( "#skip" ).click(function() { onSkip(); });
     $( "#explanation" ).click(function() { onExplanation(); });
@@ -11,15 +13,17 @@ $(function () {
     $( "#validation" ).click(function() { onValidation(); });
 });
 
+function onPassword() {
+    sendPassword(createPasswordEvent());
+}
+
 function onGiverJoined() {
     sendGiverJoined(createGiverJoinedEvent());
     requestPrevotedCategories(createPrevotedCategoriesRequest());
 }
 
 function onCategoryChosen() {
-    var chosenCategory = $("input[name = PrevotedCategories]:checked").val();
-    document.getElementById("categoryLabel").innerHTML = "Chosen Category: " + chosenCategory;
-    sendCategory(createChosenCategoryEvent(chosenCategory));
+    sendCategory(createChosenCategoryEvent());
     requestGiverInfo(createGiverInfoRequest());
     requestValidation(createValidationRequest());
 }
@@ -41,27 +45,32 @@ function onValidation() {
 }
 
 function createGiverJoinedEvent() {
-    return JSON.stringify({});
+    return JSON.stringify({'password' : pw});
 }
 
 function createPrevotedCategoriesRequest() {
-    return JSON.stringify({});
+    return JSON.stringify({'password' : pw});
 }
 
 function createGiverInfoRequest() {
-    return JSON.stringify({});
+    return JSON.stringify({'password' : pw});
 }
 
 function createValidationRequest() {
-    return JSON.stringify({});
+    return JSON.stringify({'password' : pw});
 }
 
 function createSkipRequest() {
-    return JSON.stringify({});
+    return JSON.stringify({'password' : pw});
 }
 
-function createChosenCategoryEvent(chosenCategory) {
-    return JSON.stringify({'category' : chosenCategory});
+function createChosenCategoryEvent() {
+    var chosenCategory = $("input[name = PrevotedCategories]:checked").val();
+    document.getElementById("categoryLabel").innerHTML = "Chosen Category: " + chosenCategory;
+    return JSON.stringify({
+        'category' : chosenCategory,
+        'password' : pw
+    });
 }
 
 function createExplanationEvent() {
@@ -69,7 +78,8 @@ function createExplanationEvent() {
     document.getElementById("explanationLabel").innerHTML = "Last Explanation: " + explanation;
     return JSON.stringify({
         'giver' : giver,
-        'explanation' : explanation
+        'explanation' : explanation,
+        'password' : pw
     });
 }
 
@@ -80,10 +90,26 @@ function createAnswerEvent() {
     document.getElementById("answerLabel").innerHTML = "Question: " + q + "; Answer: " + a;
     return JSON.stringify({
         'q' : q,
-        'a' : a
+        'a' : a,
+        'password' : pw
+    });
+}
+
+function createPasswordEvent(){
+    pw = $("#pwInput").val();
+    document.getElementById("pwLabel").innerHTML = "Sent pw: " + pw;
+    return JSON.stringify({
+        'password': pw
     });
 }
 
 function createValidationEvent() {
     //TODO grab validation info
+    return JSON.stringify({
+        'password': pw
+    });
+}
+
+function validatePW(password) {
+    return password == pw.toString();
 }

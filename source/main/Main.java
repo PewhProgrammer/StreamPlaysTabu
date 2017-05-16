@@ -100,7 +100,7 @@ public class Main {
         Log.info("Launching webinterface ...");
         RunInterface.main(new String[] {});
 
-        //String uri = "http://m.schubhan.de:1337/";
+
         try {
             SiteController st = new SiteController(model, ext_bindAddr);
         } catch (Exception e) {

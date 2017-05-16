@@ -14,6 +14,7 @@ app.get('/', function(req, res) {
 
 var base2Ext = '/connection-server-external';
 var base2Core = '/connection-server-core';
+var pws = new Set();
 
 io.sockets.on('connection', function (socket) {
    initializeCore(socket);
@@ -22,8 +23,14 @@ io.sockets.on('connection', function (socket) {
 
 function initializeExt(socket) {
 
-    socket.on(base2Core, function(data) {
-        console.log(data);
+    socket.on(base2Core + '/updatePW', function(data) {
+        var old = JSON.parse(JSON.stringify(data)).old;
+        var n = JSON.parse(JSON.stringify(data)).new;
+        if (pws.has(old.toString())) {
+            pws.delete(old.toString());
+        }
+        pws.add(n.toString());
+        console.log('>> RECEIVED password ' + n);
     });
     socket.on(base2Core + '/prevotedCategories', function(data) {
        console.log('>> RECEIVED prevotedCategories: ' + JSON.stringify(data));
@@ -103,6 +110,19 @@ function initializeCore(socket) {
     socket.on(base2Ext + '/sendValidation', function (data) {
         console.log('>> SEND validation: ' + JSON.stringify(data));
         send2Core('/sendValidation', data)
+    });
+    socket.on(base2Ext + '/pw', function(data) {
+        console.log('>>RECEIVED password information ' + data);
+        var json = JSON.parse(data);
+        var pass = json["password"];
+        console.log(pws.has(pass));
+        if(pws.has(pass)) {
+            console.log('PW correct');
+            send2Ext('/pwSucc', JSON.stringify({"password" : pass}));
+        } else {
+            console.log('PW incorrect');
+            send2Ext('/pwErr', JSON.stringify({"password" : pass}));
+        }
     });
 
     socket.emit('/connection-server-core', {time: new Date()});

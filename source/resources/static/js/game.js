@@ -133,6 +133,7 @@ function prepareGame() {
 }
 
 function categoryChosen(chosencategory) {
+    //TODO: display chosen category as first explanation
     console.log(chosencategory);
 }
 
