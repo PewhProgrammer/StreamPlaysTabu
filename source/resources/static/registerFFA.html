@@ -27,7 +27,7 @@
 
     <div class="leaderboard">
         <h1 style="margin-top:0px;">
-            <svg class="ico-cup">
+        <svg class="ico-cup">
             <use xlink:href="#cup"></use>
         </svg> Most active Players
         </h1>
@@ -74,11 +74,24 @@
             </li>
         </ol>
     </div>
-    <div class="background hintsText"></div>
-    <div class="background rightText"></div>
+    <div class="background hintsText">
+        <p id="hintText"><big>Did you know?</big><br><small>You can type !register to get into the giver pool. A giver has the chance to explain a word and get points based on his time.</small></p>
+    </div>
+    <div class="background rightText">
+        <div style="height: 40%; font-size: 3vmin">
+            <p>!vote &lt;number&gt; <small>for the category of the next word!</small></p>
+            <p id="categoryText2" style="width:50%; float: right"></p>
+            <p id="categoryText1" style="width:50%"></p>
+        </div>
+        <div style="height: 40%; font-size: 3vmin">
+            <p><small>Help us to</small> !validate &lt;ID&gt; &lt;1-5&gt;<small> our taboo words! <br>(1 = bad, 5 = good):</small></p>
+            <p id="validateText"></p>
+        </div>
+        <p id="tabooText"><small>Do you have an idea for a new taboo word? <br>Type</small> !taboo &lt;word&gt;<small> to tell us.</small></p>
+    </div>
 
     <svg style="display: none;">
-  <symbol id="cup" x="0px" y="0px"
+    <symbol id="cup" x="0px" y="0px"
      width="25px" height="26px" viewBox="0 0 25 26" enable-background="new 0 0 25 26" xml:space="preserve">
 <path fill="#F26856" d="M21.215,1.428c-0.744,0-1.438,0.213-2.024,0.579V0.865c0-0.478-0.394-0.865-0.88-0.865H6.69
     C6.204,0,5.81,0.387,5.81,0.865v1.142C5.224,1.641,4.53,1.428,3.785,1.428C1.698,1.428,0,3.097,0,5.148
@@ -98,7 +111,7 @@
     C17.43,11.638,15.357,14.276,12.5,14.276z M21.215,7.138h-1.452c-0.197,0-0.39,0.024-0.572,0.07v-2.06
     c0-1.097,0.908-1.99,2.024-1.99c1.117,0,2.025,0.893,2.025,1.99C23.241,6.246,22.333,7.138,21.215,7.138z"/>
       </symbol>
-</svg>
+    </svg>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>

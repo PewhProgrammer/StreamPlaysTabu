@@ -6,15 +6,8 @@
     padding: 1%;
 }
 
-.progress {
-    height: 1.5vh;
-    background-color: #019112;
+.progress{
     visibility: hidden;
-    -moz-transform: scale(-1, 1);
-    -webkit-transform: scale(-1, 1);
-    -o-transform: scale(-1, 1);
-    -ms-transform: scale(-1, 1);
-    transform: scale(-1, 1);
 }
 
 .singleGuesses {
@@ -27,9 +20,6 @@
     top: 9%;
     width: 55.5%;
     height: 70%;
-
-    background-image: url("../images/explanations.jpg");
-    background-size: cover;
 }
 
 .guessesText{
@@ -37,9 +27,6 @@
     right: 0.5%;
     width: 23%;
     height: 70%;
-
-    background-image: url("../images/guesses.jpg");
-    background-size: cover;
 }
 
 
@@ -48,9 +35,6 @@
     left: 0.5%;
     width: 99%;
     height: 19%;
-
-    background-image: url("../images/qAndA.jpg");
-    background-size: cover;
 }
 
 .giverInfoText{
@@ -58,9 +42,6 @@
     left: 0.5%;
     width: 19.5%;
     height: 34.5%;
-
-    background-image: url("../images/playerinfo.jpg");
-    background-size: cover;
 }
 
 .levelText{
@@ -68,9 +49,6 @@
     left: 0.5%;
     width: 19.5%;
     height: 34.5%;
-
-    background-image: url("../images/playerinfo.jpg");
-    background-size: cover;
 }
 
 #guesses, #qAndA1, #qAndA2, #qAndA3, #explanations{
@@ -83,11 +61,8 @@
 
 #level {
     text-align: center;
-    position: fixed;
-    left: 2.5%;
-    top: 51%;
-    width: 28vmin;
-    font-size: 8vw;
+    width:100%;
+    font-size: 8vh;
 }
 
 #qAndA1, #qAndA2, #qAndA3 {

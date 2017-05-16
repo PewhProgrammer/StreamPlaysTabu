@@ -94,3 +94,87 @@
 <script src="/webjars/sockjs-client/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/stomp.min.js"></script></body>
 </html>
+
+
+
+
+
+<div class="upperBar">
+    <h1 id="heading">StreamPlaysTaboo</h1>
+    <h2 id="hscrHeading">Free for All</h2>
+    <h2 id="countdown">90s</h2>
+    <img class="header" src="images/header.png" th:href="@{/images/header.png}"/>
+    <div class="barspace">
+        <div class="progress" style="background-color: #019112; height: 25%; visibility: visible">
+            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" id="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="explanationsText">
+    <p id="explanations">Explanations: <br><br></p>
+    <p id="endGame" style="text-align: center; "></p>
+</div>
+
+<div class="giverInfoText">
+    <p id="giverInfo"></p>
+</div>
+
+<div class="levelText">
+    <img src="images/level.png" style="position: fixed; left: 2.5%; top: 48%; width: 28vmin; z-index: -1"  th:href="@{/images/level.png}"/>
+    <p id="level">1</p>
+</div>
+
+<div class="qAndAText">
+    <p id="qAndA1" style="float:left"></p>
+    <p id="qAndA2" style="float:left"></p>
+    <p id="qAndA3"></p>
+</div>
+
+<div class="guessesText">
+    <p id="guesses">!guess &lt;word&gt; <small>to submit a guess!</small></p>
+    <p class="singleGuesses" id="1stGuess">1stGuess</p>
+    <div class="progress" id="Bar1">
+        <div class="progress-bar" role="progressbar" id="1stGuessBar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    <p class="singleGuesses" id="2ndGuess">2ndGuess</p>
+    <div class="progress" id="Bar2">
+        <div class="progress-bar" role="progressbar" id="2ndGuessBar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 90%;">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    <p class="singleGuesses" id="3rdGuess">3rdGuess</p>
+    <div class="progress" id="Bar3">
+        <div class="progress-bar" role="progressbar" id="3rdGuessBar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 80%;">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    <p class="singleGuesses" id="4thGuess">4thGuess</p>
+    <div class="progress" id="Bar4">
+        <div class="progress-bar" role="progressbar" id="4thGuessBar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 65%;">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    <p class="singleGuesses" id="5thGuess">5thGuess</p>
+    <div class="progress" id="Bar5">
+        <div class="progress-bar" role="progressbar" id="5thGuessBar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    <p class="singleGuesses" id="6thGuess">6thGuess</p>
+    <div class="progress" id="Bar6">
+        <div class="progress-bar" role="progressbar" id="6thGuessBar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 30%;">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    <p class="singleGuesses" id="7thGuess">7thGuess</p>
+    <div class="progress" id="Bar7">
+        <div class="progress-bar" role="progressbar" id="7thGuessBar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+</div>

@@ -8,11 +8,12 @@ var timer = setInterval(function() {
 
     timeLeft = timeLeft - 1;
 
-    document.getElementById("countdown").innerHTML = timeLeft + "s";
+    document.getElementById("progressbar").innerHTML = timeLeft + "s";
     document.getElementById("progressbar").style.width = (timeLeft / 90) * 100 + "%";
 
     if (timeLeft == 0) {
-        document.getElementById("countdown").innerHTML = "Time's up!";
+        document.getElementById("progressbar").innerHTML = "Time's up!";
+        document.getElementById("progressbar").style.color = "#111111";
         clearInterval(timer);
     }
 }, 1000);
@@ -21,7 +22,7 @@ function updateGiver(giver) {
     var json = JSON.parse(giver.body);
 
     document.getElementById("giverInfo").innerHTML = json.name + "<br>" + json.points + " Pts."
-    document.getElementById("level").innerHTML = json.level;
+    document.getElementById("level").innerHTML = "Level: " + json.level;
 }
 
 
