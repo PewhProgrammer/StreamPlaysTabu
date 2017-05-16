@@ -61,8 +61,11 @@
 
 #level {
     text-align: center;
-    width:100%;
-    font-size: 8vh;
+    position:fixed;
+    left:2.5%;
+    top:51%;
+    width:28vmin;
+    font-size: 8vw;
 }
 
 #qAndA1, #qAndA2, #qAndA3 {
