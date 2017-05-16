@@ -19,7 +19,7 @@ Leaderboard
     left: 30%;
     transform: translate(-50%, -50%);
     width: 50%;
-    height: 50%;
+    height: 55%;
     background: linear-gradient(to bottom, #3a404d, #181c26);
     border-radius: 10px;
     box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
@@ -203,7 +203,7 @@ Leaderboard
 
 .leaderboard ol li:nth-child(6)::after {
     background: #cd4b4b;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.08);
 }
 
 .leaderboard ol li:nth-child(6) mark::before,
@@ -220,7 +220,7 @@ Leaderboard
 
 .leaderboard ol li:nth-child(7)::after {
     background: #cd4b4b;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
 }
 
 .leaderboard ol li:nth-child(7) mark::before,
@@ -237,7 +237,7 @@ Leaderboard
 
 .leaderboard ol li:nth-child(8)::after {
     background: #cd4b4b;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
 }
 
 .leaderboard ol li:nth-child(8) mark::before,
