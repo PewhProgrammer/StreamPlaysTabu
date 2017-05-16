@@ -1,33 +1,92 @@
 package gui.webinterface.containers;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+
 /**
  * Created by Lenovo on 04.05.2017.
  */
 public class RankingContainer {
 
-    //TODO: exchange dummy values
+    private String firstName = "";
+    private String secondName = "";
+    private String thirdName = "";
+    private String fourthName = "";
+    private String fifthName = "";
+    private String sixthName = "";
+    private String seventhName = "";
+    private String eighthName = "";
+    private String ninthName = "";
+    private String tenthName = "";
 
-    private final String firstName = "first";
-    private final String secondName = "second";
-    private final String thirdName = "third";
-    private final String fourthName = "fourth";
-    private final String fifthName = "fifth";
-    private final String sixthName = "sixth";
-    private final String seventhName = "seventh";
-    private final String eighthName = "eighth";
-    private final String ninthName = "ninth";
-    private final String tenthName = "tenth";
+    private int firstPoints = 0;
+    private int secondPoints = 0;
+    private int thirdPoints = 0;
+    private int fourthPoints = 0;
+    private int fifthPoints = 0;
+    private int sixthPoints = 0;
+    private int seventhPoints = 0;
+    private int eighthPoints = 0;
+    private int ninthPoints = 0;
+    private int tenthPoints = 0;
 
-    private final int firstPoints = 10;
-    private final int secondPoints = 9;
-    private final int thirdPoints = 8;
-    private final int fourthPoints = 7;
-    private final int fifthPoints = 6;
-    private final int sixthPoints = 5;
-    private final int seventhPoints = 4;
-    private final int eighthPoints = 3;
-    private final int ninthPoints = 2;
-    private final int tenthPoints = 1;
+
+    public RankingContainer(LinkedHashMap<String, Integer> score) {
+        int idx = 0;
+        for (String s : score.keySet()) {
+            idx++;
+            if (idx == 1) {
+                firstName = s;
+                firstPoints = score.get(s);
+                continue;
+            }
+            if (idx == 2) {
+                secondName = s;
+                secondPoints= score.get(s);
+                continue;
+            }
+            if (idx == 3) {
+                thirdName = s;
+                thirdPoints = score.get(s);
+                continue;
+            }
+            if (idx == 4) {
+                fourthName = s;
+                fourthPoints = score.get(s);
+                continue;
+            }
+            if (idx == 5) {
+                fifthName = s;
+                fifthPoints = score.get(s);
+                continue;
+            }
+            if (idx == 6) {
+                sixthName = s;
+                sixthPoints = score.get(s);
+                continue;
+            }
+            if (idx == 7) {
+                seventhName = s;
+                seventhPoints = score.get(s);
+                continue;
+            }
+            if (idx == 8) {
+                eighthName = s;
+                eighthPoints = score.get(s);
+                continue;
+            }
+            if (idx == 9) {
+                ninthName = s;
+                ninthPoints = score.get(s);
+                continue;
+            }
+            if (idx == 10) {
+                tenthName = s;
+                tenthPoints = score.get(s);
+                continue;
+            }
+        }
+    }
 
     public String getFirstName() {
         return firstName;

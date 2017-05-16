@@ -90,6 +90,7 @@ function requestValidation(request) {
 
 function showValidation(validation) {
     console.log('>> Received validation: ' + validation);
+    //TODO display validation information
 }
 
 function sendValidation(validation) {

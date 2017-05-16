@@ -12,6 +12,10 @@ import model.GameState;
 import model.IObserver;
 import org.json.JSONObject;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 
 public class SiteController implements IObserver {
 
@@ -19,7 +23,6 @@ public class SiteController implements IObserver {
 
     private GameModel gm;
     private Socket socket;
-    private JSONParser parser;
 
     public SiteController(GameModel model, String uri) throws Exception {
         this.gm = model;
@@ -63,7 +66,7 @@ public class SiteController implements IObserver {
             public void call(Object... args) {
                 reqGiver();
             }
-        }).on("/reqValidation", new Emitter.Listener() {
+        }).on(CORE_BASE + "/reqValidation", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 reqValidation();
@@ -94,8 +97,8 @@ public class SiteController implements IObserver {
         }).on("/sendValidation", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                //TODO implement
                 JSONObject obj = new JSONObject((String)args[0]);
+                receiveValidation(obj.getString("reference"), obj.getString("taboo"), Integer.getInteger(obj.getString("score")));
             }
         });
         socket.connect();
@@ -126,7 +129,35 @@ public class SiteController implements IObserver {
 
     public void reqValidation() {
         System.out.println("Received reqValidation.");
-        //TODO: implement validation stuff
+        String[] references = new String[3];
+        String[] taboos = new String[3];
+
+        Map m = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidation(null, 1);
+        Iterator<Map.Entry<String, Set<String>>> it = m.entrySet().iterator();
+        Map.Entry<String, Set<String>> mE = it.next();
+        Iterator<String> itS = mE.getValue().iterator();
+
+        references[0] = mE.getKey();
+        taboos[0] = itS.next();
+
+        m = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidation(null, 1);
+        it = m.entrySet().iterator();
+        mE = it.next();
+        itS = mE.getValue().iterator();
+
+        references[1] = mE.getKey();
+        taboos[1] = itS.next();
+
+        m = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidation(null, 1);
+        it = m.entrySet().iterator();
+        mE = it.next();
+        itS = mE.getValue().iterator();
+
+        references[2] = mE.getKey();
+        taboos[2] = itS.next();
+
+
+        send("/validation", new GiverValidation(references, taboos).toJSONObject());
     }
 
     public void reqSkip() {
@@ -153,9 +184,9 @@ public class SiteController implements IObserver {
         gm.pushCommand(cmd);
     }
 
-    public void receiveValidation() {
+    public void receiveValidation(String reference, String taboo, int score) {
         System.out.println("Received sendValidation");
-        //TODO: implement validation Logic
+        gm.getNeo4jWrapper().validateExplainAndTaboo(reference, taboo, score * 2 - 4);
     }
 
     @Override

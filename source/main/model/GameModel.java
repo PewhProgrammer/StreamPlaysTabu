@@ -52,6 +52,8 @@ public class GameModel extends Observable{
     private LinkedList<Guess> guesses;
     private LinkedList<String[]> qAndA;
 
+    private HashMap<String, Set<String>> validationInfo;
+
     private String guesserChannel = "";
 
     private String category, giver = "", word, winner;
@@ -97,6 +99,15 @@ public class GameModel extends Observable{
         generateVotingCategories();
     }
 
+
+    public HashMap<String, Set<String>> getValidationInfo() {
+        return validationInfo;
+    }
+
+    public void setValidationInfo(HashMap<String, Set<String>> validationInfo) {
+        this.validationInfo = validationInfo;
+    }
+
     public void setBot(String platform, String channel) {
         try {
             this.bot = platform.equals("Twitch") ? new AltTwitchBot(this, "#" + channel) : new BeamBot(this, channel);
@@ -110,6 +121,7 @@ public class GameModel extends Observable{
     }
 
     public void setGameState(GameState mGameState) {
+        System.out.println("GameState set to " +  mGameState);
         this.mGameState = mGameState;
         notifyGameState();
     }

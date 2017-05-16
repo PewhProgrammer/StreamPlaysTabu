@@ -2,6 +2,7 @@ package logic.commands;
 
 
 import gui.webinterface.containers.SetupInformationContainer;
+import logic.bots.AltTwitchBot;
 import model.GameMode;
 import model.GameModel;
 import model.GameState;
@@ -33,6 +34,7 @@ public class Setup extends Command {
 
     @Override
     public boolean validate() {
+        //TODO: check if channel is valid
         return true;
     }
 }

@@ -19,7 +19,7 @@ function onGiverJoined() {
 function onCategoryChosen() {
     var chosenCategory = $("input[name = PrevotedCategories]:checked").val();
     document.getElementById("categoryLabel").innerHTML = "Chosen Category: " + chosenCategory;
-    sendCategory(createChosenCategoryEvent());
+    sendCategory(createChosenCategoryEvent(chosenCategory));
     requestGiverInfo(createGiverInfoRequest());
     requestValidation(createValidationRequest());
 }
@@ -60,7 +60,7 @@ function createSkipRequest() {
     return JSON.stringify({});
 }
 
-function createChosenCategoryEvent() {
+function createChosenCategoryEvent(chosenCategory) {
     return JSON.stringify({'category' : chosenCategory});
 }
 
@@ -85,5 +85,5 @@ function createAnswerEvent() {
 }
 
 function createValidationEvent() {
-    //TODO implement
+    //TODO grab validation info
 }

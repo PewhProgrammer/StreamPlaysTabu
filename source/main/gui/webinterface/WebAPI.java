@@ -12,9 +12,15 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
 
 @Controller
 public class WebAPI implements IObserver {
+
+    private String channel = "";
 
     public WebAPI() {
         GameControl.mModel.addObserver(this);
@@ -25,6 +31,7 @@ public class WebAPI implements IObserver {
 
     @MessageMapping("/startGame")
     public void startGame(SetupInformationContainer si) {
+        channel = si.getChannel();
             (new Setup(si, GameControl.mModel, si.getChannel())).execute();
     }
 
@@ -37,7 +44,12 @@ public class WebAPI implements IObserver {
     public void requestRegisterInfo() {
         onNotifyScoreUpdate();
         send("/prevoteCategory", new PrevoteCategoryContainer(GameControl.mModel.getPrevoteCategories()));
-        send("/validation", new ValidationContainer(GameControl.mModel.getExplainWord(), GameControl.mModel.getTabooWords()));
+
+        Map m = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidation(null, 5);
+        Iterator<Map.Entry<String, Set<String>>> it = m.entrySet().iterator();
+        Map.Entry<String, Set<String>> mE = it.next();
+
+        send("/validation", new ValidationContainer(mE.getKey(), mE.getValue()));
     }
 
     @MessageMapping("/reqGiverInfo")
@@ -92,7 +104,7 @@ public class WebAPI implements IObserver {
 
     public void onNotifyScoreUpdate() {
         System.out.println("Score!");
-        send("/score", new RankingContainer());
+        send("/score", new RankingContainer(GameControl.mModel.getNeo4jWrapper().getHighScoreList(10, channel)));
     }
 
     public void onNotifyGameMode() {
