@@ -72,7 +72,7 @@ function updateCategoryVote(categories) {
 function updateValidation(validation) {
 
     var json = JSON.parse(validation.body);
-    var string = json.reference + "<br><small>";
+    var string = "<big>" + json.reference + "</big>" + "<br><small>";
     if (json.taboo1 != "") {
         string = string + "<ul><li>" + json.taboo1 + "</li>"
     }
@@ -80,13 +80,13 @@ function updateValidation(validation) {
         string = string + "<li>" + json.taboo2 + "</li>"
     }
     if (json.taboo3 != "") {
-        string = string + "<li>" + json.taboo2 + "</li>"
+        string = string + "<li>" + json.taboo3 + "</li>"
     }
     if (json.taboo4 != "") {
-        string = string + "<li>" + json.taboo2 + "</li>"
+        string = string + "<li>" + json.taboo4 + "</li>"
     }
     if (json.taboo5 != "") {
-        string = string + "<li>" + json.taboo2 + "</li></ul></small>"
+        string = string + "<li>" + json.taboo5 + "</li></ul></small>"
     }
 
     document.getElementById("validateText").innerHTML = string;
