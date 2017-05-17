@@ -103,6 +103,16 @@ public class Neo4jWrapper {
         return 0; //if new user is created
     }
 
+    public String updateUserVoteKicked(String user, String ch) {
+        try {
+            return ""+updateUserPropertiesFromDatabaseAdd(user,"votekicked",1);
+        }catch(DatabaseException e){
+            Log.debug(e.getMessage());
+            createUser(user,ch);
+        }
+        return "0"; //if new user is created
+    }
+
 
     /**
      * if no user was found, then a user will be created
@@ -112,7 +122,7 @@ public class Neo4jWrapper {
      */
     public int getUserPoints(String user,String ch) throws Neo4jException{
         try {
-            return fetchUserPropertiesFromDatabase(user,"points");
+            return Integer.parseInt(fetchUserPropertiesFromDatabase(user,"points"));
         }catch(DatabaseException e){
             Log.debug(e.getMessage());
             createUser(user,ch);
@@ -148,7 +158,7 @@ public class Neo4jWrapper {
 
     public int getUserError(String user,String ch) throws Neo4jException{
         try {
-            return fetchUserPropertiesFromDatabase(user,"mistakes");
+            return Integer.parseInt(fetchUserPropertiesFromDatabase(user,"mistakes"));
         }catch(DatabaseException e){
             Log.debug(e.getMessage());
             createUser(user,ch);
@@ -298,20 +308,20 @@ public class Neo4jWrapper {
 
     public void setUserErrorTimeStamp(String user,Date d){
         try {
-            updateUserPropertiesFromDatabase(user, "cheat_occurence:",(int)d.getTime());
+            updateUserPropertiesFromDatabase(user, "cheat_occurence",d.toString());
         }catch(DatabaseException e){
             Log.info(e.getLocalizedMessage());
         }
     }
 
-    public int getUserErrorTimeStamp(String user){
+    public String getUserErrorTimeStamp(String user){
         try {
-            return fetchUserPropertiesFromDatabase(user, "cheat_occurence:");
+            return ""+fetchUserPropertiesFromDatabase(user,"cheat_occurence");
         }catch(DatabaseException e){
             Log.info(e.getLocalizedMessage());
         }
 
-        return 0;
+        return null;
     }
 
 
@@ -562,8 +572,7 @@ public class Neo4jWrapper {
 
             try ( Transaction tx = session.beginTransaction() )
             {
-                tx.run("MATCH (n:Node)\n" +
-                        "WHERE n.deletable = true " +
+                tx.run("MATCH (n)\n" +
                         "DETACH DELETE n"
                 ); // , parameters( "name", nodeName )
 
@@ -610,8 +619,8 @@ public class Neo4jWrapper {
         return result ;
     }
 
-    private int fetchUserPropertiesFromDatabase(String user,String property) throws DatabaseException{
-        int result = 0 ;
+    private String fetchUserPropertiesFromDatabase(String user,String property) throws DatabaseException{
+        String result = "" ;
         StringBuilder builder = new StringBuilder();
 
         try ( Session session = driver.session() )
@@ -626,7 +635,7 @@ public class Neo4jWrapper {
                     Record record = sResult.next();
                     List<Value> val = record.values();
                     Value name = val.get(0).asNode().get(property);
-                    result = name.asInt();
+                    result = name.toString();
 
                     builder.append("Fetched "+property+": " + String.format("%s %s ", user,
                             result));
@@ -695,7 +704,7 @@ public class Neo4jWrapper {
     }
 
     private int updateUserPropertiesFromDatabase(String user,String property,int i) throws DatabaseException{
-        int oldPoints = fetchUserPropertiesFromDatabase(user,property) ;
+        String oldPoints = fetchUserPropertiesFromDatabase(user,property) ;
         int result =  i ;
         StringBuilder builder = new StringBuilder();
 
@@ -718,6 +727,56 @@ public class Neo4jWrapper {
         return result ;
     }
 
+    private int updateUserPropertiesFromDatabaseAdd(String user,String property,int i) throws DatabaseException{
+        //String oldValue = ""+fetchUserPropertiesFromDatabase(user,property) ;
+        String oldValue = "not_specified";
+        int result =  i ;
+        StringBuilder builder = new StringBuilder();
+
+        try ( Session session = driver.session() )
+        {
+            try ( Transaction tx = session.beginTransaction() )
+            {
+                tx.run("MATCH (n:"+userLabel+") WHERE n.name = {name} " +
+                                "SET n."+property+"= n."+property+"+{propertyvalue}" +
+                                "",
+                        parameters("name",user,"propertyvalue",result));
+                tx.success();
+
+
+                builder.append("Updated "+property+": " + String.format("%s -> %s %s", oldValue,
+                        result ,user));
+            }
+        }
+        Log.trace(builder.toString());
+        return result ;
+    }
+
+    private String updateUserPropertiesFromDatabase(String user,String property,String i) throws DatabaseException{
+        //String oldValue = ""+fetchUserPropertiesFromDatabase(user,property) ;
+        String oldValue = "not_specified";
+        String result =  i ;
+        StringBuilder builder = new StringBuilder();
+
+        try ( Session session = driver.session() )
+        {
+            try ( Transaction tx = session.beginTransaction() )
+            {
+                tx.run("MATCH (n:"+userLabel+") WHERE n.name = {name} " +
+                                "SET n."+property+"={propertyvalue}" +
+                                "",
+                        parameters("name",user,"propertyvalue",result));
+                tx.success();
+
+
+                builder.append("Updated "+property+": " + String.format("%s -> %s %s", oldValue,
+                        result ,user));
+            }
+        }
+        Log.trace(builder.toString());
+        return result ;
+    }
+
     private void generateUserNodeInDatabase(String user,String channel) throws DatabaseException{
         try ( Session session = driver.session() )
         {
@@ -727,8 +786,8 @@ public class Neo4jWrapper {
                     throw new DatabaseException("User "+ user + " is already in the database!");
                 }
                 tx.run( "CREATE (a: "+userLabel+" {name: {name}," +
-                                "points: 0,mistakes: 0 })",
-                        parameters( "name", user,"points",0 ) );
+                                "points: 0,mistakes: 0,cheat_occurence:{v1},votekicked: 0 })",
+                        parameters( "name", user,"points",0,"v1","none" ) );
                 tx.success();
             }
         }
