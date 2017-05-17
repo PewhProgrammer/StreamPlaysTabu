@@ -54,7 +54,7 @@ public class GameModel extends Observable{
 
     private HashMap<String, Set<String>> validationInfo;
 
-    private String guesserChannel = "";
+    private String giverChannel = "";
 
     private String category, giver = "", word, winner;
 
@@ -460,12 +460,12 @@ public class GameModel extends Observable{
         }
     }
 
-    public String getGuesserChannel() {
-        return guesserChannel;
+    public String getGiverChannel() {
+        return giverChannel;
     }
 
-    public void setGuesserChannel(String guesserChannel) {
-        this.guesserChannel = guesserChannel;
+    public void setGiverChannel(String giverChannel) {
+        this.giverChannel = giverChannel;
     }
 
     public int getScore(String user,String ch) {

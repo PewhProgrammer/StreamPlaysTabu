@@ -117,21 +117,16 @@ public class GameControl extends Observable{
                 mModel.setGiver(mModel.getWinner());
                 break;
             }
-            else
-                mModel.setGiver("");
 
             //if user is registered but no giver, then new giver
             if(mModel.getRegisteredPlayers().size() > 0){
-                if(mModel.getGiver().equals("")){
-                    chooseNewGiver(mModel.getRegisteredPlayers());
-                    break;
-                } //no previous giver
-                else
-                    chooseNewGiver(mModel.getRegisteredPlayers());
+                chooseNewGiver(mModel.getRegisteredPlayers());
+                break;
             }
 
             //random giver
-            chooseNewGiver(mModel.getBot().getUsers(mModel.getGuesserChannel()));
+            chooseNewGiver(mModel.getBot().getUsers(mModel.getGiverChannel()));
+            break;
         }
 
         mModel.setGameState(GameState.WaitingForGiver);
