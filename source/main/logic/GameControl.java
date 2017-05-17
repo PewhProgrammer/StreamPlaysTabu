@@ -54,7 +54,7 @@ public class GameControl extends Observable{
             if(Util.diffTimeStamp(d,new Date()) > 120){
                 mModel.setGiver("");
                 mModel.getBot().announceNoWinner();
-                mModel.setGameState(GameState.GameStarted.Registration);
+                mModel.setGameState(GameState.Lose);
                 break;
             }
             try {
@@ -63,6 +63,7 @@ public class GameControl extends Observable{
                 e.printStackTrace();
             }
         }
+        if(mModel.getGameState() == GameState.Kick) mModel.setGiver("");
         isStarted = false;
         waitingForPlayers();
 
@@ -100,17 +101,6 @@ public class GameControl extends Observable{
         Log.info("Control is waiting for Players");
         while(mModel.getGameState() == GameState.Registration){
 
-            //if user is registered but no giver, then new giver
-            if(mModel.getRegisteredPlayers().size() > 0){
-
-                if(mModel.getGiver().equals("")){
-                    chooseNewGiver(mModel.getRegisteredPlayers());
-                    break;
-                } //no previous giver
-                else
-                    chooseNewGiver(mModel.getRegisteredPlayers());
-            }
-
             mModel.setTimeStamp();
             try {
                 //change this to 30 sec.
@@ -123,15 +113,25 @@ public class GameControl extends Observable{
             }
 
 
-            if(mModel.getRegisteredPlayers().contains(
-                    mModel.getWinner()
-            )){
-                // then send link
+            if(mModel.getRegisteredPlayers().contains(mModel.getWinner())){
                 mModel.setGiver(mModel.getWinner());
                 break;
-                //mModel.getBot().whisperLink("pewhTV","<Link>");
             }
-            else mModel.setGiver(""); //s.t. there is no current giver and we have to choose new one
+            else
+                mModel.setGiver("");
+
+            //if user is registered but no giver, then new giver
+            if(mModel.getRegisteredPlayers().size() > 0){
+                if(mModel.getGiver().equals("")){
+                    chooseNewGiver(mModel.getRegisteredPlayers());
+                    break;
+                } //no previous giver
+                else
+                    chooseNewGiver(mModel.getRegisteredPlayers());
+            }
+
+            //random giver
+            chooseNewGiver(mModel.getBot().getUsers(mModel.getGuesserChannel()));
         }
 
         mModel.setGameState(GameState.WaitingForGiver);
@@ -146,6 +146,7 @@ public class GameControl extends Observable{
                 mModel.getBot().announceGiverNotAccepted(mModel.getGiver());
                 mModel.setGiver("");
                 mModel.setGameState(GameState.GameStarted.Registration);
+                break;
             }
             try {
                 Thread.sleep(20000);

@@ -6,6 +6,7 @@ import org.neo4j.driver.v1.exceptions.*;
 import java.io.File;
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static org.neo4j.driver.v1.Values.parameters;
