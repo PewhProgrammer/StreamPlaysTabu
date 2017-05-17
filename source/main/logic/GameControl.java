@@ -11,6 +11,7 @@ import model.Observable;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import common.Util;
 
@@ -160,6 +161,8 @@ public class GameControl extends Observable{
      * handles new giver
      */
     private void chooseNewGiver(List<String> users){
+        users = users.stream().filter(
+               user -> !user.equals("streamplaystaboo")).collect(Collectors.toList());
         Log.trace("New giver has been chosen from registration pool");
         int index = rand.nextInt(users.size());
         String newGiver =  users.get(index);

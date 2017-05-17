@@ -289,9 +289,26 @@ public class Neo4jWrapper {
      * @param taboo source
      */
     public void validateExplainAndTabooForGiver(String explain,String taboo,int i){
-
         updateExplainTabooRelationship(explain,taboo,i);
         return;
+    }
+
+    public void setUserErrorTimeStamp(String user,Date d){
+        try {
+            updateUserPropertiesFromDatabase(user, "cheat_occurence:",(int)d.getTime());
+        }catch(DatabaseException e){
+            Log.info(e.getLocalizedMessage());
+        }
+    }
+
+    public int getUserErrorTimeStamp(String user){
+        try {
+            return fetchUserPropertiesFromDatabase(user, "cheat_occurence:");
+        }catch(DatabaseException e){
+            Log.info(e.getLocalizedMessage());
+        }
+
+        return 0;
     }
 
 
