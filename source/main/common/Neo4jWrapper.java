@@ -5,6 +5,7 @@ import org.neo4j.driver.v1.exceptions.*;
 
 import java.io.File;
 import java.lang.reflect.Array;
+import java.time.Instant;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -307,16 +308,21 @@ public class Neo4jWrapper {
     }
 
     public void setUserErrorTimeStamp(String user,Date d){
+        StringBuilder builder = new StringBuilder();
+        Instant k = d.toInstant();
+        builder.append(d.getDate()).append(".").append(d.getHours()).append(".").append(d.getMinutes());
         try {
-            updateUserPropertiesFromDatabase(user, "cheat_occurence",d.toString());
+            updateUserPropertiesFromDatabase(user, "cheat_occurence",builder.toString());
         }catch(DatabaseException e){
             Log.info(e.getLocalizedMessage());
         }
     }
 
-    public String getUserErrorTimeStamp(String user){
+    public String[] getUserErrorTimeStamp(String user){
         try {
-            return ""+fetchUserPropertiesFromDatabase(user,"cheat_occurence");
+            String callback = fetchUserPropertiesFromDatabase(user,"cheat_occurence");
+            String[] result = callback.split("\\.");
+            return result;
         }catch(DatabaseException e){
             Log.info(e.getLocalizedMessage());
         }

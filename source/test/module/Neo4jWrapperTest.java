@@ -153,6 +153,7 @@ public class Neo4jWrapperTest extends TestCase {
 
     public void testVoteKicked(){
         String user ="Manuel";
+        database.setUserErrorTimeStamp("Manuel",new Date());
         database.createUser(user,channelName);
         database.updateUserVoteKicked("Manuel",channelName);
 
@@ -295,9 +296,9 @@ public class Neo4jWrapperTest extends TestCase {
     public void testGetUserTimeoutStamp(){
         database.createUser("John","streamplaystaboo");
         database.setUserErrorTimeStamp("John",new Date());
-        String result = database.getUserErrorTimeStamp("John");
+        String[] result = database.getUserErrorTimeStamp("John");
 
-        Log.info(result);
+        Log.info(result.toString());
     }
 
     public void testSetUpNodes(){
