@@ -201,6 +201,7 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public List<String> getUsers(String user) {
+        user = channel;
 
         List<String> channels = new ArrayList<>();
 

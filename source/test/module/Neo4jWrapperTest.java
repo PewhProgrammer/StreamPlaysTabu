@@ -283,6 +283,14 @@ public class Neo4jWrapperTest extends TestCase {
         database.validateExplainAndTaboo(explain,taboo,2);
     }
 
+    public void testGetUserTimeoutStamp(){
+        database.createUser("John","Cena");
+        database.setUserErrorTimeStamp("john",new Date());
+        database.getUserErrorTimeStamp("john");
+
+
+    }
+
     public void testSetUpNodes(){
 
         try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
