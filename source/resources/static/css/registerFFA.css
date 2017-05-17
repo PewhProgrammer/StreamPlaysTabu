@@ -1,12 +1,3 @@
-body {
-    height: 100%;
-    margin: 5px 10px 10px;
-    color: #fff;
-    background: radial-gradient(ellipse farthest-corner at center top, #f39264 0%, #f2606f 100%);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-}
-
 .background {
     background: linear-gradient(to bottom, #3a404d, #181c26);
     border-radius: 10px;

@@ -8,6 +8,14 @@ Body
     box-sizing: border-box;
 }
 
+body {
+    height: 100%;
+    margin: 5px 10px 10px;
+    color: #fff;
+    background: radial-gradient(ellipse farthest-corner at center top, #f39264 0%, #f2606f 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
 
 /*--------------------
 Leaderboard
@@ -15,11 +23,11 @@ Leaderboard
 
 .leaderboard {
     position: absolute;
-    top: 40%;
+    top: 42.5%;
     left: 30%;
     transform: translate(-50%, -50%);
     width: 50%;
-    height: 55%;
+    height: 45%;
     background: linear-gradient(to bottom, #3a404d, #181c26);
     border-radius: 10px;
     box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
