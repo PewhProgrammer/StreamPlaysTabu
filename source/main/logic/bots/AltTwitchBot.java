@@ -31,7 +31,7 @@ public class AltTwitchBot extends Bot {
 
     private class Pirc extends PircBot {
 
-
+        List<String> viewers = new ArrayList<>();
         GameModel model;
 
         public Pirc(String user, GameModel gm) {
@@ -46,21 +46,20 @@ public class AltTwitchBot extends Bot {
         public void onMessage(String channel, String sender,
                               String login, String hostname, String message) {
 
+            if (sender.equals("streamplaystaboo") | sender.equals(channel)){
+                if (message.startsWith("!shutdown")) {
+                    Log.debug("shutdown command received!");
+                    sendMessage(channel, String.format("@" + sender + ": BYE BYE"));
+                    partChannel(sender);
+                    disconnect();
+                    Thread.interrupted();
 
+                }
+            }
 
             Command cmd = parseLine(message, sender);
             if (cmd != null) {
                 model.pushCommand(cmd);
-
-                if (sender.equals("streamplaystaboo") | sender.equals(channel)){
-                    if (message.startsWith("!shutdown")) {
-                        Log.debug("shutdown command received!");
-                        sendMessage(channel, String.format("@" + sender + ": BYE BYE"));
-                        partChannel(sender);
-                        Thread.interrupted();
-
-                    }
-                }
             }
         }
 
@@ -95,6 +94,28 @@ public class AltTwitchBot extends Bot {
                                  String hostname, String target, String action){
             Log.info(action);
         }
+
+        @Override
+        protected void onUserList(String channel, User[] users){
+
+            List<String> viewers = new ArrayList<>();
+
+            for (int i = 0; i < users.length; i++){
+                viewers.add(users[i].getNick());
+                System.out.println("FOUND SOMEONE: "+users[i].getNick());
+            }
+        }
+
+        protected void onJoin(String channel, String sender, String login, String hostname) {
+            viewers.add(sender);
+            System.out.println("HERE COMES DAT "+sender);
+        }
+
+        protected void onPart(String channel, String sender, String login, String hostname) {
+            viewers.remove(sender);
+            System.out.println("OH SHIT WADDUP "+sender);
+        }
+
     }
 
     @Override
@@ -214,7 +235,6 @@ public class AltTwitchBot extends Bot {
 
         return channels;
     }
-
 
     public Command parseLine(String message, String sender) {
         this.sender = sender;
