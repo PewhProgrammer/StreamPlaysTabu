@@ -12,7 +12,7 @@ var timer = setInterval(function() {
     document.getElementById("progressbar").style.width = (timeLeft / 90) * 100 + "%";
 
     if (timeLeft == 0) {
-        document.getElementById("progressbar").innerHTML = "Time's up!";
+        document.getElementById("progressbar").innerHTML = "Time's-Up!";
         document.getElementById("progressbar").style.color = "#111111";
         clearInterval(timer);
     }
@@ -22,7 +22,7 @@ function updateGiver(giver) {
     var json = JSON.parse(giver.body);
 
     document.getElementById("giverInfo").innerHTML = json.name + "<br>" + json.points + " Pts."
-    document.getElementById("level").innerHTML = "Level: " + json.level;
+    document.getElementById("level").innerHTML = json.level;
 }
 
 

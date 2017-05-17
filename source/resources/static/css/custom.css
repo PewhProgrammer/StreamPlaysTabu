@@ -21,18 +21,21 @@ body {
     padding-bottom:0 !important;
     height: 25%;
 }
-.navbar {min-height:0 !important;}
+.navbar {
+    min-height:0 !important;
+    height: 100%;
+}
 /*--------------------
 Leaderboard
 --------------------*/
 
 .leaderboard {
     position: absolute;
-    top: 42.5%;
+    top: 43.5%;
     left: 30%;
     transform: translate(-50%, -50%);
     width: 50%;
-    height: 45%;
+    height: 57.5%;
     background: linear-gradient(to bottom, #3a404d, #181c26);
     border-radius: 10px;
     box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
