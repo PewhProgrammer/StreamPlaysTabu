@@ -189,6 +189,9 @@ public class Neo4jWrapper {
         }catch(DatabaseException e){
             Log.trace(e.getMessage());
         }
+
+        createStreamNode(ch);
+        createRelationshipCase(str,ch,"plays in");
     }
 
     public void createStreamNode(String ch){
@@ -473,9 +476,35 @@ public class Neo4jWrapper {
 
     }
 
-    public boolean createProperty(){
-        //Not needed up till now
-        return false;
+    /**
+     * Creates a connection between two nodes while also incrementing the rating by 1
+     * DONT USE THIS BESIDE IN TESTS
+     * @param node1
+     * @param node2
+     * @param relationship
+     * @return
+     */
+    private boolean createRelationshipCase(String node1, String node2, String relationship){
+
+
+        try ( Session session = driver.session() )
+        {
+
+            try ( Transaction tx = session.beginTransaction() )
+            {
+
+                tx.run("MATCH (ee) WHERE ee.name =  \"" + node1 + "\" " +
+                            "MATCH (js) WHERE js.name = \"" + node2 + "\" " +
+                            "CREATE UNIQUE (ee)-[rel:`" + relationship + "` {"+
+                            "deletable: " + isDeletable +"} " +
+                            "]->(js)");
+                tx.success();
+                Log.trace("Created Relationship: "+node1 + " -> " + node2);
+                return true;
+            }
+
+        }
+
     }
 
     /**
@@ -616,7 +645,7 @@ public class Neo4jWrapper {
         {
             try ( Transaction tx = session.beginTransaction() )
             {
-                StatementResult sResult = tx.run("MATCH (n:"+userLabel+")-[rel]->(t:Streamer)" +
+                StatementResult sResult = tx.run("MATCH (n:"+userLabel+")-[rel]->(t:streamNode)" +
                         "WHERE t.name = {channel}" +
                                 "RETURN n " +
                                 "ORDER BY n.points DESC " +
@@ -627,13 +656,13 @@ public class Neo4jWrapper {
                     Value name = val.get(0).asNode().get("points");
                     int points = name.asInt();
                     name = val.get(0).asNode().get("name");
-                    String user = name.toString();
+                    String user = name.toString().replaceAll("\"", "");
                     ranking.put(user,points);
 
                 }
             }
         }
-        Log.trace(ranking.toString());
+        Log.trace("Ranking: "+ ranking.toString());
         return ranking ;
     }
 

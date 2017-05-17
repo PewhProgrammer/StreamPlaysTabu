@@ -135,7 +135,9 @@ public class Neo4jWrapperTest extends TestCase {
 
     public void testGetUserRankings(){
 
+        database.createUser("John","streamplaystaboo");
         LinkedHashMap<String,Integer> list = database.getHighScoreList(3,channelName);
+        Log.info(list.toString());
 
     }
 
@@ -284,11 +286,9 @@ public class Neo4jWrapperTest extends TestCase {
     }
 
     public void testGetUserTimeoutStamp(){
-        database.createUser("John","Cena");
-        database.setUserErrorTimeStamp("john",new Date());
-        database.getUserErrorTimeStamp("john");
-
-
+        database.createUser("John","streamplaystaboo");
+        //database.setUserErrorTimeStamp("John",new Date());
+        //database.getUserErrorTimeStamp("John");
     }
 
     public void testSetUpNodes(){

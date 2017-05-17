@@ -126,8 +126,12 @@ public class GameControl extends Observable{
             }
 
             //random giver
-            chooseNewGiver(mModel.getBot().getUsers(mModel.getGiverChannel()));
-            break;
+            List<String> usersInChannel = mModel.getBot().getUsers(mModel.getGiverChannel()) ;
+            if(usersInChannel.size() > 1) {
+                chooseNewGiver(mModel.getBot().getUsers(mModel.getGiverChannel()));
+                break;
+            }
+
         }
 
         mModel.setGameState(GameState.WaitingForGiver);
