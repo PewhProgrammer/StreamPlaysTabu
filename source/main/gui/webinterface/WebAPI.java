@@ -61,7 +61,7 @@ public class WebAPI implements IObserver {
     @MessageMapping("/reqGiverInfo")
     public void requestGiverInfo() {
         String giver = GameControl.mModel.getGiver();
-        int score = GameControl.mModel.getNeo4jWrapper().getUserPoints(giver,GameControl.mModel.getGuesserChannel());
+        int score = GameControl.mModel.getNeo4jWrapper().getUserPoints(giver,GameControl.mModel.getGiverChannel());
         int lvl = GameControl.mModel.getLevel(score);
         send("/giver", new GiverContainer(giver, score, lvl));
     }
