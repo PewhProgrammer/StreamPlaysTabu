@@ -16,7 +16,12 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
-
+.navbar-nav > li > a, .navbar-brand {
+    padding-top:5% !important;
+    padding-bottom:0 !important;
+    height: 25%;
+}
+.navbar {min-height:0 !important;}
 /*--------------------
 Leaderboard
 --------------------*/
