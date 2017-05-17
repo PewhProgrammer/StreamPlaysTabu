@@ -35,7 +35,7 @@ public class BeamBot extends Bot {
 
     private final BeamAPI api;
     private final BeamUser beamBot;
-    private final BeamChannel beamChannel;
+    private BeamChannel beamChannel;
     private final BeamChat beamChatBot;
     private final BeamUser channelOwner;
     private final BeamChatConnectable chatConnectable;
@@ -208,6 +208,30 @@ public class BeamBot extends Bot {
         return id;
     }
 
+    public int getCurrentViewers(String user){
+
+        int id = 0;
+
+        try {
+           id = getUserId(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        BeamChannel bc;
+
+        try {
+            bc = api.use(ChannelsService.class).findOne(id).get();
+            return bc.viewersCurrent;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
     @Override
     public void connectToChatroom(String user) {
 
@@ -241,7 +265,7 @@ public class BeamBot extends Bot {
         whisper(user, link + " ; " + pw);
     }
 
-    private void whisper(String receiver, String content) {
+    public void whisper(String receiver, String content) {
 
         BeamUser rec;
 
