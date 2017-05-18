@@ -19,43 +19,67 @@
         <label for="pwInput" class="sr-only">Channelname</label>
         <input type="text" id="pwInput" class="form-control" placeholder="password..." required="required"/>
         <br/>
-        <button class="btn btn-lg btn-primary btn-block btn-danger" type="submit" id="pw">Start round!</button>
+        <button class="btn btn-lg btn-primary btn-block btn-danger" onclick="showCategories()" type="submit" id="pw">Start round!</button>
     </form>
 </div>
 <div id="categories">
-    <button class="btn btn-lg btn-primary btn-block btn-primary" type="submit" id="category1">category1</button>
-    <button class="btn btn-lg btn-primary btn-block btn-success" type="submit" id="category2">category2</button>
-    <button class="btn btn-lg btn-primary btn-block btn-info" type="submit" id="category3">category3</button>
-    <button class="btn btn-lg btn-primary btn-block btn-warning" type="submit" id="category4">category4</button>
-    <button class="btn btn-lg btn-primary btn-block btn-danger" type="submit" id="category5">category5</button>
+    <h1 style="text-align: center; position:absolute; width:100%; top:8%; font-size: 8vmin;">Choose a category!</h1>
+    <button class="btn btn-lg btn-primary btn-block btn-primary" type="submit" id="category1" onclick="chosenCat1()">category1</button>
+    <button class="btn btn-lg btn-primary btn-block btn-success" type="submit" id="category2" onclick="chosenCat2()">category2</button>
+    <button class="btn btn-lg btn-primary btn-block btn-info" type="submit" id="category3" onclick="chosenCat3()">category3</button>
+    <button class="btn btn-lg btn-primary btn-block btn-warning" type="submit" id="category4" onclick="chosenCat4()">category4</button>
+    <button class="btn btn-lg btn-primary btn-block btn-danger" type="submit" id="category5" onclick="chosenCat5()">category5</button>
 </div>
-<div style="position:absolute; z-index: -1;">
-    <form>
-        <!-- Prevoted Categories -->
-        <div id="prevoting">
-            <input type="radio" id="cat1" name="PrevotedCategories" value="Category 1"/>
-            <label id="cat1label" for="cat1"> Category 1</label><br/>
-            <input type="radio" id="cat2" name="PrevotedCategories" value="Category 2"/>
-            <label id="cat2label" for="cat2"> Category 2</label><br/>
-            <input type="radio" id="cat3" name="PrevotedCategories" value="Category 3"/>
-            <label id="cat3label" for="cat3"> Category 3</label><br/>
-            <input type="radio" id="cat4" name="PrevotedCategories" value="Category 4"/>
-            <label id="cat4label" for="cat4"> Category 4</label><br/>
-            <input type="radio" id="cat5" name="PrevotedCategories" value="Category 5"/>
-            <label id="cat5label" for="cat5"> Category 5</label><br/>
-            <br/>
-            <button type="submit" id="category">Choose category!</button><br/>
-            <label id="categoryLabel">No category chosen yet.</label>
+<div id="gameDiv">
+    <nav class="navbar navbar-inverse" style="background:linear-gradient(to bottom, #3a404d, #181c26); border-radius: 10px;box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);">
+        <div class="navbar-header">
+            <p class="navbar-brand" style="font-size: 4vh">StreamPlaysTaboo</p>
         </div>
+        <p class="navbar-text" style="font-size: 3vh">Giver Interface</p>
+        <div class="nav navbar-text progress pull-right" style="width: 25%; height:2vh; margin-top:1.25%">
+            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" id="progressbar" style="width:100%; font-size: 2vh">90s</div>
+        </div>
+    </nav>
 
-        <br/> <br/>
-        <label id="explainWord">No explain word yet.</label> <br/>
-        <label id="tabooWords">No taboo words given.</label><br/>
-        <lable id="giverInfo">No giver yet.</lable><br/>
+    <div id="templatesDiv" class="background"></div>
 
-        <!-- Skip -->
-        <button type="submit" id="skip">Skip!</button>
-        <br/> <br/>
+    <div id="tabooCard" class="background">
+        <p style="text-align: center; font-size: 3vmin; margin-top: 2%;">Explain this word. Don't use its taboowords!</p>
+        <div class="panel panel-primary" style="position: absolute; width: 50%; top: 25%; left: 25%; border-radius: 10px;">
+            <div id="explainWord" class="panel-heading" style="text-align: center; font-size: 4vmin;">Heading</div>
+            <div id="tabooWords" class="panel-body" style="color:#000000; font-size: 3vmin"><ul><li>bla</li><li>bla</li><li>bla</li><li>bla</li><li>bla</li></ul></div>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block btn-warning" type="submit" id="skip">Skip word</button>
+    </div>
+
+    <div id="validateDiv" class="background">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#chat">Chat</a></li>
+            <li><a data-toggle="tab" href="#validate">Gain extra time</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="chat" class="tab-pane fade in active">
+                <h3>HOME</h3>
+                <p>Some content.</p>
+            </div>
+            <div id="validate" class="tab-pane fade">
+                <h3>Menu 1</h3>
+                <p>Some content in menu 1.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="qAndADiv" class="background"></div>
+
+    <div id="guessesDiv" class="background">
+        <p>Most recent guesses:</p>
+        <p id="firstGuess" style="left:1%">Mario<br><br>Peach1</p>
+        <p id="secondGuess" style="left:26%;">Mario<br><br>Peach2</p>
+        <p id="thirdGuess" style="left:51%;">Mario<br><br>Peach3</p>
+        <p id="fourthGuess" style="left:76%;">Mario<br><br>Peach4</p>
+    </div>
+
+    <form>
 
         <!-- Explanation -->
         <input type="text" id="explanationText" placeholder="Enter an explanation ..."/>
@@ -79,9 +103,7 @@
         <label id="answerLabel">No answer given yet.</label>
         <br/> <br/>
 
-        <!-- Chat -->
-        <label id="chatlabel">Streamchat:</label>
-        <textarea id="chat"></textarea>
+
         <!-- Validation -->
         <!-- UNDER CONSTRUCTION -->
         <p><b>UNDER CONSTRUCTION!</b></p>
@@ -99,10 +121,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
 <script src="socket.io/socket.io.js"></script>
-<script src="../static/js/client.js"></script>
-<script src="../static/js/index.js"></script>
-<script src="../static/js/interface.js"></script>
-<script src="../static/js/bootstrap.js"></script>
+<script src="js/client.js"></script>
+<script src="js/index.js"></script>
+<script src="js/interface.js"></script>
+<script src="js/bootstrap.js"></script>
 
 </body>
 </html>

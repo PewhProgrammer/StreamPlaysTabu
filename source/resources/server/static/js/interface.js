@@ -20,10 +20,7 @@ function showPrevotedCategories(prevotedCategories) {
     document.getElementById("category4").innerHTML = json.cat4;
     document.getElementById("category5").innerHTML = json.cat5;
 
-    document.getElementById("signin").style.visibility = "hidden";
-    document.getElementById("signin").style.zIndex = "1";
-    document.getElementById("categories").style.visibility = "visible";
-    document.getElementById("categories").style.zIndex = "2";
+    showCategories();
 }
 
 function sendCategory(chosenCategory) {
@@ -46,8 +43,35 @@ function showGiverInfo(giverInfo) {
 function showGuesses(guesses) {
     var json = JSON.parse(guesses);
     console.log('>> Received guesses: ' + guesses);
-    document.getElementById("guesses").innerHTML = json.guess1 + ":" + json.nr1 + "<br>"+ json.guess2 + ":" + json.nr2 + "<br>"+ json.guess3 + ":" + json.nr3 + "<br>"
-        + json.guess4 + ":" + json.nr4 + "<br>"+ json.guess5 + ":" + json.nr5 + "<br>"+ json.guess6 + ":" + json.nr6 + "<br>"+ json.guess7 + ":" + json.nr7 + "<br>"+ json.guess8 + ":" + json.nr8 + "<br>";
+    
+    if(json.guess1 != "") {
+        if(json.guess5 != "") {
+            document.getElementById("firstGuess").innerHTML = json.guess1 + "<br><br>" + json.guess5;
+        } else {
+            document.getElementById("firstGuess").innerHTML = json.guess1;
+        }
+    }
+    if(json.guess2 != "") {
+        if(json.guess6 != "") {
+            document.getElementById("secondGuess").innerHTML = json.guess2 + "<br><br>" + json.guess6;
+        } else {
+            document.getElementById("secondGuess").innerHTML = json.guess2;
+        }
+    }
+    if(json.guess3 != "") {
+        if(json.guess7 != "") {
+            document.getElementById("thirdGuess").innerHTML = json.guess3 + "<br><br>" + json.guess7;
+        } else {
+            document.getElementById("thirdGuess").innerHTML = json.guess3;
+        }
+    }
+    if(json.guess4 != "") {
+        if(json.guess8 != "") {
+            document.getElementById("fourthGuess").innerHTML = json.guess4 + "<br><br>" + json.guess8;
+        } else {
+            document.getElementById("fourthGuess").innerHTML = json.guess4;
+        }
+    }
 }
 
 function showExplainWord(explainWord) {
@@ -59,7 +83,23 @@ function showExplainWord(explainWord) {
 function showTabooWords(tabooWords) {
     var json =  JSON.parse(tabooWords);
     console.log('>> Received taboo words: ' + tabooWords);
-    document.getElementById("tabooWords").innerHTML = 'TabooWords: ' + json.word1 + ", " + json.word2 + ", " + json.word3 + ", " + json.word4 + ", " + json.word5;
+    var taboo = "";
+    if(json.word1 == "") {
+        taboo = "<ul><li>json.word1</li>";
+    }
+    if(json.word2 == "") {
+        taboo = "<li>json.word2</li>";
+    }
+    if(json.word3 == "") {
+        taboo = "<li>json.word3</li>";
+    }
+    if(json.word4 == "") {
+        taboo = "<li>json.word4</li>";
+    }
+    if(json.word5 == "") {
+        taboo = "<li>json.word5</li></ul>";
+    }
+    document.getElementById("tabooWords").innerHTML = taboo;
 }
 
 function sendExplanation(explanation) {
