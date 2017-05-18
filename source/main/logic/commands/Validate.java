@@ -13,22 +13,19 @@ import java.util.Set;
  */
 public class Validate extends Command {
 
-    private int ID, score;
-    private String reference;
-    private Set<String> tabooWords;
+    private final int ID, score;
+    private final String reference;
+    private final String sender;
+    private final Set<String> tabooWords;
 
-    public Validate(GameModel gm, String ch, int ID, int valScore) {
+    public Validate(GameModel gm, String ch, int ID, int valScore, String sender) {
         super(gm, ch);
         this.ID = ID;
         this.score = valScore;
+        this.sender = sender;
 
-        Map m = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidation(null, 5);
-        Iterator<Map.Entry<String, Set<String>>> it = m.entrySet().iterator();
-        Map.Entry<String, Set<String>> mE = it.next();
-
-        reference = mE.getKey();
-        tabooWords = mE.getValue();
-
+        reference = gameModel.getExplainWord();
+        tabooWords = gameModel.getTabooWords();
     }
 
     @Override
@@ -44,6 +41,11 @@ public class Validate extends Command {
 
     @Override
     public boolean validate() {
+
+        if (!gameModel.contribute(sender, thisChannel)) {
+            return false;
+        }
+
         if (ID < 1 || ID > tabooWords.size()) {
             return false;
         }

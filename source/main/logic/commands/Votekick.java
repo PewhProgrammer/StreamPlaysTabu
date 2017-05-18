@@ -34,6 +34,9 @@ public class Votekick extends Command {
 
     @Override
     public boolean validate() {
+        if (!gameModel.contribute(votingUser, thisChannel)) {
+            return false;
+        }
         return !gameModel.getVotekick().contains(votingUser);
     }
 

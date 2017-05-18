@@ -27,14 +27,35 @@ function onGiverJoined() {
     requestPrevotedCategories(createPrevotedCategoriesRequest());
 }
 
-function onCategoryChosen() {
+function chosenCat1() {
+    onCategoryChosen(getElemeteById("category1").innerHTML);
+}
+
+function chosenCat2() {
+    onCategoryChosen(getElemeteById("category2").innerHTML);
+}
+
+function chosenCat3() {
+    onCategoryChosen(getElemeteById("category3").innerHTML);
+}
+
+function chosenCat4() {
+    onCategoryChosen(getElemeteById("category4").innerHTML);
+}
+
+function chosenCat5() {
+    onCategoryChosen(getElemeteById("category5").innerHTML);
+}
+
+function onCategoryChosen(category) {
     sendCategory(createChosenCategoryEvent());
     requestGiverInfo(createGiverInfoRequest());
     requestValidation(createValidationRequest());
+    sendExplanation(createExplanationEvent(category));
 }
 
 function onExplanation() {
-    sendExplanation(createExplanationEvent());
+    sendExplanation(createExplanationEvent($("#explanationText").val()));
 }
 
 function onAnswer() {
@@ -78,12 +99,11 @@ function createChosenCategoryEvent() {
     });
 }
 
-function createExplanationEvent() {
-    var explanation = $("#explanationText").val();
-    document.getElementById("explanationLabel").innerHTML = "Last Explanation: " + explanation;
+function createExplanationEvent(exp) {
+    document.getElementById("explanationLabel").innerHTML = "Last Explanation: " + exp;
     return JSON.stringify({
         'giver' : giver,
-        'explanation' : explanation,
+        'explanation' : exp,
         'password' : pw
     });
 }
