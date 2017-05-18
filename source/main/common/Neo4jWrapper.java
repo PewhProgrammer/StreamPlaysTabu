@@ -310,7 +310,8 @@ public class Neo4jWrapper {
     public void setUserErrorTimeStamp(String user,Date d){
         StringBuilder builder = new StringBuilder();
         Instant k = d.toInstant();
-        builder.append(d.getDate()).append(".").append(d.getHours()).append(".").append(d.getMinutes());
+        String[] parts = k.toString().split("\\-");
+        builder.append(parts[0]).append(".").append(d.getDate()).append(".").append(d.getHours()).append(".").append(d.getMinutes());
         try {
             updateUserPropertiesFromDatabase(user, "cheat_occurence",builder.toString());
         }catch(DatabaseException e){

@@ -20,10 +20,7 @@ public class AltTwitchBot extends Bot {
 
     public AltTwitchBot(GameModel gm, String channel) {
         super(gm, channel);
-
         connectToChatroom(channel);
-
-
     }
 
     TwitchAPIRequester requester;
@@ -222,7 +219,7 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public List<String> getUsers(String user) {
-        user = channel;
+        user = "imaqtpie";
 
         List<String> channels = new ArrayList<>();
 

@@ -26,10 +26,10 @@ public class ABotTest extends TestCase {
     }
 
     public void testTwitchBot(){
-        AltTwitchBot bot = null;
-        bot = new AltTwitchBot(null, "MaschineTV");
+        String channelToConnect = "imaqtpie";
+        AltTwitchBot bot = new AltTwitchBot(null, channelToConnect);
 
-        List<String> test = bot.getUsers("MaschineTV");
+        List<String> test = bot.getUsers(channelToConnect);
 
         System.out.println("Found " + test.size() + " users.");
 
