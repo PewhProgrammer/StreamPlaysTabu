@@ -102,7 +102,6 @@ function createAnswerEvent() {
 
 function createPasswordEvent(){
     pw = $("#pwInput").val();
-    document.getElementById("pwLabel").innerHTML = "Sent pw: " + pw;
     return JSON.stringify({
         'password': pw
     });

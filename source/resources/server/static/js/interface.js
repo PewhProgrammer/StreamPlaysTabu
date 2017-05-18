@@ -14,16 +14,16 @@ function showPrevotedCategories(prevotedCategories) {
     console.log('>> Received prevoting categories: ' + prevotedCategories);
     var json = JSON.parse(prevotedCategories);
 
-    document.getElementById("cat1label").innerHTML = json.cat1;
-    document.getElementById("cat2").value = json.cat2;
-    document.getElementById("cat2label").innerHTML = json.cat2;
-    document.getElementById("cat3").value = json.cat3;
-    document.getElementById("cat3label").innerHTML = json.cat3;
-    document.getElementById("cat4").value = json.cat4;
-    document.getElementById("cat4label").innerHTML = json.cat4;
-    document.getElementById("cat5").value = json.cat5;
-    document.getElementById("cat5label").innerHTML = json.cat5;
+    document.getElementById("category1").innerHTML = json.cat1;
+    document.getElementById("category2").innerHTML = json.cat2;
+    document.getElementById("category3").innerHTML = json.cat3;
+    document.getElementById("category4").innerHTML = json.cat4;
+    document.getElementById("category5").innerHTML = json.cat5;
 
+    document.getElementById("signin").style.visibility = "hidden";
+    document.getElementById("signin").style.zIndex = "1";
+    document.getElementById("categories").style.visibility = "visible";
+    document.getElementById("categories").style.zIndex = "2";
 }
 
 function sendCategory(chosenCategory) {
