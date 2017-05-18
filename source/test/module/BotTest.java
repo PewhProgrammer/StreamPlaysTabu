@@ -36,7 +36,7 @@ public class BotTest extends TestCase{
 
     public void testAskCommand() {
         String content = "!ask Is it blue?";
-        Ask a = new Ask(null, channel, "Is it blue?");
+        Ask a = new Ask(null, channel, "Is it blue?", "Test");
         parseInput(content, a);
     }
 
@@ -84,21 +84,21 @@ public class BotTest extends TestCase{
 
     public void testValidateCommand() {
         String content = "!validate 1 3";
-        Validate v = new Validate(null, channel, 1, 3);
+        Validate v = new Validate(null, channel, 1, 3,"Test");
         parseInput(content, v);
     }
 
     public void testTabooCommand() {
         String suggestion = "Hufeisen";
         String content = "!taboo Hufeisen";
-        Taboo t = new Taboo(null, channel, suggestion);
+        Taboo t = new Taboo(null, channel, suggestion,"Test");
         parseInput(content, t);
     }
 
     public void testVoteCommand() {
         String content = "!vote 3 4 5 6";
         int[] id = {3, 4, 5, 6};
-        Prevote p = new Prevote(null, channel, id);
+        Prevote p = new Prevote(null, channel, id, "Test");
         parseInput(content, p);
     }
 

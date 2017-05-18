@@ -136,7 +136,7 @@ public class BeamBot extends Bot {
         if (message[0].equals("!ask")) {
                 /*SAVE ASK SEND GUI*/
                 String[] question = line.split("!ask ");
-            return new Ask(model, channel, question[1]);
+            return new Ask(model, channel, question[1], sender);
         }
 
             /* !rules */
@@ -169,13 +169,13 @@ public class BeamBot extends Bot {
                 /* GET ID AND SCORE */
             int ID = Integer.parseInt(message[1]);
             int valScore = Integer.parseInt(message[2]);
-            return new Validate(model, channel, ID, valScore);
+            return new Validate(model, channel, ID, valScore, sender);
         }
 
             /* !taboo */
         if (message[0].equals("!taboo")) {
                 /* SAVE TABOO WORD */
-            return new Taboo(model, channel, message[1]);
+            return new Taboo(model, channel, message[1], sender);
         }
 
             /* !vote */
@@ -186,9 +186,9 @@ public class BeamBot extends Bot {
                 int vote = Integer.parseInt(message[i]);
                 preVotes[i-1] = vote;
             }
-            return new Prevote(model, channel,preVotes);
+            return new Prevote(model, channel,preVotes, sender);
         }
-        return null;
+        return new ChatMessage(model, channel, sender, line);
 
     }
 
@@ -206,6 +206,23 @@ public class BeamBot extends Bot {
         rd.close();
 
         return id;
+    }
+
+    public List<String> getViewerList(String user) throws MalformedURLException,IOException{
+
+        int id = 0;
+
+        try {
+            id = getUserId(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        HttpURLConnection connection;
+        connection = (HttpURLConnection) new URL ("https://beam.pro/api/v1/chats/" + id + "/users" +"?fields=id").openConnection();
+        connection.setRequestMethod("GET");
+        return null;
     }
 
     public int getCurrentViewers(String user){

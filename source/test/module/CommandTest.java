@@ -135,7 +135,7 @@ public class CommandTest extends TestCase{
 
     public void testTaboo(){
         String giver = "John";
-        Command tabooCommand = new Taboo(gModel,"", "");
+        Command tabooCommand = new Taboo(gModel,"", "", "Test");
         Command giverJoinedCommand = new GiverJoined(gModel,"");
 
         giverJoinedCommand.validate();

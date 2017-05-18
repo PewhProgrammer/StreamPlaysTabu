@@ -40,6 +40,7 @@ public class AltTwitchBot extends Bot {
 
         public void onMessage(String channel, String sender,
                               String login, String hostname, String message) {
+            System.out.println(message);
 
             if (sender.equals("streamplaystaboo") | sender.equals(channel)){
                 if (message.startsWith("!shutdown")) {
@@ -83,11 +84,13 @@ public class AltTwitchBot extends Bot {
 
         public void onUnknown(String line){
             Log.info(line);
+            System.out.println(line);
         }
 
         protected  void onAction(String sender, String login,
                                  String hostname, String target, String action){
             Log.info(action);
+            System.out.println(action);
         }
 
         @Override
@@ -256,7 +259,7 @@ public class AltTwitchBot extends Bot {
         // !ask
         if (parts[0].equals("!ask")) {
             String[] question = message.split("!ask ");
-            return new Ask(model, channel, question[1]);
+            return new Ask(model, channel, sender, question[1]);
         }
 
         // !answer
@@ -296,12 +299,12 @@ public class AltTwitchBot extends Bot {
         if (parts[0].equals("!validate")) {
             int ID = Integer.parseInt(parts[1]);
             int valScore = Integer.parseInt(parts[2]);
-            return new Validate(model, channel, ID, valScore);
+            return new Validate(model, channel, ID, valScore, sender);
         }
 
         // !taboo
         if (parts[0].equals("!taboo")) {
-            return new Taboo(model, channel, parts[1]);
+            return new Taboo(model, channel, sender, parts[1]);
         }
 
         // !vote
@@ -311,7 +314,7 @@ public class AltTwitchBot extends Bot {
                 int vote = Integer.parseInt(parts[i]);
                 preVotes[i-1] = vote;
             }
-            return new Prevote(model, channel, preVotes);
+            return new Prevote(model, channel, preVotes, sender);
         }
 
         return new ChatMessage(model, channel, sender, message);
