@@ -8,9 +8,7 @@ import model.GameMode;
 import model.GameModel;
 import model.GameState;
 
-/**
- * Created by Lenovo on 04.05.2017.
- */
+
 public class Setup extends Command {
 
     private final String channel;

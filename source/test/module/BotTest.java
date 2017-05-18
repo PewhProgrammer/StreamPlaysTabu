@@ -5,6 +5,7 @@ import logic.bots.AltTwitchBot;
 import logic.bots.BeamBot;
 import logic.commands.*;
 
+import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -32,6 +33,19 @@ public class BotTest extends TestCase{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void testUserList() {
+        Iterator<String> it = bb.getUsers("RocketBear").iterator();
+
+        while (it.hasNext()) {
+            System.out.println(it.next());
+        }
+    }
+
+    public void testChannelExists() {
+        assertFalse(BeamBot.checkChannelExists("k3ul3ehehehehehehehheheheheheh"));
+        assertTrue(BeamBot.checkChannelExists("streamplaystaboo"));
     }
 
     public void testAskCommand() {

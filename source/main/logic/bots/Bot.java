@@ -13,6 +13,8 @@ import java.util.List;
  */
 public abstract class Bot {
 
+    private final static String QUEST_MSG = "Do you like to play StreamPlaysTaboo? Please give us feedback: <insert URL to questionnaire>";
+
     protected Socket sock;
     protected PrintWriter out;
     protected BufferedReader in;
@@ -46,6 +48,10 @@ public abstract class Bot {
     public abstract void announceWinner(String user);
 
     public abstract void announceNoWinner();
+
+    protected void sendQuestion() {
+        sendChatMessage(QUEST_MSG);
+    }
 
     public abstract void announceGiverNotAccepted(String user);
 

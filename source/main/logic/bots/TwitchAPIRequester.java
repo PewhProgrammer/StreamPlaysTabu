@@ -1,5 +1,7 @@
 package logic.bots;
 
+import org.json.JSONObject;
+
 import java.io.*;
 import java.net.URL;
 import java.net.HttpURLConnection;
@@ -13,6 +15,30 @@ public class TwitchAPIRequester {
         GET,
         PUT,
         DELETE
+    }
+
+
+    public static JSONObject requestUsers(String channel) {
+        String res = "";
+        try {
+            HttpURLConnection connection;
+            String url = "https://tmi.twitch.tv/group/user/" + channel + "/chatters";
+            connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod("GET");
+
+            InputStream is = connection.getInputStream();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+
+            String s;
+            res = "";
+            while ((s = rd.readLine()) != null) {
+                res = res + s;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return new JSONObject(res);
     }
 
     /**
