@@ -1,6 +1,8 @@
 package gui.webinterface.containers;
 
 
+import org.json.JSONObject;
+
 public class ErrorContainer {
 
     private final String msg;
@@ -12,4 +14,11 @@ public class ErrorContainer {
     public String getMsg() {
         return msg;
     }
+
+    public JSONObject toJSONObject() {
+        JSONObject obj = new JSONObject();
+        obj.put("msg", msg);
+        return obj;
+    }
+
 }

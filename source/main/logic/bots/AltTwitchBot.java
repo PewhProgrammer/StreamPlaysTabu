@@ -38,8 +38,6 @@ public class AltTwitchBot extends Bot {
             this.model = gm;
         }
 
-
-
         public void onMessage(String channel, String sender,
                               String login, String hostname, String message) {
 
@@ -219,7 +217,7 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public List<String> getUsers(String user) {
-        user = "imaqtpie";
+        user = channel;
 
         List<String> channels = new ArrayList<>();
 
@@ -316,7 +314,7 @@ public class AltTwitchBot extends Bot {
             return new Prevote(model, channel, preVotes);
         }
 
-        return null;
+        return new ChatMessage(model, channel, sender, message);
     }
 }
 

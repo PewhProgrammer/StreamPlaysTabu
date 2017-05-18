@@ -39,6 +39,7 @@ function requestGiverInfo(request) {
 function showGiverInfo(giverInfo) {
     var json = JSON.parse(giverInfo);
     console.log('>> Received giver information: ' + giverInfo);
+    giver = json.name;
     document.getElementById("giverInfo").innerHTML = 'Giver: ' + json.name + '; Points: ' + json.points + '; Level: ' + json.level + ';';
 }
 
@@ -91,6 +92,12 @@ function requestValidation(request) {
 function showValidation(validation) {
     console.log('>> Received validation: ' + validation);
     //TODO display validation information
+}
+
+function updateGameState(gameState) {
+    var json = JSON.parse(gameState);
+    console.log('>> RECEIVED gameState: ' + gameState);
+    state = gameState.gameState;
 }
 
 function sendValidation(validation) {

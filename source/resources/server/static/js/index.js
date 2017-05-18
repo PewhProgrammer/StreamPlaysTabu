@@ -1,4 +1,5 @@
 var giver = "igotabot";
+var state = 'Waiting For Giver';
 var pw;
 
 $(function () {
@@ -14,7 +15,11 @@ $(function () {
 });
 
 function onPassword() {
-    sendPassword(createPasswordEvent());
+    if (state == 'Waiting For Giver') {
+        sendPassword(createPasswordEvent());
+    } else {
+        window.alert('Too late, son!');
+    }
 }
 
 function onGiverJoined() {

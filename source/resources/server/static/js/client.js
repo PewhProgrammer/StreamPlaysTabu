@@ -64,6 +64,16 @@ $(document).ready(function() {
             showValidation(JSON.stringify(data));
         }
     });
+    socket.on(base + '/state', function(data) {
+        if (vpw) {
+            updateGameState(JSON.stringify(data));
+        }
+    });
+    socket.on(base + '/error', function(data) {
+        if (vpw) {
+            window.alert(data);
+        }
+    });
 });
 
 function send(target, content) {

@@ -1,11 +1,15 @@
 package common;
 
-import java.util.Date;
+import model.GameModel;
+
+import java.util.*;
 
 /**
  * Created by Tim on 19.04.2017.
  */
 public class Util {
+
+    public static final String REGEX = "[-,'a-zA-Z0-9 ]*";
 
     public static int getWordDist(String word1, String word2) {
 
@@ -475,5 +479,46 @@ public class Util {
         origin = origin.replaceAll(regex,"");
 
         return origin.toLowerCase();
+    }
+
+    public static boolean checkCheating(String input, GameModel gm) {
+
+        //check invalid characters
+        if (!input.matches(REGEX)) {
+            return false;
+        }
+
+        //lemmatize
+        List<String> lemmas = gm.lemmatize(input);
+        Set<String> tW = gm.getTabooWords();
+        Iterator<String> it = tW.iterator();
+        String taboo = "";
+        while (it.hasNext()) {
+            taboo = taboo.concat(" ".concat(it.next()));
+        }
+
+        List<String> tabooLemmas = gm.lemmatize(taboo);
+        List<String> explainLemmas = gm.lemmatize(gm.getExplainWord());
+
+        //check word dist of lemmas
+        for (String lemma : lemmas) {
+
+            //check explain word
+            for (String exp : explainLemmas) {
+                if (Util.getWordDist(exp, lemma) <= 1) {
+                    System.out.println("Found an invalid word: " + exp + " was matched to " + lemma + ".");
+                    return false;
+                }
+            }
+
+            //check taboo words
+            for (String exp : tabooLemmas) {
+                if (Util.getWordDist(exp, lemma) <= 1) {
+                    System.out.println("Found an invalid word: " + exp + " was matched to " + lemma + ".");
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
