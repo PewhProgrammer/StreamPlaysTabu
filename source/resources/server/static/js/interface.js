@@ -43,7 +43,7 @@ function showGiverInfo(giverInfo) {
 function showGuesses(guesses) {
     var json = JSON.parse(guesses);
     console.log('>> Received guesses: ' + guesses);
-    
+
     if(json.guess1 != "") {
         if(json.guess5 != "") {
             document.getElementById("firstGuess").innerHTML = json.guess1 + "<br><br>" + json.guess5;
