@@ -331,7 +331,6 @@ public class Neo4jWrapper {
         return null;
     }
 
-
     //** TODO: Missing Logging system for user's activity
 
 
