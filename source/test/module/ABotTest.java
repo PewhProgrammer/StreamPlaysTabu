@@ -41,6 +41,14 @@ public class ABotTest extends TestCase {
 
     }
 
+    public void testUserList() {
+        List<String> users = tb.getUsers("shroud");
+        Iterator<String> it = users.iterator();
+        while (it.hasNext()) {
+            System.out.println(it.next());
+        }
+    }
+
    /* public void testBeamBot(){
         BeamBot bot = null;
         try {
@@ -50,11 +58,7 @@ public class ABotTest extends TestCase {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
             System.out.println("IM HERE!!!   " + bot.getCurrentViewers("streamplaystaboo"));
-
-
-
     }*/
 
 
