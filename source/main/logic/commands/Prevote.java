@@ -8,11 +8,13 @@ import model.GameState;
  */
 public class Prevote extends Command {
 
-    private int[] id;
+    private final int[] id;
+    private final String sender;
 
-    public Prevote(GameModel gm, String ch, int[] id) {
+    public Prevote(GameModel gm, String ch, int[] id, String sender) {
         super(gm, ch);
         this.id = id;
+        this.sender = sender;
     }
 
     @Override
@@ -25,6 +27,10 @@ public class Prevote extends Command {
 
     @Override
     public boolean validate() {
+
+        if (!gameModel.contribute(sender, thisChannel)) {
+            return false;
+        }
 
         return gameModel.getGameState().equals(GameState.Registration);
     }

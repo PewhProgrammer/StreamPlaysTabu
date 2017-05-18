@@ -8,11 +8,13 @@ import model.GameState;
  */
 public class Taboo extends Command {
 
-    private String suggestion;
+    private final String suggestion;
+    private final String sender;
 
-    public Taboo(GameModel gm, String ch, String suggestion) {
+    public Taboo(GameModel gm, String ch, String suggestion, String sender) {
         super(gm, ch);
         this.suggestion = suggestion;
+        this.sender = sender;
     }
 
     @Override
@@ -22,6 +24,9 @@ public class Taboo extends Command {
 
     @Override
     public boolean validate() {
+        if (!gameModel.contribute(sender, thisChannel)) {
+            return false;
+        }
         return gameModel.getGameState().equals(GameState.Registration);
     }
 
