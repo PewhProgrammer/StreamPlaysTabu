@@ -28,6 +28,7 @@ public class Setup extends Command {
         GameMode gm = gameMode.equals("Free for all") ? GameMode.Normal : GameMode.Streamer;
         gameModel.setGameMode(gm);
         gameModel.setBot(platform, channel);
+        gameModel.setGiverChannel(channel);
         gameModel.setGameState(GameState.Registration);
     }
 

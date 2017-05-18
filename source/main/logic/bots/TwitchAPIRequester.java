@@ -55,6 +55,8 @@ public class TwitchAPIRequester {
        return true;
     }
 
+
+
     /**
      * Sends a http-request of given type to the given url
      * @param url The URL which is requested.

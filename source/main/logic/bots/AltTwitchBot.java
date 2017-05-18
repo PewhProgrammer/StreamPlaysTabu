@@ -35,7 +35,7 @@ public class AltTwitchBot extends Bot {
 
         public void onMessage(String channel, String sender,
                               String login, String hostname, String message) {
-            System.out.println(message);
+
 
             if (sender.equals("streamplaystaboo") | sender.equals(channel)){
                 if (message.startsWith("!shutdown")) {
@@ -43,7 +43,7 @@ public class AltTwitchBot extends Bot {
                     sendMessage(channel, "@" + sender + ": BYE BYE");
                     partChannel(sender);
                     disconnect();
-                    Thread.interrupted();
+                    dispose();
 
                 }
             }
@@ -68,36 +68,16 @@ public class AltTwitchBot extends Bot {
             }
         }
 
-
-
-
-
-        public void onConnect(){
-            System.out.println("I'm connected!");
-
-        }
-
         public void onUnknown(String line){
             Log.info(line);
-            System.out.println(line);
+
         }
 
         protected  void onAction(String sender, String login,
                                  String hostname, String target, String action){
             Log.info(action);
-            System.out.println(action);
-        }
 
-        protected void onJoin(String channel, String sender, String login, String hostname) {
-            viewers.add(sender);
-            System.out.println("HERE COMES DAT "+sender);
         }
-
-        protected void onPart(String channel, String sender, String login, String hostname) {
-            viewers.remove(sender);
-            System.out.println("OH SHIT WADDUP "+sender);
-        }
-
     }
 
     @Override
