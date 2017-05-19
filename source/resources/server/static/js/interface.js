@@ -1,4 +1,6 @@
 var base = '/connection-server-external';
+var questions = [];
+var numQuestions = 0;
 
 function sendGiverJoined(giverJoinedEvent) {
     console.log('<< Send giver joined.');
@@ -110,8 +112,19 @@ function sendExplanation(explanation) {
 function showQuestion(question) {
     var json = JSON.parse(question);
     console.log('>> Received question: ' + question);
-    document.getElementById("q1").value = json.question;
-    document.getElementById("q1Label").innerHTML = json.question;
+    numQuestions++;
+    questions.push(json.question);
+
+    var html ="";
+    for(var i=questions.length-1; i >= 0; i--) {
+        if (questions[i] != null) {
+            html = html + "<p>Question:<br>" + questions[i] + "</p>"
+                + '<input type="text" class="form-control" placeholder="Answer..." style="width:75%; float: left; margin-right: 5%;" id="answer' + i + '"/>'
+                + '<button class="btn btn-lg btn-primary btn-block btn-primary" type="submit" style="width:20%;" id="answer' + i + '">Send</button>'
+        }
+    }
+
+    document.getElementById("qAndAs").innerHTML = html;
 }
 
 function sendAnswer(QandA) {

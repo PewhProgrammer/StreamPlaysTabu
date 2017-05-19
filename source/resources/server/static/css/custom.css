@@ -103,6 +103,7 @@ body {
     height: 65%;
     right: 1%;
     top: 10%;
+    padding: 1%;
 }
 
 
@@ -149,4 +150,8 @@ body {
     width: 40%;
     left: 30%;
     bottom:10%;
+}
+
+#skip, #explanation {
+    font-size: 2vmin;
 }
