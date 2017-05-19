@@ -2,6 +2,7 @@ var giver = "igotabot";
 var state = 'Waiting For Giver';
 var pw;
 var timeLeft = 105;
+var templateId = 0;
 
 $(function () {
     $("form").on('submit', function (e) {
@@ -213,6 +214,35 @@ function handleTemplateLayerPrevious(layer) {
     document.getElementById('template_back').style.display = 'none';
 }
 
-function handleTemplateDropDown(description) {
-    document.getElementById('template_dropdown').textContent = description;
+$('.selectpicker').selectpicker('val', 'Mustard');
+
+function handleTemplateDropDown(description, id) {
+    $('.selectpicker').selectpicker('val', 'Mustard');
+    templateId = id;
+    var sel = document.getElementById('sel1');
+    var length = sel.options.length;
+    var opt1 = document.createElement("option");
+    sel.textContent = description;
+    for (i = 0; i < length; i++) {
+        sel.options[i] = null;
+    }
+    opt1.text = description;
+    sel.add(opt1, sel[0]);
+}
+
+function handleTemplateDropDown2(description, description2, id) {
+    templateId = id;
+    var sel = document.getElementById('sel1');
+    var length = sel.options.length;
+    for (i = 0; i < length; i++) {
+        sel.options[i] = null;
+    }
+
+    var opt1 = document.createElement("option");
+    var opt2 = document.createElement("option");
+    opt1.text = description;
+    opt2.text = description2;
+    sel.textContent = description;
+    sel.add(opt1, sel[0]);
+    sel.add(opt2, sel[1]);
 }
