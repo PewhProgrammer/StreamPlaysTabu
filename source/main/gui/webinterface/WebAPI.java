@@ -32,9 +32,9 @@ public class WebAPI implements IObserver {
 
     @MessageMapping("/startGame")
     public void startGame(SetupInformationContainer si) {
-        channel = si.getChannel();
         Setup sCmd = (new Setup(si, GameControl.mModel, si.getChannel()));
         if (sCmd.validate()) {
+            channel = si.getChannel();
             sCmd.execute();
         } else {
             send("/err", "Could not connect to channel '" + si.getChannel() + "'. Please retry with a valid channel on Twitch or Beam.");
@@ -80,17 +80,19 @@ public class WebAPI implements IObserver {
         System.out.println("GameState changed to " + state);
 
         if (state.equals(GameState.Win)) {
-            send("/endGame", new GameCloseContainer("Win"));
+            String winner = GameControl.mModel.getWinner();
+            int points = GameControl.mModel.getGainedPoints();
+            send("/endGame", new GameCloseContainer("Win", winner, points));
             return;
         }
 
         if (state.equals(GameState.Lose)) {
-            send("/endGame", new GameCloseContainer("Lose"));
+            send("/endGame", new GameCloseContainer("Lose", "", 0));
             return;
         }
 
         if (state.equals(GameState.Kick)) {
-            send("/endGame", new GameCloseContainer("Kick"));
+            send("/endGame", new GameCloseContainer("Kick", "", 0));
             return;
         }
 

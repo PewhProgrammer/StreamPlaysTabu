@@ -39,6 +39,12 @@ public class LemmaTests extends TestCase {
         lemmatize("was blew rose sold", lemmas);
     }
 
+    public void testAntiWord() {
+        List<String> lemmas = new LinkedList<>();
+        lemmas.add("afk");
+        lemmatize("afk", lemmas);
+    }
+
     private void lemmatize(String input, List<String> lemmas) {
         List<String> l = gm.lemmatize(input);
         assertEquals(l.size(), lemmas.size());

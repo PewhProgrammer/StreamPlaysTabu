@@ -186,15 +186,15 @@ public class Main {
                 switch (arg) {
                     case "--webpageserver": {
                         ext_bindAddr = line.getOptionValue("webpageserver");
-                    //    if (!checkBindAddrFormat(ext_bindAddr))
-                    //        throw new ParseException(neo4jbindAddr + " malicious bind address format for the webpage!");
+                        //if (!checkBindAddrFormat(ext_bindAddr))
+                        //    throw new ParseException(neo4jbindAddr + " malicious bind address format for the webpage!");
                         ext_bindAddr = "http://" + line.getOptionValue("webpageserver")+"/";
                     }
                     break;
                     case "--neo4jserver":
                         neo4jbindAddr = line.getOptionValue("neo4jserver");
-                        if (!checkBindAddrFormat(neo4jbindAddr))
-                            throw new ParseException(neo4jbindAddr + " malicious bind address format for neo4j!");
+                      //  if (!checkBindAddrFormat(neo4jbindAddr))
+                      //      throw new ParseException(neo4jbindAddr + " malicious bind address format for neo4j!");
                         if (line.hasOption("s")) {
                             seed = ((Number) line.getParsedOptionValue("s")).intValue();
                             setSeed = true;

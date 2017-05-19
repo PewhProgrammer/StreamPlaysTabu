@@ -1,0 +1,151 @@
+body {
+    color: #fff;
+    background: radial-gradient(ellipse farthest-corner at center top, #f39264 0%, #f2606f 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.background {
+    background: linear-gradient(to bottom, #3a404d, #181c26);
+    border-radius: 10px;
+    box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+    background: radial-gradient(ellipse farthest-corner at center top, #f39264 0%, #f2606f 100%);
+    border: 1px solid #f2606f;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #f2606f;
+}
+
+.nav > li > a:focus, .nav > li > a:hover {
+    background: radial-gradient(ellipse farthest-corner at center top, #f39264 0%, #f2606f 100%);
+    border: 1px solid #f2606f;
+}
+
+
+#signin, #categories {
+    position: absolute;
+    height:100%;
+    width:100%;
+    z-index: 2;
+}
+
+#categories {
+    z-index: 1;
+    visibility: hidden;
+}
+
+#gameDiv {
+    position: absolute;
+    width:100%;
+    height:100%;
+    z-index: -1;
+
+    padding: 5px 10px 10px;
+}
+
+#transparentBG {
+    position: absolute;
+    height:100%;
+    width:100%;
+    background: linear-gradient(to bottom, #3a404d, #181c26);
+    opacity: 0.9;
+    z-index: 0;
+}
+
+#category1, #category2, #category3,
+#category4, #category5 {
+    position: absolute;
+    width: 20%;
+    height: 15%;
+    margin-top: 0px;
+}
+
+#category1 {
+    top: 23.5%;
+    left:40%;
+}
+
+#category2 {
+    top: 42.5%;
+    left: 22.5%;
+}
+
+#category3 {
+    top: 42.5%;
+    right: 22.5%;
+}
+
+#category4 {
+    bottom: 23.5%;
+    left: 28%;
+}
+
+#category5 {
+    bottom: 23.5%;
+    right: 28%;
+}
+
+#tabooCard {
+    position: absolute;
+    width: 25%;
+    height: 65%;
+    left: 1%;
+    top: 10%;
+}
+
+#qAndADiv{
+    position: absolute;
+    width: 25%;
+    height: 65%;
+    right: 1%;
+    top: 10%;
+}
+
+
+#templatesDiv {
+    position: absolute;
+    width: 45%;
+    height: 65%;
+    left: 27.5%;
+    top: 10%;
+}
+
+#validateDiv{
+    position: absolute;
+    width: 48%;
+    height: 22.5%;
+    left: 1%;
+    bottom: 5px;
+    font-size: 2vmin;
+    padding: 5px 5px 5px 5px;
+}
+
+#guessesDiv{
+    position: absolute;
+    width: 48%;
+    height: 22.5%;
+    right: 1%;
+    bottom: 5px;
+    font-size: 3vmin;
+    padding-left: 0.5%;
+    padding-top: 0.5%;
+}
+
+#firstGuess, #secondGuess, #thirdGuess,
+#fourthGuess, #fifthGuess {
+    width: 25%;
+    height: 55%;
+    position: absolute;
+    bottom: 0px;
+}
+
+#skip {
+    position: absolute;
+    width: 40%;
+    left: 30%;
+    bottom:10%;
+}

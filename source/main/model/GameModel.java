@@ -20,6 +20,9 @@ import org.languagetool.language.GermanyGerman;
 import org.languagetool.rules.RuleMatch;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -31,10 +34,12 @@ public class GameModel extends Observable{
     private static final int LEVEL_5 = 1200;
     private static final int LEVEL_6 = 1800;
 
-    private static final double ROUND_TIME = 1000.0 * 120.0;
+    private static final double ROUND_TIME = 1000.0 * 105.0;
+    private static final double THIRTY_MINUTES = 1000.0 * 60.0 * 30.0;
 
     private GameState mGameState;
     private int mNumPlayers;
+    private int errCounter = 0;
     private short MIN_PLAYERS;
 
     private Language lang;
@@ -57,6 +62,7 @@ public class GameModel extends Observable{
     private String giverChannel = "";
 
     private String category, giver = "", word, winner;
+    private int gainedPoints = 0;
 
     private ArrayList<PrevoteCategory> prevoting;
 
@@ -121,7 +127,7 @@ public class GameModel extends Observable{
     }
 
     public void setGameState(GameState mGameState) {
-        System.out.println("GameState set to " +  mGameState);
+        System.out.println(" GameState set to " +  mGameState);
         this.mGameState = mGameState;
         notifyGameState();
     }
@@ -241,7 +247,7 @@ public class GameModel extends Observable{
         String[] content = Util.parseTemplate(explanation);
         String relation = content[0].toLowerCase();
         String targetNode = content[1].toLowerCase();
-        boolean isExplain = true; //TODO is targetNode reliable as explain word?
+        boolean isExplain = true;
 
 
         mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,true, relation,true);
@@ -292,7 +298,7 @@ public class GameModel extends Observable{
             String[] content = Util.parseTemplate(answer);
             String relation = content[0].toLowerCase();
             String targetNode = content[1].toLowerCase();
-            boolean isExplain = false; //TODO is the target node reliable as explain word?
+            boolean isExplain = false;
 
             mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,false);
         }
@@ -353,14 +359,16 @@ public class GameModel extends Observable{
     }
 
     public void generateVotingCategories() {
-        Set<String> categories= mOntologyDataBase.getCategories(10);
-        Iterator<String> it = categories.iterator();
-        for (int i = 0; i < 10; i++) {
-            if (!it.hasNext()) {
-                break;
+        if (mOntologyDataBase != null) {
+            Set<String> categories = mOntologyDataBase.getCategories(10);
+            Iterator<String> it = categories.iterator();
+            for (int i = 0; i < 10; i++) {
+                if (!it.hasNext()) {
+                    break;
+                }
+                String category = it.next();
+                prevoting.add(i, new PrevoteCategory(category));
             }
-            String category = it.next();
-            prevoting.add(i, new PrevoteCategory(category));
         }
     }
 
@@ -388,6 +396,14 @@ public class GameModel extends Observable{
         return word;
     }
 
+    public void setExplainWord(String word) {
+        this.word = word;
+    }
+
+    public void setTabooWords(Set<String> taboos) {
+        this.tabooWords = taboos;
+    }
+
     public void win(String winner,String ch) {
         this.winner  = winner;
         Date joinedTime = new Date();
@@ -399,6 +415,8 @@ public class GameModel extends Observable{
         Log.trace("Q: " + q + " and "+getTimeStamp() + " joined: " + joinedTime);
         Log.trace(winner + " gained Points: " + score);
 
+        gainedPoints = score;
+
         updateScore(winner, score,ch);
         updateScore(giver, score,ch);
         notifyWinner();
@@ -409,6 +427,10 @@ public class GameModel extends Observable{
         }
         clear();
         setGiver(winner);
+    }
+
+    public int getGainedPoints() {
+        return gainedPoints;
     }
 
     public String getWinner() {
@@ -435,11 +457,15 @@ public class GameModel extends Observable{
         clearExplanations();
         clearQAndA();
         clearGuesses();
-
+        errCounter = 0;
         prevoting.clear();
         usedWords.clear();
         setNumPlayers(0);
         clearRegisteredPlayers();
+    }
+
+    public int increaseErrCounter() {
+        return ++errCounter;
     }
 
     public Set<String> getVotekick() {
@@ -475,7 +501,7 @@ public class GameModel extends Observable{
     public void updateScore(String user, int value,String ch) {
         int score = getScore(user,ch) + value;
         score = Integer.max(0, score);
-        mOntologyDataBase.updateUserPoints(user, score,ch);
+        mOntologyDataBase.updateUserPoints(user, score, ch);
         notifyScoreUpdate();
     }
 
@@ -542,5 +568,31 @@ public class GameModel extends Observable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean contribute(String user, String channel) {
+
+        if (mOntologyDataBase.getUserError(user, channel) < 4) {
+            return true;
+        }
+
+        //Jahr, Tag, Stunde, Minute
+        String[] stamp = mOntologyDataBase.getUserErrorTimeStamp(user);
+        DateFormat df = new SimpleDateFormat("yyyy-dd-HH-mm-ss");
+        Date date = null;
+        try {
+            date = df.parse(stamp[0] + "-" + stamp[1] + "-" + stamp[2] + "-" + stamp[3] + "-00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (date != null) {
+            double d = Util.diffTimeStamp(date, new Date());
+            if (d > THIRTY_MINUTES) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

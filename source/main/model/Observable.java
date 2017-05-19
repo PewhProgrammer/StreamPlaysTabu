@@ -1,29 +1,14 @@
 package model;
 
 import gui.ProtoController;
-import javafx.application.Platform;
 
 import java.util.ArrayList;
 
-/**
- * Created by Thinh-Laptop on 26.03.2017.
- */
 public abstract class Observable {
 
-    public ArrayList<IObserver> listIObserver = new ArrayList<>(2);
-
-    /** TODO mehrere notify methoden */
+    private ArrayList<IObserver> listIObserver = new ArrayList<>(2);
 
     public void notifyQandA(){
-        /*
-        for (IObserver ob: listIObserver) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    ob.onNotifiyQandA();
-                }
-            });
-        } */
 
         for (IObserver ob : listIObserver) {
             ob.onNotifyQandA();
@@ -32,58 +17,24 @@ public abstract class Observable {
     }
 
     public void notifyCategoryChosen() {
-        /*for (IObserver ob: listIObserver) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    ob.onNotifyCategoryChosen();
-                }
-            });
-        } */
-
         for (IObserver ob : listIObserver) {
             ob.onNotifyCategoryChosen();
         }
     }
 
     public void notifyGameState() {
-        /*for (IObserver ob : listIObserver) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    ob.onNotifyGameState();
-                }
-            });
-        }*/
         for (IObserver ob : listIObserver) {
             ob.onNotifyGameState();
         }
     }
 
     public void notifyExplanation() {
-        /*for (IObserver ob : listIObserver) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    ob.onNotifyExplanation();
-                }
-            });
-        }*/
-
         for (IObserver ob : listIObserver) {
             ob.onNotifyExplanation();
         }
     }
 
     public void notifyWinner() {
-        /*for (IObserver ob : listIObserver) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    ob.onNotifyWinner();
-                }
-            });
-        }*/
         for (IObserver ob : listIObserver) {
             ob.onNotifyWinner();
         }
@@ -91,49 +42,24 @@ public abstract class Observable {
 
     public void notifyGuess() {
         for (IObserver ob : listIObserver) {
-            ob.onNotifyGuess(); //platform in der methode
+            ob.onNotifyGuess();
         }
     }
     
 
     public void notifyScoreUpdate() {
-        /*for (IObserver ob : listIObserver) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    ob.onNotifyScoreUpdate();
-                }
-            });
-        }*/
-
         for (IObserver ob : listIObserver) {
             ob.onNotifyScoreUpdate();
         }
     }
 
     public void notifyGameMode() {
-        /*for (IObserver ob : listIObserver) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    ob.onNotifyGameMode();
-                }
-            });
-        } */
         for (IObserver ob : listIObserver) {
             ob.onNotifyGameMode();
         }
     }
 
     public void notifyKick() {
-        /*for (IObserver ob : listIObserver) {
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    ob.onNotifyKick();
-                }
-            });
-        }*/
         for (IObserver ob : listIObserver) {
             ob.onNotifyKick();
         }
@@ -169,7 +95,6 @@ public abstract class Observable {
         }
         listIObserver.remove(1);
         listIObserver.add(1, ob);
-
     }
 
     public void removeObserver(IObserver ob){

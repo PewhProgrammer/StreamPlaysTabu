@@ -25,6 +25,9 @@ public class Register extends Command {
 
     @Override
     public boolean validate() {
+        if (!gameModel.contribute(user, thisChannel)) {
+            return false;
+        }
         return gameModel.getGameState().equals(GameState.Registration);
     }
 

@@ -94,8 +94,8 @@ function updateState(gamestate) {
             break;
         }
         case "Waiting For Giver": {
-            twenties = true;
-            timeLeft = 20;
+            document.getElementById("statusInfo").innerHTML = "Waiting for chosen giver!";
+            timeLeft = 30;
             break;
         }
         case "Win": {

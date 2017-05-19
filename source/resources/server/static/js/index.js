@@ -1,5 +1,7 @@
 var giver = "igotabot";
+var state = 'Waiting For Giver';
 var pw;
+var timeLeft = 90;
 
 $(function () {
     $("form").on('submit', function (e) {
@@ -13,8 +15,30 @@ $(function () {
     $( "#validation" ).click(function() { onValidation(); });
 });
 
+// Update the count down every 1 second
+function runTimer() {
+
+    var x = setInterval(function() {
+
+        timeLeft = timeLeft - 1;
+
+        document.getElementById("progressbar").innerHTML = timeLeft + "s";
+        document.getElementById("progressbar").style.width = (timeLeft / 90) * 100 + "%";
+
+        if (timeLeft == 0) {
+            document.getElementById("progressbar").innerHTML = "Time's-Up!";
+            document.getElementById("progressbar").style.color = "#111111";
+            clearInterval(x);
+        }
+    }, 1000);
+}
+
 function onPassword() {
-    sendPassword(createPasswordEvent());
+    if (state == 'Waiting For Giver') {
+        sendPassword(createPasswordEvent());
+    } else {
+        window.alert('Too late, son!');
+    }
 }
 
 function onGiverJoined() {
@@ -22,14 +46,40 @@ function onGiverJoined() {
     requestPrevotedCategories(createPrevotedCategoriesRequest());
 }
 
-function onCategoryChosen() {
+function chosenCat1() {
+    showGame();
+    onCategoryChosen(getElemeteById("category1").innerHTML);
+}
+
+function chosenCat2() {
+    onCategoryChosen(getElemeteById("category2").innerHTML);
+    showGame();
+}
+
+function chosenCat3() {
+    onCategoryChosen(getElemeteById("category3").innerHTML);
+    showGame();
+}
+
+function chosenCat4() {
+    onCategoryChosen(getElemeteById("category4").innerHTML);
+    showGame();
+}
+
+function chosenCat5() {
+    onCategoryChosen(getElemeteById("category5").innerHTML);
+    showGame();
+}
+
+function onCategoryChosen(category) {
     sendCategory(createChosenCategoryEvent());
     requestGiverInfo(createGiverInfoRequest());
     requestValidation(createValidationRequest());
+    sendExplanation(createExplanationEvent(category));
 }
 
 function onExplanation() {
-    sendExplanation(createExplanationEvent());
+    sendExplanation(createExplanationEvent($("#explanationText").val()));
 }
 
 function onAnswer() {
@@ -73,12 +123,11 @@ function createChosenCategoryEvent() {
     });
 }
 
-function createExplanationEvent() {
-    var explanation = $("#explanationText").val();
-    document.getElementById("explanationLabel").innerHTML = "Last Explanation: " + explanation;
+function createExplanationEvent(exp) {
+    document.getElementById("explanationLabel").innerHTML = "Last Explanation: " + exp;
     return JSON.stringify({
         'giver' : giver,
-        'explanation' : explanation,
+        'explanation' : exp,
         'password' : pw
     });
 }
@@ -97,7 +146,6 @@ function createAnswerEvent() {
 
 function createPasswordEvent(){
     pw = $("#pwInput").val();
-    document.getElementById("pwLabel").innerHTML = "Sent pw: " + pw;
     return JSON.stringify({
         'password': pw
     });
@@ -112,4 +160,21 @@ function createValidationEvent() {
 
 function validatePW(password) {
     return password == pw.toString();
+}
+
+function showCategories() {
+    document.getElementById("signin").style.visibility = "hidden";
+    document.getElementById("signin").style.zIndex = "-1";
+    document.getElementById("categories").style.visibility = "visible";
+    document.getElementById("categories").style.zIndex = "1";
+}
+
+function showGame() {
+    document.getElementById("categories").style.visibility = "hidden";
+    document.getElementById("categories").style.zIndex = "-2";
+    document.getElementById("transparentBG").style.visibility="hidden";
+    document.getElementById("transparentBG").style.zIndex="0";
+    document.getElementById("gameDiv").style.zIndex = "1";
+
+    runTimer();
 }

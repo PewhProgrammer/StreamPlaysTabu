@@ -205,16 +205,18 @@ public class SiteController implements IObserver {
     @Override
     public void onNotifyGameState() {
         if (gm.getGameState().equals(GameState.Win)) {
-            send("/close", new GameCloseContainer("Win").toJSONObject());
+            send("/close", new GameCloseContainer("Win", gm.getWinner(), gm.getGainedPoints()).toJSONObject());
         }
 
         if (gm.getGameState().equals(GameState.Lose)) {
-            send("/close", new GameCloseContainer("Lose").toJSONObject());
+            send("/close", new GameCloseContainer("Lose", "", 0).toJSONObject());
         }
 
         if (gm.getGameState().equals(GameState.Kick)) {
-            send("/close", new GameCloseContainer("Kick").toJSONObject());
+            send("/close", new GameCloseContainer("Kick", "", 0).toJSONObject());
         }
+
+        send("/state", new GameStateContainer(gm.getGameState()).toJSONObject());
     }
 
     @Override
@@ -272,8 +274,12 @@ public class SiteController implements IObserver {
         send("/tabooWords", new TabooWordsContainer(gm.getTabooWords()).toJSONObject());
     }
 
-    public void sendChatMessage(String time, String channel, String sender, String msg) {
-        send("/chatMsg", new MessageContainer(time, channel, sender, msg).toJSONObject());
+    public void sendError(String msg) {
+        send("/error", new ErrorContainer(msg).toJSONObject());
+    }
+
+    public void sendChatMessage(String channel, String sender, String msg) {
+        send("/chatMessage", new MessageContainer(channel, sender, msg).toJSONObject());
     }
 
     public void sendQuestion(String question) {

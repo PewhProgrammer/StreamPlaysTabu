@@ -4,14 +4,12 @@ import common.Log;
 import logic.commands.*;
 import model.GameModel;
 import org.jibble.pircbot.PircBot;
-import org.jibble.pircbot.User;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-/**
- * Created by Thinh-Laptop on 20.04.2017.
- */
+
 public class AltTwitchBot extends Bot {
 
     private Pirc bot;
@@ -23,33 +21,29 @@ public class AltTwitchBot extends Bot {
         connectToChatroom(channel);
     }
 
-    TwitchAPIRequester requester;
-
-
     private class Pirc extends PircBot {
 
         List<String> viewers = new ArrayList<>();
         GameModel model;
 
-        public Pirc(String user, GameModel gm) {
+        Pirc(String user, GameModel gm) {
 
             this.setName(user);
             this.setLogin("[" + user + "]");
             this.model = gm;
         }
 
-
-
         public void onMessage(String channel, String sender,
                               String login, String hostname, String message) {
+
 
             if (sender.equals("streamplaystaboo") | sender.equals(channel)){
                 if (message.startsWith("!shutdown")) {
                     Log.debug("shutdown command received!");
-                    sendMessage(channel, String.format("@" + sender + ": BYE BYE"));
+                    sendMessage(channel, "@" + sender + ": BYE BYE");
                     partChannel(sender);
                     disconnect();
-                    Thread.interrupted();
+                    dispose();
 
                 }
             }
@@ -74,45 +68,16 @@ public class AltTwitchBot extends Bot {
             }
         }
 
-
-
-
-
-        public void onConnect(){
-            System.out.println("I'm connected!");
-
-        }
-
         public void onUnknown(String line){
             Log.info(line);
+
         }
 
         protected  void onAction(String sender, String login,
                                  String hostname, String target, String action){
             Log.info(action);
+
         }
-
-        @Override
-        protected void onUserList(String channel, User[] users){
-
-            List<String> viewers = new ArrayList<>();
-
-            for (int i = 0; i < users.length; i++){
-                viewers.add(users[i].getNick());
-                System.out.println("FOUND SOMEONE: "+users[i].getNick());
-            }
-        }
-
-        protected void onJoin(String channel, String sender, String login, String hostname) {
-            viewers.add(sender);
-            System.out.println("HERE COMES DAT "+sender);
-        }
-
-        protected void onPart(String channel, String sender, String login, String hostname) {
-            viewers.remove(sender);
-            System.out.println("OH SHIT WADDUP "+sender);
-        }
-
     }
 
     @Override
@@ -135,7 +100,6 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void connectToChatroom(String user) {
-        checkChannelExist(user);
         bot = new Pirc("streamplaystaboo", this.model);
         bot.setVerbose(true);
 
@@ -164,7 +128,7 @@ public class AltTwitchBot extends Bot {
 
     }
 
-    public void sendPrivMessage(String msg,String user){
+    private void sendPrivMessage(String msg,String user){
         sendChatMessage("/w "+user+" " +msg);
     }
 
@@ -175,17 +139,12 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void whisperLink(String user, String link, int pw) {
-        //sendChatMessage(" " + user + " You are the giver! Here is your link, please click it! " + link);
         sendPrivMessage("You are the giver! Here is your link: " + link + ", please click on it and use your password: " + pw + " to start explaining.", user);
-        //sendPrivMessage("Your Explain word: " + model.getExplainWord(),user);
-
-        //TODO: why onGiverJoined() at this point? think it is just to don't crash the game
-        //model.getSiteBot().onGiverJoined();
-        //model.getSiteController().giverJoined();
     }
 
     @Override
     public void announceNewRound() {
+        sendQuestion();
         sendChatMessage("------------------------------------------------------------------" +
                 " A new round has started. Good Luck!!!" +
                 " ------------------------------------------------------------------");
@@ -218,22 +177,22 @@ public class AltTwitchBot extends Bot {
     }
 
     @Override
-    public List<String> getUsers(String user) {
-        user = "imaqtpie";
+    public List<String> getUsers(String channel) {
 
-        List<String> channels = new ArrayList<>();
+        List<String> users = new LinkedList<>();
 
-        User[] users = bot.getUsers(user);
+        JSONObject obj = TwitchAPIRequester.requestUsers(channel);
 
-        for (int i = 0; i<users.length; i++){
+        JSONObject chatters = obj.getJSONObject("chatters");
+        JSONArray viewers = chatters.getJSONArray("viewers");
 
-            channels.add(users[i].getNick());
+        for (int i = 0; i < viewers.length(); i++) {
+            users.add(viewers.getString(i));
         }
-
-        return channels;
+        return users;
     }
 
-    public Command parseLine(String message, String sender) {
+    private Command parseLine(String message, String sender) {
         this.sender = sender;
         return parseLine(message);
     }
@@ -258,7 +217,7 @@ public class AltTwitchBot extends Bot {
         // !ask
         if (parts[0].equals("!ask")) {
             String[] question = message.split("!ask ");
-            return new Ask(model, channel, question[1]);
+            return new Ask(model, channel, sender, question[1]);
         }
 
         // !answer
@@ -298,12 +257,12 @@ public class AltTwitchBot extends Bot {
         if (parts[0].equals("!validate")) {
             int ID = Integer.parseInt(parts[1]);
             int valScore = Integer.parseInt(parts[2]);
-            return new Validate(model, channel, ID, valScore);
+            return new Validate(model, channel, ID, valScore, sender);
         }
 
         // !taboo
         if (parts[0].equals("!taboo")) {
-            return new Taboo(model, channel, parts[1]);
+            return new Taboo(model, channel, sender, parts[1]);
         }
 
         // !vote
@@ -313,10 +272,10 @@ public class AltTwitchBot extends Bot {
                 int vote = Integer.parseInt(parts[i]);
                 preVotes[i-1] = vote;
             }
-            return new Prevote(model, channel, preVotes);
+            return new Prevote(model, channel, preVotes, sender);
         }
 
-        return null;
+        return new ChatMessage(model, channel, sender, message);
     }
 }
 

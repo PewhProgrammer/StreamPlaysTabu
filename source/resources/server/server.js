@@ -32,6 +32,10 @@ function initializeExt(socket) {
         pws.add(n.toString());
         console.log('>> RECEIVED password ' + n);
     });
+    socket.on(base2Core + '/state', function(data) {
+        console.log('>> RECEIVED gameState: ' + JSON.stringify(data));
+        send2Ext('/state' , data);
+    });
     socket.on(base2Core + '/prevotedCategories', function(data) {
        console.log('>> RECEIVED prevotedCategories: ' + JSON.stringify(data));
        send2Ext('/prevotedCategories' , data);
@@ -67,6 +71,10 @@ function initializeExt(socket) {
     socket.on(base2Core + '/validation', function(data) {
         console.log('>> RECEIVED validation: ' + JSON.stringify(data));
         send2Ext('/validation', data);
+    });
+    socket.on(base2Core + '/error', function(data) {
+        console.log('>> RECEIVED validation: ' + JSON.stringify(data));
+        send2Ext('/error', data);
     });
 
     socket.emit('/connection-server-external', {time: new Date()});

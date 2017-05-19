@@ -5,6 +5,7 @@ import common.Util;
 import model.GameModel;
 import model.GameState;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,8 +28,6 @@ public class Answer extends Command {
      */
     @Override
     public void execute() {
-
-        //TODO apply anti-cheating mechanism to input:
         gameModel.addQAndA(question, answer);
     }
 
@@ -38,6 +37,20 @@ public class Answer extends Command {
             return false;
         }
 
+        if (!Util.checkCheating(answer, gameModel)) {
+            gameModel.getNeo4jWrapper().increaseUserError(gameModel.getGiver(), thisChannel);
+            if (gameModel.getNeo4jWrapper().getUserError(gameModel.getGiver(), thisChannel) > 3) {
+                gameModel.getNeo4jWrapper().setUserErrorTimeStamp(gameModel.getGiver(), new Date());
+            }
+            if (gameModel.increaseErrCounter() == 2) {
+                gameModel.setGameState(GameState.Kick);
+                gameModel.getSiteController().sendError("We found again an invalid input. Round is over now");
+
+            } else {
+                gameModel.getSiteController().sendError("Found invalid answer. Please don't use your taboo or explain word or any character that is no letter, number or -,'");
+            }
+            return false;
+        }
         return true;
     }
 
