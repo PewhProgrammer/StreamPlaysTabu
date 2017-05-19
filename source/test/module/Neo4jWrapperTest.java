@@ -20,7 +20,7 @@ public class Neo4jWrapperTest extends TestCase {
 
     private final short players = 2 ;
     private boolean simulation = true;
-    private String neo4jbindAddr = "pewhgames.com:7687";
+    private String neo4jbindAddr = "localhost:7687";
     private final Language language = Language.Ger;
     private Neo4jWrapper database ;
     private final String label = "Node";
@@ -68,7 +68,7 @@ public class Neo4jWrapperTest extends TestCase {
     public void testLookUpNode(){
         assertEquals("Should not find the Node!"
                 ,false,
-                database.lookUpNode("Maokai",label));
+                database.lookUpNode("Maokai",label,""));
         try {
             database.createNode("Maokai",true);
             database.createNode("nau tilus",true);
@@ -78,19 +78,18 @@ public class Neo4jWrapperTest extends TestCase {
         }
         assertEquals("lookUp could not find the node!"
                 ,true,
-                database.lookUpNode("Maokai",label));
+                database.lookUpNode("Maokai",label,""));
 
         //lookup with whitespaces
         assertEquals("lookUp could not find the node!"
                 ,true,
-                database.lookUpNode("Nautilus",label));
+                database.lookUpNode("Nautilus",label,""));
 
         String userLabel = "userNode";
         //lookup with whitespaces
         String test = "Manuel";
-        assertEquals("lookUp could not find the node " + test +"!"
-                ,true,
-                database.lookUpNode(test,userLabel));
+        assertEquals("lookUp could not find the node " + test +"!",true,
+                database.lookUpNode(test,userLabel,""));
 
     }
 
@@ -134,11 +133,26 @@ public class Neo4jWrapperTest extends TestCase {
     }
 
     public void testGetUserRankings(){
-
         database.createUser("John","streamplaystaboo");
         LinkedHashMap<String,Integer> list = database.getHighScoreList(3,channelName);
         Log.info(list.toString());
+    }
 
+    public void testGetStreamRankings(){
+        database.createUser("John","streamplaystaboo");
+        database.createUser("John","realwasabimc");
+        database.createUser("John","pewhtv");
+        database.createUser("Matthew","pewhtv");
+        database.updateUserPoints("John",200,"streamplaystaboo");
+        database.updateUserPoints("John",100,"realwasabimc");
+        database.updateUserPoints("John",50,"pewhtv");
+        database.updateUserPoints("Matthew",70,"pewhtv");
+        LinkedHashMap<String,HashMap<String,Integer>> result = database.getStreamHighScore();
+
+        Iterator<String> it = result.keySet().iterator();
+        assertEquals("Wrong stream order","streamplaystaboo",it.next());
+        assertEquals("Wrong stream order","pewhtv",it.next());
+        assertEquals("Wrong stream order","realwasabimc",it.next());
     }
 
     public void testGetUserErrors(){

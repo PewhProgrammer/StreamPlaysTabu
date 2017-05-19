@@ -81,7 +81,7 @@ public class Neo4jWrapper {
 
     public void createStreamNode(String ch){
         try {
-            generateNodeInDatabase(ch,"streamNode"); Log.trace("Created streamNode: \""+ch+"\"");
+            generateNodeInDatabase(new customNode(ch,"streamNode",true,ch)); Log.trace("Created streamNode: \""+ch+"\"");
         }catch(DatabaseException e){Log.trace(e.getMessage());}
     }
 
@@ -172,6 +172,9 @@ public class Neo4jWrapper {
 
     public LinkedHashMap<String, Integer> getHighScoreList(int querySize,String ch){return fetchUserWithHighestPoints(querySize,ch);}
 
+    public LinkedHashMap<String,HashMap<String,Integer>> getStreamHighScore(){
+        return fetchStreamWithHighestScores();
+    }
 
     public String updateUserVoteKicked(String user, String ch) {
         try {
@@ -182,7 +185,7 @@ public class Neo4jWrapper {
 
     public int getUserPoints(String user,String ch) throws Neo4jException{
         try {
-            return Integer.parseInt(fetchUserPropertiesFromDatabase(user,"points"));
+            return Integer.parseInt(fetchRelationshipProperties(user,"points",ch));
         }catch(DatabaseException e){Log.debug(e.getMessage()); createUser(user,ch);}
 
         return 0; //default value
@@ -190,7 +193,7 @@ public class Neo4jWrapper {
 
     public int updateUserPoints(String user, int i,String ch) {
         try {
-            return Integer.parseInt(updateUserProperties(user,"points",""+i));
+            return Integer.parseInt(updateRelationshipProperties(new customRelationship(user,ch,"points",""+i)));
         }catch(DatabaseException e){
             Log.debug(e.getMessage());
             createUser(user,ch);
@@ -250,7 +253,7 @@ public class Neo4jWrapper {
         {
             try ( Transaction tx = session.beginTransaction() )
             {
-                if(lookUpNode(nodeName,"Node")){
+                if(lookUpNode(nodeName,"Node","")){
                     throw new DatabaseException("Node: " + nodeName + " is already in the database!");
                 }
                 tx.run( "CREATE (a: "+label+" {name: {name}, type: {type}, deletable:{deletable} })",
@@ -262,15 +265,20 @@ public class Neo4jWrapper {
         return;
     }
 
-    public boolean lookUpNode(String nodeName, String label){
+    public boolean lookUpNode(String nodeName, String label,String ch){
         nodeName = label.equals("Node") ? Util.reduceStringToMinimumWithoutWhitespaces(nodeName) : nodeName;
         StringBuilder builder = new StringBuilder();
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (s:"+label+") WHERE " +
+                "replace(s.name,\" \",\"\") = {name}");
+        if(!ch.equals("")){
+            //query.append("AND t.name = {channel}");
+        }
+        query.append(" RETURN s");
 
         try ( Session session = driver.session() ) {
             try (Transaction tx = session.beginTransaction()) {
-                StatementResult result = tx.run("MATCH (n:"+label+") WHERE " +
-                                "replace(n.name,\" \",\"\") = {name} " +
-                                "RETURN n", parameters("name", nodeName));
+                StatementResult result = tx.run(query.toString(),parameters("name", nodeName));
                 if(!result.hasNext()) return false;
                 while (result.hasNext()) {
                     Record record = result.next();
@@ -357,7 +365,7 @@ public class Neo4jWrapper {
                 tx.run("MATCH (ee) WHERE ee.name =  \"" + node1 + "\" " +
                         "MATCH (js) WHERE js.name = \"" + node2 + "\" " +
                         "CREATE UNIQUE (ee)-[rel:`" + relationship + "` {" +
-                        "deletable: " + isDeletable + "} " +
+                        "deletable: " + isDeletable + ",points: 0} " +
                         "]->(js)");
                 tx.success();
             }
@@ -473,6 +481,34 @@ public class Neo4jWrapper {
         return result ;
     }
 
+    private String fetchRelationshipProperties(String user,String property,String ch) throws DatabaseException{
+        String result = "" ;
+        StringBuilder builder = new StringBuilder();
+
+        try ( Session session = driver.session() )
+        {
+            try ( Transaction tx = session.beginTransaction() )
+            {
+                StatementResult sResult = tx.run("MATCH (n:"+userLabel+")-[rel]->(t) WHERE n.name = {name}" +
+                                "AND t.name = {channel} " +
+                                "RETURN rel",
+                        parameters("name",user,"channel",ch));
+                if(!sResult.hasNext()) throw new DatabaseException("No Relationship "+user+" found!");
+                while (sResult.hasNext()) {
+                    Record record = sResult.next();
+                    List<Value> val = record.values();
+                    Value name = val.get(0).asNode().get(property);
+                    result = name.toString();
+
+                    builder.append("Fetched "+property+": " + String.format("%s %s ", user,
+                            result));
+                }
+            }
+        }
+        Log.trace(builder.toString());
+        return result ;
+    }
+
     private LinkedHashMap<String,Integer> fetchUserWithHighestPoints(int cap, String channel){
         LinkedHashMap<String,Integer> ranking = new LinkedHashMap<>();
         StringBuilder builder = new StringBuilder();
@@ -500,6 +536,32 @@ public class Neo4jWrapper {
         }
         Log.trace("Ranking: "+ ranking.toString());
         return ranking ;
+    }
+
+    private LinkedHashMap<String,HashMap<String,Integer>> fetchStreamWithHighestScores() {
+        LinkedHashMap<String,HashMap<String,Integer>> result = new LinkedHashMap<>();
+
+        StringBuilder builder = new StringBuilder();
+
+        try ( Session session = driver.session() ) { try ( Transaction tx = session.beginTransaction() ) {
+
+                StatementResult sResult = tx.run("MATCH (n:"+userLabel+")-[rel]->(t:streamNode)" +
+                        "RETURN t,n,rel " +
+                        "ORDER BY t.totalPoints DESC");
+                while (sResult.hasNext()) {
+                    Record record = sResult.next();
+                    List<Value> val = record.values();
+                    Value name = val.get(0).asNode().get("totalPoints");
+                    String streamName = val.get(0).asNode().get("name").toString().replaceAll("\"", "");
+                    String userName = val.get(1).asNode().get("name").toString().replaceAll("\"", "");
+                    int userPoints = Integer.parseInt(val.get(2).asRelationship().get("points").toString().replaceAll("\"", ""));
+                    HashMap<String,Integer> temp = new HashMap<>(); temp.put(userName,userPoints);
+                    result.put(streamName,temp);
+
+                }
+            }
+        }
+        return result;
     }
 
     private String fetchNodePropertiesFromDatabase(String nodeName,String property) throws DatabaseException{
@@ -530,6 +592,30 @@ public class Neo4jWrapper {
         return result.replaceAll("\"", "");
     }
 
+    private String updateRelationshipProperties(customRelationship rel) throws DatabaseException{
+        String oldPoints = rel.property.equals("points") ? "new points" : "not_specified" ;
+        String result = rel.value;
+        int resultInt = 0 ;
+        StringBuilder builder = new StringBuilder();
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (n:"+userLabel+")-[rel]->(t) WHERE n.name = {name} AND t.name = {target} " +
+                "SET rel."+rel.property+"={propertyvalue} ");
+        if(rel.property.equals("points")){
+            resultInt = Integer.parseInt(result);
+            query.append("SET t.totalPoints = t.totalPoints+{propertyvalueInt}");
+        }
+        try ( Session session = driver.session() ) {try ( Transaction tx = session.beginTransaction() ) {
+                tx.run(query.toString(),
+                        parameters("name",rel.source,"propertyvalue",result,"propertyvalueInt",resultInt,"target",rel.target));
+                tx.success();
+                builder.append("Updated "+rel.property+": " + String.format("%s -> %s %s", oldPoints,
+                        result ,rel.source));
+            }
+        }
+        Log.trace(builder.toString());
+        return result ;
+    }
+
     private String updateUserProperties(String user,String property,String i) throws DatabaseException{
         String oldPoints = property.equals("points") ? fetchUserPropertiesFromDatabase(user,property) : "not_specified" ;
         String result = i;
@@ -555,15 +641,18 @@ public class Neo4jWrapper {
     }
 
     private void generateUserNodeInDatabase(String user,String channel) throws DatabaseException{
+        StringBuilder builder = new StringBuilder();
+        builder.append("CREATE (a: "+userLabel+" {name: {name}," +
+                "mistakes: 0,cheat_occurence:{v1},votekicked: 0 })");
+
         try ( Session session = driver.session() )
         {
             try ( Transaction tx = session.beginTransaction() )
             {
-                if(lookUpNode(user,userLabel)){
+                if(lookUpNode(user,userLabel,channel)){
                     throw new DatabaseException("User "+ user + " is already in the database!");
                 }
-                tx.run( "CREATE (a: "+userLabel+" {name: {name}," +
-                                "points: 0,mistakes: 0,cheat_occurence:{v1},votekicked: 0 })",
+                tx.run(builder.toString(),
                         parameters( "name", user,"points",0,"v1","none" ) );
                 tx.success();
             }
@@ -571,16 +660,17 @@ public class Neo4jWrapper {
         return ;
     }
 
-    private void generateNodeInDatabase(String name,String label) throws DatabaseException{
-        try ( Session session = driver.session() )
-        {
-            try ( Transaction tx = session.beginTransaction() )
-            {
-                if(lookUpNode(name,label)){
-                    throw new DatabaseException(label + " "+ name + " is already in the database!");
+    private void generateNodeInDatabase(customNode data) throws DatabaseException{
+        String property = data.isStream ? ",totalPoints: 0" :"";
+        String stream = data.isStream ? data.ch : "";
+
+        try ( Session session = driver.session() ) {
+            try ( Transaction tx = session.beginTransaction() ) {
+                if(lookUpNode(data.name,data.label,stream)){
+                    throw new DatabaseException(label + " "+ data.name + " is already in the database!");
                 }
-                tx.run( "CREATE (a: "+label+" {name: {name}})",
-                        parameters( "name", name ) );
+                tx.run( "CREATE (a: "+data.label+" {name: {name}"+property+" })",
+                        parameters( "name", data.name ) );
                 tx.success();
             }
         }
@@ -826,6 +916,27 @@ public class Neo4jWrapper {
             System.exit(0);
         }
         return null;
+
+    }
+
+    private class customNode {
+        String name = ""; String label = ""; boolean isStream = false;String ch;
+
+        public customNode(String name,String label,boolean isStream,String ch){
+            this.isStream = isStream; this.name = name ; this.label = label;this.ch = ch;
+        }
+    }
+
+    private class customRelationship{
+        String source,target,property,value,label;
+
+        public customRelationship(String source, String target,String property,String value){
+            this.source=source;this.target=target;this.property=property;this.value=value;
+        }
+
+        public void setLabel(String l){
+            this.label = l;
+        }
 
     }
 
