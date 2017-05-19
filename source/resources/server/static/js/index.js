@@ -1,7 +1,7 @@
 var giver = "igotabot";
 var state = 'Waiting For Giver';
 var pw;
-var timeLeft = 90;
+var timeLeft = 105;
 
 $(function () {
     $("form").on('submit', function (e) {
@@ -23,7 +23,7 @@ function runTimer() {
         timeLeft = timeLeft - 1;
 
         document.getElementById("progressbar").innerHTML = timeLeft + "s";
-        document.getElementById("progressbar").style.width = (timeLeft / 90) * 100 + "%";
+        document.getElementById("progressbar").style.width = (timeLeft / 105) * 100 + "%";
 
         if (timeLeft == 0) {
             document.getElementById("progressbar").innerHTML = "Time's-Up!";

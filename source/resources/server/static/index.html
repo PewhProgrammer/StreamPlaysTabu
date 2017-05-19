@@ -37,17 +37,23 @@
         </div>
         <p class="navbar-text" style="font-size: 3vh">Giver Interface</p>
         <div class="nav navbar-text progress pull-right" style="width: 25%; height:2vh; margin-top:1.25%">
-            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" id="progressbar" style="width:100%; font-size: 2vh">90s</div>
+            <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" id="progressbar" style="width:100%; font-size: 2vh">105s</div>
         </div>
     </nav>
 
-    <div id="templatesDiv" class="background"></div>
+    <div id="templatesDiv" class="background">
+        <div class="form-group" style="position:absolute; bottom: 0%; width: 80%">
+            <label for="explanationText" style="font-size: 1.5vmin;">Your explanation:</label>
+            <input type="text" class="form-control" id="explanationText"/>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 2%; right: 2%; width: 10%" type="submit" id="explanation">Send</button>
+    </div>
 
     <div id="tabooCard" class="background">
         <p style="text-align: center; font-size: 3vmin; margin-top: 2%;">Explain this word. Don't use its taboowords!</p>
         <div class="panel panel-primary" style="position: absolute; width: 50%; top: 25%; left: 25%; border-radius: 10px;">
-            <div id="explainWord" class="panel-heading" style="text-align: center; font-size: 4vmin;">Heading</div>
-            <div id="tabooWords" class="panel-body" style="color:#000000; font-size: 3vmin"><ul><li>bla</li><li>bla</li><li>bla</li><li>bla</li><li>bla</li></ul></div>
+            <div id="explainWord" class="panel-heading" style="text-align: center; font-size: 4vmin;"></div>
+            <div id="tabooWords" class="panel-body" style="color:#000000; font-size: 3vmin"></div>
         </div>
         <button class="btn btn-lg btn-primary btn-block btn-warning" type="submit" id="skip">Skip word</button>
     </div>
@@ -69,29 +75,19 @@
         </div>
     </div>
 
-    <div id="qAndADiv" class="background"></div>
+    <div id="qAndADiv" class="background">
+        <div id="qAndAs" class="pre-scrollable" style="width:100%; height: 100%; max-height: 100%; font-size: 3vmin;"></div>
+    </div>
 
     <div id="guessesDiv" class="background">
         <p>Most recent guesses:</p>
-        <p id="firstGuess" style="left:1%">Mario<br><br>Peach1</p>
-        <p id="secondGuess" style="left:26%;">Mario<br><br>Peach2</p>
-        <p id="thirdGuess" style="left:51%;">Mario<br><br>Peach3</p>
-        <p id="fourthGuess" style="left:76%;">Mario<br><br>Peach4</p>
+        <p id="firstGuess" style="left:1%"></p>
+        <p id="secondGuess" style="left:26%;"></p>
+        <p id="thirdGuess" style="left:51%;"></p>
+        <p id="fourthGuess" style="left:76%;"></p>
     </div>
 
     <form>
-
-        <!-- Explanation -->
-        <input type="text" id="explanationText" placeholder="Enter an explanation ..."/>
-        <br/>
-        <button type="submit" id="explanation">Explain something!</button><br/>
-        <label id="explanationLabel">No explanation given yet.</label>
-        <br/> <br/>
-
-        <!-- Guesses -->
-        <label id="guessesLabel">Guesses:</label>
-        <label id="guesses">No guesses yet.</label>
-
         <br/><br/>
         <!-- Answer -->
         <input type="radio" id="q1" name="Questions" value="Question 1"/>

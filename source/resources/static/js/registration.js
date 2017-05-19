@@ -5,9 +5,7 @@ var x = setInterval(function() {
     timeLeft = timeLeft - 1;
 
     document.getElementById("progressbar").innerHTML = timeLeft + "s";
-    if(!twenties) {
-        document.getElementById("progressbar").style.width = (timeLeft / 30) * 100 + "%";
-    }
+    document.getElementById("progressbar").style.width = (timeLeft / 30) * 100 + "%";
 
     if (timeLeft == 0) {
         document.getElementById("statusInfo").innerHTML = "Time to register!";
