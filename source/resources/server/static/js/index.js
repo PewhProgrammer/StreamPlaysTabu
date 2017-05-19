@@ -7,18 +7,30 @@ $(function () {
     $("form").on('submit', function (e) {
         e.preventDefault();
     });
-    $( "#pw" ).click(function() { onPassword(); });
-    $( "#category" ).click(function() { onCategoryChosen(); });
-    $( "#skip" ).click(function() { onSkip(); });
-    $( "#explanation" ).click(function() { onExplanation(); });
-    $( "#answer" ).click(function() { onAnswer(); });
-    $( "#validation" ).click(function() { onValidation(); });
+    $("#pw").click(function () {
+        onPassword();
+    });
+    $("#category").click(function () {
+        onCategoryChosen();
+    });
+    $("#skip").click(function () {
+        onSkip();
+    });
+    $("#explanation").click(function () {
+        onExplanation();
+    });
+    $("#answer").click(function () {
+        onAnswer();
+    });
+    $("#validation").click(function () {
+        onValidation();
+    });
 });
 
 // Update the count down every 1 second
 function runTimer() {
 
-    var x = setInterval(function() {
+    var x = setInterval(function () {
 
         timeLeft = timeLeft - 1;
 
@@ -95,40 +107,50 @@ function onValidation() {
 }
 
 function createGiverJoinedEvent() {
-    return JSON.stringify({'password' : pw});
+    return JSON.stringify({
+        'password': pw
+    });
 }
 
 function createPrevotedCategoriesRequest() {
-    return JSON.stringify({'password' : pw});
+    return JSON.stringify({
+        'password': pw
+    });
 }
 
 function createGiverInfoRequest() {
-    return JSON.stringify({'password' : pw});
+    return JSON.stringify({
+        'password': pw
+    });
 }
 
 function createValidationRequest() {
-    return JSON.stringify({'password' : pw});
+    return JSON.stringify({
+        'password': pw
+    });
 }
 
 function createSkipRequest() {
-    return JSON.stringify({'password' : pw});
+    return JSON.stringify({
+        'password': pw
+    });
 }
 
 function createChosenCategoryEvent() {
     var chosenCategory = $("input[name = PrevotedCategories]:checked").val();
     document.getElementById("categoryLabel").innerHTML = "Chosen Category: " + chosenCategory;
     return JSON.stringify({
-        'category' : chosenCategory,
-        'password' : pw
+        'category': chosenCategory,
+        'password': pw
     });
 }
 
 function createExplanationEvent(exp) {
     document.getElementById("explanationLabel").innerHTML = "Last Explanation: " + exp;
     return JSON.stringify({
-        'giver' : giver,
-        'explanation' : exp,
-        'password' : pw
+        'giver': giver,
+        'explanation': exp,
+        'password': pw
     });
 }
 
@@ -138,13 +160,13 @@ function createAnswerEvent() {
     var a = $("#answerText").val();
     document.getElementById("answerLabel").innerHTML = "Question: " + q + "; Answer: " + a;
     return JSON.stringify({
-        'q' : q,
-        'a' : a,
-        'password' : pw
+        'q': q,
+        'a': a,
+        'password': pw
     });
 }
 
-function createPasswordEvent(){
+function createPasswordEvent() {
     pw = $("#pwInput").val();
     return JSON.stringify({
         'password': pw
@@ -172,9 +194,25 @@ function showCategories() {
 function showGame() {
     document.getElementById("categories").style.visibility = "hidden";
     document.getElementById("categories").style.zIndex = "-2";
-    document.getElementById("transparentBG").style.visibility="hidden";
-    document.getElementById("transparentBG").style.zIndex="0";
+    document.getElementById("transparentBG").style.visibility = "hidden";
+    document.getElementById("transparentBG").style.zIndex = "0";
     document.getElementById("gameDiv").style.zIndex = "1";
 
     runTimer();
+}
+
+function handleTemplateLayer(layer) {
+    document.getElementById('template_layer1').style.display = 'none';
+    document.getElementById('template_layer' + layer).style.display = 'block';
+    document.getElementById('template_back').style.display = 'block';
+}
+
+function handleTemplateLayerPrevious(layer) {
+    document.getElementById('template_layer1').style.display = 'block';
+    document.getElementById('template_layer' + layer).style.display = 'none';
+    document.getElementById('template_back').style.display = 'none';
+}
+
+function handleTemplateDropDown(description) {
+    document.getElementById('template_dropdown').textContent = description;
 }
