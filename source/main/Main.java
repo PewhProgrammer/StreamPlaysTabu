@@ -232,6 +232,7 @@ public class Main {
      */
     private boolean checkBindAddrFormat(String bindAddr) {
 
+
         String[] parts ={};
         try {
             parts = bindAddr.split(":");
@@ -240,7 +241,7 @@ public class Main {
         }
         String host = parts[0]; // host
         String port = parts[1]; // port
-        boolean correctHost = host.equals("localhost")
+        boolean correctHost = host.equals("localhost") || host.equals("pewhgames.com")
                 || Pattern.compile("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}:[0-9]{1,5}").
                 matcher(host).matches();
         boolean correctPort = Pattern.compile("\\d+").

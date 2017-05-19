@@ -4,6 +4,7 @@ import common.Log;
 import logic.commands.CategoryChosen;
 import logic.commands.Command;
 import logic.commands.GiverJoined;
+import model.GameMode;
 import model.GameModel;
 import model.GameState;
 import model.Observable;
@@ -113,6 +114,10 @@ public class GameControl extends Observable{
                 e.printStackTrace();
             }
 
+            if(mModel.getGameMode() == GameMode.Streamer){
+                mModel.setGiver(mModel.getGiverChannel());
+                break;
+            }
 
             if(mModel.getRegisteredPlayers().contains(mModel.getWinner())){
                 mModel.setGiver(mModel.getWinner());
