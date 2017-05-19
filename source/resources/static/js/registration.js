@@ -1,5 +1,4 @@
 var timeLeft = 30;
-var twenties = false;
 // Update the count down every 1 second
 var x = setInterval(function() {
 
@@ -8,10 +7,10 @@ var x = setInterval(function() {
     document.getElementById("progressbar").innerHTML = timeLeft + "s";
     if(!twenties) {
         document.getElementById("progressbar").style.width = (timeLeft / 30) * 100 + "%";
-    } else {
-        document.getElementById("progressbar").style.width = (timeLeft / 20) * 100 + "%";
     }
+
     if (timeLeft == 0) {
+        document.getElementById("statusInfo").innerHTML = "Time to register!";
         timeLeft = 30;
     }
 }, 1000);

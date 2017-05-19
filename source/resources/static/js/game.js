@@ -143,7 +143,9 @@ function updateEndGame(endGame) {
     document.getElementById("explanations").style.visibility = "hidden";
     if(incJson.status == "Win") {
         document.getElementById("endGame").innerHTML = "Winner: " + endGame.winner + "<br> Points: +" + endGame.points;
-    } else if (incJson.status == "Lose" || incJson.status =="Kick") {
-        document.getElementById("endGame").innerHTML = "This round is over! :( <br> No winner.";
+    } else if (incJson.status == "Lose") {
+        document.getElementById("endGame").innerHTML = "Time is up! :( <br> No winner.";
+    } else if (incJson.status =="Kick") {
+        document.getElementById("endGame").innerHTML = "The giver was kicked because he tried to betray the system! <br> A new round will start soon.";
     }
 }

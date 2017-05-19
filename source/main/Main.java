@@ -193,8 +193,8 @@ public class Main {
                     break;
                     case "--neo4jserver":
                         neo4jbindAddr = line.getOptionValue("neo4jserver");
-                        if (!checkBindAddrFormat(neo4jbindAddr))
-                            throw new ParseException(neo4jbindAddr + " malicious bind address format for neo4j!");
+                      //  if (!checkBindAddrFormat(neo4jbindAddr))
+                      //      throw new ParseException(neo4jbindAddr + " malicious bind address format for neo4j!");
                         if (line.hasOption("s")) {
                             seed = ((Number) line.getParsedOptionValue("s")).intValue();
                             setSeed = true;

@@ -35,7 +35,6 @@ public class GameModel extends Observable{
     private static final int LEVEL_6 = 1800;
 
     private static final double ROUND_TIME = 1000.0 * 105.0;
-
     private static final double THIRTY_MINUTES = 1000.0 * 60.0 * 30.0;
 
     private GameState mGameState;
@@ -248,7 +247,7 @@ public class GameModel extends Observable{
         String[] content = Util.parseTemplate(explanation);
         String relation = content[0].toLowerCase();
         String targetNode = content[1].toLowerCase();
-        boolean isExplain = true; //TODO is targetNode reliable as explain word?
+        boolean isExplain = true;
 
 
         mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,true, relation,true);
@@ -299,7 +298,7 @@ public class GameModel extends Observable{
             String[] content = Util.parseTemplate(answer);
             String relation = content[0].toLowerCase();
             String targetNode = content[1].toLowerCase();
-            boolean isExplain = false; //TODO is the target node reliable as explain word?
+            boolean isExplain = false;
 
             mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,false);
         }

@@ -26,10 +26,8 @@ public class Ask extends Command {
 
     @Override
     public boolean validate() {
-        if (!gameModel.contribute(sender, thisChannel)) {
-            return false;
-        }
-        return gameModel.getGameState().equals(GameState.GameStarted) && !getQuestion().equals("");
+        return gameModel.contribute(sender, thisChannel) && gameModel.getGameState().equals(GameState.GameStarted)
+                && !getQuestion().equals("");
     }
 
     public String getQuestion() {
