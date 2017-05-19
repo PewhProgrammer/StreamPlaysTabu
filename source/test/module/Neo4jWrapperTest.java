@@ -20,7 +20,7 @@ public class Neo4jWrapperTest extends TestCase {
 
     private final short players = 2 ;
     private boolean simulation = true;
-    private String neo4jbindAddr = "localhost:7687";
+    private String neo4jbindAddr = "pewhgames.com:7687";
     private final Language language = Language.Ger;
     private Neo4jWrapper database ;
     private final String label = "Node";
