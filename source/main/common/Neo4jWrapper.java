@@ -470,7 +470,7 @@ public class Neo4jWrapper {
                     Record record = sResult.next();
                     List<Value> val = record.values();
                     Value name = val.get(0).asNode().get(property);
-                    result = name.toString();
+                    result = name.toString().replaceAll("\"", "");
 
                     builder.append("Fetched "+property+": " + String.format("%s %s ", user,
                             result));
@@ -497,7 +497,7 @@ public class Neo4jWrapper {
                 while (sResult.hasNext()) {
                     Record record = sResult.next();
                     List<Value> val = record.values();
-                    Value name = val.get(0).asNode().get(property);
+                    Value name = val.get(0).asRelationship().get(property);
                     result = name.toString();
 
                     builder.append("Fetched "+property+": " + String.format("%s %s ", user,
@@ -519,15 +519,15 @@ public class Neo4jWrapper {
             {
                 StatementResult sResult = tx.run("MATCH (n:"+userLabel+")-[rel]->(t:streamNode)" +
                         "WHERE t.name = {channel}" +
-                                "RETURN n " +
-                                "ORDER BY n.points DESC " +
+                                "RETURN rel,n " +
+                                "ORDER BY rel.points DESC " +
                                 "LIMIT " + cap,parameters("channel",channel));
                 while (sResult.hasNext()) {
                     Record record = sResult.next();
                     List<Value> val = record.values();
-                    Value name = val.get(0).asNode().get("points");
+                    Value name = val.get(0).asRelationship().get("points");
                     int points = name.asInt();
-                    name = val.get(0).asNode().get("name");
+                    name = val.get(1).asNode().get("name");
                     String user = name.toString().replaceAll("\"", "");
                     ranking.put(user,points);
 

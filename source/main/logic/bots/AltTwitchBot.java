@@ -199,7 +199,7 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public Command parseLine(String message) {
-
+        String channel = this.channel.replaceAll("#","");
         String[] parts = message.split(" ");
 
         // !register
@@ -217,7 +217,7 @@ public class AltTwitchBot extends Bot {
         // !ask
         if (parts[0].equals("!ask")) {
             String[] question = message.split("!ask ");
-            return new Ask(model, channel, sender, question[1]);
+            return new Ask(model, channel, question[1], sender);
         }
 
         // !answer

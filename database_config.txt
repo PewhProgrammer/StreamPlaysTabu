@@ -13,7 +13,7 @@ dota2;is a;moba
 league of legends;is a;moba
 heroes of the storm;is a;moba
 alistar;is a character in;league of legends
-juggernaut;is a role in;dota 2
+juggernaut;is typically in;dota 2
 Shadow fiend; is a character in;dota2
 mario;is a character in;super mario bros.
 luigi;is a character in;super mario bros.
@@ -24,3 +24,5 @@ Link;is a character in;the legend of zelda
 the legend of zelda;is published by; nintendo
 samus;is a character in;super smash bros.
 super smash bros.;is published by;nintendo
+peach;is typically near;mario
+wario;is the opposite of;mario

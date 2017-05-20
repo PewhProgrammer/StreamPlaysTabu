@@ -134,7 +134,8 @@ public class GameControl extends Observable{
             List<String> usersInChannel = mModel.getBot().getUsers(mModel.getGiverChannel()) ;
             if(usersInChannel.size() > 1) {
                 chooseNewGiver(mModel.getBot().getUsers(mModel.getGiverChannel()));
-                break;
+                if(!mModel.getGiver().equals(""))
+                    break;
             }
 
         }
