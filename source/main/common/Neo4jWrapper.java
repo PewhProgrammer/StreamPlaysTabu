@@ -938,7 +938,7 @@ public class Neo4jWrapper {
 
     }
 
-    private class StreamerHighscore {
+    public class StreamerHighscore {
         private String stream;
         private int totalPoints;
         private LinkedList<Pair> users ;

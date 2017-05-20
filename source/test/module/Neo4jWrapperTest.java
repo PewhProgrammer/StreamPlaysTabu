@@ -4,6 +4,7 @@ import common.DatabaseException;
 import common.Log;
 import common.Neo4jWrapper;
 import common.Util;
+import gui.webinterface.containers.StreamRankingContainer;
 import junit.framework.TestCase;
 import model.Language;
 import org.neo4j.driver.v1.exceptions.ServiceUnavailableException;
@@ -147,12 +148,9 @@ public class Neo4jWrapperTest extends TestCase {
         database.updateUserPoints("John",100,"realwasabimc");
         database.updateUserPoints("John",50,"pewhtv");
         database.updateUserPoints("Matthew",70,"pewhtv");
-        LinkedHashMap<String,HashMap<String,Integer>> result = database.getStreamHighScore();
 
-        Iterator<String> it = result.keySet().iterator();
-        assertEquals("Wrong stream order","streamplaystaboo",it.next());
-        assertEquals("Wrong stream order","pewhtv",it.next());
-        assertEquals("Wrong stream order","realwasabimc",it.next());
+        StreamRankingContainer sh = new StreamRankingContainer(database.getStreamHighScore());
+        System.out.println(sh);
     }
 
     public void testGetUserErrors(){

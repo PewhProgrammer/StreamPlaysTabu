@@ -1,5 +1,6 @@
 package gui.webinterface;
 
+import common.Neo4jWrapper;
 import gui.GuiAnchor;
 import gui.webinterface.containers.*;
 import logic.GameControl;
@@ -13,9 +14,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 @Controller
@@ -129,6 +128,14 @@ public class WebAPI implements IObserver {
 
     public void onNotifyScoreUpdate() {
         System.out.println("Score!");
+        GameModel gm = GameControl.mModel;
+        if (!gm.getHosts().isEmpty()) {
+            LinkedList<Neo4jWrapper.StreamerHighscore> sh = gm.getNeo4jWrapper().getStreamHighScore();
+            if (sh.size() > 2) {
+                send("/streamScore", new StreamRankingContainer(sh));
+            }
+        }
+
         send("/score", new RankingContainer(GameControl.mModel.getNeo4jWrapper().getHighScoreList(10, channel)));
     }
 
