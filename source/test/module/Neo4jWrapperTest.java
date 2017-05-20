@@ -149,6 +149,8 @@ public class Neo4jWrapperTest extends TestCase {
         database.updateUserPoints("John",50,"pewhtv");
         database.updateUserPoints("Matthew",70,"pewhtv");
 
+
+        LinkedList<Neo4jWrapper.StreamerHighscore> result = database.getStreamHighScore();
         StreamRankingContainer sh = new StreamRankingContainer(database.getStreamHighScore());
         System.out.println(sh);
     }

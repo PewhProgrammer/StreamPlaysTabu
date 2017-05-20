@@ -328,4 +328,11 @@ function handleTemplateDropDownDouble(description, description2, id) {
     opt1.text = description;
     sel.add(opt1, sel[0]);
     sel2.add(opt2, sel2[0]);
+<<<<<<< HEAD
+}
+
+function handleStars(id, count) {
+    console.log("id: " + id + " , count: " + count);
+=======
+>>>>>>> 52a87c7efb1a6c63995d7e5a59bb91bba225b492
 }
