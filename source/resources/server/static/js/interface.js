@@ -1,5 +1,6 @@
 var base = '/connection-server-external';
 var questions = [];
+var activeQuestion = -1;
 var numQuestions = 0;
 
 function sendGiverJoined(giverJoinedEvent) {
@@ -86,20 +87,20 @@ function showTabooWords(tabooWords) {
     var json =  JSON.parse(tabooWords);
     console.log('>> Received taboo words: ' + tabooWords);
     var taboo = "";
-    if(json.word1 == "") {
-        taboo = "<ul><li>json.word1</li>";
+    if(json.word1 != "") {
+        taboo = "<ul><li>" + json.word1 + "</li>";
     }
-    if(json.word2 == "") {
-        taboo = "<li>json.word2</li>";
+    if(json.word2 != "") {
+        taboo = "<li>" + json.word2 + "</li>";
     }
-    if(json.word3 == "") {
-        taboo = "<li>json.word3</li>";
+    if(json.word3 != "") {
+        taboo = "<li>" + json.word3 + "</li>";
     }
-    if(json.word4 == "") {
-        taboo = "<li>json.word4</li>";
+    if(json.word4 != "") {
+        taboo = "<li>" + json.word4 + "</li>";
     }
-    if(json.word5 == "") {
-        taboo = "<li>json.word5</li></ul>";
+    if(json.word5 != "") {
+        taboo = "<li>" + json.word5 + "</li></ul>";
     }
     document.getElementById("tabooWords").innerHTML = taboo;
 }
@@ -118,13 +119,19 @@ function showQuestion(question) {
     var html ="";
     for(var i=questions.length-1; i >= 0; i--) {
         if (questions[i] != null) {
-            html = html + "<p>Question:<br>" + questions[i] + "</p>"
-                + '<input type="text" class="form-control" placeholder="Answer..." style="width:75%; float: left; margin-right: 5%;" id="answer' + i + '"/>'
-                + '<button class="btn btn-lg btn-primary btn-block btn-primary" type="submit" style="width:20%;" id="answer' + i + '">Send</button>'
+            html = html + "<p class='questions' onclick='chosenQuestion(" + i + ", this)' id='question" + i + "'>Question:<br>" + questions[i] + "</p>"
         }
     }
 
     document.getElementById("qAndAs").innerHTML = html;
+}
+
+function chosenQuestion(num, p) {
+    if(activeQuestion > -1){
+        document.getElementById("question" + activeQuestion).classList.remove("activeQuestion");
+    }
+    activeQuestion = num;
+    document.getElementById(p.id).classList.add("activeQuestion");
 }
 
 function sendAnswer(QandA) {
@@ -175,4 +182,13 @@ function sendPassword(pw) {
 
 function sendToServer(target, content) {
     send(base + target, content);
+}
+
+
+function chooseExpl() {
+
+}
+
+function chooseqAndA() {
+
 }

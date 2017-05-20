@@ -64,31 +64,32 @@ function onGiverJoined() {
 
 function chosenCat1() {
     showGame();
-    onCategoryChosen(getElemeteById("category1").innerHTML);
+    onCategoryChosen(document.getElementById("category1").innerHTML);
+
 }
 
 function chosenCat2() {
-    onCategoryChosen(getElemeteById("category2").innerHTML);
+    onCategoryChosen(document.getElementById("category2").innerHTML);
     showGame();
 }
 
 function chosenCat3() {
-    onCategoryChosen(getElemeteById("category3").innerHTML);
+    onCategoryChosen(document.getElementById("category3").innerHTML);
     showGame();
 }
 
 function chosenCat4() {
-    onCategoryChosen(getElemeteById("category4").innerHTML);
+    onCategoryChosen(document.getElementById("category4").innerHTML);
     showGame();
 }
 
 function chosenCat5() {
-    onCategoryChosen(getElemeteById("category5").innerHTML);
+    onCategoryChosen(document.getElementById("category5").innerHTML);
     showGame();
 }
 
 function onCategoryChosen(category) {
-    sendCategory(createChosenCategoryEvent());
+    sendCategory(createChosenCategoryEvent(category));
     requestGiverInfo(createGiverInfoRequest());
     requestValidation(createValidationRequest());
     sendExplanation(createExplanationEvent(category));
@@ -160,11 +161,9 @@ function createSkipRequest() {
     });
 }
 
-function createChosenCategoryEvent() {
-    var chosenCategory = $("input[name = PrevotedCategories]:checked").val();
-    document.getElementById("categoryLabel").innerHTML = "Chosen Category: " + chosenCategory;
+function createChosenCategoryEvent(category) {
     return JSON.stringify({
-        'category': chosenCategory,
+        'category': category,
         'password': pw
     });
 }
