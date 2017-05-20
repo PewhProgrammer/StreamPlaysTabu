@@ -26,6 +26,7 @@
     </div>
     <div id="categories">
         <h1 style="text-align: center; position:absolute; width:100%; top:8%; font-size: 8vmin;">Choose a category!</h1>
+        <div class="loader"></div>
         <button class="btn btn-lg btn-primary btn-block btn-primary" type="submit" id="category1" onclick="chosenCat1()">category1</button>
         <button class="btn btn-lg btn-primary btn-block btn-success" type="submit" id="category2" onclick="chosenCat2()">category2</button>
         <button class="btn btn-lg btn-primary btn-block btn-info" type="submit" id="category3" onclick="chosenCat3()">category3</button>
@@ -44,7 +45,7 @@
         </nav>
 
         <div id="templatesDiv" class="background">
-            <h1 style="text-align: center; width: 100% font-size: 5vmin;">Choose a category, get a template and explain fast!</h1>
+            <h1 style="text-align: center; width: 100%; font-size: 5vmin;">Choose a category, get a template and explain fast!</h1>
             <div id="template_layer1">
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_one" onclick=handleTemplateLayer(2)>Appearance</button>
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_two" onclick=handleTemplateLayer(3)>Purpose</button>

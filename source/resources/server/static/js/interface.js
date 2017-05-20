@@ -104,6 +104,7 @@ function showTabooWords(tabooWords) {
         taboo = "<li>" + json.word5 + "</li></ul>";
     }
     document.getElementById("tabooWords").innerHTML = taboo;
+    showGame();
 }
 
 function sendExplanation(explanation) {

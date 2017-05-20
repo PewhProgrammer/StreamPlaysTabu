@@ -63,29 +63,24 @@ function onGiverJoined() {
 }
 
 function chosenCat1() {
-    showGame();
     onCategoryChosen(document.getElementById("category1").innerHTML);
 
 }
 
 function chosenCat2() {
     onCategoryChosen(document.getElementById("category2").innerHTML);
-    showGame();
 }
 
 function chosenCat3() {
     onCategoryChosen(document.getElementById("category3").innerHTML);
-    showGame();
 }
 
 function chosenCat4() {
     onCategoryChosen(document.getElementById("category4").innerHTML);
-    showGame();
 }
 
 function chosenCat5() {
     onCategoryChosen(document.getElementById("category5").innerHTML);
-    showGame();
 }
 
 function onCategoryChosen(category) {
