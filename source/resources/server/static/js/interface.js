@@ -149,8 +149,8 @@ function showValidation(validation) {
 
 function updateGameState(gameState) {
     var json = JSON.parse(gameState);
-    console.log('>> RECEIVED gameState: ' + gameState);
-    state = gameState.gameState;
+    console.log('>> RECEIVED gameState: ' + json.state);
+    state = json.state;
 }
 
 function sendValidation(validation) {

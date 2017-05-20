@@ -26,7 +26,7 @@ public class ABotTest extends TestCase {
     }
 
     public void testTwitchBot(){
-        String channelToConnect = "imaqtpie";
+        String channelToConnect = "streamplaystaboo";
         AltTwitchBot bot = new AltTwitchBot(null, channelToConnect);
 
         List<String> test = bot.getUsers(channelToConnect);

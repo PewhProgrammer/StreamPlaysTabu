@@ -478,10 +478,8 @@ public class GameModel extends Observable{
 
     public void host(String host) {
         if (hosts.contains(host)) {
-            bot.disconnectFromChatroom(host);
             hosts.remove(host);
         } else {
-            bot.connectToChatroom(host);
             hosts.add(host);
         }
     }

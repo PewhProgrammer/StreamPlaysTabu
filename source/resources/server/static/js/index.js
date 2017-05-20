@@ -1,6 +1,7 @@
 var giver = "igotabot";
 var state = 'Waiting For Giver';
 var pw;
+var pw_cmp;
 var timeLeft = 105;
 var templateId = 0;
 var tempString = "";
@@ -191,9 +192,9 @@ function createAnswerEvent() {
 }
 
 function createPasswordEvent() {
-    pw = $("#pwInput").val();
+    pw_cmp = $("#pwInput").val();
     return JSON.stringify({
-        'password': pw
+        'password': pw_cmp
     });
 }
 

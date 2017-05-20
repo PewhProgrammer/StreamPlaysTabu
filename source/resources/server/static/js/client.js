@@ -9,13 +9,19 @@ $(document).ready(function() {
         console.log('Connected to server: ' + JSON.stringify(data));
     });
     socket.on(base + '/pwSucc', function(data) {
-        if (vpw) {
+        var json = JSON.parse(data);
+        var pass = json["password"];
+        if (pass == pw_cmp.toString()) {
             console.log('Password accepted.');
+            pw = pw_cmp;
+            showCategories();
             onGiverJoined();
         }
     });
     socket.on(base + '/pwErr', function(data) {
-        if (vpw) {
+        var json = JSON.parse(data);
+        var pass = json["password"];
+        if (pass == pw_cmp.toString()) {
             window.alert('Incorrect password. Please try again.');
         }
     });

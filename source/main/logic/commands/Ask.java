@@ -9,7 +9,7 @@ public class Ask extends Command {
     private final String question;
     private final String sender;
 
-    public Ask(GameModel gm, String ch, String question, String sender) {
+    public Ask(GameModel gm, String ch, String sender, String question) {
         super(gm, ch);
         this.question = question;
         this.sender = sender;
