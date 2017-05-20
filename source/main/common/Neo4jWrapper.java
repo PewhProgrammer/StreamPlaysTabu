@@ -498,7 +498,7 @@ public class Neo4jWrapper {
                     Record record = sResult.next();
                     List<Value> val = record.values();
                     Value name = val.get(0).asRelationship().get(property);
-                    result = name.toString();
+                    result = name.toString().replaceAll("\"", "");
 
                     builder.append("Fetched "+property+": " + String.format("%s %s ", user,
                             result));
