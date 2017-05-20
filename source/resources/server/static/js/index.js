@@ -96,26 +96,35 @@ function onCategoryChosen(category) {
 }
 
 function onExplanation() {
-    document.getElementById('sendButton').style.display = 'none';
-    document.getElementById('template_layer1').style.display = 'block';
-    document.getElementById('template_layer' + templateLayer).style.display = 'none';
+    if($("#explanationText").val() != null) {
+        document.getElementById('sendButton').style.display = 'none';
+        document.getElementById('template_layer1').style.display = 'block';
+        document.getElementById('template_layer' + templateLayer).style.display = 'none';
 
-    var result = "";
-    if (templateId < 4 && templateId >= 1) {
-        result += tempString;
-        result += " " + $("#input2").val();
-        result += " is";
-        result += " " + $("#input3").val();
+        var result = "";
+        if (templateId < 4 && templateId >= 1) {
+            result += tempString;
+            result += " " + $("#input2").val();
+            result += " is";
+            result += " " + $("#input3").val();
 
-    } else if (templateId === 12 || templateId === 16) {
-        result += $("#sel1").val()
-        result += " " + $("#explanationText").val()
-    } else {
-        result = tempString;
-        result += " " + $("#explanationText").val();
+        } else if (templateId === 12 || templateId === 16) {
+            result += $("#sel1").val()
+            result += " " + $("#explanationText").val()
+        } else {
+            result = tempString;
+            result += " " + $("#explanationText").val();
+        }
+        console.log("Sent explanation: " + result);
+        if (activeField == "templates") {
+            sendExplanation(createExplanationEvent(result));
+        } else {
+            sendAnswer(createAnswerEvent(result));
+            questions[activeQuestion] = null;
+            refreshQuestions();
+            activeQuestion = -1;
+        }
     }
-    console.log("Sent explanation: " + result);
-    sendExplanation(createExplanationEvent(result));
 }
 
 function onAnswer() {
@@ -169,8 +178,7 @@ function createChosenCategoryEvent(category) {
 }
 
 function createExplanationEvent(exp) {
-    var build = "You were succesful in explaining the word!"
-    document.getElementById("explanationLabel").innerHTML = build + " Explanation: " + exp;
+    document.getElementById("explanationLabel").innerHTML = build + "Last Explanation: " + exp;
     return JSON.stringify({
         'giver': giver,
         'explanation': exp,
@@ -178,11 +186,10 @@ function createExplanationEvent(exp) {
     });
 }
 
-function createAnswerEvent() {
+function createAnswerEvent(answer) {
 
-    var q = $("input[name = Questions]:checked").val();
-    var a = $("#answerText").val();
-    document.getElementById("answerLabel").innerHTML = "Question: " + q + "; Answer: " + a;
+    var q = questions[activeQuestion];
+    var a = answer;
     return JSON.stringify({
         'q': q,
         'a': a,
@@ -326,6 +333,4 @@ function handleTemplateDropDownDouble(description, description2, id) {
     opt1.text = description;
     sel.add(opt1, sel[0]);
     sel2.add(opt2, sel2[0]);
-
-
 }

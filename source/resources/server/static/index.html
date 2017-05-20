@@ -44,12 +44,12 @@
         </nav>
 
         <div id="templatesDiv" class="background">
+            <h1 style="text-align: center; width: 100% font-size: 5vmin;">Choose a category, get a template and explain fast!</h1>
             <div id="template_layer1">
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_one" onclick=handleTemplateLayer(2)>Appearance</button>
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_two" onclick=handleTemplateLayer(3)>Purpose</button>
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_three" onclick=handleTemplateLayer(4)>Characteristic</button>
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_four" onclick=handleTemplateLayer(5)>Game Specific</button>
-                <label id="explanationLabel" style="position: absolute; bottom: 5%; right: 30%; width: 60%; padding:10px 0px;font-size:20px">Choose a template above to start explaining your word!!</label>
             </div>
 
             <div id="template_layer2" style="display:none;">
@@ -136,7 +136,7 @@
         </div>
 
         <div id="tabooCard" class="background">
-            <div id="cardBlock" class="background" onclick="chooseExpl()" style="position: absolute; z-index: 1; width: 100%; height: 100%; opacity: 0.5;"></div>
+            <div id="cardBlock" class="background" onclick="chooseExpl()"></div>
             <p style="text-align: center; font-size: 3vmin; margin-top: 2%;">Explain this word. Don't use its taboowords!</p>
             <div class="panel panel-primary" style="position: absolute; width: 50%; top: 25%; left: 25%; border-radius: 10px;">
                 <div id="explainWord" class="panel-heading" style="text-align: center; font-size: 4vmin;"></div>
@@ -174,34 +174,7 @@
             <p id="thirdGuess" style="left:51%;"></p>
             <p id="fourthGuess" style="left:76%;"></p>
         </div>
-
-        <form>
-            <br/><br/>
-            <!-- Answer -->
-            <input type="radio" id="q1" name="Questions" value="Question 1" />
-            <label id="q1Label" for="q1">No Question yet.</label><br/>
-            <br/>
-            <input type="text" id="answerText" placeholder="Enter an answer ..." />
-            <br/>
-            <button type="submit" id="answer">Answer a question!</button><br>
-            <label id="answerLabel">No answer given yet.</label>
-            <br/> <br/>
-
-
-            <!-- Validation -->
-            <!-- UNDER CONSTRUCTION -->
-            <p><b>UNDER CONSTRUCTION!</b></p>
-            <input type="radio" id="note1" name="ValidationChoice" value="1 star" />
-            <label for="note1"> 1 star</label><br/>
-            <input type="radio" id="note3" name="ValidationChoice" value="2 star" />
-            <label for="note2"> 2 star</label><br/>
-            <input type="radio" id="note2" name="ValidationChoice" value="3 star" />
-            <label for="note3"> 3 star</label>
-            <br/>
-            <button type="submit" id="validation">Validate something!</button>
-        </form>
     </div>
-
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>

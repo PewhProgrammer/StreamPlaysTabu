@@ -112,7 +112,7 @@ body {
     height: 65%;
     left: 27.5%;
     top: 10%;
-    padding: 2% 2% 2% 2%;
+    padding: 1% 1% 1% 1%;
 }
 
 #validateDiv{
@@ -163,6 +163,8 @@ body {
     border-style: solid;
     border-top-color: #337ab7;
     border-bottom-color: #337ab7;
+    border-left-color: transparent;
+    border-right-color: transparent;
     border-radius: 10px;
 }
 
@@ -176,4 +178,14 @@ body {
     width: 100%;
     height: 100%;
     opacity: 0.5;
+    visibility: visible;
+}
+
+#cardBlock {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    z-index: -1;
+    visibility: hidden;
 }
