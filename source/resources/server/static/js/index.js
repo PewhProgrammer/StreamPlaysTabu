@@ -91,7 +91,7 @@ function onCategoryChosen(category) {
 }
 
 function onExplanation() {
-    if($("#explanationText").val() != null) {
+    if ($("#explanationText").val() != null) {
         document.getElementById('sendButton').style.display = 'none';
         document.getElementById('template_layer1').style.display = 'block';
         document.getElementById('template_layer' + templateLayer).style.display = 'none';
@@ -211,6 +211,7 @@ function validatePW(password) {
 }
 
 function showCategories() {
+    console.log("wta");
     document.getElementById("signin").style.visibility = "hidden";
     document.getElementById("signin").style.zIndex = "-1";
     document.getElementById("categories").style.visibility = "visible";
