@@ -217,19 +217,22 @@ $('.selectpicker').selectpicker('val', 'Mustard');
 
 function handleTemplateDropDown(description, id) {
     //$('.selectpicker').selectpicker('val', 'Mustard');
+    templateId = id;
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv1').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'none';
-    templateId = id;
     var sel = document.getElementById('sel1');
+    document.getElementById('sel1').disabled = true;
     var length = sel.options.length;
-    var opt1 = document.createElement("option");
     sel.textContent = description;
     for (i = 0; i < length; i++) {
         sel.options[i] = null;
     }
+    var opt1 = document.createElement("option");
     opt1.text = description;
     sel.add(opt1, sel[0]);
+
+
 }
 
 function handleTemplateDropDown2(description, description2, id) {
@@ -238,6 +241,7 @@ function handleTemplateDropDown2(description, description2, id) {
     document.getElementById('template_dropDownDiv1').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'none';
     var sel = document.getElementById('sel1');
+    document.getElementById('sel1').disabled = false;
     var length = sel.options.length;
     for (i = 0; i < length; i++) {
         sel.options[i] = null;
@@ -250,6 +254,30 @@ function handleTemplateDropDown2(description, description2, id) {
     sel.textContent = description;
     sel.add(opt1, sel[0]);
     sel.add(opt2, sel[1]);
+}
+
+function handleTemplateDropDownMultiple(description, description2, description3, id) {
+    templateId = id;
+    document.getElementById('sendButton').style.display = 'block';
+    document.getElementById('template_dropDownDiv1').style.display = 'block';
+    document.getElementById('template_dropDownDiv2').style.display = 'none';
+    var sel = document.getElementById('sel1');
+    document.getElementById('sel1').disabled = false;
+    var length = sel.options.length;
+    for (i = 0; i < length; i++) {
+        sel.options[i] = null;
+    }
+
+    var opt1 = document.createElement("option");
+    var opt2 = document.createElement("option");
+    var opt3 = document.createElement("option");
+    opt1.text = description;
+    sel.textContent = description;
+    sel.add(opt1, sel[0]);
+    opt2.text = description2;
+    sel.add(opt2, sel[1]);
+    opt3.text = description3;
+    sel.add(opt3, sel[2]);
 }
 
 function handleTemplateDropDownDouble(description, description2, id) {
