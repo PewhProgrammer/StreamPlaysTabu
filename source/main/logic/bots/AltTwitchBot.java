@@ -195,7 +195,7 @@ public class AltTwitchBot extends Bot {
         // !ask
         if (parts[0].equals("!ask")) {
             String[] question = message.split("!ask ");
-            return new Ask(model, channel, question[1], sender);
+            return new Ask(model, channel, sender, question[1]);
         }
 
         // !answer
