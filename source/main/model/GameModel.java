@@ -105,6 +105,9 @@ public class GameModel extends Observable{
         generateVotingCategories();
     }
 
+    public Set<String> getHosts() {
+        return this.hosts;
+    }
 
     public HashMap<String, Set<String>> getValidationInfo() {
         return validationInfo;

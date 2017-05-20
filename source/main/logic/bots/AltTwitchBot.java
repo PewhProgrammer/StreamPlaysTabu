@@ -36,11 +36,10 @@ public class AltTwitchBot extends Bot {
         public void onMessage(String channel, String sender,
                               String login, String hostname, String message) {
 
-
             if (sender.equals("streamplaystaboo") | sender.equals(channel)){
                 if (message.startsWith("!shutdown")) {
                     Log.debug("shutdown command received!");
-                    sendMessage(channel, "@" + sender + ": BYE BYE");
+                    model.pushCommand(new Host(model, channel, channel));
                     partChannel(sender);
                     disconnect();
                     dispose();
@@ -59,18 +58,9 @@ public class AltTwitchBot extends Bot {
             System.out.println(message);
             String[] channel = message.split(" ");
 
+            model.pushCommand(new Host(model, channel[0], channel[0]));
+
             new AltTwitchBot(model, "#"+channel[0]);
-
-        }
-
-        public void onUnknown(String line){
-            Log.info(line);
-
-        }
-
-        protected  void onAction(String sender, String login,
-                                 String hostname, String target, String action){
-            Log.info(action);
 
         }
     }
@@ -133,7 +123,6 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void announceNewRound() {
-        sendQuestion();
         sendChatMessage("------------------------------------------------------------------" +
                 " A new round has started. Good Luck!!!" +
                 " ------------------------------------------------------------------");
@@ -157,6 +146,7 @@ public class AltTwitchBot extends Bot {
     public void announceRegistration() {
         sendChatMessage("" +
                 "------------------------------------------------- A new round will start soon. Type !register to get into the giver pool! -------------------------------------------------");
+        sendQuestion();
     }
 
     @Override

@@ -236,7 +236,6 @@ public class BeamBot extends Bot {
 
     @Override
     public void announceNewRound() {
-        sendQuestion();
         chatConnectable.send(ChatSendMethod.of("A new round has started. Good Luck and let them guesses flow!!!"));
     }
 
@@ -257,6 +256,7 @@ public class BeamBot extends Bot {
 
     @Override
     public void announceRegistration() {
+        sendQuestion();
         chatConnectable.send(ChatSendMethod.of("A new round will start soon. Type !register to get into the giver pool!"));
     }
 
