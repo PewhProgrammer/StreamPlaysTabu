@@ -59,18 +59,8 @@ function onGiverJoined() {
     requestPrevotedCategories(createPrevotedCategoriesRequest());
 }
 
-function chosenCat1() { <<
-    <<
-    <<
-    <
-    HEAD
-    showGame(); ===
-    ===
-    =
-    loadingIndicator(); >>>
-    >>>
-    >
-    fa2330f2fac00e62e37056a500fe18753fa402f9
+function chosenCat1() {
+    loadingIndicator();
     onCategoryChosen(document.getElementById("category1").innerHTML);
 }
 
@@ -188,7 +178,7 @@ function createChosenCategoryEvent(category) {
 }
 
 function createExplanationEvent(exp) {
-    document.getElementById("explanationLabel").innerHTML = build + "Last Explanation: " + exp;
+    document.getElementById("explanationText").innerHTML = "Last Explanation: " + exp;
     return JSON.stringify({
         'giver': giver,
         'explanation': exp,
@@ -256,8 +246,6 @@ function handleTemplateLayerPrevious(layer) {
     document.getElementById('template_layer1').style.display = 'block';
     document.getElementById('template_layer' + layer).style.display = 'none';
 }
-
-$('.selectpicker').selectpicker('val', 'Mustard');
 
 function handleTemplateDropDown(description, id) {
     //$('.selectpicker').selectpicker('val', 'Mustard');

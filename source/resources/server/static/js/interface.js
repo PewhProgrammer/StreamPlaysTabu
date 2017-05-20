@@ -41,7 +41,6 @@ function showGiverInfo(giverInfo) {
     var json = JSON.parse(giverInfo);
     console.log('>> Received giver information: ' + giverInfo);
     giver = json.name;
-    document.getElementById("giverInfo").innerHTML = 'Giver: ' + json.name + '; Points: ' + json.points + '; Level: ' + json.level + ';';
 }
 
 function showGuesses(guesses) {
