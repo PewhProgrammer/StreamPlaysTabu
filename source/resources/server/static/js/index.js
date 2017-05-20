@@ -205,19 +205,21 @@ function showGame() {
 function handleTemplateLayer(layer) {
     document.getElementById('template_layer1').style.display = 'none';
     document.getElementById('template_layer' + layer).style.display = 'block';
-    document.getElementById('template_back').style.display = 'block';
 }
 
 function handleTemplateLayerPrevious(layer) {
+    document.getElementById('sendButton').style.display = 'none';
     document.getElementById('template_layer1').style.display = 'block';
     document.getElementById('template_layer' + layer).style.display = 'none';
-    document.getElementById('template_back').style.display = 'none';
 }
 
 $('.selectpicker').selectpicker('val', 'Mustard');
 
 function handleTemplateDropDown(description, id) {
-    $('.selectpicker').selectpicker('val', 'Mustard');
+    //$('.selectpicker').selectpicker('val', 'Mustard');
+    document.getElementById('sendButton').style.display = 'block';
+    document.getElementById('template_dropDownDiv1').style.display = 'block';
+    document.getElementById('template_dropDownDiv2').style.display = 'none';
     templateId = id;
     var sel = document.getElementById('sel1');
     var length = sel.options.length;
@@ -232,6 +234,9 @@ function handleTemplateDropDown(description, id) {
 
 function handleTemplateDropDown2(description, description2, id) {
     templateId = id;
+    document.getElementById('sendButton').style.display = 'block';
+    document.getElementById('template_dropDownDiv1').style.display = 'block';
+    document.getElementById('template_dropDownDiv2').style.display = 'none';
     var sel = document.getElementById('sel1');
     var length = sel.options.length;
     for (i = 0; i < length; i++) {
@@ -245,4 +250,26 @@ function handleTemplateDropDown2(description, description2, id) {
     sel.textContent = description;
     sel.add(opt1, sel[0]);
     sel.add(opt2, sel[1]);
+}
+
+function handleTemplateDropDownDouble(description, description2, id) {
+    document.getElementById('sendButton').style.display = 'block';
+    document.getElementById('template_dropDownDiv2').style.display = 'block';
+    document.getElementById('template_dropDownDiv1').style.display = 'none';
+    var sel = document.getElementById('drop2');
+    var sel2 = document.getElementById('drop3');
+    var length = sel.options.length;
+    var opt1 = document.createElement("option");
+    var opt2 = document.createElement("option");
+    sel.textContent = description;
+    for (i = 0; i < length; i++) {
+        sel2.options[i] = null;
+        sel.options[i] = null;
+    }
+    opt2.text = description2;
+    opt1.text = description;
+    sel.add(opt1, sel[0]);
+    sel2.add(opt2, sel2[0]);
+
+
 }

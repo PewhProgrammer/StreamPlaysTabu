@@ -33,7 +33,7 @@ public class Neo4jWrapperTest extends TestCase {
     public void setUp() throws Exception {
         int seed = randomizer.nextInt(100);
         database = new Neo4jWrapper(simulation,neo4jbindAddr,seed);
-        database.resetRelationships(); //TODO doesnt work properly on userNode
+        database.resetRelationships();
         database.resetDatabase();
         Log.setLevel(Log.Level.TRACE);
     }
@@ -316,6 +316,8 @@ public class Neo4jWrapperTest extends TestCase {
     }
 
     public void testSetUpNodes(){
+
+        database = new Neo4jWrapper(simulation,"pewhgames.com:7687",23);
 
         try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
 

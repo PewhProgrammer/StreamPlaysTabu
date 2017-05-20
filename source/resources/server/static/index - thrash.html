@@ -49,13 +49,12 @@
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_two" onclick=handleTemplateLayer(3)>Purpose</button>
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_three" onclick=handleTemplateLayer(4)>Characteristic</button>
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_four" onclick=handleTemplateLayer(5)>Game Specific</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 2%; right: 2%; width: 10%" type="submit" id="explanation">Send</button>
             </div>
 
             <div id="template_layer2" style="display:none;">
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_one" onclick="handleTemplateDropDown('Its color is',1)">Color</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_size" onclick="handleTemplateDropDown('Its size is',2)">Size</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_shape" onclick="handleTemplateDropDown('Its shape is',3)">Shape</button>
+                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_one" onclick="handleTemplateDropDownDouble('The color of its','is',1)">Color</button>
+                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_size" onclick="handleTemplateDropDownDouble('The size of its','is',2)">Size</button>
+                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_shape" onclick="handleTemplateDropDownDouble('The shape of its','is',3)">Shape</button>
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_clothing" onclick="handleTemplateDropDown('It wears',4)">Clothing</button>
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_property" onclick="handleTemplateDropDown('It has a/an',5)">Property</button>
                 <button class="btn btn-lg btn-primary btn-block btn-warning" style="position: absolute; bottom: 20%; right: 2%; width: 10%" type="submit" onclick=handleTemplateLayerPrevious(2)>Back</button>
@@ -95,23 +94,42 @@
                 <button class="btn btn-lg btn-primary btn-block btn-warning" style="position: absolute; bottom: 20%; right: 2%; width: 10%" type="submit" onclick=handleTemplateLayerPrevious(5)>Back</button>
             </div>
 
-
-            <div class="form-group" style="position:absolute; bottom: 0%; width: 40%">
-                <label for="explanationText" style="font-size: 1.5vmin;">Your explanation:</label>
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label for="sel1">Template:</label>
-                            <select class="form-control" id="sel1"></select>
+            <div style="display:none" id="sendButton">
+                <div class="frm" style="position: absolute; bottom: 3%; right: 20%;width:80%;display:none;" id="template_dropDownDiv2">
+                    <label for="explanationText" style="font-size: 1.5vmin;margin-left:5%">Your explanation:</label>
+                    <div class="form-group">
+                        <label for="sel2"></label>
+                        <div class="col-lg-3">
+                            <select class="form-control" id="drop2"></select></div>
+                        <div class="col-lg-3">
+                            <input class="form-control" name="name" id="input2" type="text">
                         </div>
-
-
-                    </div>
-                    <div class="col">
-                        <input type="text" class="form-control" id="explanationText" />
+                        <div class="col-lg-3">
+                            <select class="form-control" id="drop3"></select></div>
+                        <div class="col-lg-3">
+                            <input class="form-control" name="name" id="input3" type="text">
+                        </div>
                     </div>
                 </div>
-            </div>
+
+
+                <div class="form-group" style="position:absolute; bottom: 0%; width: 40%;display:block" id="template_dropDownDiv1">
+                    <label for="explanationText" style="font-size: 1.5vmin;">Your explanation:</label>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <select class="form-control" id="sel1"></select>
+                            </div>
+
+
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="explanationText" />
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 2%; right: 2%; width: 10%" type="submit" id="explanation">Send</button></div>
 
 
         </div>
