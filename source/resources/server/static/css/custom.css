@@ -54,7 +54,7 @@ body {
     height: 100%;
     width: 100%;
     background: linear-gradient(to bottom, #3a404d, #181c26);
-    opacity: 0.9;
+    opacity: 0.96;
     z-index: 0;
 }
 
@@ -206,14 +206,18 @@ body {
 }
 
 .loader {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
+    border: 10px solid #f3f3f3; /* Light grey */
+    border-top: 10px solid #3498db; /* Blue */
     border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    position: fixed;
-    margin: auto;
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    left:50%;
+    top:50%;
+    margin-left: -4.5vmin;
+    margin-top: -4.5vmin;
     animation: spin 2s linear infinite;
+    visibility: hidden;
 }
 
 @keyframes spin {

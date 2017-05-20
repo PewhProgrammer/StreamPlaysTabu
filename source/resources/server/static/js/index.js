@@ -59,25 +59,43 @@ function onGiverJoined() {
     requestPrevotedCategories(createPrevotedCategoriesRequest());
 }
 
-function chosenCat1() {
-    showGame();
+function chosenCat1() { <<
+    <<
+    <<
+    <
+    HEAD
+    showGame(); ===
+    ===
+    =
+    loadingIndicator(); >>>
+    >>>
+    >
+    fa2330f2fac00e62e37056a500fe18753fa402f9
     onCategoryChosen(document.getElementById("category1").innerHTML);
 }
 
 function chosenCat2() {
+    loadingIndicator();
     onCategoryChosen(document.getElementById("category2").innerHTML);
 }
 
 function chosenCat3() {
+    loadingIndicator();
     onCategoryChosen(document.getElementById("category3").innerHTML);
 }
 
 function chosenCat4() {
+    loadingIndicator();
     onCategoryChosen(document.getElementById("category4").innerHTML);
 }
 
 function chosenCat5() {
+    loadingIndicator();
     onCategoryChosen(document.getElementById("category5").innerHTML);
+}
+
+function loadingIndicator() {
+    document.getElementById("indicator").style.visibility = "visible";
 }
 
 function onCategoryChosen(category) {
