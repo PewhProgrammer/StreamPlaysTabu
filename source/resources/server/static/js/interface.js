@@ -2,6 +2,7 @@ var base = '/connection-server-external';
 var questions = [];
 var activeQuestion = -1;
 var numQuestions = 0;
+var activeField = "templates";
 
 function sendGiverJoined(giverJoinedEvent) {
     console.log('<< Send giver joined.');
@@ -116,6 +117,10 @@ function showQuestion(question) {
     numQuestions++;
     questions.push(json.question);
 
+    refreshQuestions();
+}
+
+function refreshQuestions() {
     var html ="";
     for(var i=questions.length-1; i >= 0; i--) {
         if (questions[i] != null) {
@@ -186,9 +191,23 @@ function sendToServer(target, content) {
 
 
 function chooseExpl() {
+    document.getElementById("qAndABlock").style.zIndex = "1";
+    document.getElementById("qAndABlock").style.visibility = "visible";
 
+    document.getElementById("cardBlock").style.zIndex = "-1";
+    document.getElementById("cardBlock").style.visibility = "hidden";
+
+    activeField = "templates";
+    activeQuestion = -1;
+    refreshQuestions();
 }
 
 function chooseqAndA() {
+    document.getElementById("qAndABlock").style.zIndex = "-1";
+    document.getElementById("qAndABlock").style.visibility = "hidden";
 
+    document.getElementById("cardBlock").style.zIndex = "1";
+    document.getElementById("cardBlock").style.visibility = "visible";
+
+    activeField = "questions";
 }
