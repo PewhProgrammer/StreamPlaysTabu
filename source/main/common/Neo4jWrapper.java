@@ -3,11 +3,8 @@ package common;
 import org.neo4j.driver.v1.*;
 import org.neo4j.driver.v1.exceptions.*;
 
-import java.io.File;
-import java.lang.reflect.Array;
 import java.time.Instant;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static org.neo4j.driver.v1.Values.parameters;
@@ -172,7 +169,7 @@ public class Neo4jWrapper {
 
     public LinkedHashMap<String, Integer> getHighScoreList(int querySize,String ch){return fetchUserWithHighestPoints(querySize,ch);}
 
-    public LinkedHashMap<String,HashMap<String,Integer>> getStreamHighScore(){
+    public StreamerHighscore getStreamHighScore(){
         return fetchStreamWithHighestScores();
     }
 
@@ -538,8 +535,8 @@ public class Neo4jWrapper {
         return ranking ;
     }
 
-    private LinkedHashMap<String,HashMap<String,Integer>> fetchStreamWithHighestScores() {
-        LinkedHashMap<String,HashMap<String,Integer>> result = new LinkedHashMap<>();
+    private StreamerHighscore fetchStreamWithHighestScores() {
+        StreamerHighscore result = new StreamerHighscore();
 
         StringBuilder builder = new StringBuilder();
 
@@ -555,8 +552,8 @@ public class Neo4jWrapper {
                     String streamName = val.get(0).asNode().get("name").toString().replaceAll("\"", "");
                     String userName = val.get(1).asNode().get("name").toString().replaceAll("\"", "");
                     int userPoints = Integer.parseInt(val.get(2).asRelationship().get("points").toString().replaceAll("\"", ""));
-                    HashMap<String,Integer> temp = new HashMap<>(); temp.put(userName,userPoints);
-                    result.put(streamName,temp);
+                    result.setStream(streamName); result.setStreamPoints(name.asInt());
+                    result.addUserPointsPair(new Pair(userName,userPoints));
 
                 }
             }
@@ -938,6 +935,29 @@ public class Neo4jWrapper {
             this.label = l;
         }
 
+    }
+
+    private class StreamerHighscore {
+        private String stream;
+        private int totalPoints;
+        private LinkedList<Pair> users ;
+        public StreamerHighscore(){users = new LinkedList<>();}
+        public void setStream(String s){stream = s;}
+        public void setStreamPoints(int i){totalPoints = i;}
+        public void addUserPointsPair(Pair p){users.push(p);}
+
+        public String getStream(){return stream;}
+        public int getStreamPoints(){return totalPoints;}
+        public LinkedList<Pair> getUserList(){return users;}
+    }
+
+    public class Pair{
+        Object first,second ;
+        public Pair(Object i,Object k){
+            first = i ; second = k ;
+        }
+        public Object getFirst(){return first;}
+        public Object getSecond(){return second;}
     }
 
 
