@@ -542,21 +542,33 @@ public class Neo4jWrapper {
 
         try ( Session session = driver.session() ) { try ( Transaction tx = session.beginTransaction() ) {
 
+            StatementResult sResultTNode = tx.run("MATCH (t:streamNode)" +
+                    "RETURN t ORDER BY t.totalPoints DESC");
+
+            while(sResultTNode.hasNext()){
+                StreamerHighscore result = new StreamerHighscore();
+                Record recordTNode = sResultTNode.next();
+                List<Value> valTNode = recordTNode.values();
+                int totalPoints = valTNode.get(0).asNode().get("totalPoints").asInt();
+                String streamName = valTNode.get(0).asNode().get("name").toString().replaceAll("\"", "");
+                result.setStream(streamName); result.setStreamPoints(totalPoints);
+
                 StatementResult sResult = tx.run("MATCH (n:"+userLabel+")-[rel]->(t:streamNode)" +
-                        "RETURN t,n,rel " +
-                        "ORDER BY t.totalPoints DESC");
+                        "WHERE t.name = {streamName}"+
+                        "RETURN n,rel " +
+                        "ORDER BY t.totalPoints DESC",parameters("streamName",streamName));
+
                 while (sResult.hasNext()) {
-                    StreamerHighscore result = new StreamerHighscore();
                     Record record = sResult.next();
                     List<Value> val = record.values();
-                    Value name = val.get(0).asNode().get("totalPoints");
-                    String streamName = val.get(0).asNode().get("name").toString().replaceAll("\"", "");
-                    String userName = val.get(1).asNode().get("name").toString().replaceAll("\"", "");
-                    int userPoints = Integer.parseInt(val.get(2).asRelationship().get("points").toString().replaceAll("\"", ""));
-                    result.setStream(streamName); result.setStreamPoints(name.asInt());
+                    String userName = val.get(0).asNode().get("name").toString().replaceAll("\"", "");
+                    int userPoints = Integer.parseInt(val.get(1).asRelationship().get("points").toString().replaceAll("\"", ""));
                     result.addUserPointsPair(new Pair(userName,userPoints));
-                    resultEnd.push(result);
                 }
+
+                resultEnd.push(result);
+            }
+
             }
         }
         return resultEnd;
