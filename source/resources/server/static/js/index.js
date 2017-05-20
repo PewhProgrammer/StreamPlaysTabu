@@ -3,6 +3,8 @@ var state = 'Waiting For Giver';
 var pw;
 var timeLeft = 105;
 var templateId = 0;
+var tempString = "";
+var templateLayer = 0;
 
 $(function () {
     $("form").on('submit', function (e) {
@@ -92,7 +94,26 @@ function onCategoryChosen(category) {
 }
 
 function onExplanation() {
-    sendExplanation(createExplanationEvent($("#explanationText").val()));
+    document.getElementById('sendButton').style.display = 'none';
+    document.getElementById('template_layer1').style.display = 'block';
+    document.getElementById('template_layer' + templateLayer).style.display = 'none';
+
+    var result = "";
+    if (templateId < 4 && templateId >= 1) {
+        result += tempString;
+        result += " " + $("#input2").val();
+        result += " is";
+        result += " " + $("#input3").val();
+
+    } else if (templateId === 12 || templateId === 16) {
+        result += $("#sel1").val()
+        result += " " + $("#explanationText").val()
+    } else {
+        result = tempString;
+        result += " " + $("#explanationText").val();
+    }
+    console.log("Sent explanation: " + result);
+    sendExplanation(createExplanationEvent(result));
 }
 
 function onAnswer() {
@@ -100,6 +121,7 @@ function onAnswer() {
 }
 
 function onSkip() {
+    console.log("haha");
     requestSkip(createSkipRequest());
 }
 
@@ -147,7 +169,8 @@ function createChosenCategoryEvent() {
 }
 
 function createExplanationEvent(exp) {
-    document.getElementById("explanationLabel").innerHTML = "Last Explanation: " + exp;
+    var build = "You were succesful in explaining the word!"
+    document.getElementById("explanationLabel").innerHTML = build + " Explanation: " + exp;
     return JSON.stringify({
         'giver': giver,
         'explanation': exp,
@@ -203,6 +226,7 @@ function showGame() {
 }
 
 function handleTemplateLayer(layer) {
+    templateLayer = layer;
     document.getElementById('template_layer1').style.display = 'none';
     document.getElementById('template_layer' + layer).style.display = 'block';
 }
@@ -218,6 +242,7 @@ $('.selectpicker').selectpicker('val', 'Mustard');
 function handleTemplateDropDown(description, id) {
     //$('.selectpicker').selectpicker('val', 'Mustard');
     templateId = id;
+    tempString = description;
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv1').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'none';
@@ -237,6 +262,7 @@ function handleTemplateDropDown(description, id) {
 
 function handleTemplateDropDown2(description, description2, id) {
     templateId = id;
+    tempString = description;
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv1').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'none';
@@ -281,6 +307,8 @@ function handleTemplateDropDownMultiple(description, description2, description3,
 }
 
 function handleTemplateDropDownDouble(description, description2, id) {
+    templateId = id;
+    tempString = description;
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'block';
     document.getElementById('template_dropDownDiv1').style.display = 'none';

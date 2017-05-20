@@ -49,6 +49,7 @@
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_two" onclick=handleTemplateLayer(3)>Purpose</button>
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_three" onclick=handleTemplateLayer(4)>Characteristic</button>
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_four" onclick=handleTemplateLayer(5)>Game Specific</button>
+                <label id="explanationLabel" style="position: absolute; bottom: 5%; right: 30%; width: 60%; padding:10px 0px;font-size:20px">Choose a template above to start explaining your word!!</label>
             </div>
 
             <div id="template_layer2" style="display:none;">
@@ -78,8 +79,8 @@
                 <button class="btn btn-lg btn-primary btn-block btn-primary" onclick="handleTemplateDropDown('Its character is',15)" style="position: absolute; bottom: 50%; right: 15%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_character">Character</button>
 
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 75%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_typically" onclick="handleTemplateDropDownMultiple('It is typically in','It is typically near','It is typically on',16)">Typically</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 55%; width: 15%;height:15%" type="submit" id="template_opposite" onclick="handleTemplateDropDown('Its color is',17)">Opposite</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 35%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_be" onclick="handleTemplateDropDown('It is the opposite of',18)">Be</button>
+                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 55%; width: 15%;height:15%" type="submit" id="template_opposite" onclick="handleTemplateDropDown('It is the opposite of',17)">Opposite</button>
+                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 35%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_be" onclick="handleTemplateDropDown('It is',18)">Be</button>
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 15%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_have" onclick="handleTemplateDropDown('It has',19)">Have</button>
 
 
@@ -129,7 +130,7 @@
                     </div>
                 </div>
 
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 2%; right: 2%; width: 10%" type="submit" id="explanation">Send</button></div>
+                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 2%; right: 2%; width: 10%" type="submit" id="explanation" onclick="onExplanation()">Send</button></div>
 
 
         </div>
