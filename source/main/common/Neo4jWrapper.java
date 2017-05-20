@@ -169,7 +169,7 @@ public class Neo4jWrapper {
 
     public LinkedHashMap<String, Integer> getHighScoreList(int querySize,String ch){return fetchUserWithHighestPoints(querySize,ch);}
 
-    public StreamerHighscore getStreamHighScore(){
+    public LinkedList<StreamerHighscore> getStreamHighScore(){
         return fetchStreamWithHighestScores();
     }
 
@@ -535,8 +535,8 @@ public class Neo4jWrapper {
         return ranking ;
     }
 
-    private StreamerHighscore fetchStreamWithHighestScores() {
-        StreamerHighscore result = new StreamerHighscore();
+    private LinkedList<StreamerHighscore> fetchStreamWithHighestScores() {
+        LinkedList<StreamerHighscore> resultEnd = new LinkedList<>();
 
         StringBuilder builder = new StringBuilder();
 
@@ -546,6 +546,7 @@ public class Neo4jWrapper {
                         "RETURN t,n,rel " +
                         "ORDER BY t.totalPoints DESC");
                 while (sResult.hasNext()) {
+                    StreamerHighscore result = new StreamerHighscore();
                     Record record = sResult.next();
                     List<Value> val = record.values();
                     Value name = val.get(0).asNode().get("totalPoints");
@@ -554,11 +555,11 @@ public class Neo4jWrapper {
                     int userPoints = Integer.parseInt(val.get(2).asRelationship().get("points").toString().replaceAll("\"", ""));
                     result.setStream(streamName); result.setStreamPoints(name.asInt());
                     result.addUserPointsPair(new Pair(userName,userPoints));
-
+                    resultEnd.push(result);
                 }
             }
         }
-        return result;
+        return resultEnd;
     }
 
     private String fetchNodePropertiesFromDatabase(String nodeName,String property) throws DatabaseException{
