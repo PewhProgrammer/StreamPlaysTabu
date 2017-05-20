@@ -26,9 +26,6 @@ $(function () {
     $("#answer").click(function () {
         onAnswer();
     });
-    $("#validation").click(function () {
-        onValidation();
-    });
 });
 
 // Update the count down every 1 second
@@ -63,8 +60,8 @@ function onGiverJoined() {
 }
 
 function chosenCat1() {
+    showGame();
     onCategoryChosen(document.getElementById("category1").innerHTML);
-
 }
 
 function chosenCat2() {
@@ -131,8 +128,8 @@ function onSkip() {
     requestSkip(createSkipRequest());
 }
 
-function onValidation() {
-    sendValidation(createValidationEvent());
+function onValidation(explain, taboo, score) {
+    sendValidation(createValidationEvent(explain, taboo, score));
 }
 
 function createGiverJoinedEvent() {
@@ -199,10 +196,12 @@ function createPasswordEvent() {
     });
 }
 
-function createValidationEvent() {
-    //TODO grab validation info
+function createValidationEvent(explain, taboo, score) {
     return JSON.stringify({
-        'password': pw
+        'password': pw,
+        'reference': explain,
+        'taboo': taboo,
+        'score': score,
     });
 }
 
@@ -315,6 +314,7 @@ function handleTemplateDropDownDouble(description, description2, id) {
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'block';
     document.getElementById('template_dropDownDiv1').style.display = 'none';
+
     var sel = document.getElementById('drop2');
     var sel2 = document.getElementById('drop3');
     var length = sel.options.length;
@@ -333,4 +333,15 @@ function handleTemplateDropDownDouble(description, description2, id) {
 
 function handleStars(id, count) {
     console.log("id: " + id + " , count: " + count);
+    var label = "";
+    if (id === 1) label = "one";
+    if (id === 2) label = "two";
+    if (id === 3) label = "three";
+    var cat = document.getElementById('validationCategoryLabel_' + label).textContent;
+    var taboo = document.getElementById('validationTabooLabel_' + label).textContent;
+    document.getElementById('validationCategoryLabel_' + label).textContent = "Thanks a lot!";
+    document.getElementById('validationTabooLabel_' + label).textContent = "You've gained 20s more!";
+    document.getElementById('stars_' + label).style.display = 'none';
+    onValidation(cat, taboo, count);
+
 }

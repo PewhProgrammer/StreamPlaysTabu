@@ -48,29 +48,29 @@ function showGuesses(guesses) {
     var json = JSON.parse(guesses);
     console.log('>> Received guesses: ' + guesses);
 
-    if(json.guess1 != "") {
-        if(json.guess5 != "") {
+    if (json.guess1 != "") {
+        if (json.guess5 != "") {
             document.getElementById("firstGuess").innerHTML = json.guess1 + "<br><br>" + json.guess5;
         } else {
             document.getElementById("firstGuess").innerHTML = json.guess1;
         }
     }
-    if(json.guess2 != "") {
-        if(json.guess6 != "") {
+    if (json.guess2 != "") {
+        if (json.guess6 != "") {
             document.getElementById("secondGuess").innerHTML = json.guess2 + "<br><br>" + json.guess6;
         } else {
             document.getElementById("secondGuess").innerHTML = json.guess2;
         }
     }
-    if(json.guess3 != "") {
-        if(json.guess7 != "") {
+    if (json.guess3 != "") {
+        if (json.guess7 != "") {
             document.getElementById("thirdGuess").innerHTML = json.guess3 + "<br><br>" + json.guess7;
         } else {
             document.getElementById("thirdGuess").innerHTML = json.guess3;
         }
     }
-    if(json.guess4 != "") {
-        if(json.guess8 != "") {
+    if (json.guess4 != "") {
+        if (json.guess8 != "") {
             document.getElementById("fourthGuess").innerHTML = json.guess4 + "<br><br>" + json.guess8;
         } else {
             document.getElementById("fourthGuess").innerHTML = json.guess4;
@@ -79,28 +79,28 @@ function showGuesses(guesses) {
 }
 
 function showExplainWord(explainWord) {
-    var json =  JSON.parse(explainWord);
+    var json = JSON.parse(explainWord);
     console.log('>> Received explain word: ' + explainWord);
     document.getElementById("explainWord").innerHTML = 'ExplainWord: ' + json.explainWord;
 }
 
 function showTabooWords(tabooWords) {
-    var json =  JSON.parse(tabooWords);
+    var json = JSON.parse(tabooWords);
     console.log('>> Received taboo words: ' + tabooWords);
     var taboo = "";
-    if(json.word1 != "") {
+    if (json.word1 != "") {
         taboo = "<ul><li>" + json.word1 + "</li>";
     }
-    if(json.word2 != "") {
+    if (json.word2 != "") {
         taboo = "<li>" + json.word2 + "</li>";
     }
-    if(json.word3 != "") {
+    if (json.word3 != "") {
         taboo = "<li>" + json.word3 + "</li>";
     }
-    if(json.word4 != "") {
+    if (json.word4 != "") {
         taboo = "<li>" + json.word4 + "</li>";
     }
-    if(json.word5 != "") {
+    if (json.word5 != "") {
         taboo = "<li>" + json.word5 + "</li></ul>";
     }
     document.getElementById("tabooWords").innerHTML = taboo;
@@ -122,8 +122,8 @@ function showQuestion(question) {
 }
 
 function refreshQuestions() {
-    var html ="";
-    for(var i=questions.length-1; i >= 0; i--) {
+    var html = "";
+    for (var i = questions.length - 1; i >= 0; i--) {
         if (questions[i] != null) {
             html = html + "<p class='questions' onclick='chosenQuestion(" + i + ", this)' id='question" + i + "'>Question:<br>" + questions[i] + "</p>"
         }
@@ -133,7 +133,7 @@ function refreshQuestions() {
 }
 
 function chosenQuestion(num, p) {
-    if(activeQuestion > -1){
+    if (activeQuestion > -1) {
         document.getElementById("question" + activeQuestion).classList.remove("activeQuestion");
     }
     activeQuestion = num;
@@ -157,7 +157,15 @@ function requestValidation(request) {
 
 function showValidation(validation) {
     console.log('>> Received validation: ' + validation);
-    //TODO display validation information
+    var json = JSON.parse(validation);
+    document.getElementById("validationCategoryLabel_one").textContent = json.reference1;
+    document.getElementById("validationCategoryLabel_two").textContent = json.reference2;
+    document.getElementById("validationCategoryLabel_three").textContent = json.reference3;
+
+    document.getElementById("validationTabooLabel_one").textContent = json.taboo1;
+    document.getElementById("validationTabooLabel_two").textContent = json.taboo2;
+    document.getElementById("validationTabooLabel_three").textContent = json.taboo3;
+
 }
 
 function updateGameState(gameState) {
@@ -172,7 +180,7 @@ function sendValidation(validation) {
 }
 
 function showChatMessage(msg) {
-    var json =  JSON.parse(msg);
+    var json = JSON.parse(msg);
     console.log('>> Received chat message: ' + msg);
     document.getElementById("chat").value = document.getElementById("chat").value + "<br>" + msg;
 }
