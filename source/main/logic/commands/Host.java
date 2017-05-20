@@ -39,5 +39,4 @@ public class Host extends Command {
 
         return host.equals(h.getHost());
     }
-
 }

@@ -19,11 +19,11 @@ public class AltTwitchBot extends Bot {
     public AltTwitchBot(GameModel gm, String channel) {
         super(gm, channel);
         connectToChatroom(channel);
+        bot.sendMessage("bertholdgamma", "test hehehe");
     }
 
     private class Pirc extends PircBot {
 
-        List<String> viewers = new ArrayList<>();
         GameModel model;
 
         Pirc(String user, GameModel gm) {
@@ -55,17 +55,12 @@ public class AltTwitchBot extends Bot {
         }
 
         public void onPrivateMessage(String sender, String login, String hostname, String message) {
-            Command cmd = parseLine(message, sender);
 
             System.out.println(message);
             String[] channel = message.split(" ");
 
             new AltTwitchBot(model, "#"+channel[0]);
 
-
-            if (cmd != null) {
-                model.pushCommand(cmd);
-            }
         }
 
         public void onUnknown(String line){
@@ -109,17 +104,11 @@ public class AltTwitchBot extends Bot {
                     6667,
                     "oauth:" + "ksfaxec4iil2ao18nf2d91ua9she0z"); //streamplaystaboo
         } catch (Exception e) {
-            Log.trace("HTTPResponse bot connection failure");
-            System.exit(1);
+            bot.dispose();
         }
 
         bot.joinChannel(user);
         Log.info("connected to " + user);
-    }
-
-    @Override
-    public void disconnectFromChatroom(String user) {
-
     }
 
     @Override
@@ -163,7 +152,6 @@ public class AltTwitchBot extends Bot {
     public void announceGiverNotAccepted(String user) {
         sendChatMessage( user + " did not accept his offer to explain the word. New Registration phase!");
     }
-
 
     @Override
     public void announceRegistration() {
@@ -262,7 +250,7 @@ public class AltTwitchBot extends Bot {
 
         // !taboo
         if (parts[0].equals("!taboo")) {
-            return new Taboo(model, channel, sender, parts[1]);
+            return new Taboo(model, channel, parts[1], sender);
         }
 
         // !vote

@@ -1,0 +1,76 @@
+.streamScore {
+    height: 70%;
+    width: 95%;
+    position: relative;
+    left: 2.5%;
+    bottom: 0;
+    border-bottom-style: solid;
+}
+
+.stream {
+    width: 25%;
+    text-align: center;
+    border-style: solid solid none;
+    border-width: thin;
+    position: absolute;
+}
+
+.headLine {
+    height: 15%;
+    border-top-right-radius: 2em;
+    border-top-left-radius: 2em;
+}
+
+.headLine.first {
+    bottom: 80%;
+    background: #e0574f;
+}
+
+.headLine.second {
+    bottom: 65%;
+    background: #c24448;
+}
+
+.headLine.third {
+    bottom: 50%;
+    background: #963434;
+}
+
+.cont {
+    bottom:0;
+}
+
+
+.cont.first {
+    height: 80%;
+}
+
+
+.cont.second {
+    height: 65%;
+}
+
+.cont.third {
+    height: 50%;
+}
+
+.list {
+    margin-top: 5%;
+    margin-left: -20%;
+    list-style-type: none;
+}
+
+.first {
+    left: 37.5%;
+    border-color: #e0574f;
+}
+
+.second {
+    left: 6.25%;
+    border-color: #c24448;
+}
+
+.third {
+    right: 6.25%;
+    border-color: #963434;
+}

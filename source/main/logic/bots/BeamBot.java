@@ -192,11 +192,6 @@ public class BeamBot extends Bot {
         Log.info("Sollte niemals benutzt werden!!");
     }
 
-    @Override
-    public void disconnectFromChatroom(String user) {
-        //TODO implement
-    }
-
     public static boolean checkChannelExists(String channel) {
 
         try {
