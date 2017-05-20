@@ -195,9 +195,6 @@ body {
     color: gold;
 }
 
-=======visibility: visible;
-
-}
 #cardBlock {
     position: absolute;
     width: 100%;
@@ -206,4 +203,3 @@ body {
     z-index: -1;
     visibility: hidden;
 }
->>>>>>>52a87c7efb1a6c63995d7e5a59bb91bba225b492
