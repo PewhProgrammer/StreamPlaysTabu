@@ -69,7 +69,7 @@ public class Neo4jWrapperTest extends TestCase {
     public void testLookUpNode(){
         assertEquals("Should not find the Node!"
                 ,false,
-                database.lookUpNode("Maokai",label,""));
+                database.lookUpNode("Maokai",label,channelName));
         try {
             database.createNode("Maokai",true);
             database.createNode("nau tilus",true);
@@ -79,18 +79,18 @@ public class Neo4jWrapperTest extends TestCase {
         }
         assertEquals("lookUp could not find the node!"
                 ,true,
-                database.lookUpNode("Maokai",label,""));
+                database.lookUpNode("Maokai",label,channelName));
 
         //lookup with whitespaces
         assertEquals("lookUp could not find the node!"
                 ,true,
-                database.lookUpNode("Nautilus",label,""));
+                database.lookUpNode("Nautilus",label,channelName));
 
         String userLabel = "userNode";
         //lookup with whitespaces
         String test = "Manuel";
-        assertEquals("lookUp could not find the node " + test +"!",true,
-                database.lookUpNode(test,userLabel,""));
+        assertEquals("lookUp could find the node " + test +"!",false,
+                database.lookUpNode(test,userLabel,channelName));
 
     }
 
@@ -297,7 +297,6 @@ public class Neo4jWrapperTest extends TestCase {
     }
 
     public void testValidateExplainTaboo(){
-        database.createStreamNode("streamplaystaboo");
         String explain = "league of legends";
         String taboo = "alistar";
 

@@ -13,7 +13,7 @@ import java.util.List;
  */
 public abstract class Bot {
 
-    private final static String QUEST_MSG = "Do you like to play StreamPlaysTaboo? Please give us feedback: <insert URL to questionnaire>";
+    private final static String QUEST_MSG = "Do you like to play StreamPlaysTaboo? Tell us how we can improve! https://goo.gl/forms/ED5savZgNQEOPES82";
 
     protected Socket sock;
     protected PrintWriter out;

@@ -68,8 +68,9 @@ public class Neo4jWrapper {
     }
 
     public void createUser(String str,String ch){
-        if(ch.equals("giver")){
+        if(str.equals("")){
             Thread.dumpStack();
+            return;
         }
         try {
             generateUserNodeInDatabase(str,ch); Log.trace("Created Node: \""+str+"\" userNode");
@@ -79,7 +80,7 @@ public class Neo4jWrapper {
         createRelationshipStreamer(str,ch,"plays in");
     }
 
-    public void createStreamNode(String ch){
+    private void createStreamNode(String ch){
         try {
             generateNodeInDatabase(new customNode(ch,"streamNode",true,ch)); Log.trace("Created streamNode: \""+ch+"\"");
         }catch(DatabaseException e){Log.trace(e.getMessage());}
@@ -246,6 +247,7 @@ public class Neo4jWrapper {
      * @throws ServiceUnavailableException
      */
     public void createNode(String nodeName,Boolean explain) throws ServiceUnavailableException,DatabaseException{
+        if(nodeName.equals("")) throw new DatabaseException("Node does not have a string literal!");
         String type = explain ? "explain" : "basic";
         nodeName = Util.reduceStringToMinimum(nodeName);
 
