@@ -37,8 +37,8 @@ body {
 }
 
 #categories {
+    display: none;
     z-index: 1;
-    visibility: hidden;
 }
 
 #gameDiv {
@@ -63,6 +63,7 @@ body {
 #category3,
 #category4,
 #category5 {
+    display: none;
     position: absolute;
     width: 20%;
     height: 15%;
