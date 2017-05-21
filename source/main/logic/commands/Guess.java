@@ -76,4 +76,9 @@ public class Guess extends Command {
 
         return name.equals(g.getUser()) && guess.equals(g.getGuess()) && thisChannel.equals(g.getChannel());
     }
+
+    @Override
+    public String toString(){
+        return "Guess";
+    }
 }

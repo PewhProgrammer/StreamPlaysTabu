@@ -46,4 +46,9 @@ public class Register extends Command {
 
         return user.equals(r.getUser());
     }
+
+    @Override
+    public String toString(){
+        return "Register";
+    }
 }

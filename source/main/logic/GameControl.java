@@ -102,6 +102,7 @@ public class GameControl extends Observable{
      */
     private void waitingForPlayers(){
         Log.info("Control is waiting for Players");
+        gameLoop:
         while(mModel.getGameState() == GameState.Registration || !isStarted){
 
             mModel.setTimeStamp();
@@ -117,29 +118,41 @@ public class GameControl extends Observable{
 
             if(mModel.getGameMode() == GameMode.Streamer){
                 mModel.setGiver(mModel.getGiverChannel());
-                break;
+                break gameLoop;
             }
 
             if(mModel.getRegisteredPlayers().contains(mModel.getWinner())){
                 mModel.setGiver(mModel.getWinner());
                 if(!mModel.getGiver().equals(""))
-                    break;
+                    break gameLoop;
             }
 
-            //if user is registered but no giver, then new giver
-            if(mModel.getRegisteredPlayers().size() > 0){
-                chooseNewGiver(mModel.getRegisteredPlayers());
-                if(!mModel.getGiver().equals(""))
-                    break;
+            while(true){
+                try {
+                    //if user is registered but no giver, then new giver
+                    if(mModel.getRegisteredPlayers().size() > 0){
+                        chooseNewGiver(mModel.getRegisteredPlayers());
+                        if(!mModel.getGiver().equals("")){
+                            break gameLoop;
+                        }
+                    }
+                    Log.trace("Entering Stand by: Anyone can type !register to become giver");
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
+
+            /*
             //random giver
             List<String> usersInChannel = mModel.getBot().getUsers(mModel.getGiverChannel()) ;
             if(usersInChannel.size() > 1) {
                 chooseNewGiver(mModel.getBot().getUsers(mModel.getGiverChannel()));
                 if(!mModel.getGiver().equals(""))
                     break;
-            }
+            }*/
+
 
         }
 
@@ -190,8 +203,10 @@ public class GameControl extends Observable{
         for (; ; ) {
             Command c = mModel.pollNextCommand();
             try {
-                if(c.validate())
+                if(c.validate()) {
+                    Log.trace(c.toString()+ " Command received!");
                     c.execute();
+                }
             }catch(NullPointerException n){
                 try {
 

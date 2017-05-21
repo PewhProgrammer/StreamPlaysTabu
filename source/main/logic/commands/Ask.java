@@ -45,4 +45,9 @@ public class Ask extends Command {
 
         return question.equals(a.getQuestion()) && thisChannel.equals(a.getChannel());
     }
+
+    @Override
+    public String toString(){
+        return "Ask";
+    }
 }

@@ -182,7 +182,6 @@ public class AltTwitchBot extends Bot {
 
         // !register
         if (parts[0].equals("!register")) {
-            Log.info("Register Command received");
             return new Register(model, channel, sender);
         }
 
