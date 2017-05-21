@@ -528,7 +528,7 @@ public class Neo4jWrapper {
                     Record record = sResult.next();
                     List<Value> val = record.values();
                     Value name = val.get(0).asRelationship().get("points");
-                    int points = name.asInt();
+                    int points = Integer.parseInt(name.toString().replaceAll("\"", ""));
                     name = val.get(1).asNode().get("name");
                     String user = name.toString().replaceAll("\"", "");
                     ranking.put(user,points);

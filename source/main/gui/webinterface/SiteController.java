@@ -13,9 +13,7 @@ import model.GameState;
 import model.IObserver;
 import org.json.JSONObject;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class SiteController implements IObserver {
@@ -147,6 +145,16 @@ public class SiteController implements IObserver {
         String[] references = new String[3];
         String[] taboos = new String[3];
 
+        ArrayList<ArrayList<String>>  k = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidationForGiver();
+
+        int i = 0;
+        for(ArrayList<String> container : k){
+            references[i] = container.get(i);
+            taboos[i] = container.get(i);
+            i++;
+        }
+
+        /*
         Map m = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidation(null, 1);
         Iterator<Map.Entry<String, Set<String>>> it = m.entrySet().iterator();
         Map.Entry<String, Set<String>> mE = it.next();
@@ -169,7 +177,7 @@ public class SiteController implements IObserver {
         itS = mE.getValue().iterator();
 
         references[2] = mE.getKey();
-        taboos[2] = itS.next();
+        taboos[2] = itS.next();*/
 
 
         send("/validation", new GiverValidation(references, taboos).toJSONObject());
