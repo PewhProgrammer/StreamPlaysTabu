@@ -61,7 +61,6 @@ function onGiverJoined() {
 
 function chosenCat1() {
     loadingIndicator();
-    showGame();
     onCategoryChosen(document.getElementById("category1").innerHTML);
 }
 
