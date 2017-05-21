@@ -80,7 +80,7 @@ function showGuesses(guesses) {
 function showExplainWord(explainWord) {
     var json = JSON.parse(explainWord);
     console.log('>> Received explain word: ' + explainWord);
-    document.getElementById("explainWord").innerHTML = 'ExplainWord: ' + json.explainWord;
+    document.getElementById("explainWord").innerHTML = json.explainWord;
 }
 
 function showTabooWords(tabooWords) {
@@ -180,8 +180,12 @@ function sendValidation(validation) {
 
 function showChatMessage(msg) {
     var json = JSON.parse(msg);
-    console.log('>> Received chat message: ' + msg);
-    document.getElementById("chat").value = document.getElementById("chat").value + "<br>" + msg;
+
+    var element = document.getElementById("chat");
+    console.log('>> Received chat message: ' + json.content + "from: " + json.sender);
+    element.innerHTML = element.innerHTML + "<br>" + json.sender + ": " + json.content;
+
+    $('#chat').animate({scrollTop: $('#chat').offset().top},"slow");
 }
 
 function closeGame(status) {

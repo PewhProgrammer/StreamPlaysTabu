@@ -167,6 +167,10 @@ body {
     color: #337ab7;
 }
 
+.questions{
+    cursor: pointer;
+}
+
 .activeQuestion {
     border-style: solid;
     border-top-color: #337ab7;
@@ -176,15 +180,33 @@ body {
     border-radius: 10px;
 }
 
-.questions {}
+#qAndAs {
+    position:absolute;
+    width:98%;
+    height: 98%;
+    top:1%;
+    left: 1%;
+    font-size: 3vmin;
+}
+
+.scrollable {
+    overflow-y:auto;
+    max-height: 98%;
+}
+
+#chat {
+    height: 75%;
+    max-height: 75%;
+}
 
 #qAndABlock {
     position: absolute;
     z-index: 1;
     width: 100%;
     height: 100%;
-    opacity: 0.5;
+    opacity: 0.75;
     visibility: visible;
+    cursor: pointer;
 }
 
 .rate-container>i {
@@ -200,9 +222,10 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    opacity: 0.5;
+    opacity: 0.75;
     z-index: -1;
     visibility: hidden;
+    cursor: pointer;
 }
 
 .loader {

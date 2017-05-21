@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css" />
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="css/custom.css" />
+    <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css" />
 </head>
 
 <body>
@@ -151,11 +152,8 @@
                 <li class="active"><a data-toggle="tab" href="#chat">Chat</a></li>
                 <li><a data-toggle="tab" href="#validate">Gain extra time</a></li>
             </ul>
-            <div class="tab-content">
-                <div id="chat" class="tab-pane fade in active">
-                    <h3>HOME</h3>
-                    <p>Some content.</p>
-                </div>
+            <div class="tab-content" style="height: 100%;">
+                <div id="chat" class="tab-pane fade in active scrollable"></div>
                 <div id="validate" class="tab-pane fade">
                     <h6>Do these taboo words fit to the category? Help us rate them and gain extra Time!</h6>
                     <div class="row" style="margin-left:20px">
@@ -209,7 +207,7 @@
 
         <div id="qAndADiv" class="background">
             <div id="qAndABlock" class="background" onclick="chooseqAndA()"></div>
-            <div id="qAndAs" class="pre-scrollable" style="position:absolute; width:98%; height: 98%; top:1%; left: 1%; max-height: 100%; font-size: 3vmin;"></div>
+            <div id="qAndAs" class="scrollable" style=""></div>
         </div>
 
         <div id="guessesDiv" class="background">
