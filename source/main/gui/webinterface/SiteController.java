@@ -1,5 +1,6 @@
 package gui.webinterface;
 
+import common.Log;
 import gui.webinterface.containers.*;
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -101,12 +102,13 @@ public class SiteController implements IObserver {
                     receiveQandA(new QandAContainer(obj.getString("q"), obj.getString("a")));
                 }
             }
-        }).on("/sendValidation", new Emitter.Listener() {
+        }).on(CORE_BASE +"/sendValidation", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 JSONObject obj = new JSONObject((String)args[0]);
                 if (validatePW(obj.getString("password"))) {
-                    receiveValidation(obj.getString("reference"), obj.getString("taboo"), Integer.getInteger(obj.getString("score")));
+                    Log.info("here");
+                    receiveValidation(obj.getString("reference"), obj.getString("taboo"), obj.getInt("score"));
                 }
             }
         });
@@ -123,7 +125,7 @@ public class SiteController implements IObserver {
 
     public void giverJoined() {
         System.out.println("Received GiverJoined.");
-        Command cmd = new GiverJoined(gm, "giver");
+        Command cmd = new GiverJoined(gm, gm.getGiverChannel());
         gm.pushCommand(cmd);
     }
 
@@ -175,25 +177,25 @@ public class SiteController implements IObserver {
 
     public void reqSkip() {
         System.out.println("Received reqSkip.");
-        Command cmd = new Skip(gm, "giver");
+        Command cmd = new Skip(gm, gm.getGiverChannel());
         gm.pushCommand(cmd);
     }
 
     public void receiveCategory(CategoryChosenContainer cg) {
         System.out.println("Received category: " + cg.getCategory());
-        Command cmd = new CategoryChosen(gm, "giver", cg.getCategory());
+        Command cmd = new CategoryChosen(gm, gm.getGiverChannel(), cg.getCategory());
         gm.pushCommand(cmd);
     }
 
     public void receiveExplanation(ExplanationContainer ec) {
         System.out.println("Received explanation: " + ec.getExplanation() + " by " + ec.getGiver());
-        Command cmd = new Explanation(gm, "giver", ec.getExplanation(), ec.getGiver());
+        Command cmd = new Explanation(gm, gm.getGiverChannel(), ec.getExplanation(), ec.getGiver());
         gm.pushCommand(cmd);
     }
 
     public void receiveQandA(QandAContainer qa) {
         System.out.println("Received question: " + qa.getQuestion() + " and answer " + qa.getAnswer());
-        Command cmd = new Answer(gm, "giver", qa.getQuestion(), qa.getAnswer());
+        Command cmd = new Answer(gm, gm.getGiverChannel(), qa.getQuestion(), qa.getAnswer());
         gm.pushCommand(cmd);
     }
 

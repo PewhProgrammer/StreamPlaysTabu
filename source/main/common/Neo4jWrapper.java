@@ -68,12 +68,15 @@ public class Neo4jWrapper {
     }
 
     public void createUser(String str,String ch){
+        if(ch.equals("giver")){
+            Thread.dumpStack();
+        }
         try {
             generateUserNodeInDatabase(str,ch); Log.trace("Created Node: \""+str+"\" userNode");
         }catch(DatabaseException e){Log.trace(e.getMessage());}
 
         createStreamNode(ch);
-        createRelationshipCase(str,ch,"plays in");
+        createRelationshipStreamer(str,ch,"plays in");
     }
 
     public void createStreamNode(String ch){
@@ -349,18 +352,18 @@ public class Neo4jWrapper {
     }
 
     /**
-     * redudant method considering case sensitive between streamer and users.
+     * redundant method considering case sensitive between streamer and users.
      * @param node1
      * @param node2
      * @param relationship
      * @return
      */
-    private boolean createRelationshipCase(String node1, String node2, String relationship){
+    private boolean createRelationshipStreamer(String node1, String node2, String relationship){
         try ( Session session = driver.session() )
         {
             try ( Transaction tx = session.beginTransaction() ) {
-                tx.run("MATCH (ee) WHERE ee.name =  \"" + node1 + "\" " +
-                        "MATCH (js) WHERE js.name = \"" + node2 + "\" " +
+                tx.run("MATCH (ee:userNode) WHERE ee.name =  \"" + node1 + "\" " +
+                        "MATCH (js:streamNode) WHERE js.name = \"" + node2 + "\" " +
                         "CREATE UNIQUE (ee)-[rel:`" + relationship + "` {" +
                         "deletable: " + isDeletable + ",points: 0} " +
                         "]->(js)");

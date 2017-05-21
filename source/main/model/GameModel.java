@@ -250,10 +250,10 @@ public class GameModel extends Observable{
         String[] content = Util.parseTemplate(explanation);
         String relation = content[0].toLowerCase();
         String targetNode = content[1].toLowerCase();
-        boolean isExplain = true;
+        boolean isExplain = Boolean.parseBoolean(content[2]);
 
 
-        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,true, relation,true);
+        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,true);
     }
 
     public void clearExplanations() {

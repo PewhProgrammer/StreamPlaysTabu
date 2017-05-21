@@ -315,36 +315,6 @@ public class Neo4jWrapperTest extends TestCase {
         Log.info(result.toString());
     }
 
-    public void testSetUpNodes(){
-
-        database = new Neo4jWrapper(simulation,"pewhgames.com:7687",23);
-
-        try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
-
-            String sCurrentLine = br.readLine();
-            sCurrentLine = br.readLine();
-
-            while(!sCurrentLine.startsWith("CreateNodesAndRelationships:")){
-                    try{
-                        database.createNode(sCurrentLine,true);
-                    }catch(DatabaseException e){
-                        Log.trace(e.getMessage());
-                        fail();
-                    }
-                sCurrentLine = br.readLine();
-            }
-            sCurrentLine = br.readLine();
-            while(sCurrentLine != null){
-                String[] parts = sCurrentLine.split(";");
-                database.insertNodesAndRelationshipIntoOntology(parts[0],parts[2],true,parts[1],true);
-                sCurrentLine = br.readLine();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void testOntology(){
 
         String explainWord = "Mario";

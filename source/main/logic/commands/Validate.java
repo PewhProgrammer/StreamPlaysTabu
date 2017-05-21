@@ -1,5 +1,6 @@
 package logic.commands;
 
+import common.Log;
 import logic.GameControl;
 import model.GameModel;
 
@@ -36,6 +37,7 @@ public class Validate extends Command {
             s = it.next();
         }
 
+        Log.trace("Received Validation: " + reference);
         gameModel.getNeo4jWrapper().validateExplainAndTaboo(reference, s, score * 2 - 4);
     }
 

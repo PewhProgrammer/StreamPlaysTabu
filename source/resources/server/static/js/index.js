@@ -60,7 +60,7 @@ function onGiverJoined() {
 }
 
 function chosenCat1() {
-    loadingIndicator();
+    showGame();
     onCategoryChosen(document.getElementById("category1").innerHTML);
 }
 
@@ -96,7 +96,7 @@ function onCategoryChosen(category) {
 }
 
 function onExplanation() {
-    if ($("#explanationText").val() != null) {
+    if ($("#explanationText").val() != "") {
         document.getElementById('sendButton').style.display = 'none';
         document.getElementById('template_layer1').style.display = 'block';
         document.getElementById('template_layer' + templateLayer).style.display = 'none';
@@ -124,6 +124,14 @@ function onExplanation() {
             refreshQuestions();
             activeQuestion = -1;
         }
+    } else if (templateId === 24 || templateId === 25) {
+        document.getElementById('sendButton').style.display = 'none';
+        document.getElementById('template_layer1').style.display = 'block';
+
+        sendAnswer(createAnswerEvent(result));
+        questions[activeQuestion] = null;
+        refreshQuestions();
+        activeQuestion = -1;
     }
 }
 
@@ -264,8 +272,12 @@ function handleTemplateDropDown(description, id) {
     var opt1 = document.createElement("option");
     opt1.text = description;
     sel.add(opt1, sel[0]);
+}
 
-
+function handleTemplateYesNo(value, id) {
+    templateId = id;
+    tempString = value;
+    onExplanation();
 }
 
 function handleTemplateDropDown2(description, description2, id) {
