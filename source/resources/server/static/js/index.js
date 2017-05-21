@@ -38,7 +38,7 @@ function runTimer() {
         document.getElementById("progressbar").innerHTML = timeLeft + "s";
         document.getElementById("progressbar").style.width = (timeLeft / 105) * 100 + "%";
 
-        if (timeLeft == 0) {
+        if (timeLeft <= 0) {
             document.getElementById("progressbar").innerHTML = "Time's-Up!";
             document.getElementById("progressbar").style.color = "#111111";
             clearInterval(x);
@@ -96,7 +96,15 @@ function onCategoryChosen(category) {
 }
 
 function onExplanation() {
-    if ($("#explanationText").val() != "") {
+    if (templateId === 24 || templateId === 25) {
+        document.getElementById('sendButton').style.display = 'none';
+        document.getElementById('template_layer1').style.display = 'block';
+
+        sendAnswer(createAnswerEvent(tempString));
+        questions[activeQuestion] = null;
+        refreshQuestions();
+        activeQuestion = -1;
+    } else if ($("#explanationText").val() != "") {
         document.getElementById('sendButton').style.display = 'none';
         document.getElementById('template_layer1').style.display = 'block';
         document.getElementById('template_layer' + templateLayer).style.display = 'none';
@@ -119,19 +127,13 @@ function onExplanation() {
         if (activeField == "templates") {
             sendExplanation(createExplanationEvent(result));
         } else {
-            sendAnswer(createAnswerEvent(result));
-            questions[activeQuestion] = null;
-            refreshQuestions();
-            activeQuestion = -1;
+            if(activeQuestion > 1) {
+                sendAnswer(createAnswerEvent(result));
+                questions[activeQuestion] = null;
+                refreshQuestions();
+                activeQuestion = -1;
+            }
         }
-    } else if (templateId === 24 || templateId === 25) {
-        document.getElementById('sendButton').style.display = 'none';
-        document.getElementById('template_layer1').style.display = 'block';
-
-        sendAnswer(createAnswerEvent(tempString));
-        questions[activeQuestion] = null;
-        refreshQuestions();
-        activeQuestion = -1;
     }
 }
 
@@ -207,6 +209,9 @@ function createAnswerEvent(answer) {
 
 function createPasswordEvent() {
     pw_cmp = $("#pwInput").val();
+    if (pw_cmp.length === 5 && pw_cmp.substring(5) === "") {
+        pw_cmp = pw_cmp.substring(0, 4);
+    }
     return JSON.stringify({
         'password': pw_cmp
     });
@@ -231,6 +236,8 @@ function showCategories() {
     document.getElementById("signin").style.zIndex = "-1";
     document.getElementById("categories").style.visibility = "visible";
     document.getElementById("categories").style.zIndex = "1";
+
+    runTimer();
 }
 
 function showGame() {
@@ -239,8 +246,6 @@ function showGame() {
     document.getElementById("transparentBG").style.visibility = "hidden";
     document.getElementById("transparentBG").style.zIndex = "0";
     document.getElementById("gameDiv").style.zIndex = "1";
-
-    runTimer();
 }
 
 function handleTemplateLayer(layer) {
@@ -275,9 +280,11 @@ function handleTemplateDropDown(description, id) {
 }
 
 function handleTemplateYesNo(value, id) {
-    templateId = id;
-    tempString = value;
-    onExplanation();
+    if(activeQuestion > -1) {
+        templateId = id;
+        tempString = value;
+        onExplanation();
+    }
 }
 
 function handleTemplateDropDown2(description, description2, id) {
