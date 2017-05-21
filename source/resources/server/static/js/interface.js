@@ -208,6 +208,7 @@ function chooseExpl() {
 
     document.getElementById("cardBlock").style.zIndex = "-1";
     document.getElementById("cardBlock").style.visibility = "hidden";
+    document.getElementById("YesNo").style.visibility = "hidden";
 
     activeField = "templates";
     activeQuestion = -1;
@@ -221,5 +222,6 @@ function chooseqAndA() {
     document.getElementById("cardBlock").style.zIndex = "1";
     document.getElementById("cardBlock").style.visibility = "visible";
 
+    document.getElementById("YesNo").style.visibility = "visible";
     activeField = "questions";
 }
