@@ -237,10 +237,19 @@ function validatePW(password) {
 
 function showCategories() {
     console.log("wta");
-    document.getElementById("signin").style.visibility = "hidden";
-    document.getElementById("signin").style.zIndex = "-1";
-    document.getElementById("categories").style.visibility = "visible";
+    $("#signin").fadeOut();
+    $("#categories").show();
     document.getElementById("categories").style.zIndex = "1";
+
+    $('#slickheading').css('display', 'block');
+    $('#slickheading').animate({ opacity: 0 }, 0);
+    $('#slickheading').animate({ opacity: 1, top: "-=15px" }, 800);
+
+    $("#category1").delay(400).fadeIn();
+    $("#category3").delay(600).fadeIn("slow");
+    $("#category5").delay(800).fadeIn("slow");
+    $("#category4").delay(1000).fadeIn("slow");
+    $("#category2").delay(1200).fadeIn("slow");
 
     runTimer();
 }
