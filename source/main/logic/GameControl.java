@@ -102,7 +102,7 @@ public class GameControl extends Observable{
      */
     private void waitingForPlayers(){
         Log.info("Control is waiting for Players");
-        while(mModel.getGameState() == GameState.Registration || mModel.getGameState() == GameState.Lose){
+        while(mModel.getGameState() == GameState.Registration || !isStarted){
 
             mModel.setTimeStamp();
             try {
