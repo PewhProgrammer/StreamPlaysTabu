@@ -61,6 +61,7 @@ function onGiverJoined() {
 
 function chosenCat1() {
     loadingIndicator();
+    showGame();
     onCategoryChosen(document.getElementById("category1").innerHTML);
 }
 
@@ -92,7 +93,7 @@ function onCategoryChosen(category) {
     sendCategory(createChosenCategoryEvent(category));
     requestGiverInfo(createGiverInfoRequest());
     requestValidation(createValidationRequest());
-    sendExplanation(createExplanationEvent(category));
+    sendExplanation(createExplanationEvent('The word (to be explained) is from the category ' + category));
 }
 
 function onExplanation() {
@@ -104,7 +105,7 @@ function onExplanation() {
         questions[activeQuestion] = null;
         refreshQuestions();
         activeQuestion = -1;
-    } else if ($("#explanationText").val() != "") {
+    } else if ($("#explanationText").val() != "" || ($("#input2").val() === "" && $("#input3").val() === "")) {
         document.getElementById('sendButton').style.display = 'none';
         document.getElementById('template_layer1').style.display = 'block';
         document.getElementById('template_layer' + templateLayer).style.display = 'none';
@@ -127,7 +128,7 @@ function onExplanation() {
         if (activeField == "templates") {
             sendExplanation(createExplanationEvent(result));
         } else {
-            if(activeQuestion > 1) {
+            if (activeQuestion > 1) {
                 sendAnswer(createAnswerEvent(result));
                 questions[activeQuestion] = null;
                 refreshQuestions();
@@ -135,6 +136,10 @@ function onExplanation() {
             }
         }
     }
+
+    $("#explanationText").val() = "";
+    $("#input2").val() = "";
+    $("#input3").val() = "";
 }
 
 function onAnswer() {
@@ -280,7 +285,7 @@ function handleTemplateDropDown(description, id) {
 }
 
 function handleTemplateYesNo(value, id) {
-    if(activeQuestion > -1) {
+    if (activeQuestion > -1) {
         templateId = id;
         tempString = value;
         onExplanation();
