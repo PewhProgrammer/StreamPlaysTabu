@@ -128,7 +128,7 @@ function onExplanation() {
         document.getElementById('sendButton').style.display = 'none';
         document.getElementById('template_layer1').style.display = 'block';
 
-        sendAnswer(createAnswerEvent(result));
+        sendAnswer(createAnswerEvent(tempString));
         questions[activeQuestion] = null;
         refreshQuestions();
         activeQuestion = -1;
