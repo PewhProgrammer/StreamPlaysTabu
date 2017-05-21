@@ -25,16 +25,16 @@
 }
 .explanationsText {
     left: 20.5%;
-    top: 9%;
+    top: 10%;
     width: 55.5%;
-    height: 70%;
+    height: 69%;
 }
 
 .guessesText{
-    top: 9%;
+    top: 10%;
     right: 0.5%;
     width: 23%;
-    height: 70%;
+    height: 69%;
 }
 
 
@@ -46,10 +46,10 @@
 }
 
 .giverInfoText{
-    top: 9%;
+    top: 10%;
     left: 0.5%;
     width: 19.5%;
-    height: 34.5%;
+    height: 33.5%;
 }
 
 .levelText{
