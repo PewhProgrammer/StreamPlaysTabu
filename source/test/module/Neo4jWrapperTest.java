@@ -94,8 +94,41 @@ public class Neo4jWrapperTest extends TestCase {
 
     }
 
-    public void testCreateRelationship(){
+    public void testValidateForGiver(){
 
+        try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
+
+            String sCurrentLine = br.readLine();
+            sCurrentLine = br.readLine();
+
+            while (!sCurrentLine.startsWith("CreateNodesAndRelationships:")) {
+                try {
+                    database.createNode(sCurrentLine, true);
+                } catch (DatabaseException e) {
+                    Log.trace(e.getMessage());
+                    fail();
+                }
+                sCurrentLine = br.readLine();
+            }
+            sCurrentLine = br.readLine();
+            while (sCurrentLine != null) {
+                String[] parts = sCurrentLine.split(";");
+                database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true);
+                sCurrentLine = br.readLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        ArrayList<ArrayList<String>> k = database.getTabooWordsForValidationForGiver();
+        Log.info(k.toString());
+    }
+
+
+
+    public void testCreateRelationship(){
         assertEquals("No such relationship could be created!"
                 ,true,
                 database.insertNodesAndRelationshipIntoOntology("Nautilus","Hallo",true,
@@ -107,8 +140,6 @@ public class Neo4jWrapperTest extends TestCase {
                 "IS RELATED TO",false);
         database.insertNodesAndRelationshipIntoOntology("Nautilus","Hallo",true,
                 "IS NOT RELATED TO",false);
-
-
     }
 
     public void testClearRelationships(){

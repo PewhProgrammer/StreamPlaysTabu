@@ -57,6 +57,7 @@ public class GameControl extends Observable{
                 mModel.setGiver("");
                 mModel.getBot().announceNoWinner();
                 mModel.setGameState(GameState.Lose);
+                mModel.clear();
                 break;
             }
             try {
@@ -101,7 +102,7 @@ public class GameControl extends Observable{
      */
     private void waitingForPlayers(){
         Log.info("Control is waiting for Players");
-        while(mModel.getGameState() == GameState.Registration){
+        while(mModel.getGameState() == GameState.Registration || mModel.getGameState() == GameState.Lose){
 
             mModel.setTimeStamp();
             try {
@@ -121,13 +122,15 @@ public class GameControl extends Observable{
 
             if(mModel.getRegisteredPlayers().contains(mModel.getWinner())){
                 mModel.setGiver(mModel.getWinner());
-                break;
+                if(!mModel.getGiver().equals(""))
+                    break;
             }
 
             //if user is registered but no giver, then new giver
             if(mModel.getRegisteredPlayers().size() > 0){
                 chooseNewGiver(mModel.getRegisteredPlayers());
-                break;
+                if(!mModel.getGiver().equals(""))
+                    break;
             }
 
             //random giver
@@ -152,6 +155,7 @@ public class GameControl extends Observable{
                 mModel.getBot().announceGiverNotAccepted(mModel.getGiver());
                 mModel.setGiver("");
                 mModel.setGameState(GameState.GameStarted.Registration);
+                mModel.clear();
                 break;
             }
             try {

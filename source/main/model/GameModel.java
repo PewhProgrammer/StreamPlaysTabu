@@ -297,10 +297,18 @@ public class GameModel extends Observable{
         qAndA.push(new String[]{question, answer});
         notifyQandA();
 
-        if (!(answer.equals("yes") || answer.equals("no"))) {
+        if (!(answer.equals("It is true") || answer.equals("It is not true"))) {
+
             String[] content = Util.parseTemplate(answer);
             String relation = content[0].toLowerCase();
             String targetNode = content[1].toLowerCase();
+            boolean isExplain = false;
+
+            mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,false);
+        } else {
+
+            String relation = question;
+            String targetNode = answer;
             boolean isExplain = false;
 
             mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,false);

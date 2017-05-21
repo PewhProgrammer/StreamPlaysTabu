@@ -8,21 +8,36 @@ luigi
 wario
 bowser
 splatoon
+kalista
+sivir
+sejuani
+the legend of zelda
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
 dota2;is a;moba
 league of legends;is a;moba
 heroes of the storm;is a;moba
 alistar;is a character in;league of legends
-juggernaut;is typically in;dota 2
+sivir;is a character in;league of legends
+kalista;is a character in;league of legends
+sejuani;is a character in;league of legends
 Shadow fiend; is a character in;dota2
 mario;is a character in;super mario bros.
 luigi;is a character in;super mario bros.
 Bowser;is a character in;super mario bros.
+super smash bros.;is published by;nintendo
 super mario bros.;is published by;nintendo
 splatoon;is published by;nintendo
-Link;is a character in;the legend of zelda
 the legend of zelda;is published by; nintendo
+Link;is a character in;the legend of zelda
 samus;is a character in;super smash bros.
-super smash bros.;is published by;nintendo
 peach;is typically near;mario
 wario;is the opposite of;mario
+counter-terroist;is typically in;csgo
+terroist;is typically in;csgo
+friendly fire;appears in;csgo
+ak-47;appears in;call of duty
+friendly fire;appears in;call of duty
+tracer;is a character in;overwatch
+csgo;genre is;fps
+call of duty;genre is;fps
+overwatch;genre is;fps

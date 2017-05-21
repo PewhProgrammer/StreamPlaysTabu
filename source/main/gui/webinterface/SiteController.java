@@ -146,11 +146,12 @@ public class SiteController implements IObserver {
         String[] taboos = new String[3];
 
         ArrayList<ArrayList<String>>  k = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidationForGiver();
-
+        Collections.shuffle(k);
         int i = 0;
         for(ArrayList<String> container : k){
-            references[i] = container.get(i);
-            taboos[i] = container.get(i);
+            if(i == 3) break;
+            references[i] = container.get(0);
+            taboos[i] = container.get(1);
             i++;
         }
 

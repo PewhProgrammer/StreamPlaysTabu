@@ -277,14 +277,6 @@ public class Util {
     public static String[] parseTemplate(String tmp, String userInput, String userInput2) {
 
 
-        /* YES NO */
-
-        if (tmp.equals("It is true")) {
-            return getPair(userInput, userInput2, "It is true", "false");
-        }
-        if (tmp.equals("It is not true")) {
-            return getPair(userInput, userInput2, "It is not true", "false");
-        }
         /* Appearance */
 
 
