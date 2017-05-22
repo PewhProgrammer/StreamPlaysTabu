@@ -190,6 +190,15 @@ function showChatMessage(msg) {
 
 function closeGame(status) {
     console.log('>> Received end of game: ' + status);
+
+    var json = JSON.parse(status);
+    if(json.status === "Win") {
+
+    } else if(json.status === "Lose") {
+
+    } else if(json.status === "Kick") {
+
+    }
 }
 
 function sendPassword(pw) {
