@@ -87,8 +87,8 @@ function showTabooWords(tabooWords) {
     var json = JSON.parse(tabooWords);
     console.log('>> Received taboo words: ' + tabooWords);
     var taboo = "";
-    if (json.word1 === "") {
-        taboo = "<ul><li> There is no taboo words </li>";
+    if(json.word1 === "" && json.word2 === "" && json.word3 === "" && json.word4 === "" && json.word5 === "") {
+        taboo = "No taboo words."
     } else {
         if (json.word1 != "") {
             taboo = "<ul><li>" + json.word1 + "</li>";
@@ -106,6 +106,7 @@ function showTabooWords(tabooWords) {
             taboo = "<li>" + json.word5 + "</li></ul>";
         }
     }
+
     document.getElementById("tabooWords").innerHTML = taboo;
     showGame();
 }
@@ -196,6 +197,9 @@ function showChatMessage(msg) {
 
 function closeGame(status) {
     console.log('>> Received end of game: ' + status);
+
+    socket.onclose = function () {console.log("Socket closed.")};
+    socket.close();
 
     var json = JSON.parse(status);
     if (json.status === "Win") {

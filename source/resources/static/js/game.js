@@ -20,11 +20,13 @@ var timer = setInterval(function() {
 
 function updateGiver(giver) {
     var json = JSON.parse(giver.body);
-
-    document.getElementById("giverInfo").innerHTML = json.name + "<br>" + json.points + " Pts."
+    var giver = json.name;
+    if(giver.length > 12) {
+        giver = giver.substring(0, 12) + "...";
+    }
+    document.getElementById("giverInfo").innerHTML = giver + "<br>"// + json.points + " Pts."
     document.getElementById("level").innerHTML = json.level;
 }
-
 
 function updateGuesses(guesses) {
     var incJson = JSON.parse(guesses.body);
