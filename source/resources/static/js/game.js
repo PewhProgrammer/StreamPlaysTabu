@@ -24,7 +24,7 @@ function updateGiver(giver) {
     if(giver.length > 12) {
         giver = giver.substring(0, 12) + "...";
     }
-    document.getElementById("giverInfo").innerHTML = giver + "<br>"// + json.points + " Pts."
+    document.getElementById("giverInfo").innerHTML = giver + "<br>" + json.points + " Pts."
     document.getElementById("level").innerHTML = json.level;
 }
 
