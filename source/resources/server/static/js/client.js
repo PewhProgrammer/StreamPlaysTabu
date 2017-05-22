@@ -77,7 +77,8 @@ $(document).ready(function() {
     });
     socket.on(base + '/error', function(data) {
         if (vpw) {
-            window.alert(data);
+            var json = JSON.parse(JSON.stringify(data));
+            window.alert(json.msg);
         }
     });
 });
