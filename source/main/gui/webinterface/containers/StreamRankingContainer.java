@@ -32,54 +32,23 @@ public class StreamRankingContainer {
         points1 = sh.getStreamPoints();
 
         Iterator<Neo4jWrapper.Pair> itP = sh.getUserList().iterator();
+
         int idx = 0;
 
         while (itP.hasNext()) {
             Neo4jWrapper.Pair p = itP.next();
             contributors1[idx] = (String) p.getFirst();
             userPoints1[idx] = (Integer) p.getSecond();
-            idx++;
-        }
-
-        while (idx < 3) {
-            contributors1[idx++] = "";
         }
 
         sh = it.next();
         stream2 = sh.getStream();
         points2 = sh.getStreamPoints();
 
-        itP = sh.getUserList().iterator();
-        idx = 0;
-
-        while (itP.hasNext()) {
-            Neo4jWrapper.Pair p = itP.next();
-            contributors2[idx] = (String) p.getFirst();
-            userPoints2[idx] = (Integer) p.getSecond();
-            idx++;
-        }
-
-        while (idx < 3) {
-            contributors2[idx++] = "";
-        }
-
         sh = it.next();
         stream3 = sh.getStream();
         points3 = sh.getStreamPoints();
 
-        itP = sh.getUserList().iterator();
-        idx = 0;
-
-        while (itP.hasNext()) {
-            Neo4jWrapper.Pair p = itP.next();
-            contributors3[idx] = (String) p.getFirst();
-            userPoints3[idx] = (Integer) p.getSecond();
-            idx++;
-        }
-
-        while (idx < 3) {
-            contributors3[idx++] = "";
-        }
     }
 
     public String getStream1() {
@@ -110,11 +79,11 @@ public class StreamRankingContainer {
         return contributors1;
     }
 
-    public String[] getContributors2() {
+    public String[] getContributors12() {
         return contributors2;
     }
 
-    public String[] getContributors3() {
+    public String[] getContributors13() {
         return contributors3;
     }
 

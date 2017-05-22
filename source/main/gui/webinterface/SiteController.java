@@ -211,20 +211,21 @@ public class SiteController implements IObserver {
     public void receiveValidation(String reference, String taboo, int score) {
         System.out.println("Received sendValidation");
         gm.getNeo4jWrapper().validateExplainAndTaboo(reference, taboo, score * 2 - 4);
+        //TODO give user + 10 seconds
     }
 
     @Override
     public void onNotifyGameState() {
         if (gm.getGameState().equals(GameState.Win)) {
-            send("/close", new GameCloseContainer("Win", gm.getWinner(), gm.getGainedPoints()).toJSONObject());
+            send("/close", new GameCloseContainer("Win", gm.getWinner(), gm.getGainedPoints(), gm.getExplainWord()).toJSONObject());
         }
 
         if (gm.getGameState().equals(GameState.Lose)) {
-            send("/close", new GameCloseContainer("Lose", "", 0).toJSONObject());
+            send("/close", new GameCloseContainer("Lose", "", 0, gm.getExplainWord()).toJSONObject());
         }
 
         if (gm.getGameState().equals(GameState.Kick)) {
-            send("/close", new GameCloseContainer("Kick", "", 0).toJSONObject());
+            send("/close", new GameCloseContainer("Kick", "", 0, gm.getExplainWord()).toJSONObject());
         }
 
         send("/state", new GameStateContainer(gm.getGameState()).toJSONObject());

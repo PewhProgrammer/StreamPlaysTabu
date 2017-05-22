@@ -486,6 +486,7 @@ public class Util {
 
         //check invalid characters
         if (!input.matches(REGEX)) {
+            System.out.println("Invalid character: " + input);
             return false;
         }
 

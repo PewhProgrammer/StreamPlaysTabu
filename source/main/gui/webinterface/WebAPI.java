@@ -6,6 +6,7 @@ import gui.webinterface.containers.*;
 import logic.GameControl;
 import logic.commands.CategoryChosen;
 import logic.commands.Setup;
+import model.GameMode;
 import model.GameModel;
 import model.GameState;
 import model.IObserver;
@@ -52,9 +53,10 @@ public class WebAPI implements IObserver {
 
         Map m = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidation(null, 5);
         Iterator<Map.Entry<String, Set<String>>> it = m.entrySet().iterator();
-        Map.Entry<String, Set<String>> mE = it.next();
-
-        send("/validation", new ValidationContainer(mE.getKey(), mE.getValue()));
+        if (it.hasNext()) {
+            Map.Entry<String, Set<String>> mE = it.next();
+            send("/validation", new ValidationContainer(mE.getKey(), mE.getValue()));
+        }
     }
 
     @MessageMapping("/reqGiverInfo")
@@ -78,20 +80,22 @@ public class WebAPI implements IObserver {
         GameState state = GameControl.mModel.getGameState();
         System.out.println("GameState changed to " + state);
 
+        String winner = GameControl.mModel.getWinner();
+        int points = GameControl.mModel.getGainedPoints();
+        String word = GameControl.mModel.getExplainWord();
+
         if (state.equals(GameState.Win)) {
-            String winner = GameControl.mModel.getWinner();
-            int points = GameControl.mModel.getGainedPoints();
-            send("/endGame", new GameCloseContainer("Win", winner, points));
+            send("/endGame", new GameCloseContainer("Win", winner, points, word));
             return;
         }
 
         if (state.equals(GameState.Lose)) {
-            send("/endGame", new GameCloseContainer("Lose", "", 0));
+            send("/endGame", new GameCloseContainer("Lose", winner, points, word));
             return;
         }
 
         if (state.equals(GameState.Kick)) {
-            send("/endGame", new GameCloseContainer("Kick", "", 0));
+            send("/endGame", new GameCloseContainer("Kick", winner, points, word));
             return;
         }
 
@@ -132,10 +136,12 @@ public class WebAPI implements IObserver {
         if (!gm.getHosts().isEmpty()) {
             LinkedList<Neo4jWrapper.StreamerHighscore> sh = gm.getNeo4jWrapper().getStreamHighScore();
             if (sh.size() > 2) {
-                send("/streamScore", new StreamRankingContainer(sh));
+                send("/gameMode", new GameModeContainer(GameMode.HOST));
+                send("/score", new StreamRankingContainer(sh));
             }
         }
 
+        send("/gameMode", new GameModeContainer(GameMode.Normal));
         send("/score", new RankingContainer(GameControl.mModel.getNeo4jWrapper().getHighScoreList(10, channel)));
     }
 

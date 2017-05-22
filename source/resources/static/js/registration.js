@@ -14,17 +14,21 @@ var x = setInterval(function() {
 }, 1000);
 
 function updateRanking(ranking) {
-    var json = JSON.parse(ranking.body);
-    document.getElementById("first").innerHTML = json.firstName +"<br>"+ json.firstPoints + " Pts.";
-    document.getElementById("second").innerHTML = json.secondName +"<br>"+ json.secondPoints + " Pts.";
-    document.getElementById("third").innerHTML = json.thirdName +"<br>"+ json.thirdPoints + " Pts.";
-    document.getElementById("fourth").innerHTML = json.fourthName +"<br>"+ json.fourthPoints + " Pts.";
-    document.getElementById("fifth").innerHTML = json.fifthName +"<br>"+ json.fifthPoints + " Pts.";
-    document.getElementById("sixth").innerHTML = json.sixthName +"<br>"+ json.sixthPoints + " Pts.";
-    document.getElementById("seventh").innerHTML = json.seventhName +"<br>"+ json.seventhPoints + " Pts.";
-    document.getElementById("eighth").innerHTML = json.eighthName +"<br>"+ json.eighthPoints + " Pts.";
-    document.getElementById("ninth").innerHTML = json.ninthName +"<br>"+ json.ninthPoints + " Pts.";
-    document.getElementById("tenth").innerHTML = json.tenthName +"<br>"+ json.tenthPoints + " Pts.";
+    if (window.location.href == 'http://localhost:8080/registerFFA.html') {
+        var json = JSON.parse(ranking.body);
+        document.getElementById("first").innerHTML = json.firstName + "<br>" + json.firstPoints + " Pts.";
+        document.getElementById("second").innerHTML = json.secondName + "<br>" + json.secondPoints + " Pts.";
+        document.getElementById("third").innerHTML = json.thirdName + "<br>" + json.thirdPoints + " Pts.";
+        document.getElementById("fourth").innerHTML = json.fourthName + "<br>" + json.fourthPoints + " Pts.";
+        document.getElementById("fifth").innerHTML = json.fifthName + "<br>" + json.fifthPoints + " Pts.";
+        document.getElementById("sixth").innerHTML = json.sixthName + "<br>" + json.sixthPoints + " Pts.";
+        document.getElementById("seventh").innerHTML = json.seventhName + "<br>" + json.seventhPoints + " Pts.";
+        document.getElementById("eighth").innerHTML = json.eighthName + "<br>" + json.eighthPoints + " Pts.";
+        document.getElementById("ninth").innerHTML = json.ninthName + "<br>" + json.ninthPoints + " Pts.";
+        document.getElementById("tenth").innerHTML = json.tenthName + "<br>" + json.tenthPoints + " Pts.";
+    } else {
+        //TODO write json content into StreamScore
+    }
 }
 
 function updateCategoryVote(categories) {
@@ -90,7 +94,6 @@ function updateValidation(validation) {
 }
 
 function prepareRegister() {
-    requestGameMode();
     stompClientLoc.send(
         "/localJava/reqRegisterInfo",
         {},

@@ -92,7 +92,8 @@ function onCategoryChosen(category) {
     sendCategory(createChosenCategoryEvent(category));
     requestGiverInfo(createGiverInfoRequest());
     requestValidation(createValidationRequest());
-    sendExplanation(createExplanationEvent('The word (to be explained) is from the category ' + category));
+    console.log('<< SEND explanation: ' + 'The word to be explained is from the category ' + category);
+    sendExplanation(createExplanationEvent('The word to be explained is from the category ' + category));
 }
 
 function onExplanation() {
@@ -146,7 +147,6 @@ function onAnswer() {
 }
 
 function onSkip() {
-    console.log("haha");
     requestSkip(createSkipRequest());
 }
 

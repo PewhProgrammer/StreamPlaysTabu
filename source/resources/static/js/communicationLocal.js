@@ -47,6 +47,9 @@ function connectLoc() {
         if (window.location.href == 'http://localhost:8080/registerFFA.html') {
             prepareRegister();
         }
+        if (window.location.href == 'http://localhost:8080/registerSE.html') {
+            prepareRegister();
+        }
         if (window.location.href == 'http://localhost:8080/game.html') {
             prepareGame();
         }

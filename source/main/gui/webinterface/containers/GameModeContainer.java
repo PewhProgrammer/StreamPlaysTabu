@@ -8,7 +8,7 @@ public class GameModeContainer {
     private String content;
 
     public GameModeContainer(GameMode gameMode) {
-        this.content = gameMode == GameMode.Normal ? "Free for all" : "Streamer explains";
+        this.content = gameMode == GameMode.HOST ? "SC" : "Free for all";
     }
 
     public String getContent() {

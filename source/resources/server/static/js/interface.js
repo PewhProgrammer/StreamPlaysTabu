@@ -199,6 +199,7 @@ function closeGame(status) {
     } else if(json.status === "Kick") {
 
     }
+    //TODO change screen
 }
 
 function sendPassword(pw) {
