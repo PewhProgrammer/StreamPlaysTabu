@@ -61,7 +61,6 @@ function onGiverJoined() {
 
 function chosenCat1() {
     loadingIndicator();
-    showGame();
     onCategoryChosen(document.getElementById("category1").innerHTML);
 }
 
@@ -137,9 +136,9 @@ function onExplanation() {
         }
     }
 
-    $("#explanationText").val() = "";
-    $("#input2").val() = "";
-    $("#input3").val() = "";
+    document.getElementById("explanationText").innerHTML = "";
+    document.getElementById("input2").innerHTML = "";
+    document.getElementById("input3").innerHTML = "";
 }
 
 function onAnswer() {
