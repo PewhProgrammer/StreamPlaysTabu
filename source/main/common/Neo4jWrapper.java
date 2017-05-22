@@ -611,17 +611,22 @@ public class Neo4jWrapper {
         String oldPoints = rel.property.equals("points") ? "new points" : "not_specified" ;
         String result = rel.value;
         int resultInt = 0 ;
+        int diff = 0 ;
         StringBuilder builder = new StringBuilder();
         StringBuilder query = new StringBuilder();
-        query.append("MATCH (n:"+userLabel+")-[rel]->(t) WHERE n.name = {name} AND t.name = {target} " +
-                "SET rel."+rel.property+"={propertyvalue} ");
+        query.append("MATCH (n:"+userLabel+")-[rel]->(t) WHERE n.name = {name} AND t.name = {target} ");
         if(rel.property.equals("points")){
+            int oldvalue = getUserPoints(rel.source,rel.target);
             resultInt = Integer.parseInt(result);
-            query.append("SET t.totalPoints = t.totalPoints+{propertyvalueInt}");
+            diff = resultInt - oldvalue ;
+            query.append("SET rel."+rel.property+"={propertyvalueInt} ");
+            query.append("SET t.totalPoints = t.totalPoints+{diffInt} ");
+        }else{
+            query.append("SET rel."+rel.property+"={propertyvalue} ");
         }
         try ( Session session = driver.session() ) {try ( Transaction tx = session.beginTransaction() ) {
                 tx.run(query.toString(),
-                        parameters("name",rel.source,"propertyvalue",result,"propertyvalueInt",resultInt,"target",rel.target));
+                        parameters("name",rel.source,"propertyvalue",result,"propertyvalueInt",resultInt,"target",rel.target,"diffInt",diff));
                 tx.success();
                 builder.append("Updated "+rel.property+": " + String.format("%s -> %s %s", oldPoints,
                         result ,rel.source));

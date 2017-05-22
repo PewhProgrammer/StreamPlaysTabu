@@ -165,7 +165,6 @@ public class Neo4jWrapperTest extends TestCase {
     }
 
     public void testGetUserRankings(){
-        database.createUser("John","streamplaystaboo");
         LinkedHashMap<String,Integer> list = database.getHighScoreList(3,channelName);
         Log.info(list.toString());
     }
