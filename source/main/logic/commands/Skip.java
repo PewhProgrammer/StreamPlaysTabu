@@ -7,7 +7,7 @@ import model.GameModel;
  */
 public class Skip extends Command {
 
-    private static final int SKIP_COST = 20;
+    private static final int SKIP_COST = -20;
 
     public Skip(GameModel gm, String ch) {
         super(gm, ch);
