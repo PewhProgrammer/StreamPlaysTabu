@@ -2,7 +2,6 @@ var stompClientLoc = null;
 var gameState = "Register";
 
 function connectLoc() {
-    updateGiver("xXxPu55ySLay3er69xXx");
     var socket = new SockJS('/connection-local-socket');
     stompClientLoc = Stomp.over(socket);
     stompClientLoc.connect({}, function (frame) {
