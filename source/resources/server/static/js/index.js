@@ -269,6 +269,10 @@ function handleTemplateLayer(layer) {
     templateLayer = layer;
     document.getElementById('template_layer1').style.display = 'none';
     document.getElementById('template_layer' + layer).style.display = 'block';
+
+    document.getElementById("explanationText").innerHTML = "";
+    document.getElementById("input2").innerHTML = "";
+    document.getElementById("input3").innerHTML = "";
 }
 
 function handleTemplateLayerPrevious(layer) {
