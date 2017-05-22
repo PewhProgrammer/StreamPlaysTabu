@@ -88,7 +88,7 @@ function showTabooWords(tabooWords) {
     console.log('>> Received taboo words: ' + tabooWords);
     var taboo = "";
     if(json.word1 === "" && json.word2 === "" && json.word3 === "" && json.word4 === "" && json.word5 === "") {
-        taboo = "No taboo words."
+        taboo = "No taboo words"
     } else {
         if (json.word1 != "") {
             taboo = "<ul><li>" + json.word1 + "</li>";
