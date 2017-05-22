@@ -242,7 +242,7 @@ function showCategories() {
 
     $('#slickheading').css('display', 'block');
     $('#slickheading').animate({ opacity: 0 }, 0);
-    $('#slickheading').animate({ opacity: 1, top: "-=15px" }, 800);
+    $('#slickheading').animate({ opacity: 1, top: "-=2%" }, 800);
 
     $("#category1").delay(400).fadeIn();
     $("#category3").delay(600).fadeIn("slow");
