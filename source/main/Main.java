@@ -11,6 +11,11 @@ import java.util.Date;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 /**
  * Created by Thinh-Laptop on 26.03.2017.
  */
@@ -97,9 +102,28 @@ public class Main {
 
         mTHREAD.start();
 
-        Log.info("Launching webinterface ...");
+        /*Log.info("Launching webinterface ...");
         RunInterface.main(new String[] {});
 
+                String url = "http://www.google.com/";
+
+                if(Desktop.isDesktopSupported()){
+                    Desktop desktop = Desktop.getDesktop();
+                    try {
+                        desktop.browse(new URI(url));
+                    } catch (IOException | URISyntaxException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }else{
+                    Runtime runtime = Runtime.getRuntime();
+                    try {
+                        runtime.exec("xdg-open " + url);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                } */
 
         try {
             SiteController st = new SiteController(model, ext_bindAddr);

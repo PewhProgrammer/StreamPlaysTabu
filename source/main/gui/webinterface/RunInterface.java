@@ -13,12 +13,5 @@ public class RunInterface {
 
     public static void main(String[] args) {
         SpringApplication.run(RunInterface.class, args);
-        try {
-            if (Desktop.isDesktopSupported()) {
-                Desktop.getDesktop().browse(new URI("http://www.example.com"));
-            }
-        }catch(URISyntaxException | IOException e){
-            e.printStackTrace();
-        }
     }
 }
