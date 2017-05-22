@@ -105,7 +105,7 @@ public class Main {
         Log.info("Launching webinterface ...");
         RunInterface.main(new String[] {});
 
-             /*   String url = "http://www.google.com/";
+                /*String url = "http://www.google.com/";
 
                 if(Desktop.isDesktopSupported()){
                     Desktop desktop = Desktop.getDesktop();
@@ -123,7 +123,7 @@ public class Main {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
-                }*/
+                } */
 
         try {
             SiteController st = new SiteController(model, ext_bindAddr);
