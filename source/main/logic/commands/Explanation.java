@@ -1,7 +1,10 @@
 package logic.commands;
 
+import common.Util;
 import model.GameModel;
 import model.GameState;
+
+import java.util.Date;
 
 /**
  * Created by Marc on 04.04.2017.
@@ -27,9 +30,24 @@ public class Explanation extends Command {
     @Override
     public boolean validate() {
 
-       /* if (!user.equals(gameModel.getGiver())) {
+        if (!Util.checkCheating(explanation, gameModel)) {
+            gameModel.getNeo4jWrapper().increaseUserError(gameModel.getGiver(), thisChannel);
+            if (gameModel.getNeo4jWrapper().getUserError(gameModel.getGiver(), thisChannel) > 3) {
+                gameModel.getNeo4jWrapper().setUserErrorTimeStamp(gameModel.getGiver(), new Date());
+            }
+            if (!Util.checkCheating(explanation, gameModel)) {
+                gameModel.getNeo4jWrapper().increaseUserError(gameModel.getGiver(), thisChannel);
+                if (gameModel.increaseErrCounter() == 2) {
+                    gameModel.setGameState(GameState.Kick);
+                    gameModel.getSiteController().sendError("We found again an invalid input. Round is over now");
+
+                } else {
+                    gameModel.getSiteController().sendError("Found invalid explanation. Please don't use your taboo or explain word or any character that is no letter, number or -,'");
+                }
+                return false;
+            }
             return false;
-        }*/
+        }
 
         return gameModel.getGameState().equals(GameState.GameStarted);
     }

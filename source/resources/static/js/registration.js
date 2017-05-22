@@ -1,33 +1,34 @@
 var timeLeft = 30;
-var twenties = false;
 // Update the count down every 1 second
 var x = setInterval(function() {
 
     timeLeft = timeLeft - 1;
 
     document.getElementById("progressbar").innerHTML = timeLeft + "s";
-    if(!twenties) {
-        document.getElementById("progressbar").style.width = (timeLeft / 30) * 100 + "%";
-    } else {
-        document.getElementById("progressbar").style.width = (timeLeft / 20) * 100 + "%";
-    }
+    document.getElementById("progressbar").style.width = (timeLeft / 30) * 100 + "%";
+
     if (timeLeft == 0) {
+        document.getElementById("statusInfo").innerHTML = "Time to register!";
         timeLeft = 30;
     }
 }, 1000);
 
 function updateRanking(ranking) {
-    var json = JSON.parse(ranking.body);
-    document.getElementById("first").innerHTML = json.firstName +"<br>"+ json.firstPoints + " Pts.";
-    document.getElementById("second").innerHTML = json.secondName +"<br>"+ json.secondPoints + " Pts.";
-    document.getElementById("third").innerHTML = json.thirdName +"<br>"+ json.thirdPoints + " Pts.";
-    document.getElementById("fourth").innerHTML = json.fourthName +"<br>"+ json.fourthPoints + " Pts.";
-    document.getElementById("fifth").innerHTML = json.fifthName +"<br>"+ json.fifthPoints + " Pts.";
-    document.getElementById("sixth").innerHTML = json.sixthName +"<br>"+ json.sixthPoints + " Pts.";
-    document.getElementById("seventh").innerHTML = json.seventhName +"<br>"+ json.seventhPoints + " Pts.";
-    document.getElementById("eighth").innerHTML = json.eighthName +"<br>"+ json.eighthPoints + " Pts.";
-    document.getElementById("ninth").innerHTML = json.ninthName +"<br>"+ json.ninthPoints + " Pts.";
-    document.getElementById("tenth").innerHTML = json.tenthName +"<br>"+ json.tenthPoints + " Pts.";
+    if (window.location.href == 'http://localhost:8080/registerFFA.html') {
+        var json = JSON.parse(ranking.body);
+        document.getElementById("first").innerHTML = json.firstName + "<br>" + json.firstPoints + " Pts.";
+        document.getElementById("second").innerHTML = json.secondName + "<br>" + json.secondPoints + " Pts.";
+        document.getElementById("third").innerHTML = json.thirdName + "<br>" + json.thirdPoints + " Pts.";
+        document.getElementById("fourth").innerHTML = json.fourthName + "<br>" + json.fourthPoints + " Pts.";
+        document.getElementById("fifth").innerHTML = json.fifthName + "<br>" + json.fifthPoints + " Pts.";
+        document.getElementById("sixth").innerHTML = json.sixthName + "<br>" + json.sixthPoints + " Pts.";
+        document.getElementById("seventh").innerHTML = json.seventhName + "<br>" + json.seventhPoints + " Pts.";
+        document.getElementById("eighth").innerHTML = json.eighthName + "<br>" + json.eighthPoints + " Pts.";
+        document.getElementById("ninth").innerHTML = json.ninthName + "<br>" + json.ninthPoints + " Pts.";
+        document.getElementById("tenth").innerHTML = json.tenthName + "<br>" + json.tenthPoints + " Pts.";
+    } else {
+        //TODO write json content into StreamScore
+    }
 }
 
 function updateCategoryVote(categories) {
@@ -72,7 +73,7 @@ function updateCategoryVote(categories) {
 function updateValidation(validation) {
 
     var json = JSON.parse(validation.body);
-    var string = json.reference + "<br><small>";
+    var string = "<big>" + json.reference + "</big>" + "<br><small>";
     if (json.taboo1 != "") {
         string = string + "<ul><li>" + json.taboo1 + "</li>"
     }
@@ -80,20 +81,19 @@ function updateValidation(validation) {
         string = string + "<li>" + json.taboo2 + "</li>"
     }
     if (json.taboo3 != "") {
-        string = string + "<li>" + json.taboo2 + "</li>"
+        string = string + "<li>" + json.taboo3 + "</li>"
     }
     if (json.taboo4 != "") {
-        string = string + "<li>" + json.taboo2 + "</li>"
+        string = string + "<li>" + json.taboo4 + "</li>"
     }
     if (json.taboo5 != "") {
-        string = string + "<li>" + json.taboo2 + "</li></ul></small>"
+        string = string + "<li>" + json.taboo5 + "</li></ul></small>"
     }
 
     document.getElementById("validateText").innerHTML = string;
 }
 
 function prepareRegister() {
-    requestGameMode();
     stompClientLoc.send(
         "/localJava/reqRegisterInfo",
         {},

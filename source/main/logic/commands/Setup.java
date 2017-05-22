@@ -8,9 +8,7 @@ import model.GameMode;
 import model.GameModel;
 import model.GameState;
 
-/**
- * Created by Lenovo on 04.05.2017.
- */
+
 public class Setup extends Command {
 
     private final String channel;
@@ -30,6 +28,7 @@ public class Setup extends Command {
         GameMode gm = gameMode.equals("Free for all") ? GameMode.Normal : GameMode.Streamer;
         gameModel.setGameMode(gm);
         gameModel.setBot(platform, channel);
+        gameModel.setGiverChannel(channel);
         gameModel.setGameState(GameState.Registration);
     }
 

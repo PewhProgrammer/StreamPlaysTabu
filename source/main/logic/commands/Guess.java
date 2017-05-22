@@ -44,12 +44,13 @@ public class Guess extends Command {
     @Override
     public boolean validate() {
 
-        if (!gameModel.getGameState().equals(GameState.GameStarted)) {
+        if (!gameModel.getGameState().equals(GameState.GameStarted)
+                || (!gameModel.contribute(name, thisChannel))) {
             return false;
         }
 
         if (name.equals(gameModel.getGiver())) {
-            //TODO bestrafen
+            gameModel.getSiteController().sendError("Please don't guess if you are the giver.");
             return false;
         }
 
@@ -74,5 +75,10 @@ public class Guess extends Command {
         Guess g = (Guess) o;
 
         return name.equals(g.getUser()) && guess.equals(g.getGuess()) && thisChannel.equals(g.getChannel());
+    }
+
+    @Override
+    public String toString(){
+        return "Guess";
     }
 }

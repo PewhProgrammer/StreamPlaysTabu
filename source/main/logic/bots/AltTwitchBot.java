@@ -4,14 +4,12 @@ import common.Log;
 import logic.commands.*;
 import model.GameModel;
 import org.jibble.pircbot.PircBot;
-import org.jibble.pircbot.User;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-/**
- * Created by Thinh-Laptop on 20.04.2017.
- */
+
 public class AltTwitchBot extends Bot {
 
     private Pirc bot;
@@ -20,80 +18,50 @@ public class AltTwitchBot extends Bot {
 
     public AltTwitchBot(GameModel gm, String channel) {
         super(gm, channel);
-
         connectToChatroom(channel);
-
-
+        bot.sendMessage("bertholdgamma", "test hehehe");
     }
-
-    TwitchAPIRequester requester;
-
 
     private class Pirc extends PircBot {
 
-
         GameModel model;
 
-        public Pirc(String user, GameModel gm) {
+        Pirc(String user, GameModel gm) {
 
             this.setName(user);
             this.setLogin("[" + user + "]");
             this.model = gm;
         }
 
-
-
         public void onMessage(String channel, String sender,
                               String login, String hostname, String message) {
 
+            if (sender.equals("streamplaystaboo") | sender.equals(channel)){
+                if (message.startsWith("!shutdown")) {
+                    Log.debug("shutdown command received!");
+                    model.pushCommand(new Host(model, channel, channel));
+                    partChannel(sender);
+                    disconnect();
+                    dispose();
 
+                }
+            }
 
             Command cmd = parseLine(message, sender);
             if (cmd != null) {
                 model.pushCommand(cmd);
-
-                if (sender.equals("streamplaystaboo") | sender.equals(channel)){
-                    if (message.startsWith("!shutdown")) {
-                        Log.debug("shutdown command received!");
-                        sendMessage(channel, String.format("@" + sender + ": BYE BYE"));
-                        partChannel(sender);
-                        Thread.interrupted();
-
-                    }
-                }
             }
         }
 
         public void onPrivateMessage(String sender, String login, String hostname, String message) {
-            Command cmd = parseLine(message, sender);
 
             System.out.println(message);
             String[] channel = message.split(" ");
 
+            model.pushCommand(new Host(model, channel[0], channel[0]));
+
             new AltTwitchBot(model, "#"+channel[0]);
 
-
-            if (cmd != null) {
-                model.pushCommand(cmd);
-            }
-        }
-
-
-
-
-
-        public void onConnect(){
-            System.out.println("I'm connected!");
-
-        }
-
-        public void onUnknown(String line){
-            Log.info(line);
-        }
-
-        protected  void onAction(String sender, String login,
-                                 String hostname, String target, String action){
-            Log.info(action);
         }
     }
 
@@ -117,7 +85,6 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void connectToChatroom(String user) {
-        checkChannelExist(user);
         bot = new Pirc("streamplaystaboo", this.model);
         bot.setVerbose(true);
 
@@ -127,17 +94,11 @@ public class AltTwitchBot extends Bot {
                     6667,
                     "oauth:" + "ksfaxec4iil2ao18nf2d91ua9she0z"); //streamplaystaboo
         } catch (Exception e) {
-            Log.trace("HTTPResponse bot connection failure");
-            System.exit(1);
+            bot.dispose();
         }
 
         bot.joinChannel(user);
         Log.info("connected to " + user);
-    }
-
-    @Override
-    public void disconnectFromChatroom(String user) {
-
     }
 
     @Override
@@ -146,7 +107,7 @@ public class AltTwitchBot extends Bot {
 
     }
 
-    public void sendPrivMessage(String msg,String user){
+    private void sendPrivMessage(String msg,String user){
         sendChatMessage("/w "+user+" " +msg);
     }
 
@@ -157,13 +118,7 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void whisperLink(String user, String link, int pw) {
-        //sendChatMessage(" " + user + " You are the giver! Here is your link, please click it! " + link);
         sendPrivMessage("You are the giver! Here is your link: " + link + ", please click on it and use your password: " + pw + " to start explaining.", user);
-        //sendPrivMessage("Your Explain word: " + model.getExplainWord(),user);
-
-        //TODO: why onGiverJoined() at this point? think it is just to don't crash the game
-        //model.getSiteBot().onGiverJoined();
-        //model.getSiteController().giverJoined();
     }
 
     @Override
@@ -187,11 +142,11 @@ public class AltTwitchBot extends Bot {
         sendChatMessage( user + " did not accept his offer to explain the word. New Registration phase!");
     }
 
-
     @Override
     public void announceRegistration() {
         sendChatMessage("" +
                 "------------------------------------------------- A new round will start soon. Type !register to get into the giver pool! -------------------------------------------------");
+        sendQuestion();
     }
 
     @Override
@@ -200,34 +155,33 @@ public class AltTwitchBot extends Bot {
     }
 
     @Override
-    public List<String> getUsers(String user) {
+    public List<String> getUsers(String channel) {
 
-        List<String> channels = new ArrayList<>();
+        List<String> users = new LinkedList<>();
 
-        User[] users = bot.getUsers(user);
+        JSONObject obj = TwitchAPIRequester.requestUsers(channel);
 
-        for (int i = 0; i<users.length; i++){
+        JSONObject chatters = obj.getJSONObject("chatters");
+        JSONArray viewers = chatters.getJSONArray("viewers");
 
-            channels.add(users[i].getNick());
+        for (int i = 0; i < viewers.length(); i++) {
+            users.add(viewers.getString(i));
         }
-
-        return channels;
+        return users;
     }
 
-
-    public Command parseLine(String message, String sender) {
+    private Command parseLine(String message, String sender) {
         this.sender = sender;
         return parseLine(message);
     }
 
     @Override
     public Command parseLine(String message) {
-
+        String channel = this.channel.replaceAll("#","");
         String[] parts = message.split(" ");
 
         // !register
         if (parts[0].equals("!register")) {
-            Log.info("Register Command received");
             return new Register(model, channel, sender);
         }
 
@@ -240,7 +194,7 @@ public class AltTwitchBot extends Bot {
         // !ask
         if (parts[0].equals("!ask")) {
             String[] question = message.split("!ask ");
-            return new Ask(model, channel, question[1]);
+            return new Ask(model, channel, sender, question[1]);
         }
 
         // !answer
@@ -280,12 +234,12 @@ public class AltTwitchBot extends Bot {
         if (parts[0].equals("!validate")) {
             int ID = Integer.parseInt(parts[1]);
             int valScore = Integer.parseInt(parts[2]);
-            return new Validate(model, channel, ID, valScore);
+            return new Validate(model, channel, ID, valScore, sender);
         }
 
         // !taboo
         if (parts[0].equals("!taboo")) {
-            return new Taboo(model, channel, parts[1]);
+            return new Taboo(model, channel, parts[1], sender);
         }
 
         // !vote
@@ -295,10 +249,10 @@ public class AltTwitchBot extends Bot {
                 int vote = Integer.parseInt(parts[i]);
                 preVotes[i-1] = vote;
             }
-            return new Prevote(model, channel, preVotes);
+            return new Prevote(model, channel, preVotes, sender);
         }
 
-        return null;
+        return new ChatMessage(model, channel, sender, message);
     }
 }
 

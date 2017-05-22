@@ -24,6 +24,9 @@ public class Votekick extends Command {
         if (numVotes > numPlayers * 0.5f) {
             gameModel.clear();
             gameModel.generateVotingCategories();
+            gameModel.getNeo4jWrapper().increaseUserError(gameModel.getGiver(), thisChannel);
+            gameModel.getNeo4jWrapper().increaseUserError(gameModel.getGiver(), thisChannel);
+            gameModel.getNeo4jWrapper().updateUserVoteKicked(gameModel.getGiver(), thisChannel);
             gameModel.setGameState(GameState.Kick);
             gameModel.notifyKick();
         }
@@ -31,6 +34,9 @@ public class Votekick extends Command {
 
     @Override
     public boolean validate() {
+        if (!gameModel.contribute(votingUser, thisChannel)) {
+            return false;
+        }
         return !gameModel.getVotekick().contains(votingUser);
     }
 

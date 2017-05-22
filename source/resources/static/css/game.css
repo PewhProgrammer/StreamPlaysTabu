@@ -10,6 +10,14 @@
     visibility: hidden;
 }
 
+.guessBars{
+    -moz-transform: scale(-1, 1);
+    -webkit-transform: scale(-1, 1);
+    -o-transform: scale(-1, 1);
+    -ms-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+}
+
 .singleGuesses {
     font-size: 3vmin;
     text-align: right;
@@ -17,16 +25,16 @@
 }
 .explanationsText {
     left: 20.5%;
-    top: 9%;
+    top: 10%;
     width: 55.5%;
-    height: 70%;
+    height: 69%;
 }
 
 .guessesText{
-    top: 9%;
+    top: 10%;
     right: 0.5%;
     width: 23%;
-    height: 70%;
+    height: 69%;
 }
 
 
@@ -38,10 +46,10 @@
 }
 
 .giverInfoText{
-    top: 9%;
+    top: 10%;
     left: 0.5%;
     width: 19.5%;
-    height: 34.5%;
+    height: 33.5%;
 }
 
 .levelText{
@@ -56,7 +64,7 @@
 }
 
 #giverInfo{
-    font-size: 4vw;
+    font-size: 2.25vw;
 }
 
 #level {
@@ -65,7 +73,7 @@
     left:2.5%;
     top:51%;
     width:28vmin;
-    font-size: 8vw;
+    font-size: 15vmin;
 }
 
 #qAndA1, #qAndA2, #qAndA3 {

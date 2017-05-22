@@ -1,4 +1,8 @@
 var base = '/connection-server-external';
+var questions = [];
+var activeQuestion = -1;
+var numQuestions = 0;
+var activeField = "templates";
 
 function sendGiverJoined(giverJoinedEvent) {
     console.log('<< Send giver joined.');
@@ -14,16 +18,11 @@ function showPrevotedCategories(prevotedCategories) {
     console.log('>> Received prevoting categories: ' + prevotedCategories);
     var json = JSON.parse(prevotedCategories);
 
-    document.getElementById("cat1label").innerHTML = json.cat1;
-    document.getElementById("cat2").value = json.cat2;
-    document.getElementById("cat2label").innerHTML = json.cat2;
-    document.getElementById("cat3").value = json.cat3;
-    document.getElementById("cat3label").innerHTML = json.cat3;
-    document.getElementById("cat4").value = json.cat4;
-    document.getElementById("cat4label").innerHTML = json.cat4;
-    document.getElementById("cat5").value = json.cat5;
-    document.getElementById("cat5label").innerHTML = json.cat5;
-
+    document.getElementById("category1").innerHTML = json.cat1;
+    document.getElementById("category2").innerHTML = json.cat2;
+    document.getElementById("category3").innerHTML = json.cat3;
+    document.getElementById("category4").innerHTML = json.cat4;
+    document.getElementById("category5").innerHTML = json.cat5;
 }
 
 function sendCategory(chosenCategory) {
@@ -39,26 +38,75 @@ function requestGiverInfo(request) {
 function showGiverInfo(giverInfo) {
     var json = JSON.parse(giverInfo);
     console.log('>> Received giver information: ' + giverInfo);
-    document.getElementById("giverInfo").innerHTML = 'Giver: ' + json.name + '; Points: ' + json.points + '; Level: ' + json.level + ';';
+    giver = json.name;
 }
 
 function showGuesses(guesses) {
     var json = JSON.parse(guesses);
     console.log('>> Received guesses: ' + guesses);
-    document.getElementById("guesses").innerHTML = json.guess1 + ":" + json.nr1 + "<br>"+ json.guess2 + ":" + json.nr2 + "<br>"+ json.guess3 + ":" + json.nr3 + "<br>"
-        + json.guess4 + ":" + json.nr4 + "<br>"+ json.guess5 + ":" + json.nr5 + "<br>"+ json.guess6 + ":" + json.nr6 + "<br>"+ json.guess7 + ":" + json.nr7 + "<br>"+ json.guess8 + ":" + json.nr8 + "<br>";
+
+    if (json.guess1 != "") {
+        if (json.guess5 != "") {
+            document.getElementById("firstGuess").innerHTML = json.guess1 + "<br><br>" + json.guess5;
+        } else {
+            document.getElementById("firstGuess").innerHTML = json.guess1;
+        }
+    }
+    if (json.guess2 != "") {
+        if (json.guess6 != "") {
+            document.getElementById("secondGuess").innerHTML = json.guess2 + "<br><br>" + json.guess6;
+        } else {
+            document.getElementById("secondGuess").innerHTML = json.guess2;
+        }
+    }
+    if (json.guess3 != "") {
+        if (json.guess7 != "") {
+            document.getElementById("thirdGuess").innerHTML = json.guess3 + "<br><br>" + json.guess7;
+        } else {
+            document.getElementById("thirdGuess").innerHTML = json.guess3;
+        }
+    }
+    if (json.guess4 != "") {
+        if (json.guess8 != "") {
+            document.getElementById("fourthGuess").innerHTML = json.guess4 + "<br><br>" + json.guess8;
+        } else {
+            document.getElementById("fourthGuess").innerHTML = json.guess4;
+        }
+    }
 }
 
 function showExplainWord(explainWord) {
-    var json =  JSON.parse(explainWord);
+    var json = JSON.parse(explainWord);
     console.log('>> Received explain word: ' + explainWord);
-    document.getElementById("explainWord").innerHTML = 'ExplainWord: ' + json.explainWord;
+    document.getElementById("explainWord").innerHTML = json.explainWord;
 }
 
 function showTabooWords(tabooWords) {
-    var json =  JSON.parse(tabooWords);
+    var json = JSON.parse(tabooWords);
     console.log('>> Received taboo words: ' + tabooWords);
-    document.getElementById("tabooWords").innerHTML = 'TabooWords: ' + json.word1 + ", " + json.word2 + ", " + json.word3 + ", " + json.word4 + ", " + json.word5;
+    var taboo = "";
+    if(json.word1 === "" && json.word2 === "" && json.word3 === "" && json.word4 === "" && json.word5 === "") {
+        taboo = "No taboo words"
+    } else {
+        if (json.word1 != "") {
+            taboo = "<ul><li>" + json.word1 + "</li>";
+        }
+        if (json.word2 != "") {
+            taboo = "<li>" + json.word2 + "</li>";
+        }
+        if (json.word3 != "") {
+            taboo = "<li>" + json.word3 + "</li>";
+        }
+        if (json.word4 != "") {
+            taboo = "<li>" + json.word4 + "</li>";
+        }
+        if (json.word5 != "") {
+            taboo = "<li>" + json.word5 + "</li></ul>";
+        }
+    }
+
+    document.getElementById("tabooWords").innerHTML = taboo;
+    showGame();
 }
 
 function sendExplanation(explanation) {
@@ -69,8 +117,29 @@ function sendExplanation(explanation) {
 function showQuestion(question) {
     var json = JSON.parse(question);
     console.log('>> Received question: ' + question);
-    document.getElementById("q1").value = json.question;
-    document.getElementById("q1Label").innerHTML = json.question;
+    numQuestions++;
+    questions.push(json.question);
+
+    refreshQuestions();
+}
+
+function refreshQuestions() {
+    var html = "";
+    for (var i = questions.length - 1; i >= 0; i--) {
+        if (questions[i] != null) {
+            html = html + "<p class='questions' onclick='chosenQuestion(" + i + ", this)' id='question" + i + "'>Question:<br>" + questions[i] + "</p>"
+        }
+    }
+
+    document.getElementById("qAndAs").innerHTML = html;
+}
+
+function chosenQuestion(num, p) {
+    if (activeQuestion > -1) {
+        document.getElementById("question" + activeQuestion).classList.remove("activeQuestion");
+    }
+    activeQuestion = num;
+    document.getElementById(p.id).classList.add("activeQuestion");
 }
 
 function sendAnswer(QandA) {
@@ -90,7 +159,21 @@ function requestValidation(request) {
 
 function showValidation(validation) {
     console.log('>> Received validation: ' + validation);
-    //TODO display validation information
+    var json = JSON.parse(validation);
+    document.getElementById("validationCategoryLabel_one").textContent = json.reference1;
+    document.getElementById("validationCategoryLabel_two").textContent = json.reference2;
+    document.getElementById("validationCategoryLabel_three").textContent = json.reference3;
+
+    document.getElementById("validationTabooLabel_one").textContent = json.taboo1;
+    document.getElementById("validationTabooLabel_two").textContent = json.taboo2;
+    document.getElementById("validationTabooLabel_three").textContent = json.taboo3;
+
+}
+
+function updateGameState(gameState) {
+    var json = JSON.parse(gameState);
+    console.log('>> RECEIVED gameState: ' + json.state);
+    state = json.state;
 }
 
 function sendValidation(validation) {
@@ -99,13 +182,40 @@ function sendValidation(validation) {
 }
 
 function showChatMessage(msg) {
-    var json =  JSON.parse(msg);
-    console.log('>> Received chat message: ' + msg);
-    document.getElementById("chat").value = document.getElementById("chat").value + "<br>" + msg;
+    var json = JSON.parse(msg);
+
+    var element = document.getElementById("chat");
+    console.log('>> Received chat message: ' + json.content + "from: " + json.sender);
+    element.innerHTML = element.innerHTML + "<br>" + json.sender + ": " + json.content;
+
+    $('#chat').animate({
+        scrollTop: $('#chat').offset().top
+    }, "slow");
 }
 
 function closeGame(status) {
     console.log('>> Received end of game: ' + status);
+
+    socket.onclose = function () {console.log("Socket closed.")};
+    socket.close();
+
+    document.getElementById("progressbar").innerHTML = "GameOver!";
+    document.getElementById("progressbar").style.color = "#111111";
+
+    clearInterval(timer);
+
+    document.getElementById("tempDiv").style.visibility = "hidden";
+    document.getElementById("tempDiv").style.zIndex = "0";
+    document.getElementById("endGameDiv").style.zIndex = "1";
+
+    var json = JSON.parse(status);
+    if (json.status === "Win") {
+        document.getElementById("endGameDiv").innerHTML = "<p>You won!<br>+" + json.points + "</p>";
+    } else if (json.status === "Lose") {
+        document.getElementById("endGameDiv").innerHTML = "<p>Game over!</p>";
+    } else if (json.status === "Kick") {
+        document.getElementById("endGameDiv").innerHTML = "<p>Too many cheating attempts!<br>Round is over.</p>";
+    }
 }
 
 function sendPassword(pw) {
@@ -115,4 +225,29 @@ function sendPassword(pw) {
 
 function sendToServer(target, content) {
     send(base + target, content);
+}
+
+
+function chooseExpl() {
+    document.getElementById("qAndABlock").style.zIndex = "1";
+    document.getElementById("qAndABlock").style.visibility = "visible";
+
+    document.getElementById("cardBlock").style.zIndex = "-1";
+    document.getElementById("cardBlock").style.visibility = "hidden";
+    document.getElementById("YesNo").style.visibility = "hidden";
+
+    activeField = "templates";
+    activeQuestion = -1;
+    refreshQuestions();
+}
+
+function chooseqAndA() {
+    document.getElementById("qAndABlock").style.zIndex = "-1";
+    document.getElementById("qAndABlock").style.visibility = "hidden";
+
+    document.getElementById("cardBlock").style.zIndex = "1";
+    document.getElementById("cardBlock").style.visibility = "visible";
+
+    document.getElementById("YesNo").style.visibility = "visible";
+    activeField = "questions";
 }

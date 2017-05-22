@@ -40,4 +40,9 @@ public class Rank extends Command {
 
         return user.equals(r.getUser()) && thisChannel.equals(r.getChannel());
     }
+
+    @Override
+    public String toString(){
+        return "Rank";
+    }
 }

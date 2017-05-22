@@ -25,6 +25,9 @@ public class Register extends Command {
 
     @Override
     public boolean validate() {
+        if (!gameModel.contribute(user, thisChannel)) {
+            return false;
+        }
         return gameModel.getGameState().equals(GameState.Registration);
     }
 
@@ -42,5 +45,10 @@ public class Register extends Command {
         Register r = (Register) o;
 
         return user.equals(r.getUser());
+    }
+
+    @Override
+    public String toString(){
+        return "Register";
     }
 }

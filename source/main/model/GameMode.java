@@ -5,5 +5,6 @@ package model;
  */
 public enum GameMode {
     Normal,
-    Streamer
+    Streamer,
+    HOST
 }

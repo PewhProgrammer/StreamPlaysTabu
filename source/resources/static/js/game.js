@@ -2,17 +2,17 @@
  * Created by Marc on 02.05.2017.
  */
 
-var timeLeft = 90;
+var timeLeft = 105;
 // Update the count down every 1 second
 var timer = setInterval(function() {
 
     timeLeft = timeLeft - 1;
 
     document.getElementById("progressbar").innerHTML = timeLeft + "s";
-    document.getElementById("progressbar").style.width = (timeLeft / 90) * 100 + "%";
+    document.getElementById("progressbar").style.width = (timeLeft / 105) * 100 + "%";
 
     if (timeLeft == 0) {
-        document.getElementById("progressbar").innerHTML = "Time's up!";
+        document.getElementById("progressbar").innerHTML = "Time's-Up!";
         document.getElementById("progressbar").style.color = "#111111";
         clearInterval(timer);
     }
@@ -20,11 +20,13 @@ var timer = setInterval(function() {
 
 function updateGiver(giver) {
     var json = JSON.parse(giver.body);
-
-    document.getElementById("giverInfo").innerHTML = json.name + "<br>" + json.points + " Pts."
-    document.getElementById("level").innerHTML = "Level: " + json.level;
+    var giver = json.name;
+    if(giver.length > 12) {
+        giver = giver.substring(0, 12) + "...";
+    }
+    document.getElementById("giverInfo").innerHTML = giver + "<br>" + json.points + " Pts."
+    document.getElementById("level").innerHTML = json.level;
 }
-
 
 function updateGuesses(guesses) {
     var incJson = JSON.parse(guesses.body);
@@ -142,8 +144,11 @@ function updateEndGame(endGame) {
     var incJson = JSON.parse(endGame.body);
     document.getElementById("explanations").style.visibility = "hidden";
     if(incJson.status == "Win") {
-        document.getElementById("endGame").innerHTML = "Winner: " + endGame.winner + "<br> Points: +" + endGame.points;
-    } else if (incJson.status == "Lose" || incJson.status =="Kick") {
-        document.getElementById("endGame").innerHTML = "This round is over! :( <br> No winner.";
+        document.getElementById("endGame").innerHTML = "Winner: " + incJson.winner + "<br> Points: +" + incJson.points;
+    } else if (incJson.status == "Lose") {
+        document.getElementById("endGame").innerHTML = "Time is up! :( <br> No winner. The word was: " + incJson.word;
+    } else if (incJson.status =="Kick") {
+        document.getElementById("endGame").innerHTML = incJson.winner + " was kicked because he tried to betray the system! <br> The word was: "
+            + incJson.word + "<br>A new round will start soon.";
     }
 }

@@ -15,13 +15,14 @@
 </head>
 
 <body onload="connectLoc()">
-<nav class="navbar navbar-inverse" style="background:linear-gradient(to bottom, #3a404d, #181c26);border-radius: 10px;box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);">
+<nav class="navbar navbar-inverse" style="background:linear-gradient(to bottom, #3a404d, #181c26); border-radius: 10px;box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);">
     <div class="navbar-header">
         <p class="navbar-brand" style="font-size: 4vh">StreamPlaysTaboo</p>
     </div>
     <p class="navbar-text" style="font-size: 3vh">Free for All</p>
-    <div class="nav navbar-text progress pull-right" style="width: 25%; margin-top:1%; visibility: visible">
-        <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" id="progressbar" style="width:100%; font-size: 2vh">90s</div>
+    <p class="navbar-text" id="statusInfo" style="position:absolute; bottom: 27%; right: 2%">Time left!</p>
+    <div class="nav navbar-text progress pull-right" style="width: 25%; height:2vh; position:absolute; bottom: -15%; right: 2%; visibility: visible">
+        <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" id="progressbar" style="width:100%; font-size: 2vh">105s</div>
     </div>
 </nav>
 
@@ -48,43 +49,43 @@
 <div class="background guessesText">
     <p id="guesses">!guess &lt;word&gt; <small>to submit a guess!</small></p>
     <p class="singleGuesses" id="1stGuess">1stGuess</p>
-    <div class="progress" id="Bar1">
+    <div class="progress guessBars" id="Bar1">
         <div class="progress-bar" role="progressbar" id="1stGuessBar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
             <span class="sr-only"></span>
         </div>
     </div>
     <p class="singleGuesses" id="2ndGuess">2ndGuess</p>
-    <div class="progress" id="Bar2">
+    <div class="progress guessBars" id="Bar2">
         <div class="progress-bar" role="progressbar" id="2ndGuessBar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 90%;">
             <span class="sr-only"></span>
         </div>
     </div>
     <p class="singleGuesses" id="3rdGuess">3rdGuess</p>
-    <div class="progress" id="Bar3">
+    <div class="progress guessBars" id="Bar3">
         <div class="progress-bar" role="progressbar" id="3rdGuessBar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 80%;">
             <span class="sr-only"></span>
         </div>
     </div>
     <p class="singleGuesses" id="4thGuess">4thGuess</p>
-    <div class="progress" id="Bar4">
+    <div class="progress guessBars" id="Bar4">
         <div class="progress-bar" role="progressbar" id="4thGuessBar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 65%;">
             <span class="sr-only"></span>
         </div>
     </div>
     <p class="singleGuesses" id="5thGuess">5thGuess</p>
-    <div class="progress" id="Bar5">
+    <div class="progress guessBars" id="Bar5">
         <div class="progress-bar" role="progressbar" id="5thGuessBar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
             <span class="sr-only"></span>
         </div>
     </div>
     <p class="singleGuesses" id="6thGuess">6thGuess</p>
-    <div class="progress" id="Bar6">
+    <div class="progress guessBars" id="Bar6">
         <div class="progress-bar" role="progressbar" id="6thGuessBar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 30%;">
             <span class="sr-only"></span>
         </div>
     </div>
     <p class="singleGuesses" id="7thGuess">7thGuess</p>
-    <div class="progress" id="Bar7">
+    <div class="progress guessBars" id="Bar7">
         <div class="progress-bar" role="progressbar" id="7thGuessBar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
             <span class="sr-only"></span>
         </div>

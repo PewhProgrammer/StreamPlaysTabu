@@ -1,6 +1,7 @@
 package gui.webinterface.containers;
 
 import model.GameState;
+import org.json.JSONObject;
 
 public class GameStateContainer {
 
@@ -33,4 +34,15 @@ public class GameStateContainer {
     public String getGameState() {
         return gameState;
     }
+
+    public JSONObject toJSONObject() {
+
+        JSONObject obj = new JSONObject();
+
+        obj.put("state", gameState);
+
+        return obj;
+
+    }
+
 }

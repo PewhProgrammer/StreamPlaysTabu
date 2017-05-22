@@ -6,11 +6,13 @@ import model.GameState;
 
 public class Ask extends Command {
 
-    private String question;
+    private final String question;
+    private final String sender;
 
-    public Ask(GameModel gm, String ch, String question) {
+    public Ask(GameModel gm, String ch, String sender, String question) {
         super(gm, ch);
         this.question = question;
+        this.sender = sender;
     }
 
     /**
@@ -24,7 +26,8 @@ public class Ask extends Command {
 
     @Override
     public boolean validate() {
-        return gameModel.getGameState().equals(GameState.GameStarted) && !getQuestion().equals("");
+        return gameModel.contribute(sender, thisChannel) && gameModel.getGameState().equals(GameState.GameStarted)
+                && !getQuestion().equals("");
     }
 
     public String getQuestion() {
@@ -41,5 +44,10 @@ public class Ask extends Command {
         Ask a = (Ask) o;
 
         return question.equals(a.getQuestion()) && thisChannel.equals(a.getChannel());
+    }
+
+    @Override
+    public String toString(){
+        return "Ask";
     }
 }

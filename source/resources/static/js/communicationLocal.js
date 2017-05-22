@@ -47,6 +47,9 @@ function connectLoc() {
         if (window.location.href == 'http://localhost:8080/registerFFA.html') {
             prepareRegister();
         }
+        if (window.location.href == 'http://localhost:8080/registerSE.html') {
+            prepareRegister();
+        }
         if (window.location.href == 'http://localhost:8080/game.html') {
             prepareGame();
         }
@@ -94,8 +97,8 @@ function updateState(gamestate) {
             break;
         }
         case "Waiting For Giver": {
-            twenties = true;
-            timeLeft = 20;
+            document.getElementById("statusInfo").innerHTML = "Waiting for chosen giver!";
+            timeLeft = 30;
             break;
         }
         case "Win": {

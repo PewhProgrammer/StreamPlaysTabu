@@ -11,6 +11,11 @@ import java.util.Date;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 /**
  * Created by Thinh-Laptop on 26.03.2017.
  */
@@ -100,6 +105,25 @@ public class Main {
         Log.info("Launching webinterface ...");
         RunInterface.main(new String[] {});
 
+                /*String url = "http://www.google.com/";
+
+                if(Desktop.isDesktopSupported()){
+                    Desktop desktop = Desktop.getDesktop();
+                    try {
+                        desktop.browse(new URI(url));
+                    } catch (IOException | URISyntaxException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }else{
+                    Runtime runtime = Runtime.getRuntime();
+                    try {
+                        runtime.exec("xdg-open " + url);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                } */
 
         try {
             SiteController st = new SiteController(model, ext_bindAddr);
@@ -188,13 +212,13 @@ public class Main {
                         ext_bindAddr = line.getOptionValue("webpageserver");
                         //if (!checkBindAddrFormat(ext_bindAddr))
                         //    throw new ParseException(neo4jbindAddr + " malicious bind address format for the webpage!");
-                      ext_bindAddr = "http://" + line.getOptionValue("webpageserver")+"/";
+                        ext_bindAddr = "http://" + line.getOptionValue("webpageserver")+"/";
                     }
                     break;
                     case "--neo4jserver":
                         neo4jbindAddr = line.getOptionValue("neo4jserver");
-                        if (!checkBindAddrFormat(neo4jbindAddr))
-                            throw new ParseException(neo4jbindAddr + " malicious bind address format for neo4j!");
+                      //  if (!checkBindAddrFormat(neo4jbindAddr))
+                      //      throw new ParseException(neo4jbindAddr + " malicious bind address format for neo4j!");
                         if (line.hasOption("s")) {
                             seed = ((Number) line.getParsedOptionValue("s")).intValue();
                             setSeed = true;
@@ -232,6 +256,7 @@ public class Main {
      */
     private boolean checkBindAddrFormat(String bindAddr) {
 
+
         String[] parts ={};
         try {
             parts = bindAddr.split(":");
@@ -240,7 +265,7 @@ public class Main {
         }
         String host = parts[0]; // host
         String port = parts[1]; // port
-        boolean correctHost = host.equals("localhost")
+        boolean correctHost = host.equals("localhost") || host.equals("pewhgames.com")
                 || Pattern.compile("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}:[0-9]{1,5}").
                 matcher(host).matches();
         boolean correctPort = Pattern.compile("\\d+").

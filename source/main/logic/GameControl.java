@@ -4,6 +4,7 @@ import common.Log;
 import logic.commands.CategoryChosen;
 import logic.commands.Command;
 import logic.commands.GiverJoined;
+import model.GameMode;
 import model.GameModel;
 import model.GameState;
 import model.Observable;
@@ -11,6 +12,7 @@ import model.Observable;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import common.Util;
 
@@ -51,10 +53,12 @@ public class GameControl extends Observable{
 
         while(mModel.getGameState() == GameState.GameStarted){
             //processNextCommand();
-            if(Util.diffTimeStamp(d,new Date()) > 120){
+            if(Util.diffTimeStamp(d,new Date()) > 105){
                 mModel.setGiver("");
                 mModel.getBot().announceNoWinner();
-                mModel.setGameState(GameState.GameStarted.Registration);
+                mModel.setGameState(GameState.Lose);
+                mModel.clear();
+                mModel.generateVotingCategories();
                 break;
             }
             try {
@@ -62,6 +66,14 @@ public class GameControl extends Observable{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+
+        if(mModel.getGameState() == GameState.Kick) mModel.setGiver("");
+        try {
+            Thread.sleep(5000);
+            mModel.setGameState(GameState.GameStarted.Registration);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         isStarted = false;
         waitingForPlayers();
@@ -98,18 +110,8 @@ public class GameControl extends Observable{
      */
     private void waitingForPlayers(){
         Log.info("Control is waiting for Players");
-        while(mModel.getGameState() == GameState.Registration){
-
-            //if user is registered but no giver, then new giver
-            if(mModel.getRegisteredPlayers().size() > 0){
-
-                if(mModel.getGiver().equals("")){
-                    chooseNewGiver(mModel.getRegisteredPlayers());
-                    break;
-                } //no previous giver
-                else
-                    chooseNewGiver(mModel.getRegisteredPlayers());
-            }
+        gameLoop:
+        while(mModel.getGameState() == GameState.Registration || !isStarted){
 
             mModel.setTimeStamp();
             try {
@@ -122,16 +124,44 @@ public class GameControl extends Observable{
                 e.printStackTrace();
             }
 
-
-            if(mModel.getRegisteredPlayers().contains(
-                    mModel.getWinner()
-            )){
-                // then send link
-                mModel.setGiver(mModel.getWinner());
-                break;
-                //mModel.getBot().whisperLink("pewhTV","<Link>");
+            if(mModel.getGameMode() == GameMode.Streamer){
+                mModel.setGiver(mModel.getGiverChannel());
+                break gameLoop;
             }
-            else mModel.setGiver(""); //s.t. there is no current giver and we have to choose new one
+
+            if(mModel.getRegisteredPlayers().contains(mModel.getWinner())){
+                mModel.setGiver(mModel.getWinner());
+                if(!mModel.getGiver().equals(""))
+                    break gameLoop;
+            }
+
+            while(true){
+                try {
+                    //if user is registered but no giver, then new giver
+                    if(mModel.getRegisteredPlayers().size() > 0){
+                        chooseNewGiver(mModel.getRegisteredPlayers());
+                        if(!mModel.getGiver().equals("")){
+                            break gameLoop;
+                        }
+                    }
+                    Log.trace("Entering Stand by: Anyone can type !register to become giver");
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            /*
+            //random giver
+            List<String> usersInChannel = mModel.getBot().getUsers(mModel.getGiverChannel()) ;
+            if(usersInChannel.size() > 1) {
+                chooseNewGiver(mModel.getBot().getUsers(mModel.getGiverChannel()));
+                if(!mModel.getGiver().equals(""))
+                    break;
+            }*/
+
+
         }
 
         mModel.setGameState(GameState.WaitingForGiver);
@@ -146,6 +176,8 @@ public class GameControl extends Observable{
                 mModel.getBot().announceGiverNotAccepted(mModel.getGiver());
                 mModel.setGiver("");
                 mModel.setGameState(GameState.GameStarted.Registration);
+                mModel.clear();
+                break;
             }
             try {
                 Thread.sleep(20000);
@@ -164,6 +196,8 @@ public class GameControl extends Observable{
      * handles new giver
      */
     private void chooseNewGiver(List<String> users){
+        users = users.stream().filter(
+               user -> !user.equals("streamplaystaboo")).collect(Collectors.toList());
         Log.trace("New giver has been chosen from registration pool");
         int index = rand.nextInt(users.size());
         String newGiver =  users.get(index);
@@ -177,8 +211,10 @@ public class GameControl extends Observable{
         for (; ; ) {
             Command c = mModel.pollNextCommand();
             try {
-                if(c.validate())
+                if(c.validate()) {
+                    Log.trace(c.toString()+ " Command received!");
                     c.execute();
+                }
             }catch(NullPointerException n){
                 try {
 

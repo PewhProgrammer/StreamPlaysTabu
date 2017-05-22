@@ -13,6 +13,8 @@ import java.util.List;
  */
 public abstract class Bot {
 
+    private final static String QUEST_MSG = "Do you like to play StreamPlaysTaboo? Tell us how we can improve! https://goo.gl/forms/ED5savZgNQEOPES82";
+
     protected Socket sock;
     protected PrintWriter out;
     protected BufferedReader in;
@@ -33,8 +35,6 @@ public abstract class Bot {
 
     public abstract void connectToChatroom(String user);
 
-    public abstract void disconnectFromChatroom(String user);
-
     public abstract void sendChatMessage(String msg);
 
     public abstract void whisperRules(String user);
@@ -46,6 +46,10 @@ public abstract class Bot {
     public abstract void announceWinner(String user);
 
     public abstract void announceNoWinner();
+
+    protected void sendQuestion() {
+        sendChatMessage(QUEST_MSG);
+    }
 
     public abstract void announceGiverNotAccepted(String user);
 

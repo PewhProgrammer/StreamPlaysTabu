@@ -3,6 +3,7 @@ package logic.bots;
 import common.Log;
 import logic.commands.*;
 import model.GameModel;
+import org.json.JSONArray;
 import pro.beam.api.BeamAPI;
 import pro.beam.api.resource.BeamUser;
 import pro.beam.api.resource.channel.BeamChannel;
@@ -18,39 +19,31 @@ import pro.beam.api.services.impl.ChannelsService;
 import pro.beam.api.services.impl.ChatService;
 import pro.beam.api.services.impl.UsersService;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by Marc on 03.04.2017.
- */
+
 public class BeamBot extends Bot {
 
     private final BeamAPI api;
-    private final BeamUser beamBot;
-    private final BeamChannel beamChannel;
-    private final BeamChat beamChatBot;
     private final BeamUser channelOwner;
     private final BeamChatConnectable chatConnectable;
 
     private String sender = "";
 
-    /**
-     * Jede Bot Instanz kann nur einmal zum Chat connecten, da chatConnectable final sein muss und
-     * nicht überschrieben werden kann
-     * @throws ExecutionException
-     * @throws InterruptedException
-     */
+
     public BeamBot(GameModel model, String user) throws ExecutionException, InterruptedException {
 
         super(model, user);
+
+
+        BeamUser beamBot;
+        BeamChannel beamChannel;
+        BeamChat beamChatBot;
 
         /*StreamPlaysTaboo*/
         api = new BeamAPI("uy9mwJ8iWQ9O1VzPeK6M4D1akfWOpDTh69ejyeBwP5hPrItSWkY5NUSXjxGFFUtE");
@@ -60,18 +53,17 @@ public class BeamBot extends Bot {
 
 
         // 'user' -> id des users um uns damit channel und chat instanz zu holen
-
-        //ID von user zu dem wir connecten wollen
-        //TODO find target ID
         int targetId = 0;
         try {
             targetId = getUserId(user);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         //channel auf den wir connecten wollen
         beamChannel = api.use(ChannelsService.class).findOne(targetId).get();
         channelOwner = beamChannel.user ;
+
         //chat zu dem wir connecten wollen
         beamChatBot = api.use(ChatService.class).findOne(targetId).get();
         chatConnectable = beamChatBot.connectable(api);
@@ -105,8 +97,6 @@ public class BeamBot extends Bot {
             if (cmd != null) {
                 model.pushCommand(cmd);
             }
-
-
         });
     }
 
@@ -136,7 +126,7 @@ public class BeamBot extends Bot {
         if (message[0].equals("!ask")) {
                 /*SAVE ASK SEND GUI*/
                 String[] question = line.split("!ask ");
-            return new Ask(model, channel, question[1]);
+            return new Ask(model, channel, question[1], sender);
         }
 
             /* !rules */
@@ -169,13 +159,13 @@ public class BeamBot extends Bot {
                 /* GET ID AND SCORE */
             int ID = Integer.parseInt(message[1]);
             int valScore = Integer.parseInt(message[2]);
-            return new Validate(model, channel, ID, valScore);
+            return new Validate(model, channel, ID, valScore, sender);
         }
 
             /* !taboo */
         if (message[0].equals("!taboo")) {
                 /* SAVE TABOO WORD */
-            return new Taboo(model, channel, message[1]);
+            return new Taboo(model, channel, message[1], sender);
         }
 
             /* !vote */
@@ -186,26 +176,14 @@ public class BeamBot extends Bot {
                 int vote = Integer.parseInt(message[i]);
                 preVotes[i-1] = vote;
             }
-            return new Prevote(model, channel,preVotes);
+            return new Prevote(model, channel,preVotes, sender);
         }
-        return null;
-
+        return new ChatMessage(model, channel, sender, line);
     }
 
-    private int getUserId(String user) throws MalformedURLException,IOException {
-        HttpURLConnection connection;
-        connection = (HttpURLConnection) new URL("https://beam.pro/api/v1/channels/" + user + "?fields=id").openConnection();
-        connection.setRequestMethod("GET");
-
-        InputStream is = connection.getInputStream();
-        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-
-        int id = Integer.parseInt(rd.readLine().split(":")[1].split("}")[0]);
-
-        is.close();
-        rd.close();
-
-        return id;
+    private int getUserId(String user) throws IOException {
+        String s = sendHTTPRequest("https://beam.pro/api/v1/channels/" + user + "?fields=id");
+        return Integer.parseInt(s.split(":")[1].split("}")[0]);
     }
 
     @Override
@@ -214,19 +192,20 @@ public class BeamBot extends Bot {
         Log.info("Sollte niemals benutzt werden!!");
     }
 
-    @Override
-    public void disconnectFromChatroom(String user) {
-        //TODO implement
-    }
-
     public static boolean checkChannelExists(String channel) {
-        //TODO implement
-        return false;
+
+        try {
+            sendHTTPRequest("https://beam.pro/api/v1/channels/" + channel + "?fields=id");
+        } catch (IOException e) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public void sendChatMessage(String msg) {
-        chatConnectable.send(ChatSendMethod.of(String.format(msg)));
+        chatConnectable.send(ChatSendMethod.of(msg));
     }
 
     @Override
@@ -237,8 +216,7 @@ public class BeamBot extends Bot {
     @Override
     public void whisperLink(String user, String link, int pw) {
         Log.trace("Send link to giver!");
-        //TODO send proper message
-        whisper(user, link + " ; " + pw);
+        whisper(user, "You are the giver! Here is your link: " + link + ", please click on it and use your password: " + pw + " to start explaining.");
     }
 
     private void whisper(String receiver, String content) {
@@ -258,8 +236,7 @@ public class BeamBot extends Bot {
 
     @Override
     public void announceNewRound() {
-
-        chatConnectable.send(ChatSendMethod.of(String.format("A new round has started. Good Luck and let them guesses flow!!!")));
+        chatConnectable.send(ChatSendMethod.of("A new round has started. Good Luck and let them guesses flow!!!"));
     }
 
     @Override
@@ -279,7 +256,8 @@ public class BeamBot extends Bot {
 
     @Override
     public void announceRegistration() {
-        chatConnectable.send(ChatSendMethod.of(String.format("A new round will start soon. Type !register to get into the giver pool!")));
+        sendQuestion();
+        chatConnectable.send(ChatSendMethod.of("A new round will start soon. Type !register to get into the giver pool!"));
     }
 
     @Override
@@ -288,9 +266,44 @@ public class BeamBot extends Bot {
     }
 
     @Override
-    public List<String> getUsers(String user) {
-        //TODO implement
-        //return new String[0];
-        return null;
+    public List<String> getUsers(String ch) {
+
+        List<String> users = new LinkedList<>();
+
+        try {
+            String s = sendHTTPRequest("https://beam.pro/api/v1/chats/" + getUserId(ch) + "/users");
+            JSONArray userArray = new JSONArray(s);
+            for (int i = 0; i < userArray.length(); i++) {
+                users.add(userArray.getJSONObject(i).getString("userName"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return users;
     }
+
+    private static String sendHTTPRequest(String url) throws IOException {
+        HttpURLConnection connection;
+        connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod("GET");
+
+        InputStream is = connection.getInputStream();
+        BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+
+        String s;
+
+        StringBuilder sb = new StringBuilder();
+        while ((s = rd.readLine()) != null) {
+            sb.append(s);
+        }
+
+        is.close();
+        rd.close();
+
+        return sb.toString();
+    }
+
 }

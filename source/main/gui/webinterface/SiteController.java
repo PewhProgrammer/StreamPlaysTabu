@@ -1,5 +1,6 @@
 package gui.webinterface;
 
+import common.Log;
 import gui.webinterface.containers.*;
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -12,9 +13,7 @@ import model.GameState;
 import model.IObserver;
 import org.json.JSONObject;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 public class SiteController implements IObserver {
@@ -101,12 +100,13 @@ public class SiteController implements IObserver {
                     receiveQandA(new QandAContainer(obj.getString("q"), obj.getString("a")));
                 }
             }
-        }).on("/sendValidation", new Emitter.Listener() {
+        }).on(CORE_BASE +"/sendValidation", new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 JSONObject obj = new JSONObject((String)args[0]);
                 if (validatePW(obj.getString("password"))) {
-                    receiveValidation(obj.getString("reference"), obj.getString("taboo"), Integer.getInteger(obj.getString("score")));
+                    Log.info("here");
+                    receiveValidation(obj.getString("reference"), obj.getString("taboo"), obj.getInt("score"));
                 }
             }
         });
@@ -123,7 +123,7 @@ public class SiteController implements IObserver {
 
     public void giverJoined() {
         System.out.println("Received GiverJoined.");
-        Command cmd = new GiverJoined(gm, "giver");
+        Command cmd = new GiverJoined(gm, gm.getGiverChannel());
         gm.pushCommand(cmd);
     }
 
@@ -135,7 +135,7 @@ public class SiteController implements IObserver {
     public void reqGiver() {
         System.out.println("Received reqGiver.");
         String giver = gm.getGiver();
-        int score = gm.getScore(giver,gm.getGuesserChannel());
+        int score = gm.getScore(giver,gm.getGiverChannel());
         int lvl = gm.getLevel(score);
         send("/giver", new GiverContainer(giver, score, lvl).toJSONObject());
     }
@@ -145,6 +145,17 @@ public class SiteController implements IObserver {
         String[] references = new String[3];
         String[] taboos = new String[3];
 
+        ArrayList<ArrayList<String>>  k = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidationForGiver();
+        Collections.shuffle(k);
+        int i = 0;
+        for(ArrayList<String> container : k){
+            if(i == 3) break;
+            references[i] = container.get(0);
+            taboos[i] = container.get(1);
+            i++;
+        }
+
+        /*
         Map m = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidation(null, 1);
         Iterator<Map.Entry<String, Set<String>>> it = m.entrySet().iterator();
         Map.Entry<String, Set<String>> mE = it.next();
@@ -167,7 +178,7 @@ public class SiteController implements IObserver {
         itS = mE.getValue().iterator();
 
         references[2] = mE.getKey();
-        taboos[2] = itS.next();
+        taboos[2] = itS.next();*/
 
 
         send("/validation", new GiverValidation(references, taboos).toJSONObject());
@@ -175,46 +186,49 @@ public class SiteController implements IObserver {
 
     public void reqSkip() {
         System.out.println("Received reqSkip.");
-        Command cmd = new Skip(gm, "giver");
+        Command cmd = new Skip(gm, gm.getGiverChannel());
         gm.pushCommand(cmd);
     }
 
     public void receiveCategory(CategoryChosenContainer cg) {
         System.out.println("Received category: " + cg.getCategory());
-        Command cmd = new CategoryChosen(gm, "giver", cg.getCategory());
+        Command cmd = new CategoryChosen(gm, gm.getGiverChannel(), cg.getCategory());
         gm.pushCommand(cmd);
     }
 
     public void receiveExplanation(ExplanationContainer ec) {
         System.out.println("Received explanation: " + ec.getExplanation() + " by " + ec.getGiver());
-        Command cmd = new Explanation(gm, "giver", ec.getExplanation(), ec.getGiver());
+        Command cmd = new Explanation(gm, gm.getGiverChannel(), ec.getExplanation(), ec.getGiver());
         gm.pushCommand(cmd);
     }
 
     public void receiveQandA(QandAContainer qa) {
         System.out.println("Received question: " + qa.getQuestion() + " and answer " + qa.getAnswer());
-        Command cmd = new Answer(gm, "giver", qa.getQuestion(), qa.getAnswer());
+        Command cmd = new Answer(gm, gm.getGiverChannel(), qa.getQuestion(), qa.getAnswer());
         gm.pushCommand(cmd);
     }
 
     public void receiveValidation(String reference, String taboo, int score) {
         System.out.println("Received sendValidation");
         gm.getNeo4jWrapper().validateExplainAndTaboo(reference, taboo, score * 2 - 4);
+        //TODO give user + 10 seconds
     }
 
     @Override
     public void onNotifyGameState() {
         if (gm.getGameState().equals(GameState.Win)) {
-            send("/close", new GameCloseContainer("Win").toJSONObject());
+            send("/close", new GameCloseContainer("Win", gm.getWinner(), gm.getGainedPoints(), gm.getExplainWord()).toJSONObject());
         }
 
         if (gm.getGameState().equals(GameState.Lose)) {
-            send("/close", new GameCloseContainer("Lose").toJSONObject());
+            send("/close", new GameCloseContainer("Lose", "", 0, gm.getExplainWord()).toJSONObject());
         }
 
         if (gm.getGameState().equals(GameState.Kick)) {
-            send("/close", new GameCloseContainer("Kick").toJSONObject());
+            send("/close", new GameCloseContainer("Kick", "", 0, gm.getExplainWord()).toJSONObject());
         }
+
+        send("/state", new GameStateContainer(gm.getGameState()).toJSONObject());
     }
 
     @Override
@@ -272,8 +286,12 @@ public class SiteController implements IObserver {
         send("/tabooWords", new TabooWordsContainer(gm.getTabooWords()).toJSONObject());
     }
 
-    public void sendChatMessage(String time, String channel, String sender, String msg) {
-        send("/chatMsg", new MessageContainer(time, channel, sender, msg).toJSONObject());
+    public void sendError(String msg) {
+        send("/error", new ErrorContainer(msg).toJSONObject());
+    }
+
+    public void sendChatMessage(String channel, String sender, String msg) {
+        send("/chatMessage", new MessageContainer(channel, sender, msg).toJSONObject());
     }
 
     public void sendQuestion(String question) {

@@ -1,10 +1,12 @@
 package gui.webinterface;
 
+import common.Neo4jWrapper;
 import gui.GuiAnchor;
 import gui.webinterface.containers.*;
 import logic.GameControl;
 import logic.commands.CategoryChosen;
 import logic.commands.Setup;
+import model.GameMode;
 import model.GameModel;
 import model.GameState;
 import model.IObserver;
@@ -13,9 +15,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 
 @Controller
@@ -32,9 +32,9 @@ public class WebAPI implements IObserver {
 
     @MessageMapping("/startGame")
     public void startGame(SetupInformationContainer si) {
-        channel = si.getChannel();
         Setup sCmd = (new Setup(si, GameControl.mModel, si.getChannel()));
         if (sCmd.validate()) {
+            channel = si.getChannel();
             sCmd.execute();
         } else {
             send("/err", "Could not connect to channel '" + si.getChannel() + "'. Please retry with a valid channel on Twitch or Beam.");
@@ -53,15 +53,16 @@ public class WebAPI implements IObserver {
 
         Map m = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidation(null, 5);
         Iterator<Map.Entry<String, Set<String>>> it = m.entrySet().iterator();
-        Map.Entry<String, Set<String>> mE = it.next();
-
-        send("/validation", new ValidationContainer(mE.getKey(), mE.getValue()));
+        if (it.hasNext()) {
+            Map.Entry<String, Set<String>> mE = it.next();
+            send("/validation", new ValidationContainer(mE.getKey(), mE.getValue()));
+        }
     }
 
     @MessageMapping("/reqGiverInfo")
     public void requestGiverInfo() {
         String giver = GameControl.mModel.getGiver();
-        int score = GameControl.mModel.getNeo4jWrapper().getUserPoints(giver,GameControl.mModel.getGuesserChannel());
+        int score = GameControl.mModel.getNeo4jWrapper().getUserPoints(giver,GameControl.mModel.getGiverChannel());
         int lvl = GameControl.mModel.getLevel(score);
         send("/giver", new GiverContainer(giver, score, lvl));
     }
@@ -79,18 +80,22 @@ public class WebAPI implements IObserver {
         GameState state = GameControl.mModel.getGameState();
         System.out.println("GameState changed to " + state);
 
+        String winner = GameControl.mModel.getWinner();
+        int points = GameControl.mModel.getGainedPoints();
+        String word = GameControl.mModel.getExplainWord();
+
         if (state.equals(GameState.Win)) {
-            send("/endGame", new GameCloseContainer("Win"));
+            send("/endGame", new GameCloseContainer("Win", winner, points, word));
             return;
         }
 
         if (state.equals(GameState.Lose)) {
-            send("/endGame", new GameCloseContainer("Lose"));
+            send("/endGame", new GameCloseContainer("Lose", winner, points, word));
             return;
         }
 
         if (state.equals(GameState.Kick)) {
-            send("/endGame", new GameCloseContainer("Kick"));
+            send("/endGame", new GameCloseContainer("Kick", winner, points, word));
             return;
         }
 
@@ -127,6 +132,16 @@ public class WebAPI implements IObserver {
 
     public void onNotifyScoreUpdate() {
         System.out.println("Score!");
+        GameModel gm = GameControl.mModel;
+        if (!gm.getHosts().isEmpty()) {
+            LinkedList<Neo4jWrapper.StreamerHighscore> sh = gm.getNeo4jWrapper().getStreamHighScore();
+            if (sh.size() > 2) {
+                send("/gameMode", new GameModeContainer(GameMode.HOST));
+                send("/score", new StreamRankingContainer(sh));
+            }
+        }
+
+        send("/gameMode", new GameModeContainer(GameMode.Normal));
         send("/score", new RankingContainer(GameControl.mModel.getNeo4jWrapper().getHighScoreList(10, channel)));
     }
 

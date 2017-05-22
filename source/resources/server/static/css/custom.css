@@ -1,0 +1,254 @@
+body {
+    color: #fff;
+    background: radial-gradient(ellipse farthest-corner at center top, #f39264 0%, #f2606f 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.background {
+    background: linear-gradient(to bottom, #3a404d, #181c26);
+    border-radius: 10px;
+    box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);
+}
+
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:focus,
+.nav-tabs>li.active>a:hover {
+    background: radial-gradient(ellipse farthest-corner at center top, #f39264 0%, #f2606f 100%);
+    border: 1px solid #f2606f;
+}
+
+.nav-tabs {
+    border-bottom: 1px solid #3a404d;
+}
+
+.nav>li>a:focus,
+.nav>li>a:hover {
+    background: radial-gradient(ellipse farthest-corner at center top, #f39264 0%, #f2606f 100%);
+    border: 1px solid #f2606f;
+}
+
+#signin,
+#categories {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+}
+
+#categories {
+    display: none;
+    z-index: 1;
+}
+
+#gameDiv {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    padding: 5px 10px 10px;
+}
+
+#transparentBG {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to bottom, #3a404d, #181c26);
+    opacity: 0.96;
+    z-index: 0;
+}
+
+#category1,
+#category2,
+#category3,
+#category4,
+#category5 {
+    display: none;
+    position: absolute;
+    width: 20%;
+    height: 15%;
+    margin-top: 0px;
+}
+
+#category1 {
+    top: 23.5%;
+    left: 40%;
+}
+
+#category2 {
+    top: 42.5%;
+    left: 22.5%;
+}
+
+#category3 {
+    top: 42.5%;
+    right: 22.5%;
+}
+
+#category4 {
+    bottom: 23.5%;
+    left: 28%;
+}
+
+#category5 {
+    bottom: 23.5%;
+    right: 28%;
+}
+
+#tabooCard {
+    position: absolute;
+    width: 25%;
+    height: 65%;
+    left: 1%;
+    top: 10%;
+}
+
+#qAndADiv {
+    position: absolute;
+    width: 25%;
+    height: 65%;
+    right: 1%;
+    top: 10%;
+}
+
+#templatesDiv {
+    position: absolute;
+    width: 45%;
+    height: 65%;
+    left: 27.5%;
+    top: 10%;
+    padding: 1% 1% 1% 1%;
+}
+
+.btn-lg {
+    font-size: 1.75vmin;
+}
+
+#validateDiv {
+    position: absolute;
+    width: 48%;
+    height: 22.5%;
+    left: 1%;
+    bottom: 5px;
+    font-size: 2vmin;
+    padding: 5px 5px 5px 5px;
+}
+
+#guessesDiv {
+    position: absolute;
+    width: 48%;
+    height: 22.5%;
+    right: 1%;
+    bottom: 5px;
+    font-size: 3vmin;
+    padding-left: 0.5%;
+    padding-top: 0.5%;
+}
+
+#firstGuess,
+#secondGuess,
+#thirdGuess,
+#fourthGuess,
+#fifthGuess {
+    width: 25%;
+    height: 55%;
+    position: absolute;
+    bottom: 0px;
+}
+
+#skip {
+    position: absolute;
+    width: 40%;
+    left: 30%;
+    bottom: 10%;
+}
+
+#skip,
+#explanation {
+    font-size: 2vmin;
+}
+
+.questions:hover {
+    color: #337ab7;
+}
+
+.questions{
+    cursor: pointer;
+}
+
+.activeQuestion {
+    border-style: solid;
+    border-top-color: #337ab7;
+    border-bottom-color: #337ab7;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-radius: 10px;
+}
+
+#qAndAs {
+    position:absolute;
+    width:98%;
+    height: 98%;
+    top:1%;
+    left: 1%;
+    font-size: 3vmin;
+}
+
+.scrollable {
+    overflow-y:auto;
+    max-height: 98%;
+}
+
+#chat {
+    height: 100%;
+    max-height: 100%;
+}
+
+#qAndABlock {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+    visibility: visible;
+    cursor: pointer;
+}
+
+.rate-container>i {
+    float: right;
+}
+
+.rate-container>i:HOVER,
+.rate-container>i:HOVER~i {
+    color: gold;
+}
+
+#cardBlock {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6;
+    z-index: -1;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.loader {
+    border: 10px solid #f3f3f3; /* Light grey */
+    border-top: 10px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 9vmin;
+    height: 9vmin;
+    position: absolute;
+    left:50%;
+    top:50%;
+    margin-left: -4.5vmin;
+    margin-top: -4.5vmin;
+    animation: spin 2s linear infinite;
+    visibility: hidden;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
