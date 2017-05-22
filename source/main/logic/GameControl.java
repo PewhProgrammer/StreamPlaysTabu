@@ -58,6 +58,7 @@ public class GameControl extends Observable{
                 mModel.getBot().announceNoWinner();
                 mModel.setGameState(GameState.Lose);
                 mModel.clear();
+                mModel.generateVotingCategories();
                 break;
             }
             try {

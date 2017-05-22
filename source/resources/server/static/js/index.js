@@ -105,7 +105,7 @@ function onExplanation() {
         questions[activeQuestion] = null;
         refreshQuestions();
         activeQuestion = -1;
-    } else if ($("#explanationText").val() != "" || ($("#input2").val() === "" && $("#input3").val() === "")) {
+    } else if ($("#explanationText").val() != "" || ($("#input2").val() != "" && $("#input3").val() != "")) {
         document.getElementById('sendButton').style.display = 'none';
         document.getElementById('template_layer1').style.display = 'block';
         document.getElementById('template_layer' + templateLayer).style.display = 'none';
@@ -241,8 +241,13 @@ function showCategories() {
     document.getElementById("categories").style.zIndex = "1";
 
     $('#slickheading').css('display', 'block');
-    $('#slickheading').animate({ opacity: 0 }, 0);
-    $('#slickheading').animate({ opacity: 1, top: "-=2%" }, 800);
+    $('#slickheading').animate({
+        opacity: 0
+    }, 0);
+    $('#slickheading').animate({
+        opacity: 1,
+        top: "-=2%"
+    }, 800);
 
     $("#category1").delay(400).fadeIn();
     $("#category3").delay(600).fadeIn("slow");
@@ -265,6 +270,10 @@ function handleTemplateLayer(layer) {
     templateLayer = layer;
     document.getElementById('template_layer1').style.display = 'none';
     document.getElementById('template_layer' + layer).style.display = 'block';
+
+    document.getElementById("explanationText").innerHTML = "";
+    document.getElementById("input2").innerHTML = "";
+    document.getElementById("input3").innerHTML = "";
 }
 
 function handleTemplateLayerPrevious(layer) {

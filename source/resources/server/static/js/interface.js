@@ -87,20 +87,24 @@ function showTabooWords(tabooWords) {
     var json = JSON.parse(tabooWords);
     console.log('>> Received taboo words: ' + tabooWords);
     var taboo = "";
-    if (json.word1 != "") {
-        taboo = "<ul><li>" + json.word1 + "</li>";
-    }
-    if (json.word2 != "") {
-        taboo = "<li>" + json.word2 + "</li>";
-    }
-    if (json.word3 != "") {
-        taboo = "<li>" + json.word3 + "</li>";
-    }
-    if (json.word4 != "") {
-        taboo = "<li>" + json.word4 + "</li>";
-    }
-    if (json.word5 != "") {
-        taboo = "<li>" + json.word5 + "</li></ul>";
+    if (json.word1 === "") {
+        taboo = "<ul><li> There is no taboo words </li>";
+    } else {
+        if (json.word1 != "") {
+            taboo = "<ul><li>" + json.word1 + "</li>";
+        }
+        if (json.word2 != "") {
+            taboo = "<li>" + json.word2 + "</li>";
+        }
+        if (json.word3 != "") {
+            taboo = "<li>" + json.word3 + "</li>";
+        }
+        if (json.word4 != "") {
+            taboo = "<li>" + json.word4 + "</li>";
+        }
+        if (json.word5 != "") {
+            taboo = "<li>" + json.word5 + "</li></ul>";
+        }
     }
     document.getElementById("tabooWords").innerHTML = taboo;
     showGame();
@@ -185,18 +189,20 @@ function showChatMessage(msg) {
     console.log('>> Received chat message: ' + json.content + "from: " + json.sender);
     element.innerHTML = element.innerHTML + "<br>" + json.sender + ": " + json.content;
 
-    $('#chat').animate({scrollTop: $('#chat').offset().top},"slow");
+    $('#chat').animate({
+        scrollTop: $('#chat').offset().top
+    }, "slow");
 }
 
 function closeGame(status) {
     console.log('>> Received end of game: ' + status);
 
     var json = JSON.parse(status);
-    if(json.status === "Win") {
+    if (json.status === "Win") {
 
-    } else if(json.status === "Lose") {
+    } else if (json.status === "Lose") {
 
-    } else if(json.status === "Kick") {
+    } else if (json.status === "Kick") {
 
     }
     //TODO change screen
