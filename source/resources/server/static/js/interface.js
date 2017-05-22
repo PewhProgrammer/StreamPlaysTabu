@@ -23,8 +23,6 @@ function showPrevotedCategories(prevotedCategories) {
     document.getElementById("category3").innerHTML = json.cat3;
     document.getElementById("category4").innerHTML = json.cat4;
     document.getElementById("category5").innerHTML = json.cat5;
-
-    showCategories();
 }
 
 function sendCategory(chosenCategory) {
@@ -88,7 +86,7 @@ function showTabooWords(tabooWords) {
     console.log('>> Received taboo words: ' + tabooWords);
     var taboo = "";
     if(json.word1 === "" && json.word2 === "" && json.word3 === "" && json.word4 === "" && json.word5 === "") {
-        taboo = "No taboo words."
+        taboo = "No taboo words"
     } else {
         if (json.word1 != "") {
             taboo = "<ul><li>" + json.word1 + "</li>";
@@ -201,13 +199,30 @@ function closeGame(status) {
     socket.onclose = function () {console.log("Socket closed.")};
     socket.close();
 
+    document.getElementById("progressbar").innerHTML = "GameOver!";
+    document.getElementById("progressbar").style.color = "#111111";
+
+    clearInterval(timer);
+
     var json = JSON.parse(status);
     if (json.status === "Win") {
+        document.getElementById("tempDiv").style.visibility = "invisible";
+        document.getElementById("tempDiv").style.zIndex = "0"
 
+        document.getElementById("endGameDiv").innerHTML = "<p>You won!</p>";
+        document.getElementById("endGameDiv").style.zIndex = "1"
     } else if (json.status === "Lose") {
+        document.getElementById("tempDiv").style.visibility = "invisible";
+        document.getElementById("tempDiv").style.zIndex = "0"
 
+        document.getElementById("endGameDiv").innerHTML = "<p>Game over!</p>";
+        document.getElementById("endGameDiv").style.zIndex = "1"
     } else if (json.status === "Kick") {
+        document.getElementById("tempDiv").style.visibility = "invisible";
+        document.getElementById("tempDiv").style.zIndex = "0"
 
+        document.getElementById("endGameDiv").innerHTML = "<p>Too many cheating attempts!<br>Round is over.</p>";
+        document.getElementById("endGameDiv").style.zIndex = "1"
     }
     //TODO change screen
 }

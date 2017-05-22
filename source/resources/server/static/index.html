@@ -28,7 +28,7 @@
             <label for="pwInput" class="sr-only">Channelname</label>
             <input type="text" id="pwInput" class="form-control" placeholder="password..." required="required" />
             <br/>
-            <button class="btn btn-lg btn-primary btn-block btn-danger" onclick="showCategories()" type="submit" id="pw">Start round!</button>
+            <button class="btn btn-lg btn-primary btn-block btn-danger" type="submit" id="pw">Start round!</button>
         </form>
     </div>
     <div id="categories">
@@ -52,93 +52,97 @@
         </nav>
 
         <div id="templatesDiv" class="background">
-            <h1 style="text-align: center; width: 100%; font-size: 3vmin; margin-top: 1%;">Choose a category, get a template and explain fast!</h1>
-            <div id="template_layer1">
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_one" onclick=handleTemplateLayer(2)>Appearance</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_two" onclick=handleTemplateLayer(3)>Purpose</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_three" onclick=handleTemplateLayer(4)>Characteristic</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_four" onclick=handleTemplateLayer(5)>Game Specific</button>
-                <div id=YesNo style="visibility: hidden">
-                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 40%; right: 55%; width: 15%;height:15% ; padding:10px 0px;" type="submit" id="template_yes" onclick="handleTemplateYesNo('It is true',24)">Yes</button>
-                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 40%; right: 35%; width: 15%;height:15% ; padding:10px 0px;" type="submit" id="template_no" onclick="handleTemplateYesNo('It is not true',25)">No</button>
-                </div>
-            </div>
-
-            <div id="template_layer2" style="display:none;">
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_one" onclick="handleTemplateDropDownDouble('The color of its','is',1)">Color</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_size" onclick="handleTemplateDropDownDouble('The size of its','is',2)">Size</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_shape" onclick="handleTemplateDropDownDouble('The shape of its','is',3)">Shape</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_clothing" onclick="handleTemplateDropDown('It wears',4)">Clothing</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_property" onclick="handleTemplateDropDown('It has a/an',5)">Property</button>
-                <button class="btn btn-lg btn-primary btn-block btn-warning" style="position: absolute; bottom: 20%; right: 2%; width: 10%" type="submit" onclick=handleTemplateLayerPrevious(2)>Back</button>
-            </div>
-
-            <div id="template_layer3" style="display:none;padding:0px">
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 25%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_usage" onclick="handleTemplateDropDown('It is used for',6)">Usage</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15%" type="submit" id="template_enhancement" onclick="handleTemplateDropDown('It enhances',7)">Enhancement</button>
-                <button class="btn btn-lg btn-primary btn-block btn-warning" style="position: absolute; bottom: 20%; right: 2%; width: 10%" type="submit" onclick=handleTemplateLayerPrevious(3)>Back</button>
-            </div>
-
-            <div id="template_layer4" style="display:none;">
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_appearance" onclick="handleTemplateDropDown('It appears in',8)">Appearance</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15%" type="submit" id="template_part" onclick="handleTemplateDropDown('It is part of a/an',9)">Part</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_requirement" onclick="handleTemplateDropDown('It requires a/an',10)">Requirement</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_ability" onclick="handleTemplateDropDown('It has the ability to',11)">Ability</button>
-
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 50%; right: 75%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_known" onclick="handleTemplateDropDown2('It is known for','it is known as',12)">Known</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 50%; right: 55%; width: 15%;height:15%" type="submit" id="template_receive" onclick="handleTemplateDropDown('It can be received from',13)">Receive</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 50%; right: 35%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_work" onclick="handleTemplateDropDown('It works as a/an',14)">Work</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" onclick="handleTemplateDropDown('Its character is',15)" style="position: absolute; bottom: 50%; right: 15%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_character">Character</button>
-
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 75%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_typically" onclick="handleTemplateDropDownMultiple('It is typically in','It is typically near','It is typically on',16)">Typically</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 55%; width: 15%;height:15%" type="submit" id="template_opposite" onclick="handleTemplateDropDown('It is the opposite of',17)">Opposite</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 35%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_be" onclick="handleTemplateDropDown('It is',18)">Be</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 15%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_have" onclick="handleTemplateDropDown('It has',19)">Have</button>
-
-
-                <button class="btn btn-lg btn-primary btn-block btn-warning" style="position: absolute; bottom: 20%; right: 2%; width: 10%" type="submit" onclick=handleTemplateLayerPrevious(4)>Back</button>
-            </div>
-
-            <div id="template_layer5" style="display:none;">
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_one" onclick="handleTemplateDropDown('Its genre is',20)">Genre</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_two" onclick="handleTemplateDropDown('It sets in',21)">Setting</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_three" onclick="handleTemplateDropDown('It is published by',22)">Publisher</button>
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_four" onclick="handleTemplateDropDown('It was released in',23)">Release Date</button>
-                <button class="btn btn-lg btn-primary btn-block btn-warning" style="position: absolute; bottom: 20%; right: 2%; width: 10%" type="submit" onclick=handleTemplateLayerPrevious(5)>Back</button>
-            </div>
-
-            <div style="display:none" id="sendButton">
-                <div class="frm" style="position: absolute; bottom: 3%; right: 20%;width:80%;display:none;" id="template_dropDownDiv2">
-                    <label for="explanationText" style="font-size: 1.5vmin;margin-left:5%">Your explanation:</label>
-                    <div class="form-group">
-                        <label for="sel2"></label>
-                        <div class="col-lg-3">
-                            <select disabled class="form-control" id="drop2" style="width:145%"></select></div>
-                        <div class="col-lg-3">
-                            <input class="form-control" name="name" id="input2" type="text" style="margin-left:30%">
-                        </div>
-                        <div class="col-lg-3">
-                            <select disabled class="form-control" id="drop3" style="width:60%;margin-left:30%"></select></div>
-                        <div class="col-lg-3">
-                            <input class="form-control" name="name" id="input3" type="text">
-                        </div>
+            <div id="tempDiv" style="height: 100%; width: 100%; z-index: 1">
+                <h1 style="text-align: center; width: 100%; font-size: 3vmin; margin-top: 1%;">Choose a category, get a template and explain fast!</h1>
+                <div id="template_layer1">
+                   <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_one" onclick=handleTemplateLayer(2)>Appearance</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_two" onclick=handleTemplateLayer(3)>Purpose</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_three" onclick=handleTemplateLayer(4)>Characteristic</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_four" onclick=handleTemplateLayer(5)>Game Specific</button>
+                    <div id=YesNo style="visibility: hidden">
+                        <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 40%; right: 55%; width: 15%;height:15% ; padding:10px 0px;" type="submit" id="template_yes" onclick="handleTemplateYesNo('It is true',24)">Yes</button>
+                        <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 40%; right: 35%; width: 15%;height:15% ; padding:10px 0px;" type="submit" id="template_no" onclick="handleTemplateYesNo('It is not true',25)">No</button>
                     </div>
                 </div>
-                <div class="form-group" style="position:absolute; bottom: 0%;left:5%; width: 40%;display:block" id="template_dropDownDiv1">
-                    <label for="explanationText" style="font-size: 1.5vmin;">Your explanation:</label>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <select class="form-control" id="sel1"></select>
+
+                <div id="template_layer2" style="display:none;">
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_one" onclick="handleTemplateDropDownDouble('The color of its','is',1)">Color</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_size" onclick="handleTemplateDropDownDouble('The size of its','is',2)">Size</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_shape" onclick="handleTemplateDropDownDouble('The shape of its','is',3)">Shape</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_clothing" onclick="handleTemplateDropDown('It wears',4)">Clothing</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_property" onclick="handleTemplateDropDown('It has a/an',5)">Property</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-warning" style="position: absolute; bottom: 20%; right: 2%; width: 10%" type="submit" onclick=handleTemplateLayerPrevious(2)>Back</button>
+                </div>
+
+                <div id="template_layer3" style="display:none;padding:0px">
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 25%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_usage" onclick="handleTemplateDropDown('It is used for',6)">Usage</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15%" type="submit" id="template_enhancement" onclick="handleTemplateDropDown('It enhances',7)">Enhancement</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-warning" style="position: absolute; bottom: 20%; right: 2%; width: 10%" type="submit" onclick=handleTemplateLayerPrevious(3)>Back</button>
+                </div>
+
+                <div id="template_layer4" style="display:none;">
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_appearance" onclick="handleTemplateDropDown('It appears in',8)">Appearance</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15%" type="submit" id="template_part" onclick="handleTemplateDropDown('It is part of a/an',9)">Part</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_requirement" onclick="handleTemplateDropDown('It requires a/an',10)">Requirement</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_ability" onclick="handleTemplateDropDown('It has the ability to',11)">Ability</button>
+
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 50%; right: 75%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_known" onclick="handleTemplateDropDown2('It is known for','it is known as',12)">Known</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 50%; right: 55%; width: 15%;height:15%" type="submit" id="template_receive" onclick="handleTemplateDropDown('It can be received from',13)">Receive</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 50%; right: 35%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_work" onclick="handleTemplateDropDown('It works as a/an',14)">Work</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" onclick="handleTemplateDropDown('Its character is',15)" style="position: absolute; bottom: 50%; right: 15%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_character">Character</button>
+
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 75%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_typically" onclick="handleTemplateDropDownMultiple('It is typically in','It is typically near','It is typically on',16)">Typically</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 55%; width: 15%;height:15%" type="submit" id="template_opposite" onclick="handleTemplateDropDown('It is the opposite of',17)">Opposite</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 35%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_be" onclick="handleTemplateDropDown('It is',18)">Be</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 15%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_have" onclick="handleTemplateDropDown('It has',19)">Have</button>
+
+
+                    <button class="btn btn-lg btn-primary btn-block btn-warning" style="position: absolute; bottom: 20%; right: 2%; width: 10%" type="submit" onclick=handleTemplateLayerPrevious(4)>Back</button>
+                </div>
+
+                <div id="template_layer5" style="display:none;">
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_one" onclick="handleTemplateDropDown('Its genre is',20)">Genre</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_two" onclick="handleTemplateDropDown('It sets in',21)">Setting</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_three" onclick="handleTemplateDropDown('It is published by',22)">Publisher</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_four" onclick="handleTemplateDropDown('It was released in',23)">Release Date</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-warning" style="position: absolute; bottom: 20%; right: 2%; width: 10%" type="submit" onclick=handleTemplateLayerPrevious(5)>Back</button>
+                </div>
+
+                <div style="display:none" id="sendButton">
+                    <div class="frm" style="position: absolute; bottom: 3%; right: 20%;width:80%;display:none;" id="template_dropDownDiv2">
+                        <label for="explanationText" style="font-size: 1.5vmin;margin-left:5%">Your explanation:</label>
+                        <div class="form-group">
+                            <label for="sel2"></label>
+                            <div class="col-lg-3">
+                                <select disabled class="form-control" id="drop2" style="width:145%"></select></div>
+                            <div class="col-lg-3">
+                                <input class="form-control" name="name" id="input2" type="text" style="margin-left:30%">
+                            </div>
+                            <div class="col-lg-3">
+                                <select disabled class="form-control" id="drop3" style="width:60%;margin-left:30%"></select></div>
+                            <div class="col-lg-3">
+                                <input class="form-control" name="name" id="input3" type="text">
                             </div>
                         </div>
-                        <div class="col">
-                            <input type="text" class="form-control" id="explanationText" />
+                    </div>
+                    <div class="form-group" style="position:absolute; bottom: 0%;left:5%; width: 40%;display:block" id="template_dropDownDiv1">
+                        <label for="explanationText" style="font-size: 1.5vmin;">Your explanation:</label>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <select class="form-control" id="sel1"></select>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" id="explanationText" />
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 2%; right: 2%; width: 10%" type="submit" id="explanation">Send</button></div>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 2%; right: 2%; width: 10%" type="submit" id="explanation">Send</button>
+                </div>
+            </div>
+            <div id="endGameDiv" style="height:100%; width:100%; font-size: 4vmin; text-align: center; z-index: 0"></div>
         </div>
 
         <div id="tabooCard" class="background">
