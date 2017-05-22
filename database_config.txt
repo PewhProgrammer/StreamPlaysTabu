@@ -12,7 +12,16 @@ kalista
 sivir
 sejuani
 the legend of zelda
+dark souls
+skyrim
+mass effect
+far cry 4
+resident evil
+alan wake
+left4dead
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
+alan wake;is published by;remedy entertainment
+alan wake;is known for;insomnia
 dota2;is a;moba
 league of legends;is a;moba
 heroes of the storm;is a;moba
@@ -24,12 +33,12 @@ Shadow fiend; is a character in;dota2
 mario;is a character in;super mario bros.
 luigi;is a character in;super mario bros.
 Bowser;is a character in;super mario bros.
+samus;is a character in;super smash bros.
 super smash bros.;is published by;nintendo
 super mario bros.;is published by;nintendo
 splatoon;is published by;nintendo
 the legend of zelda;is published by; nintendo
 Link;is a character in;the legend of zelda
-samus;is a character in;super smash bros.
 peach;is typically near;mario
 wario;is the opposite of;mario
 counter-terroist;is typically in;csgo
@@ -41,3 +50,27 @@ tracer;is a character in;overwatch
 csgo;genre is;fps
 call of duty;genre is;fps
 overwatch;genre is;fps
+wolfenstein;genre is;fps
+battlefield;genre is;fps
+borderlands;genre is;fps
+bulletstorm;genre is;fps
+crysis;genre is;fps
+far cry 4;genre is;fps
+far cry 4;is set in;open world
+skyrim;is set in;open world
+mass effect;is set in;open world
+dark souls;is set in;open world
+half-life;genre is;fps
+silent hill;genre is;survival horror
+resident evil;genre is;survival horror
+alien: isolation;genre is;survival horror
+alan wake;genre is;survival horror
+dead space;genre is;survival horror
+doom;genre is;survival horror
+dying light;genre is;survival horror
+left4dead;genre is ;survival horror
+raiding;is related to;world of warcraft
+undead;is related to;warcraft 3
+warcraft 3;is published by;blizzard
+world of warcraft;is published by;blizzard
+overwatch;is published by;blizzard

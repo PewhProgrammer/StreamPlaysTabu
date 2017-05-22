@@ -7,6 +7,7 @@ import model.Language;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.Date;
 import java.util.Random;
 
@@ -50,7 +51,11 @@ public class ExecStudy extends TestCase {
             sCurrentLine = br.readLine();
             while (sCurrentLine != null) {
                 String[] parts = sCurrentLine.split(";");
-                database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true);
+                try {
+                    database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true);
+                }catch (ArrayIndexOutOfBoundsException e){
+                    Log.trace("Wrong Formatting: "+ parts.toString());
+                }
                 sCurrentLine = br.readLine();
             }
 

@@ -66,7 +66,14 @@ public class GameControl extends Observable{
                 e.printStackTrace();
             }
         }
+
         if(mModel.getGameState() == GameState.Kick) mModel.setGiver("");
+        try {
+            Thread.sleep(5000);
+            mModel.setGameState(GameState.GameStarted.Registration);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         isStarted = false;
         waitingForPlayers();
 
