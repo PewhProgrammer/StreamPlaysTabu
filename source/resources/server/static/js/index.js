@@ -61,7 +61,6 @@ function onGiverJoined() {
 
 function chosenCat1() {
     loadingIndicator();
-    showGame();
     onCategoryChosen(document.getElementById("category1").innerHTML);
 }
 
@@ -137,9 +136,9 @@ function onExplanation() {
         }
     }
 
-    $("#explanationText").val() = "";
-    $("#input2").val() = "";
-    $("#input3").val() = "";
+    document.getElementById("explanationText").innerHTML = "";
+    document.getElementById("input2").innerHTML = "";
+    document.getElementById("input3").innerHTML = "";
 }
 
 function onAnswer() {
@@ -243,7 +242,7 @@ function showCategories() {
 
     $('#slickheading').css('display', 'block');
     $('#slickheading').animate({ opacity: 0 }, 0);
-    $('#slickheading').animate({ opacity: 1, top: "-=15px" }, 800);
+    $('#slickheading').animate({ opacity: 1, top: "-=2%" }, 800);
 
     $("#category1").delay(400).fadeIn();
     $("#category3").delay(600).fadeIn("slow");
