@@ -204,27 +204,18 @@ function closeGame(status) {
 
     clearInterval(timer);
 
+    document.getElementById("tempDiv").style.visibility = "hidden";
+    document.getElementById("tempDiv").style.zIndex = "0";
+    document.getElementById("endGameDiv").style.zIndex = "1";
+
     var json = JSON.parse(status);
     if (json.status === "Win") {
-        document.getElementById("tempDiv").style.visibility = "invisible";
-        document.getElementById("tempDiv").style.zIndex = "0"
-
-        document.getElementById("endGameDiv").innerHTML = "<p>You won!</p>";
-        document.getElementById("endGameDiv").style.zIndex = "1"
+        document.getElementById("endGameDiv").innerHTML = "<p>You won!<br>+" + json.points + "</p>";
     } else if (json.status === "Lose") {
-        document.getElementById("tempDiv").style.visibility = "invisible";
-        document.getElementById("tempDiv").style.zIndex = "0"
-
         document.getElementById("endGameDiv").innerHTML = "<p>Game over!</p>";
-        document.getElementById("endGameDiv").style.zIndex = "1"
     } else if (json.status === "Kick") {
-        document.getElementById("tempDiv").style.visibility = "invisible";
-        document.getElementById("tempDiv").style.zIndex = "0"
-
         document.getElementById("endGameDiv").innerHTML = "<p>Too many cheating attempts!<br>Round is over.</p>";
-        document.getElementById("endGameDiv").style.zIndex = "1"
     }
-    //TODO change screen
 }
 
 function sendPassword(pw) {
