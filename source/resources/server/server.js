@@ -10,11 +10,15 @@ var pws = new Set();
 
 app.get('/', function(req, res) {
 var n = req.param('pw') ;
-   console.log(n); //prints out the pw
-   pws.add(n);
-   console.log('>> RECEIVED password ' + n);
+pws.add(n);
+   if(pws.has(n)){
+   console.log("PW Accepted");
+    res.sendfile(__dirname + '/static/index.html');
+   }else {
+   console.log("PW Failed");
+    res.send('You have no authentication right to access this page');
+    }
 
-   res.sendfile(__dirname + '/static/index.html')
 });
 
 

@@ -24,11 +24,8 @@
             <h1 class="form-signin-heading" style="text-align: center">StreamPlaysTaboo</h1>
             <h2 class="form-signin-heading" style="text-align: center; margin-bottom: 50px;">You are the giver!</h2>
 
-            <!-- Textbox for password -->
-            <label for="pwInput" class="sr-only">Channelname</label>
-            <input type="text" id="pwInput" class="form-control" placeholder="password..." required="required" />
-            <br/>
-            <button class="btn btn-lg btn-primary btn-block btn-danger" onclick="showCategories()" type="submit" id="pw">Start round!</button>
+
+            <button class="btn btn-lg btn-primary btn-block btn-danger" onclick="showCategories()">Start round!</button>
         </form>
     </div>
     <div id="categories">
@@ -52,7 +49,7 @@
         </nav>
 
         <div id="templatesDiv" class="background">
-            <h1 style="text-align: center; width: 100%; font-size: 3vmin; margin-top: 1%;">Choose a category, get a template and explain fast!</h1>
+            <h1 style="text-align: center; width: 100%; font-size: 3vmin; margin-top: 1%;">Choose a category, get a template and explain fast! You can use each Template at most twice!</h1>
             <div id="template_layer1">
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_one" onclick=handleTemplateLayer(2)>Appearance</button>
                 <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_two" onclick=handleTemplateLayer(3)>Purpose</button>
