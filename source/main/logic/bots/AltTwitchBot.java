@@ -19,7 +19,7 @@ public class AltTwitchBot extends Bot {
     public AltTwitchBot(GameModel gm, String channel) {
         super(gm, channel);
         connectToChatroom(channel);
-        bot.sendMessage("bertholdgamma", "test hehehe");
+
     }
 
     private class Pirc extends PircBot {
@@ -113,7 +113,7 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void whisperRules(String user) {
-        sendChatMessage("/w " + user + " Rules");
+        sendChatMessage("/w " + user + " Rules: 1. No form or part of ANY word on the card (word to explain + taboo words) may be given as a explanation. Examples: If the Guess Word is LEAGUE OF LEGENDS,"+" Legends "+"cannot be given a an explanation. 2. No initials or abbreviations can be given if the words they represent are included on the card. Examples: LoL cannot be used if LEAGUE OF LEGENDS is the Guess Word or a TABOO word. 3. Players can be voted out with !votekick, if they do not follow the rules.");
     }
 
     @Override

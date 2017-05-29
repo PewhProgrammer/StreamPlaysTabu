@@ -23,8 +23,6 @@ function showPrevotedCategories(prevotedCategories) {
     document.getElementById("category3").innerHTML = json.cat3;
     document.getElementById("category4").innerHTML = json.cat4;
     document.getElementById("category5").innerHTML = json.cat5;
-
-    showCategories();
 }
 
 function sendCategory(chosenCategory) {
@@ -201,15 +199,23 @@ function closeGame(status) {
     socket.onclose = function () {console.log("Socket closed.")};
     socket.close();
 
+    document.getElementById("progressbar").innerHTML = "GameOver!";
+    document.getElementById("progressbar").style.color = "#111111";
+
+    clearInterval(timer);
+
+    document.getElementById("tempDiv").style.visibility = "hidden";
+    document.getElementById("tempDiv").style.zIndex = "0";
+    document.getElementById("endGameDiv").style.zIndex = "1";
+
     var json = JSON.parse(status);
     if (json.status === "Win") {
-
+        document.getElementById("endGameDiv").innerHTML = "<p>You won!<br>+" + json.points + "</p>";
     } else if (json.status === "Lose") {
-
+        document.getElementById("endGameDiv").innerHTML = "<p>Game over!</p>";
     } else if (json.status === "Kick") {
-
+        document.getElementById("endGameDiv").innerHTML = "<p>Too many cheating attempts!<br>Round is over.</p>";
     }
-    //TODO change screen
 }
 
 function sendPassword(pw) {

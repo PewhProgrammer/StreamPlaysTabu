@@ -6,6 +6,7 @@ var timeLeft = 105;
 var templateId = 0;
 var tempString = "";
 var templateLayer = 0;
+var timer;
 
 $(function () {
     $("form").on('submit', function (e) {
@@ -31,7 +32,7 @@ $(function () {
 // Update the count down every 1 second
 function runTimer() {
 
-    var x = setInterval(function () {
+    timer = setInterval(function () {
 
         timeLeft = timeLeft - 1;
 
@@ -41,7 +42,7 @@ function runTimer() {
         if (timeLeft <= 0) {
             document.getElementById("progressbar").innerHTML = "Time's-Up!";
             document.getElementById("progressbar").style.color = "#111111";
-            clearInterval(x);
+            clearInterval(timer);
         }
     }, 1000);
 }
