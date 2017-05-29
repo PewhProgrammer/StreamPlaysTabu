@@ -6,15 +6,23 @@ var express = require('express')
 
 server.listen(conf.port);
 
-app.use(express.static(__dirname + '/static'));
+var pws = new Set();
 
 app.get('/', function(req, res) {
+var n = req.param('pw') ;
+   console.log(n); //prints out the pw
+   pws.add(n);
+   console.log('>> RECEIVED password ' + n);
+
    res.sendfile(__dirname + '/static/index.html')
 });
 
+
+app.use(express.static(__dirname + '/static'));
+
+
 var base2Ext = '/connection-server-external';
 var base2Core = '/connection-server-core';
-var pws = new Set();
 
 io.sockets.on('connection', function (socket) {
    initializeCore(socket);

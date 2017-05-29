@@ -112,16 +112,13 @@ public class GameControl extends Observable{
         gameLoop:
         while(mModel.getGameState() == GameState.Registration || !isStarted){
 
-            mModel.setTimeStamp();
-            try {
-                //change this to 30 sec.
-                mModel.getBot().announceRegistration();
-                Log.info("30 seconds are running...");
-                mModel.notifyRegistrationTime();
-                Thread.sleep(30000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(mModel.getBot().getUsers(mModel.getGiverChannel()).size() < 2){
+                sleepThread(10);
+                break gameLoop;
             }
+            mModel.setTimeStamp();
+            mModel.getBot().announceRegistration();
+            sleepThread(30);
 
             if(mModel.getGameMode() == GameMode.Streamer){
                 mModel.setGiver(mModel.getGiverChannel());
@@ -201,6 +198,17 @@ public class GameControl extends Observable{
         int index = rand.nextInt(users.size());
         String newGiver =  users.get(index);
         mModel.setGiver(newGiver);
+    }
+
+    private void sleepThread(int i){
+        try {
+            //change this to 30 sec.
+            Log.info("Control sleeps for " + i + " seconds...");
+            mModel.notifyRegistrationTime();
+            Thread.sleep(i * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
