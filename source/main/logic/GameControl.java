@@ -112,9 +112,8 @@ public class GameControl extends Observable{
         gameLoop:
         while(mModel.getGameState() == GameState.Registration || !isStarted){
 
-            if(mModel.getBot().getUsers(mModel.getGiverChannel()).size() < 2){
+            while(mModel.getBot().getUsers(mModel.getGiverChannel()).size() < 2){
                 sleepThread(10);
-                break gameLoop;
             }
             mModel.setTimeStamp();
             mModel.getBot().announceRegistration();
