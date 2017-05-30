@@ -112,7 +112,7 @@ public class GameControl extends Observable{
         gameLoop:
         while(mModel.getGameState() == GameState.Registration || !isStarted){
 
-            while(mModel.getBot().getUsers(mModel.getGiverChannel()).size() < 2){
+            while(mModel.getBot().getUsers(mModel.getGiverChannel()).size() < 1){
                 sleepThread(10);
             }
             mModel.setTimeStamp();

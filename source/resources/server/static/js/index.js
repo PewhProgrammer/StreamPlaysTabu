@@ -29,6 +29,21 @@ $(function () {
     });
 });
 
+var express = require('express'),
+    app = express(),
+    server = require('http').createServer(app),
+    io = require('socket.io').listen(server),
+    conf = require('./config.json');
+
+server.listen(conf.port);
+
+
+app.get('/', function (req, res) {
+    var n = req.param('pw');
+    pw = n;
+    console.log("set pw externally");
+});
+
 // Update the count down every 1 second
 function runTimer() {
 
@@ -221,6 +236,8 @@ function createAnswerEvent(answer) {
         'password': pw
     });
 }
+
+
 
 function createPasswordEvent() {
     pw_cmp = $("#pwInput").val();
