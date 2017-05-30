@@ -118,7 +118,7 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void whisperLink(String user, String link, int pw) {
-        sendPrivMessage("You are the giver! You will need to be on our webpage to give explanations and answer questions. Here is your link: " + link + "/?pw=" + pw, user);
+        sendPrivMessage("You are the giver! You will need to be on our webpage to give explanations and answer questions. Here is your link: " + link + "?pw=" + pw, user);
     }
 
     @Override
