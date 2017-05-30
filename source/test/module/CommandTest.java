@@ -1,5 +1,6 @@
 package module;
 
+import common.Log;
 import common.Neo4jWrapper;
 import junit.framework.TestCase;
 import logic.commands.*;
@@ -27,6 +28,15 @@ public class CommandTest extends TestCase{
     public void setUp() throws Exception {
         gModel = new GameModel(lang,MIN_PLAYERS
         ,neo);
+    }
+
+    public void testCode(){
+        game:
+        while(true){
+            Log.info("was geht");
+            break game;
+        }
+        Log.info("hey");
     }
 
     public void testAnswer(){
