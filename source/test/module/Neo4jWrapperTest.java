@@ -165,7 +165,6 @@ public class Neo4jWrapperTest extends TestCase {
     }
 
     public void testGetUserRankings(){
-        database.createUser("John","streamplaystaboo");
         LinkedHashMap<String,Integer> list = database.getHighScoreList(3,channelName);
         Log.info(list.toString());
     }
@@ -372,6 +371,38 @@ public class Neo4jWrapperTest extends TestCase {
         }
 
 
+    }
+
+    public void testSetUpNodes() {
+
+        try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
+
+            String sCurrentLine = br.readLine();
+            sCurrentLine = br.readLine();
+
+            while (!sCurrentLine.startsWith("CreateNodesAndRelationships:")) {
+                try {
+                    database.createNode(sCurrentLine, true);
+                } catch (DatabaseException e) {
+                    Log.trace(e.getMessage());
+                    fail();
+                }
+                sCurrentLine = br.readLine();
+            }
+            sCurrentLine = br.readLine();
+            while (sCurrentLine != null) {
+                String[] parts = sCurrentLine.split(";");
+                try {
+                    database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true);
+                }catch (ArrayIndexOutOfBoundsException e){
+                    Log.trace("Wrong Formatting: "+ parts.toString());
+                }
+                sCurrentLine = br.readLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

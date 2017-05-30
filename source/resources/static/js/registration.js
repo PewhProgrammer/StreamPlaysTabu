@@ -2,14 +2,20 @@ var timeLeft = 30;
 // Update the count down every 1 second
 var x = setInterval(function() {
 
+       if(timeLeft != 0){
     timeLeft = timeLeft - 1;
 
     document.getElementById("progressbar").innerHTML = timeLeft + "s";
     document.getElementById("progressbar").style.width = (timeLeft / 30) * 100 + "%";
+}
 
     if (timeLeft == 0) {
-        document.getElementById("statusInfo").innerHTML = "Time to register!";
-        timeLeft = 30;
+    document.getElementById("progressbar").style.color = 'black';
+     document.getElementById("progressbar").innerHTML = "";
+        document.getElementById("statusInfo").style.fontWeight = 'bold';
+        document.getElementById("statusInfo").style.fontSize = 'x-large';
+        document.getElementById("statusInfo").style.color = 'white';
+        document.getElementById("statusInfo").innerHTML = "The next registered user will become the giver!";
     }
 }, 1000);
 

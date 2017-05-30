@@ -6,15 +6,27 @@ var express = require('express')
 
 server.listen(conf.port);
 
-app.use(express.static(__dirname + '/static'));
+var pws = new Set();
 
 app.get('/', function(req, res) {
-   res.sendfile(__dirname + '/static/index.html')
+var n = req.param('pw') ;
+pws.add(n);
+   if(pws.has(n)){
+   console.log("PW Accepted");
+    res.sendfile(__dirname + '/static/index.html');
+   }else {
+   console.log("PW Failed");
+    res.send('You have no authentication right to access this page');
+    }
+
 });
+
+
+app.use(express.static(__dirname + '/static'));
+
 
 var base2Ext = '/connection-server-external';
 var base2Core = '/connection-server-core';
-var pws = new Set();
 
 io.sockets.on('connection', function (socket) {
    initializeCore(socket);

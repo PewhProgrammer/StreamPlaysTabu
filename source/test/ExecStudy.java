@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Random;
 
 /**
@@ -27,8 +28,8 @@ public class ExecStudy extends TestCase {
     public void setUp() throws Exception {
         int seed = randomizer.nextInt(100);
         database = new Neo4jWrapper(simulation, neo4jbindAddr, seed);
-        database.resetRelationships();
-        database.resetDatabase();
+        //database.resetRelationships();
+        //database.resetDatabase();
         Log.setLevel(Log.Level.TRACE);
     }
 
@@ -62,5 +63,10 @@ public class ExecStudy extends TestCase {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void testGetUserRankings(){
+        LinkedHashMap<String,Integer> list = database.getHighScoreList(10,channelName);
+        Log.info(list.toString());
     }
 }

@@ -97,7 +97,17 @@ function onCategoryChosen(category) {
     sendExplanation(createExplanationEvent('The word to be explained is from the category ' + category));
 }
 
+var tempUsage = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+
 function onExplanation() {
+    if (tempUsage[templateId] == 0) {
+        //alert
+        alert("You have used this template twice already!!");
+        return;
+    } else {
+        tempUsage[templateId] -= 1;
+    }
+
     if (templateId === 24 || templateId === 25) {
         document.getElementById('sendButton').style.display = 'none';
         document.getElementById('template_layer1').style.display = 'block';

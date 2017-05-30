@@ -15,7 +15,6 @@ public class GiverLeft extends Command {
     @Override
     public void execute() {
         gameModel.clear();
-        gameModel.generateVotingCategories();
         gameModel.setGameState(GameState.Registration);
     }
 

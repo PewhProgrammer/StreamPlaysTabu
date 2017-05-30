@@ -473,6 +473,7 @@ public class GameModel extends Observable{
         usedWords.clear();
         setNumPlayers(0);
         clearRegisteredPlayers();
+        generateVotingCategories();
     }
 
     public int increaseErrCounter() {
