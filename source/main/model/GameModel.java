@@ -1,8 +1,8 @@
 package model;
 
-import common.DatabaseException;
+import common.database.DatabaseException;
 import common.Log;
-import common.Neo4jWrapper;
+import common.database.Neo4jWrapper;
 import common.Util;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;

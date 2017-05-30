@@ -9,7 +9,7 @@ import java.util.*;
  */
 public class Util {
 
-    public static final String REGEX = "[-,'a-zA-Z0-9 ]*";
+    public static final String REGEX = "[-,'a-zA-Z0-9 \\s]*";
 
     public static int getWordDist(String word1, String word2) {
 

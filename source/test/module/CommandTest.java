@@ -1,7 +1,7 @@
 package module;
 
 import common.Log;
-import common.Neo4jWrapper;
+import common.database.Neo4jWrapper;
 import junit.framework.TestCase;
 import logic.commands.*;
 import model.GameMode;

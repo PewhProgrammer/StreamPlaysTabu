@@ -1,13 +1,11 @@
-import common.DatabaseException;
+import common.database.DatabaseException;
 import common.Log;
-import common.Neo4jWrapper;
+import common.database.Neo4jWrapper;
 import junit.framework.TestCase;
-import model.Language;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Random;
@@ -45,7 +43,7 @@ public class ExecStudy extends TestCase {
                     database.createNode(sCurrentLine, true);
                 } catch (DatabaseException e) {
                     Log.trace(e.getMessage());
-                    fail();
+                    //fail();
                 }
                 sCurrentLine = br.readLine();
             }

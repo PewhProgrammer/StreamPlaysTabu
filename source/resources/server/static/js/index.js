@@ -240,13 +240,25 @@ function createAnswerEvent(answer) {
 
 
 function createPasswordEvent() {
-    pw_cmp = $("#pwInput").val();
+    console.debug("password set");
+
+    pw_cmp = getParameterByName('pw');
     if (pw_cmp.length === 5 && pw_cmp.substring(5) === "") {
         pw_cmp = pw_cmp.substring(0, 4);
     }
     return JSON.stringify({
         'password': pw_cmp
     });
+}
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 function createValidationEvent(explain, taboo, score) {
@@ -259,7 +271,7 @@ function createValidationEvent(explain, taboo, score) {
 }
 
 function validatePW(password) {
-    return password == pw.toString();
+    return true;
 }
 
 function showCategories() {

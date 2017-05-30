@@ -1,7 +1,7 @@
 package gui.webinterface.containers;
 
 
-import common.Neo4jWrapper;
+import common.database.Neo4jWrapper;
 
 import java.util.Iterator;
 import java.util.List;

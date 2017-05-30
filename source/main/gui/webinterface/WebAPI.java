@@ -1,10 +1,8 @@
 package gui.webinterface;
 
-import common.Neo4jWrapper;
-import gui.GuiAnchor;
+import common.database.Neo4jWrapper;
 import gui.webinterface.containers.*;
 import logic.GameControl;
-import logic.commands.CategoryChosen;
 import logic.commands.Setup;
 import model.GameMode;
 import model.GameModel;
