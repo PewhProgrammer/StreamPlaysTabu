@@ -298,7 +298,7 @@ public class GameModel extends Observable{
         qAndA.push(new String[]{question, answer});
         notifyQandA();
 
-        if (!(answer.equals("It is true") || answer.equals("It is not true"))) {
+        if (!(answer.equals("Yes") || answer.equals("No"))) {
 
             String[] content = Util.parseTemplate(answer);
             String relation = content[0].toLowerCase();
