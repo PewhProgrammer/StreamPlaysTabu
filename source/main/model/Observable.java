@@ -83,6 +83,12 @@ public abstract class Observable {
         }
     }
 
+    public void notifyUpdateTime() {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyUpdateTime();
+        }
+    }
+
     public void addObserver(IObserver ob){
         listIObserver.add(0,ob);
     }

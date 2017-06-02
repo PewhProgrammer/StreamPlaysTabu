@@ -1,5 +1,6 @@
 package gui.webinterface;
 
+import common.Log;
 import common.database.Neo4jWrapper;
 import gui.webinterface.containers.*;
 import logic.GameControl;
@@ -165,5 +166,11 @@ public class WebAPI implements IObserver {
     @Override
     public void onNotifyTabooWords() {
         //Nothing to do here
+    }
+
+    @Override
+    public void onNotifyUpdateTime(){
+        Log.trace("Game time updated");
+        send("/updateTime", new GameModeContainer(GameControl.mModel.getGameMode()));
     }
 }

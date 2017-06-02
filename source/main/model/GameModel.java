@@ -39,6 +39,7 @@ public class GameModel extends Observable{
 
     private GameState mGameState;
     private int mNumPlayers;
+    private int roundTime = 105;
     private int errCounter = 0;
     private short MIN_PLAYERS;
 
@@ -306,7 +307,6 @@ public class GameModel extends Observable{
 
             mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,false);
         } else {
-
             String relation = question;
             String targetNode = answer;
             boolean isExplain = false;
@@ -465,6 +465,7 @@ public class GameModel extends Observable{
     }
 
     public void clear() {
+        setRoundTime(105);
         clearExplanations();
         clearQAndA();
         clearGuesses();
@@ -474,6 +475,14 @@ public class GameModel extends Observable{
         setNumPlayers(0);
         clearRegisteredPlayers();
         generateVotingCategories();
+    }
+
+    public void setRoundTime(int i ){
+        this.roundTime = i;
+    }
+
+    public int getRoundTime(){
+        return this.roundTime;
     }
 
     public int increaseErrCounter() {

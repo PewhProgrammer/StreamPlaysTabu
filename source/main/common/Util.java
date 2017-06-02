@@ -64,8 +64,6 @@ public class Util {
         String newTmp = "";
         String[] userInput;
 
-
-
         if (tmp.startsWith("The color of its ")){
             newTmp = "The color of its";
             userInput =tmp.split(" ");

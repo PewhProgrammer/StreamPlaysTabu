@@ -36,7 +36,6 @@ public class CommandTest extends TestCase{
             Log.info("was geht");
             break game;
         }
-        Log.info("hey");
     }
 
     public void testAnswer(){

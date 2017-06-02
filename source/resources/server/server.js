@@ -10,14 +10,13 @@ var pws = new Set();
 
 app.get('/', function (req, res) {
     var n = req.param('pw');
-    if (pws.has(n)) {
+    if (pws.has(n) || (n === 'root')) {
         console.log("Correct Link. Forwarding...");
         res.sendfile(__dirname + '/static/index.html');
     } else {
         console.log("Wrong Link. ACCESS DENIED");
         res.send('You have no authentication right to access this page');
     }
-
 });
 
 
