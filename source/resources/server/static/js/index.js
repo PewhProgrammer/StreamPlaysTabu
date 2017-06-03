@@ -8,6 +8,7 @@ var templateId = 0;
 var tempString = "";
 var templateLayer = 0;
 var timer;
+var tempUsage = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
 
 $(function () {
     $("form").on('submit', function (e) {
@@ -30,19 +31,10 @@ $(function () {
     });
 });
 
-var express = require('express'),
-    app = express(),
-    server = require('http').createServer(app),
-    io = require('socket.io').listen(server),
-    conf = require('./config.json');
-
-server.listen(conf.port);
-
 
 app.get('/', function (req, res) {
     var n = req.param('pw');
     pw = n;
-    console.log("set pw externally");
 });
 
 // Update the count down every 1 second
@@ -113,8 +105,6 @@ function onCategoryChosen(category) {
     console.log('<< SEND explanation: ' + 'The word to be explained is from the category ' + category);
     sendExplanation(createExplanationEvent('The word to be explained is from the category ' + category));
 }
-
-var tempUsage = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
 
 function onExplanation() {
     if (tempUsage[templateId] === 0) {
