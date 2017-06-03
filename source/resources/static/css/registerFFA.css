@@ -70,10 +70,8 @@
 }
 
 .rightText{
-    top: 10%;
     right: 0.5%;
     width: 33.5%;
-    height: 89%;
 }
 
 
@@ -91,9 +89,12 @@
 
 #validateText{
     text-align: center;
+
 }
 
 #tabooText{
+    height: 11%;
     position: fixed;
     bottom: 0;
+    background: linear-gradient(to bottom, #1f232e, #181c26);
 }

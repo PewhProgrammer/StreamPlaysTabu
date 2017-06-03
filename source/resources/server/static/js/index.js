@@ -423,13 +423,31 @@ function handleTemplateDropDownDouble(description, description2, id) {
 function handleStars(id, count) {
     console.log("id: " + id + " , count: " + count);
     var label = "";
-    if (id === 1) label = "one";
-    if (id === 2) label = "two";
-    if (id === 3) label = "three";
+    if (id === 1) {
+        label = "one";
+        document.getElementById("val1").style.visibility = "hidden";
+        document.getElementById("val1").style.zIndex = "-2";
+        document.getElementById("val3").style.zIndex = "-1";
+        document.getElementById("val2").style.zIndex = "0";
+        document.getElementById("val2").style.visibility = "visible";
+        document.getElementById("valHeader").innerHTML = "You gained +10 seconds extra time!";
+    }
+    if (id === 2) {
+        label = "two";
+        document.getElementById("val2").style.visibility = "hidden";
+        document.getElementById("val1").style.zIndex = "-1";
+        document.getElementById("val3").style.zIndex = "0";
+        document.getElementById("val2").style.zIndex = "-2";
+        document.getElementById("val3").style.visibility = "visible";
+        document.getElementById("valHeader").innerHTML = "You gained +20 seconds extra time!";
+    }
+    if (id === 3) {
+        label = "three";
+        document.getElementById("val3").style.visibility = "hidden";
+        document.getElementById("valHeader").innerHTML = "You gained +30 seconds extra time!";
+    }
     var cat = document.getElementById('validationCategoryLabel_' + label).textContent;
     var taboo = document.getElementById('validationTabooLabel_' + label).textContent;
-    document.getElementById('validationCategoryLabel_' + label).textContent = "Thanks a lot!";
-    document.getElementById('validationTabooLabel_' + label).textContent = "You've gained 20s more!";
     document.getElementById('stars_' + label).style.display = 'none';
     timeLeft += 10;
     timeMax += 10;
