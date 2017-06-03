@@ -9,7 +9,10 @@ import java.util.*;
  */
 public class Util {
 
-    public static final String REGEX = "[-,'a-zA-Z0-9 \\s]*";
+    private static final String REGEX = "[-,'a-zA-Z0-9 ]*";
+    private static final String[] whiteArray = {"the", "of", "a", "an"};
+    private static final List<String> whiteList = Arrays.asList(whiteArray);
+
 
     public static int getWordDist(String word1, String word2) {
 
@@ -480,12 +483,22 @@ public class Util {
         return origin.toLowerCase();
     }
 
-    public static boolean checkCheating(String input, GameModel gm) {
+    public static String checkSpelling(String input) {
+        if (!input.matches(REGEX)) {
+            String error = "Invalid character: " + input;
+            System.out.println(error);
+            return error;
+        }
+
+        return "";
+    }
+
+    public static String checkCheating(String input, GameModel gm) {
 
         //check invalid characters
-        if (!input.matches(REGEX)) {
-            System.out.println("Invalid character: " + input);
-            return false;
+        String rtn = checkSpelling(input);
+        if (!rtn.equals("")) {
+            return rtn;
         }
 
         //lemmatize
@@ -493,6 +506,7 @@ public class Util {
         Set<String> tW = gm.getTabooWords();
         Iterator<String> it = tW.iterator();
         String taboo = "";
+
         while (it.hasNext()) {
             taboo = taboo.concat(" ".concat(it.next()));
         }
@@ -503,22 +517,32 @@ public class Util {
         //check word dist of lemmas
         for (String lemma : lemmas) {
 
-            //check explain word
-            for (String exp : explainLemmas) {
-                if (Util.getWordDist(exp, lemma) <= 1) {
-                    System.out.println("Found an invalid word: " + exp + " was matched to " + lemma + ".");
-                    return false;
-                }
+            rtn = checkWordDist(lemma, tabooLemmas);
+
+            if (!rtn.equals("")) {
+               return rtn;
             }
 
-            //check taboo words
-            for (String exp : tabooLemmas) {
-                if (Util.getWordDist(exp, lemma) <= 1) {
-                    System.out.println("Found an invalid word: " + exp + " was matched to " + lemma + ".");
-                    return false;
+            rtn = checkWordDist(lemma, explainLemmas);
+
+            if (!rtn.equals("")) {
+                return rtn;
+            }
+        }
+
+        return "";
+    }
+
+    private static String checkWordDist(String input, List<String> lemmas) {
+        for (String exp : lemmas) {
+            if (Util.getWordDist(exp, input) <= 1) {
+                if (!whiteList.contains(input)) {
+                    String error = "Found an invalid word: " + exp + " was matched to " + input + ".";
+                    System.out.println(error);
+                    return error;
                 }
             }
         }
-        return true;
+        return "";
     }
 }

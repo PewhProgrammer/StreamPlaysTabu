@@ -37,17 +37,19 @@ public class Answer extends Command {
             return false;
         }
 
-        if (!Util.checkCheating(answer, gameModel)) {
+        String rtn = Util.checkCheating(answer, gameModel);
+
+        if (!rtn.equals("")) {
             gameModel.getNeo4jWrapper().increaseUserError(gameModel.getGiver(), thisChannel);
             if (gameModel.getNeo4jWrapper().getUserError(gameModel.getGiver(), thisChannel) > 3) {
                 gameModel.getNeo4jWrapper().setUserErrorTimeStamp(gameModel.getGiver(), new Date());
             }
             if (gameModel.increaseErrCounter() == 2) {
                 gameModel.setGameState(GameState.Kick);
-                gameModel.getSiteController().sendError("We found again an invalid input. Round is over now");
+                gameModel.getSiteController().sendError(rtn + " Round is over now!");
 
             } else {
-                gameModel.getSiteController().sendError("Found invalid answer. Please don't use your taboo or explain word or any character that is no letter, number or -,'");
+                gameModel.getSiteController().sendError(rtn + " Please don't use your taboo or explain word or any character that is no letter, number or -,'");
             }
             return false;
         }

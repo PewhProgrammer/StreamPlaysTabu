@@ -30,21 +30,23 @@ public class Explanation extends Command {
     @Override
     public boolean validate() {
 
-        if (!Util.checkCheating(explanation, gameModel)) {
+        if (gameModel.getExplanations().isEmpty()) {
+            return true;
+        }
+
+        String rtn = Util.checkCheating(explanation, gameModel);
+
+        if (!rtn.equals("")) {
             gameModel.getNeo4jWrapper().increaseUserError(gameModel.getGiver(), thisChannel);
             if (gameModel.getNeo4jWrapper().getUserError(gameModel.getGiver(), thisChannel) > 3) {
                 gameModel.getNeo4jWrapper().setUserErrorTimeStamp(gameModel.getGiver(), new Date());
             }
-            if (!Util.checkCheating(explanation, gameModel)) {
-                gameModel.getNeo4jWrapper().increaseUserError(gameModel.getGiver(), thisChannel);
-                if (gameModel.increaseErrCounter() == 2) {
-                    gameModel.setGameState(GameState.Kick);
-                    gameModel.getSiteController().sendError("We found again an invalid input. Round is over now");
+            if (gameModel.increaseErrCounter() == 2) {
+                gameModel.setGameState(GameState.Kick);
+                gameModel.getSiteController().sendError(rtn + " Round is over now");
 
-                } else {
-                    gameModel.getSiteController().sendError("Found invalid explanation. Please don't use your taboo or explain word or any character that is no letter, number or -,'");
-                }
-                return false;
+            } else {
+                gameModel.getSiteController().sendError(rtn + " Please don't use your taboo or explain word or any character that is no letter, number or -,'");
             }
             return false;
         }
