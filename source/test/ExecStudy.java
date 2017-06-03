@@ -1,14 +1,13 @@
-import common.DatabaseException;
+import common.database.DatabaseException;
 import common.Log;
-import common.Neo4jWrapper;
+import common.database.Neo4jWrapper;
 import junit.framework.TestCase;
-import model.Language;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Random;
 
 /**
@@ -27,8 +26,8 @@ public class ExecStudy extends TestCase {
     public void setUp() throws Exception {
         int seed = randomizer.nextInt(100);
         database = new Neo4jWrapper(simulation, neo4jbindAddr, seed);
-        database.resetRelationships();
-        database.resetDatabase();
+        //database.resetRelationships();
+        //database.resetDatabase();
         Log.setLevel(Log.Level.TRACE);
     }
 
@@ -44,7 +43,7 @@ public class ExecStudy extends TestCase {
                     database.createNode(sCurrentLine, true);
                 } catch (DatabaseException e) {
                     Log.trace(e.getMessage());
-                    fail();
+                    //fail();
                 }
                 sCurrentLine = br.readLine();
             }
@@ -62,5 +61,10 @@ public class ExecStudy extends TestCase {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void testGetUserRankings(){
+        LinkedHashMap<String,Integer> list = database.getHighScoreList(10,channelName);
+        Log.info(list.toString());
     }
 }

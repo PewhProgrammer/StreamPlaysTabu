@@ -1,8 +1,8 @@
 package model;
 
-import common.DatabaseException;
+import common.database.DatabaseException;
 import common.Log;
-import common.Neo4jWrapper;
+import common.database.Neo4jWrapper;
 import common.Util;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
@@ -39,6 +39,7 @@ public class GameModel extends Observable{
 
     private GameState mGameState;
     private int mNumPlayers;
+    private int roundTime = 105;
     private int errCounter = 0;
     private short MIN_PLAYERS;
 
@@ -297,7 +298,7 @@ public class GameModel extends Observable{
         qAndA.push(new String[]{question, answer});
         notifyQandA();
 
-        if (!(answer.equals("It is true") || answer.equals("It is not true"))) {
+        if (!(answer.equals("Yes") || answer.equals("No"))) {
 
             String[] content = Util.parseTemplate(answer);
             String relation = content[0].toLowerCase();
@@ -306,7 +307,6 @@ public class GameModel extends Observable{
 
             mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,false);
         } else {
-
             String relation = question;
             String targetNode = answer;
             boolean isExplain = false;
@@ -465,6 +465,7 @@ public class GameModel extends Observable{
     }
 
     public void clear() {
+        setRoundTime(105);
         clearExplanations();
         clearQAndA();
         clearGuesses();
@@ -473,6 +474,15 @@ public class GameModel extends Observable{
         usedWords.clear();
         setNumPlayers(0);
         clearRegisteredPlayers();
+        generateVotingCategories();
+    }
+
+    public void setRoundTime(int i ){
+        this.roundTime = i;
+    }
+
+    public int getRoundTime(){
+        return this.roundTime;
     }
 
     public int increaseErrCounter() {

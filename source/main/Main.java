@@ -1,5 +1,5 @@
 import common.Log;
-import common.Neo4jWrapper;
+import common.database.Neo4jWrapper;
 import gui.webinterface.RunInterface;
 import gui.webinterface.SiteController;
 import logic.GameControl;
@@ -10,11 +10,6 @@ import org.apache.commons.cli.*;
 import java.util.Date;
 import java.util.Random;
 import java.util.regex.Pattern;
-
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 /**
  * Created by Thinh-Laptop on 26.03.2017.

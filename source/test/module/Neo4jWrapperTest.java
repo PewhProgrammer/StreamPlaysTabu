@@ -1,8 +1,8 @@
 package module;
 
-import common.DatabaseException;
+import common.database.DatabaseException;
 import common.Log;
-import common.Neo4jWrapper;
+import common.database.Neo4jWrapper;
 import common.Util;
 import gui.webinterface.containers.StreamRankingContainer;
 import junit.framework.TestCase;
@@ -50,6 +50,24 @@ public class Neo4jWrapperTest extends TestCase {
             fail();
         }
         catch(ServiceUnavailableException | DatabaseException e){
+            Log.trace(e.getMessage());
+        }
+    }
+
+
+    public void testCreateUser(){
+        String[] usr = {"John","Mike","Berta","Joseph","Genital"};
+        String ch = "streamplaystaboo";
+        try {
+            database.createUser(usr[0],ch);
+            database.createUser(usr[1],ch);
+            database.createUser(usr[2],ch);
+            database.createUser(usr[3],ch);
+            database.createUser(usr[4],ch);
+
+            fail();
+        }
+        catch(ServiceUnavailableException e){
             Log.trace(e.getMessage());
         }
     }
@@ -165,7 +183,6 @@ public class Neo4jWrapperTest extends TestCase {
     }
 
     public void testGetUserRankings(){
-        database.createUser("John","streamplaystaboo");
         LinkedHashMap<String,Integer> list = database.getHighScoreList(3,channelName);
         Log.info(list.toString());
     }
@@ -372,6 +389,38 @@ public class Neo4jWrapperTest extends TestCase {
         }
 
 
+    }
+
+    public void testSetUpNodes() {
+
+        try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
+
+            String sCurrentLine = br.readLine();
+            sCurrentLine = br.readLine();
+
+            while (!sCurrentLine.startsWith("CreateNodesAndRelationships:")) {
+                try {
+                    database.createNode(sCurrentLine, true);
+                } catch (DatabaseException e) {
+                    Log.trace(e.getMessage());
+                    //fail();
+                }
+                sCurrentLine = br.readLine();
+            }
+            sCurrentLine = br.readLine();
+            while (sCurrentLine != null) {
+                String[] parts = sCurrentLine.split(";");
+                try {
+                    database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true);
+                }catch (ArrayIndexOutOfBoundsException e){
+                    Log.trace("Wrong Formatting: "+ parts.toString());
+                }
+                sCurrentLine = br.readLine();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

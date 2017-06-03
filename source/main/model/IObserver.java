@@ -38,4 +38,6 @@ public interface IObserver {
 
     public void onNotifyTabooWords();
 
+    public void onNotifyUpdateTime();
+
 }

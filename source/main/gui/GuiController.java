@@ -137,4 +137,9 @@ public class GuiController implements Initializable, IObserver {
     public void onNotifyTabooWords() {
 
     }
+
+    @Override
+    public void onNotifyUpdateTime() {
+
+    }
 }
