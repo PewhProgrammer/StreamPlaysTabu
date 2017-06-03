@@ -43,7 +43,7 @@ public class AltTwitchBot extends Bot {
                     partChannel(sender);
                     disconnect();
                     dispose();
-
+                    Thread.currentThread().interrupt();
                 }
             }
 
@@ -165,7 +165,9 @@ public class AltTwitchBot extends Bot {
         JSONArray viewers = chatters.getJSONArray("viewers");
 
         for (int i = 0; i < viewers.length(); i++) {
-            users.add(viewers.getString(i));
+            if (!viewers.getString(i).equals("streamplaystaboo")) {
+                users.add(viewers.getString(i));
+            }
         }
         return users;
     }

@@ -53,7 +53,7 @@ public class GameControl extends Observable{
 
         while(mModel.getGameState() == GameState.GameStarted){
             //processNextCommand();
-            if(Util.diffTimeStamp(d,new Date()) > 105){
+            if(Util.diffTimeStamp(d,new Date()) > mModel.getRoundTime()){
                 mModel.setGiver("");
                 mModel.getBot().announceNoWinner();
                 mModel.setGameState(GameState.Lose);

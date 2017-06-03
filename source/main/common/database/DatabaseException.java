@@ -1,4 +1,4 @@
-package common;
+package common.database;
 
 /**
  * Created by Thinh-Laptop on 20.04.2017.

@@ -105,7 +105,6 @@ public class SiteController implements IObserver {
             public void call(Object... args) {
                 JSONObject obj = new JSONObject((String)args[0]);
                 if (validatePW(obj.getString("password"))) {
-                    Log.info("here");
                     receiveValidation(obj.getString("reference"), obj.getString("taboo"), obj.getInt("score"));
                 }
             }
@@ -209,9 +208,11 @@ public class SiteController implements IObserver {
     }
 
     public void receiveValidation(String reference, String taboo, int score) {
-        System.out.println("Received sendValidation");
+        Log.info("Received sendValidation");
         gm.getNeo4jWrapper().validateExplainAndTaboo(reference, taboo, score * 2 - 4);
-        //TODO give user + 10 seconds
+        //Give user 10 more seconds
+        gm.setRoundTime(gm.getRoundTime() + 10);
+        gm.notifyUpdateTime();
     }
 
     @Override
@@ -284,6 +285,11 @@ public class SiteController implements IObserver {
     @Override
     public void onNotifyTabooWords() {
         send("/tabooWords", new TabooWordsContainer(gm.getTabooWords()).toJSONObject());
+    }
+
+    @Override
+    public void onNotifyUpdateTime() {
+
     }
 
     public void sendError(String msg) {

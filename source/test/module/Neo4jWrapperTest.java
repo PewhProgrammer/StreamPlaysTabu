@@ -1,8 +1,8 @@
 package module;
 
-import common.DatabaseException;
+import common.database.DatabaseException;
 import common.Log;
-import common.Neo4jWrapper;
+import common.database.Neo4jWrapper;
 import common.Util;
 import gui.webinterface.containers.StreamRankingContainer;
 import junit.framework.TestCase;
@@ -50,6 +50,24 @@ public class Neo4jWrapperTest extends TestCase {
             fail();
         }
         catch(ServiceUnavailableException | DatabaseException e){
+            Log.trace(e.getMessage());
+        }
+    }
+
+
+    public void testCreateUser(){
+        String[] usr = {"John","Mike","Berta","Joseph","Genital"};
+        String ch = "streamplaystaboo";
+        try {
+            database.createUser(usr[0],ch);
+            database.createUser(usr[1],ch);
+            database.createUser(usr[2],ch);
+            database.createUser(usr[3],ch);
+            database.createUser(usr[4],ch);
+
+            fail();
+        }
+        catch(ServiceUnavailableException e){
             Log.trace(e.getMessage());
         }
     }
@@ -385,7 +403,7 @@ public class Neo4jWrapperTest extends TestCase {
                     database.createNode(sCurrentLine, true);
                 } catch (DatabaseException e) {
                     Log.trace(e.getMessage());
-                    fail();
+                    //fail();
                 }
                 sCurrentLine = br.readLine();
             }

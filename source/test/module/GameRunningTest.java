@@ -1,7 +1,7 @@
 package module;
 
 import common.Log;
-import common.Neo4jWrapper;
+import common.database.Neo4jWrapper;
 import gui.ProtoAnchor;
 import junit.framework.TestCase;
 import logic.GameControl;

@@ -14,16 +14,30 @@ import java.util.Set;
  */
 public class Validate extends Command {
 
-    private final int ID, score;
+    private final int score;
+    private final int ID;
     private final String reference;
     private final String sender;
+    private final String word;
     private final Set<String> tabooWords;
 
     public Validate(GameModel gm, String ch, int ID, int valScore, String sender) {
         super(gm, ch);
         this.ID = ID;
+        word = null;
         this.score = valScore;
         this.sender = sender;
+
+        reference = gameModel.getExplainWord();
+        tabooWords = gameModel.getTabooWords();
+    }
+
+    public Validate(GameModel gm, String ch, String word, int valScore, String sender) {
+        super(gm, ch);
+        this.word = word;
+        this.score = valScore;
+        this.sender = sender;
+        this.ID = -1;
 
         reference = gameModel.getExplainWord();
         tabooWords = gameModel.getTabooWords();
@@ -35,6 +49,9 @@ public class Validate extends Command {
         String s = "";
         for (int i = 0; i < ID; i++) {
             s = it.next();
+            if (s.equals(word)) {
+                break;
+            }
         }
 
         Log.trace("Received Validation: " + reference);
@@ -48,8 +65,10 @@ public class Validate extends Command {
             return false;
         }
 
-        if (ID < 1 || ID > tabooWords.size()) {
-            return false;
+        if (ID < 1 || ID > 5) {
+            if (word == null || !tabooWords.contains(word)) {
+                return false;
+            }
         }
 
         if (score < 1 || score > 5) {

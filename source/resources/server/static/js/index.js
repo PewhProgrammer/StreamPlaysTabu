@@ -3,6 +3,7 @@ var state = 'Waiting For Giver';
 var pw;
 var pw_cmp;
 var timeLeft = 105;
+var timeMax = 105;
 var templateId = 0;
 var tempString = "";
 var templateLayer = 0;
@@ -52,7 +53,7 @@ function runTimer() {
         timeLeft = timeLeft - 1;
 
         document.getElementById("progressbar").innerHTML = timeLeft + "s";
-        document.getElementById("progressbar").style.width = (timeLeft / 105) * 100 + "%";
+        document.getElementById("progressbar").style.width = (timeLeft / timeMax) * 100 + "%";
 
         if (timeLeft <= 0) {
             document.getElementById("progressbar").innerHTML = "Time's-Up!";
@@ -76,6 +77,7 @@ function onGiverJoined() {
 }
 
 function chosenCat1() {
+    showGame();
     loadingIndicator();
     onCategoryChosen(document.getElementById("category1").innerHTML);
 }
@@ -115,9 +117,9 @@ function onCategoryChosen(category) {
 var tempUsage = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
 
 function onExplanation() {
-    if (tempUsage[templateId] == 0) {
+    if (tempUsage[templateId] === 0) {
         //alert
-        alert("You have used this template twice already!!");
+        windows.alert("You have used this template twice already!!");
         return;
     } else {
         tempUsage[templateId] -= 1;
@@ -240,13 +242,25 @@ function createAnswerEvent(answer) {
 
 
 function createPasswordEvent() {
-    pw_cmp = $("#pwInput").val();
+    console.debug("password set");
+
+    pw_cmp = getParameterByName('pw');
     if (pw_cmp.length === 5 && pw_cmp.substring(5) === "") {
         pw_cmp = pw_cmp.substring(0, 4);
     }
     return JSON.stringify({
         'password': pw_cmp
     });
+}
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 function createValidationEvent(explain, taboo, score) {
@@ -259,7 +273,7 @@ function createValidationEvent(explain, taboo, score) {
 }
 
 function validatePW(password) {
-    return password == pw.toString();
+    return true;
 }
 
 function showCategories() {
@@ -417,6 +431,8 @@ function handleStars(id, count) {
     document.getElementById('validationCategoryLabel_' + label).textContent = "Thanks a lot!";
     document.getElementById('validationTabooLabel_' + label).textContent = "You've gained 20s more!";
     document.getElementById('stars_' + label).style.display = 'none';
+    timeLeft += 10;
+    timeMax += 10;
     onValidation(cat, taboo, count);
 
 }
