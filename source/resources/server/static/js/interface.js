@@ -207,6 +207,7 @@ function closeGame(status) {
     document.getElementById("tempDiv").style.visibility = "hidden";
     document.getElementById("tempDiv").style.zIndex = "0";
     document.getElementById("endGameDiv").style.zIndex = "1";
+    document.getElementById("endGameDiv").style.visibility = "visible";
 
     var json = JSON.parse(status);
     if (json.status === "Win") {
