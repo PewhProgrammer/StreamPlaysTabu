@@ -55,8 +55,8 @@ public class Neo4jWrapperTest {
 
 
     @Test
-    public void testCreateUser(){
-        String[] usr = {"John","Mike","Berta","Joseph","Genital"};
+    public void createMultipleUser(){
+        String[] usr = {"John","John","Berta","Joseph","Genital"};
         String ch = "streamplaystaboo";
         try {
             database.createUser(usr[0],ch);

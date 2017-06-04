@@ -86,10 +86,10 @@ public class Neo4jWrapper {
             return;
         }
         try {
-            generateUserNodeInDatabase(str, ch);
+            generateUserNodeInDatabase(str);
             Log.db("Created Node: \"" + str + "\" userNode");
         } catch (common.database.DatabaseException e) {
-            Log.db(e.getMessage());
+            Log.error(e.getMessage());
         }
 
         createStreamNode(ch);
@@ -507,11 +507,11 @@ public class Neo4jWrapper {
                 .append("ON MATCH SET rel.frequency = rel.frequency + 1 ")
                 .append("ON CREATE SET rel.frequency = 0 ")
                 .append("SET rel.validateRatingTaboo = 0 ")
-                .append("SET rel.validateFrequencyTaboo = 0 ")
-                .append("SET rel.validateRatingCategory = 0 ")
-                .append("SET rel.validateFrequencyCategory = 0 ")
-                .append("SET rel.needValidationTaboo = " + needValidation + " ")
-                .append("SET rel.needValidationCategory = " + needValidation + " ")
+                .append("AND rel.validateFrequencyTaboo = 0 ")
+                .append("AND rel.validateRatingCategory = 0 ")
+                .append("AND rel.validateFrequencyCategory = 0 ")
+                .append("AND rel.needValidationTaboo = " + needValidation + " ")
+                .append("AND rel.needValidationCategory = " + needValidation + " ")
                 .append("WITH rel," +
                         "(CASE WHEN rel.frequency > 1 THEN false ELSE " + needValidation + " END) AS flag ")
                 .append("SET rel.needValidationTaboo = flag ");
@@ -825,22 +825,22 @@ public class Neo4jWrapper {
         return result;
     }
 
-    private void generateUserNodeInDatabase(String user, String channel) throws common.database.DatabaseException {
-        StringBuilder builder = new StringBuilder();
-        builder.append("CREATE (a: " + userLabel + " {name: {name}," +
-                "mistakes: 0,cheat_occurence:{v1},votekicked: 0 })");
+    private void generateUserNodeInDatabase(String user) throws common.database.DatabaseException {
+        StringBuilder query = new StringBuilder();
+        query
+                .append("MERGE (s: "+ userLabel+ " {name: {name}}) ")
+                .append("ON CREATE ")
+                .append("SET s.name = {name} ")
+                .append("AND s.mistakes = 0 ")
+                .append("AND s.cheatFrequency = 0 ")
+                .append("AND s.voteKicked = 0 ");
 
         Transaction transX = session.beginTransaction();
         try {
-            Log.info("isOpen: " + transX.isOpen());
-            transX.run(builder.toString(),
+            transX.run(query.toString(),
                     parameters("name", user, "points", 0, "v1", "none"));
             transX.success();
-        } finally {
-            transX.close();
-        }
-
-        return;
+        } finally { transX.close(); }
     }
 
     private void generateNodeInDatabase(customNode data) throws common.database.DatabaseException {
