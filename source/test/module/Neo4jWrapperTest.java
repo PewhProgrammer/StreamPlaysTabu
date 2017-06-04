@@ -118,9 +118,12 @@ public class Neo4jWrapperTest extends TestCase {
 
             String sCurrentLine = br.readLine();
             sCurrentLine = br.readLine();
+            int i = 0 ;
 
             while (!sCurrentLine.startsWith("CreateNodesAndRelationships:")) {
                 try {
+                    i++;
+                    if(i == 14) database.setSimulation(false);
                     database.createNode(sCurrentLine, true);
                 } catch (DatabaseException e) {
                     Log.trace(e.getMessage());
@@ -140,8 +143,9 @@ public class Neo4jWrapperTest extends TestCase {
         }
 
 
-        ArrayList<ArrayList<String>> k = database.getTabooWordsForValidationForGiver();
-        Log.info(k.toString());
+
+        ArrayList<Neo4jWrapper.Pair> result = database.getValidationForGiver();
+        Log.info(result.toString());
     }
 
 

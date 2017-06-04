@@ -17,7 +17,7 @@ import org.neo4j.driver.v1.types.Node;
  */
 public class Neo4jWrapper {
     private final Config config;
-    private final boolean isDeletable;
+    private boolean needValidation;
     private final int DEL_TRESHHOLD = 2; //
     private final int CATEGORY_TRESHOLD = 3; //word qualifies as category if more equal than 3 incoming arcs are available
     private final String label;
@@ -39,7 +39,7 @@ public class Neo4jWrapper {
         //non-legacy nodes are used experimentally
         label = "Node";
         userLabel = "userNode";
-        isDeletable = simulation;
+        needValidation = !simulation ;
     }
 
     /**
@@ -141,6 +141,102 @@ public class Neo4jWrapper {
             }
         }
         return explain;
+    }
+
+    public ArrayList<Pair> getValidationForGiver(){
+        ArrayList<Pair> result = new ArrayList<>();
+        //get explain
+        result.add(new Pair(getExplainForValidation(),""));
+        //get taboo - explain
+        result.add(getTabooExplainForValidation());
+        //get explain - category
+        result.add(getExplainCategoryForValidation());
+
+        Log.trace("<< DB << Returned Validation For Giver: \n"
+                + result.get(0) + ", " + result.get(1) + ", " + result.get(2));
+        return result;
+    }
+
+    public String getExplainForValidation(){
+        String result;
+        LinkedList<String> results = new LinkedList<>();
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (s:Node) ")
+                .append("WHERE s.needValidation = true AND s.type = 'explain' ")
+                .append("RETURN s");
+        Transaction transX = session.beginTransaction();
+        try {
+            StatementResult sResult = transX.run(query.toString());
+            while(sResult.hasNext()){
+                result = sResult.next().values().get(0).
+                        asNode().get("name").toString().replaceAll("\"", "");
+                results.add(result); }
+            transX.success();
+        } finally { transX.close(); }
+
+        Collections.shuffle(results,randomizer);
+        try {
+            return results.getFirst();
+        }catch(NoSuchElementException e){
+            return "No validation needed here :)";
+        }
+    }
+
+    public Pair getTabooExplainForValidation(){
+        LinkedList<Pair> results = new LinkedList<>();
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (s:Node)-[rel]->(t:Node) ")
+                .append("WHERE s.needValidation = false AND s.type = 'explain' ")
+                .append("AND rel.needValidation = true ")
+                .append("RETURN s,t");
+        Transaction transX = session.beginTransaction();
+        try {
+            StatementResult sResult = transX.run(query.toString());
+            while(sResult.hasNext()){
+                Record records = sResult.next();
+                String explain = records.values().get(0).
+                        asNode().get("name").toString().replaceAll("\"", "");
+                String taboo = records.values().get(1).
+                        asNode().get("name").toString().replaceAll("\"", "");
+                results.add(new Pair(explain,taboo)); }
+            transX.success();
+        } finally { transX.close(); }
+
+        Collections.shuffle(results,randomizer);
+        try {
+            return results.getFirst();
+        }catch(NoSuchElementException e){
+            return new Pair("No validation needed here :)","");
+        }
+    }
+
+    public Pair getExplainCategoryForValidation(){
+        LinkedList<Pair> results = new LinkedList<>();
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (s:Node)-[rel]->(t:Node) ")
+                .append("WHERE s.needValidation = false AND s.type = 'explain' ")
+                .append("AND t.type <> 'basic' ")
+                .append("AND rel.needValidation = true ")
+                .append("RETURN s,t");
+        Transaction transX = session.beginTransaction();
+        try {
+            StatementResult sResult = transX.run(query.toString());
+            while(sResult.hasNext()){
+                Record records = sResult.next();
+                String explain = records.values().get(0).
+                        asNode().get("name").toString().replaceAll("\"", "");
+                String taboo = records.values().get(1).
+                        asNode().get("name").toString().replaceAll("\"", "");
+                results.add(new Pair(explain,taboo)); }
+            transX.success();
+        } finally { transX.close(); }
+
+        Collections.shuffle(results,randomizer);
+        try {
+            return results.getFirst();
+        }catch(NoSuchElementException e){
+            return new Pair("No validation needed here :)","");
+        }
     }
 
     public ArrayList<ArrayList<String>> getTabooWordsForValidationForGiver() {
@@ -304,6 +400,8 @@ public class Neo4jWrapper {
     public void createNode(String nodeName, Boolean explain) throws ServiceUnavailableException, common.database.DatabaseException {
         if (nodeName.equals("")) throw new common.database.DatabaseException("Node does not have a string literal!");
         String type = explain ? "explain" : "basic";
+        boolean validate = false;
+        if(type.equals("explain") && needValidation) validate = true;
         nodeName = Util.reduceStringToMinimum(nodeName);
 
         if (lookUpNode(nodeName, "Node", "")) {
@@ -311,13 +409,11 @@ public class Neo4jWrapper {
         }
         Transaction transX = session.beginTransaction();
         try {
-            Log.info("isOpen: " + transX.isOpen());
-            transX.run("CREATE (a: " + label + " {name: {name}, type: {type}, deletable:{deletable} })",
-                    parameters("name", nodeName, "type", type, "deletable", isDeletable));
+            transX.run("CREATE (a: " + label + " {name: {name}," +
+                            " type: {type}, needValidation: {validateBoolean} , validateRating: 0 })",
+                    parameters("name", nodeName, "type", type,"validateBoolean",validate));
             transX.success();
-        } finally {
-            transX.close();
-        }
+        } finally { transX.close(); }
         Log.trace("Created Node: " + nodeName + " " + label);
         return;
     }
@@ -368,23 +464,24 @@ public class Neo4jWrapper {
         node2 = Util.reduceStringToMinimum(node2);
         relationship = Util.reduceStringToMinimum(relationship);
 
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (s),(t) WHERE s.name = {n1} AND t.name = {n2} ")
+                .append("MERGE (s)-[rel:`"+relationship+"`]->(t) ")
+                .append("ON MATCH SET rel.rating = rel.rating + 1 ")
+                .append("ON CREATE SET rel.rating = 0 ")
+                .append("WITH rel,rel.rating AS rating," +
+                        "(CASE WHEN rel.rating > 2 THEN false ELSE "+ needValidation + " END) AS flag ")
+                .append("SET rel.needValidation = flag");
+
         Transaction transX = session.beginTransaction();
         try {
-            StatementResult result = transX.run("" +
-                    "MATCH (s),(t) WHERE s.name = {n1} AND t.name = {n2} " +
-                    "MERGE (s)-[rel:`"+relationship+"`]->(t) " +
-                    "ON MATCH SET rel.rating = rel.rating + 1 " +
-                    "ON CREATE SET rel.rating = 0 " +
-                    "WITH rel,rel.rating AS rating,(CASE WHEN rel.rating > 2 THEN true ELSE false END) AS flag " +
-                    "SET rel.reliableFlag = flag", parameters("n1", node1, "n2", node2, "rel", relationship));
-            transX.success();
-            Log.trace("Created Relationship: " + node1 + " -> " + node2);
-        } finally {
-            transX.close();
+            StatementResult result = transX.run(query.toString(),
+                    parameters("n1", node1, "n2", node2, "rel", relationship));
+            transX.success();}
+        finally { transX.close(); }
 
-        }
+        Log.trace("Created Relationship: " + node1 + " -> " + node2);
         return true;
-
     }
 
     /**
@@ -401,7 +498,7 @@ public class Neo4jWrapper {
                 tx.run("MATCH (ee:userNode) WHERE ee.name =  \"" + node1 + "\" " +
                         "MATCH (js:streamNode) WHERE js.name = \"" + node2 + "\" " +
                         "CREATE UNIQUE (ee)-[rel:`" + relationship + "` {" +
-                        "deletable: " + isDeletable + ",points: 0} " +
+                        "points: 0} " +
                         "]->(js)");
                 tx.success();
             }
@@ -807,7 +904,7 @@ public class Neo4jWrapper {
             try (Transaction tx = session.beginTransaction()) {
                 StatementResult sResult = tx.run(
                         "MATCH (s)-[rel]->(t) WHERE t.name = {name} " +
-                                "AND rel.reliableFlag = true RETURN rel,s", parameters("name", explainWord));
+                                "AND rel.needValidation = false RETURN rel,s", parameters("name", explainWord));
                 List<Record> list = sResult.list();
                 list = list.stream().sorted((o2, o1) -> ((Integer) o1.get("rel").asRelationship().get("rating").asInt())
                         .compareTo((Integer) o2.get("rel").asRelationship().get("rating").asInt())).limit(count).collect(Collectors.toList());
@@ -866,7 +963,7 @@ public class Neo4jWrapper {
             try (Transaction tx = session.beginTransaction()) {
 
                 StatementResult sResult = tx.run("MATCH (s)-[rel]->(t) WHERE t.name = {name} " +
-                                "AND rel.reliableFlag = true " +
+                                "AND rel.needValidation = false " +
                                 "RETURN s",
                         parameters("name", nodeName));
 
@@ -936,6 +1033,10 @@ public class Neo4jWrapper {
                 return true;
             }
         }
+    }
+
+    public void setSimulation(boolean b){
+        this.needValidation = !b;
     }
 
     private Driver acquireDriver(String uri, AuthToken authToken, Config config) {
@@ -1028,6 +1129,11 @@ public class Neo4jWrapper {
 
         public Object getSecond() {
             return second;
+        }
+
+        @Override
+        public String toString(){
+            return "Pair:{" + first + "," + second + "}";
         }
     }
 
