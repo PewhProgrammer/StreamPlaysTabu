@@ -341,7 +341,7 @@ public class Neo4jWrapperTest extends TestCase {
         database.insertNodesAndRelationshipIntoOntology("Toad",explain,true,relation1,true);
         database.insertNodesAndRelationshipIntoOntology("Toad",explain,true,relation1,true);
 
-        result = database.getTabooWords(explain,i); //fetch three words
+        result = database.getTabooWords(explain,"",i); //fetch three words
         for(String r:result){
             assertFalse(r.equals("Bowser")); //Bowser only got one rating therefore is not
             //included

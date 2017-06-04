@@ -207,7 +207,7 @@ public class GameModel extends Observable{
         int score = mOntologyDataBase.getUserPoints(getGiver(),ch);
         int lvl = getLevel(score);
         tabooWords.clear();
-        tabooWords.addAll(mOntologyDataBase.getTabooWords(getExplainWord(),lvl-1));
+        tabooWords.addAll(mOntologyDataBase.getTabooWords(getExplainWord(),this.category,lvl-1));
 
         notifyTabooWords();
 

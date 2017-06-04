@@ -104,8 +104,8 @@ public class Neo4jWrapper {
         }
     }
 
-    public Set<String> getTabooWords(String explain, int querySize) {
-        Set<String> result = fetchTabooWords(Util.reduceStringToMinimum(explain), querySize);
+    public Set<String> getTabooWords(String explain,String forbiddenWord, int querySize) {
+        Set<String> result = fetchTabooWords(Util.reduceStringToMinimum(explain),forbiddenWord, querySize);
         if (result.size() < querySize)
             Log.trace("Could not retrieve enough taboo words. Missing -> Expected " + querySize + "; Actual " + result.size());
         return result;
@@ -119,15 +119,16 @@ public class Neo4jWrapper {
      * @return
      */
     public HashMap<String, Set<String>> getTabooWordsForValidation(String explain, int querySize) {
+        String category = "none";
         HashMap<String, Set<String>> result = new HashMap<>();
         if (explain == null) explain = getRandomExplainWord(querySize);
 
-        Set<String> taboo = fetchTabooWords(Util.reduceStringToMinimum(explain), querySize);
+        Set<String> taboo = fetchTabooWords(Util.reduceStringToMinimum(explain),category, querySize);
         if (taboo.size() > 0) {
             result.put(explain, taboo);
         } else {
             explain = getRandomExplainWord(querySize);
-            taboo = fetchTabooWords(Util.reduceStringToMinimum(explain), querySize);
+            taboo = fetchTabooWords(Util.reduceStringToMinimum(explain),category, querySize);
         }
         return result;
     }
@@ -237,23 +238,6 @@ public class Neo4jWrapper {
         }catch(NoSuchElementException e){
             return new Pair("No validation needed here :)","");
         }
-    }
-
-    public ArrayList<ArrayList<String>> getTabooWordsForValidationForGiver() {
-        ArrayList<ArrayList<String>> result = new ArrayList<>();
-        Set<String> cat = fetchFilteredCategoryFromDatabase(10);
-        int count = 0;
-        for (String str : cat) {
-            if (randomizer.nextBoolean() || (count < 3)) {
-                count++;
-                ArrayList<String> temp = new ArrayList<>();
-                temp.add(str);
-                Set<String> i = fetchTabooWords(Util.reduceStringToMinimum(str), 1);
-                temp.add(i.iterator().next());
-                result.add(temp);
-            }
-        }
-        return result;
     }
 
     /**
@@ -896,7 +880,7 @@ public class Neo4jWrapper {
      * @param count
      * @return
      */
-    private Set<String> fetchTabooWords(String explainWord, int count) {
+    private Set<String> fetchTabooWords(String explainWord,String forbiddenWord, int count) {
         StringBuilder builder = new StringBuilder();
         Set<String> result = new HashSet<>(count);
 
@@ -913,8 +897,10 @@ public class Neo4jWrapper {
                 if (list.size() < 1) builder.append("EMPTY");
                 for (Record s : list) {
                     String name = s.get("s").asNode().get("name").toString().replaceAll("\"", "");
-                    result.add(name);
-                    builder.append(name + ", ");
+                    if(!name.equals(forbiddenWord)) {
+                        result.add(name);
+                        builder.append(name + ", ");
+                    }
                 }
                 builder.append("]");
                 tx.success();
