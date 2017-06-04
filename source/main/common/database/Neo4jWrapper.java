@@ -192,7 +192,7 @@ public class Neo4jWrapper {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (s:Node)-[rel]->(t:Node) ")
                 .append("WHERE s.needValidation = false AND s.type = 'explain' ")
-                .append("AND rel.needValidation = true ")
+                .append("AND rel.needValidationTaboo = true ")
                 .append("RETURN s,t");
         Transaction transX = session.beginTransaction();
         try {
@@ -224,7 +224,7 @@ public class Neo4jWrapper {
         query.append("MATCH (s:Node)-[rel]->(t:Node) ")
                 .append("WHERE s.needValidation = false AND s.type = 'explain' ")
                 .append("AND t.type <> 'basic' ")
-                .append("AND rel.needValidation = true ")
+                .append("AND rel.needValidationCategory = true ")
                 .append("RETURN s,t");
         Transaction transX = session.beginTransaction();
         try {
@@ -256,23 +256,43 @@ public class Neo4jWrapper {
      * @param source target
      * @param target   source
      */
-    public void validateConnection(String source, String target, int i) {
+    public void validateConnectionTaboo(String source, String target, int i) {
         source = Util.reduceStringToMinimum(source);
         target = Util.reduceStringToMinimum(target);
         StringBuilder query = new StringBuilder();
         query.append("MATCH (s)-[rel]->(t) ")
                 .append("WHERE s.name = {n1} AND t.name = {n2} ")
-                .append("SET rel.validateRating = rel.validateRating+").append(i).append(" ")
-                .append("SET rel.validateFrequency = rel.validateFrequency+").append(1).append(" ")
+                .append("SET rel.validateRatingTaboo = rel.validateRatingTaboo+").append(i).append(" ")
+                .append("SET rel.validateFrequencyTaboo = rel.validateFrequencyTaboo+").append(1).append(" ")
                 .append("WITH rel, ")
-                .append("(CASE WHEN rel.validateRating > 8 THEN false ELSE " + needValidation + " END) AS flag ")
-                .append("SET rel.needValidation = flag");
+                .append("(CASE WHEN rel.validateRatingTaboo > 8 THEN false ELSE " + needValidation + " END) AS flag ")
+                .append("SET rel.needValidationTaboo = flag");
 
         Transaction transX = session.beginTransaction();
         try { transX.run(query.toString(),
                     parameters("n1", source, "n2", target));
             transX.success();
-            Log.db("VALIDATED connection " + source + "-> "+ target +" with " + i + " score");
+            Log.db("VALIDATED taboo connection " + source + "-> "+ target +" with " + i + " score");
+        } finally { transX.close(); }
+    }
+
+    public void validateConnectionCategory(String source, String target, int i) {
+        source = Util.reduceStringToMinimum(source);
+        target = Util.reduceStringToMinimum(target);
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (s)-[rel]->(t) ")
+                .append("WHERE s.name = {n1} AND t.name = {n2} ")
+                .append("SET rel.validateRatingCategory = rel.validateRatingCategory+").append(i).append(" ")
+                .append("SET rel.validateFrequencyCategory = rel.validateFrequencyCategory+").append(1).append(" ")
+                .append("WITH rel, ")
+                .append("(CASE WHEN rel.validateRatingCategory > 8 THEN false ELSE " + needValidation + " END) AS flag ")
+                .append("SET rel.needValidationCategory = flag");
+
+        Transaction transX = session.beginTransaction();
+        try { transX.run(query.toString(),
+                parameters("n1", source, "n2", target));
+            transX.success();
+            Log.db("VALIDATED category connection " + source + "-> "+ target +" with " + i + " score");
         } finally { transX.close(); }
     }
 
@@ -486,11 +506,15 @@ public class Neo4jWrapper {
                 .append("MERGE (s)-[rel:`" + relationship + "`]->(t) ")
                 .append("ON MATCH SET rel.frequency = rel.frequency + 1 ")
                 .append("ON CREATE SET rel.frequency = 0 ")
-                .append("SET rel.validateRating = 0 ")
-                .append("SET rel.validateFrequency = 0 ")
+                .append("SET rel.validateRatingTaboo = 0 ")
+                .append("SET rel.validateFrequencyTaboo = 0 ")
+                .append("SET rel.validateRatingCategory = 0 ")
+                .append("SET rel.validateFrequencyCategory = 0 ")
+                .append("SET rel.needValidationTaboo = " + needValidation + " ")
+                .append("SET rel.needValidationCategory = " + needValidation + " ")
                 .append("WITH rel," +
                         "(CASE WHEN rel.frequency > 1 THEN false ELSE " + needValidation + " END) AS flag ")
-                .append("SET rel.needValidation = flag ");
+                .append("SET rel.needValidationTaboo = flag ");
 
         Transaction transX = session.beginTransaction();
         try {
@@ -923,10 +947,14 @@ public class Neo4jWrapper {
             try (Transaction tx = session.beginTransaction()) {
                 StatementResult sResult = tx.run(
                         "MATCH (s)-[rel]->(t) WHERE t.name = {name} " +
-                                "AND rel.needValidation = false RETURN rel,s", parameters("name", explainWord));
+                                "AND rel.needValidationTaboo = false RETURN rel,s", parameters("name", explainWord));
                 List<Record> list = sResult.list();
-                list = list.stream().sorted((o2, o1) -> ((Integer) o1.get("rel").asRelationship().get("rating").asInt())
-                        .compareTo((Integer) o2.get("rel").asRelationship().get("rating").asInt())).limit(count).collect(Collectors.toList());
+                list = list.stream().sorted(
+                        (o2, o1) -> ((Integer) (o1.get("rel").asRelationship().get("validateRatingTaboo").asInt()
+                         + (Integer) o1.get("rel").asRelationship().get("frequency").asInt() ) )
+                        .compareTo((Integer) o2.get("rel").asRelationship().get("validateRatingTaboo").asInt()
+                        + (Integer) o2.get("rel").asRelationship().get("frequency").asInt()
+                        )).limit(count).collect(Collectors.toList());
 
                 builder.append("Fetched Taboo Words: [");
                 if (list.size() < 1) builder.append("EMPTY");
@@ -947,7 +975,8 @@ public class Neo4jWrapper {
     }
 
     /**
-     * We know that start node was an explain word and check if end word qualifies for category
+     * We know that start node was an explain word
+     * and check if relationship suits for a category
      *
      * @param nodeName
      */
@@ -960,7 +989,7 @@ public class Neo4jWrapper {
             try (Transaction tx = session.beginTransaction()) {
 
                 StatementResult sResult = tx.run("MATCH (s)-[rel]->(t) WHERE t.name = {name} " +
-                                "AND rel.needValidation = false " +
+                                "AND rel.needValidationCategory = false " +
                                 "RETURN s",
                         parameters("name", nodeName));
 

@@ -52,7 +52,8 @@ public class Validate extends Command {
         }
 
         Log.trace("Received Validation: " + reference);
-        gameModel.getNeo4jWrapper().validateConnection(reference, s, score * 2 - 4);
+        //TODO what kind of validation?
+        //gameModel.getNeo4jWrapper().validateConnection(reference, s, score * 2 - 4);
     }
 
     @Override

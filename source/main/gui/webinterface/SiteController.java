@@ -184,7 +184,9 @@ public class SiteController implements IObserver {
 
     public void receiveValidation(String reference, String taboo, int score) {
         Log.info("Received sendValidation");
-        gm.getNeo4jWrapper().validateConnection(reference, taboo, score * 2 - 4);
+        //TODO decide which validation
+
+        //gm.getNeo4jWrapper().validateConnection(reference, taboo, score * 2 - 4);
         //Give user 10 more seconds
         gm.setRoundTime(gm.getRoundTime() + 10);
         gm.notifyUpdateTime();

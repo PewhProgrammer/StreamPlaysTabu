@@ -119,9 +119,9 @@ public class Neo4jWrapperTest {
         database.setSimulation(false);
         ArrayList<Neo4jWrapper.Pair> validation = database.getValidationForGiver();
         database.validateNode(validation.get(0).getFirst().toString(),score);
-        database.validateConnection(validation.get(1).getFirst().toString()
+        database.validateConnectionTaboo(validation.get(1).getFirst().toString()
                 ,validation.get(1).getSecond().toString(),score);
-        database.validateConnection(validation.get(2).getFirst().toString()
+        database.validateConnectionCategory(validation.get(2).getFirst().toString()
                 ,validation.get(2).getSecond().toString(),score);
 
         //database.validateConnection();
@@ -323,6 +323,7 @@ public class Neo4jWrapperTest {
         String relation1 = "It appears in ";
         Set<String> result = new HashSet<>();
         int i = 3 ;
+        database.setSimulation(true);
 
         database.insertNodesAndRelationshipIntoOntology("Peach",explain,true,relation1,true);
         database.insertNodesAndRelationshipIntoOntology("Peach",explain,true,relation1,true);
@@ -335,20 +336,8 @@ public class Neo4jWrapperTest {
 
         result = database.getTabooWords(explain,"",i); //fetch three words
         for(String r:result){
-            Assert.assertFalse(r.equals("Bowser")); //Bowser only got one rating therefore is not
-            //included
+            Assert.assertFalse(r.equals("bowser"));
         }
-    }
-
-    @Test
-    public void testValidateExplainTaboo(){
-        String explain = "league of legends";
-        String taboo = "alistar";
-
-        database.insertNodesAndRelationshipIntoOntology(taboo,explain,true,"is used for taboo",true);
-        database.insertNodesAndRelationshipIntoOntology(taboo,explain,true,"has no meaning whatsoever",true);
-
-        database.validateConnection(explain,taboo,2);
     }
 
     @Test
