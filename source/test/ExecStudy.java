@@ -42,7 +42,7 @@ public class ExecStudy extends TestCase {
                 try {
                     database.createNode(sCurrentLine, true);
                 } catch (DatabaseException e) {
-                    Log.trace(e.getMessage());
+                    Log.db(e.getMessage());
                     //fail();
                 }
                 sCurrentLine = br.readLine();
@@ -53,7 +53,7 @@ public class ExecStudy extends TestCase {
                 try {
                     database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true);
                 }catch (ArrayIndexOutOfBoundsException e){
-                    Log.trace("Wrong Formatting: "+ parts.toString());
+                    Log.db("Wrong Formatting: "+ parts.toString());
                 }
                 sCurrentLine = br.readLine();
             }

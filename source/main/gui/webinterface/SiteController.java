@@ -6,7 +6,6 @@ import gui.webinterface.containers.*;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-import jdk.nashorn.internal.parser.JSONParser;
 import logic.GameControl;
 import logic.commands.*;
 import model.GameModel;
@@ -185,7 +184,7 @@ public class SiteController implements IObserver {
 
     public void receiveValidation(String reference, String taboo, int score) {
         Log.info("Received sendValidation");
-        gm.getNeo4jWrapper().validateExplainAndTaboo(reference, taboo, score * 2 - 4);
+        gm.getNeo4jWrapper().validateConnection(reference, taboo, score * 2 - 4);
         //Give user 10 more seconds
         gm.setRoundTime(gm.getRoundTime() + 10);
         gm.notifyUpdateTime();
