@@ -1025,8 +1025,8 @@ public class Neo4jWrapper {
                 }
                 if (count >= CATEGORY_TRESHOLD) {
                     tx.run("MATCH (s:Node)" +
-                            "WHERE s.name = {n1}" +
-                            "g s.type = {c}" +
+                            "WHERE s.name = {n1} " +
+                            "AND s.type = {c}" +
                             "RETURN s", parameters("n1", nodeName, "c", "category"));
 
                     builder.append(nodeName + " did qualifiy as category with " + count + " incoming edges");
