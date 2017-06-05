@@ -123,7 +123,6 @@ public class Neo4jWrapperTest {
                 ,validation.get(1).getSecond().toString(),score);
         database.validateConnectionCategory(validation.get(2).getFirst().toString()
                 ,validation.get(2).getSecond().toString(),score);
-
         //database.validateConnection();
     }
 
@@ -131,8 +130,6 @@ public class Neo4jWrapperTest {
     public void createQuestion(){
         database.createQuestion("sivir","is it blue?","no");
     }
-
-
 
     @Test
     public void testCreateRelationship(){
@@ -409,6 +406,7 @@ public class Neo4jWrapperTest {
                 sCurrentLine = br.readLine();
             }
             sCurrentLine = br.readLine();
+            database.setSimulation(true);
             while (sCurrentLine != null) {
                 String[] parts = sCurrentLine.split(";");
                 try {

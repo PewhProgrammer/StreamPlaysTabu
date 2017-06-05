@@ -15,7 +15,15 @@ $(function () {
         e.preventDefault();
     });
     $("#pw").click(function () {
-        onPassword();
+
+        pw_cmp = getParameterByName('pw');
+        console.log(pw_cmp);
+        if (pw_cmp === "root") {
+
+            onCategoryChosen(document.getElementById("category1").innerHTML);
+            showGame();
+        } else
+            onPassword();
     });
     $("#category").click(function () {
         onCategoryChosen();
@@ -229,8 +237,6 @@ function createAnswerEvent(answer) {
 }
 
 function createPasswordEvent() {
-    console.debug("password set");
-
     pw_cmp = getParameterByName('pw');
     if (pw_cmp.length === 5 && pw_cmp.substring(5) === "") {
         pw_cmp = pw_cmp.substring(0, 4);

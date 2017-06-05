@@ -53,6 +53,7 @@ public class ExecStudy extends TestCase {
                 sCurrentLine = br.readLine();
             }
             sCurrentLine = br.readLine();
+            database.setSimulation(true);
             while (sCurrentLine != null) {
                 String[] parts = sCurrentLine.split(";");
                 try {

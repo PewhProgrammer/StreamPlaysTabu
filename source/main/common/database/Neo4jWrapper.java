@@ -855,9 +855,9 @@ public class Neo4jWrapper {
                 .append("MERGE (s: "+ userLabel+ " {name: {name}}) ")
                 .append("ON CREATE ")
                 .append("SET s.name = {name} ")
-                .append("AND s.mistakes = 0 ")
-                .append("AND s.cheatFrequency = 0 ")
-                .append("AND s.voteKicked = 0 ");
+                .append(", s.mistakes = 0 ")
+                .append(", s.cheatFrequency = 0 ")
+                .append(", s.voteKicked = 0 ");
 
         Transaction transX = session.beginTransaction();
         try {
