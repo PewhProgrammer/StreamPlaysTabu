@@ -263,7 +263,7 @@ public class Neo4jWrapper {
         query.append("MATCH (s)-[rel]->(t) ")
                 .append("WHERE s.name = {n1} AND t.name = {n2} ")
                 .append("SET rel.validateRatingTaboo = rel.validateRatingTaboo+").append(i).append(" ")
-                .append("SET rel.validateFrequencyTaboo = rel.validateFrequencyTaboo+").append(1).append(" ")
+                .append(", rel.validateFrequencyTaboo = rel.validateFrequencyTaboo+").append(1).append(" ")
                 .append("WITH rel, ")
                 .append("(CASE WHEN rel.validateRatingTaboo > 8 THEN false ELSE " + needValidation + " END) AS flag ")
                 .append("SET rel.needValidationTaboo = flag");
@@ -283,7 +283,7 @@ public class Neo4jWrapper {
         query.append("MATCH (s)-[rel]->(t) ")
                 .append("WHERE s.name = {n1} AND t.name = {n2} ")
                 .append("SET rel.validateRatingCategory = rel.validateRatingCategory+").append(i).append(" ")
-                .append("SET rel.validateFrequencyCategory = rel.validateFrequencyCategory+").append(1).append(" ")
+                .append(", rel.validateFrequencyCategory = rel.validateFrequencyCategory+").append(1).append(" ")
                 .append("WITH rel, ")
                 .append("(CASE WHEN rel.validateRatingCategory > 8 THEN false ELSE " + needValidation + " END) AS flag ")
                 .append("SET rel.needValidationCategory = flag");
@@ -302,7 +302,7 @@ public class Neo4jWrapper {
         query.append("MATCH (s) ")
                 .append("WHERE s.name = {n1} ")
                 .append("SET s.validateRating = s.validateRating+").append(i).append(" ")
-                .append("SET s.validateFrequency = s.validateFrequency+").append(1).append(" ")
+                .append(", s.validateFrequency = s.validateFrequency+").append(1).append(" ")
                 .append("WITH s, ")
                 .append("(CASE WHEN s.validateRating > 8 THEN false ELSE " + needValidation + " END) AS flag ")
                 .append("SET s.needValidation = flag");
@@ -810,7 +810,7 @@ public class Neo4jWrapper {
             resultInt = Integer.parseInt(result);
             diff = resultInt - oldvalue;
             query.append("SET rel." + rel.property + "={propertyvalueInt} ");
-            query.append("SET t.totalPoints = t.totalPoints+{diffInt} ");
+            query.append(", t.totalPoints = t.totalPoints+{diffInt} ");
         } else {
             query.append("SET rel." + rel.property + "={propertyvalue} ");
         }
@@ -835,8 +835,7 @@ public class Neo4jWrapper {
         try (Session session = driver.session()) {
             try (Transaction tx = session.beginTransaction()) {
                 tx.run("MATCH (n:" + userLabel + ") WHERE n.name = {name} " +
-                                "SET n." + property + "={propertyvalue}" +
-                                "",
+                                "SET n." + property + "={propertyvalue} ",
                         parameters("name", user, "propertyvalue", result));
                 tx.success();
 
@@ -1027,7 +1026,7 @@ public class Neo4jWrapper {
                 if (count >= CATEGORY_TRESHOLD) {
                     tx.run("MATCH (s:Node)" +
                             "WHERE s.name = {n1}" +
-                            "SET s.type = {c}" +
+                            "g s.type = {c}" +
                             "RETURN s", parameters("n1", nodeName, "c", "category"));
 
                     builder.append(nodeName + " did qualifiy as category with " + count + " incoming edges");
