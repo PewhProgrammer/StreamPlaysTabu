@@ -231,7 +231,6 @@ public class GameControl extends Observable{
                 }
             } catch(Exception e) {
                 e.printStackTrace();
-                break;
             }
         }
     }
