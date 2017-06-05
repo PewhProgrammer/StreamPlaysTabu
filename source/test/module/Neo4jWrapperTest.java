@@ -127,6 +127,11 @@ public class Neo4jWrapperTest {
         //database.validateConnection();
     }
 
+    @Test
+    public void createQuestion(){
+        database.createQuestion("sivir","is it blue?","no");
+    }
+
 
 
     @Test

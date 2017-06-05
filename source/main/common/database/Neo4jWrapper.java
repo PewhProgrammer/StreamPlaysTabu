@@ -502,23 +502,22 @@ public class Neo4jWrapper {
         relationship = Util.reduceStringToMinimum(relationship);
 
         StringBuilder query = new StringBuilder();
+        int i = 0;
         query.append("MATCH (s),(t) WHERE s.name = {n1} AND t.name = {n2} ")
                 .append("MERGE (s)-[rel:`" + relationship + "`]->(t) ")
                 .append("ON MATCH SET rel.frequency = rel.frequency + 1 ")
                 .append("ON CREATE SET rel.frequency = 0 ")
-                .append("SET rel.validateRatingTaboo = 0 ")
-                .append("AND rel.validateFrequencyTaboo = 0 ")
-                .append("AND rel.validateRatingCategory = 0 ")
-                .append("AND rel.validateFrequencyCategory = 0 ")
-                .append("AND rel.needValidationTaboo = " + needValidation + " ")
-                .append("AND rel.needValidationCategory = " + needValidation + " ")
+                .append(", rel.validateRatingTaboo = 0 ")
+                .append(", rel.validateFrequencyTaboo = 0 ")
+                .append(", rel.validateRatingCategory = 0 ")
+                .append(", rel.validateFrequencyCategory = 0 ")
+                .append(", rel.needValidationCategory = " + needValidation + " ")
                 .append("WITH rel," +
                         "(CASE WHEN rel.frequency > 1 THEN false ELSE " + needValidation + " END) AS flag ")
                 .append("SET rel.needValidationTaboo = flag ");
 
         Transaction transX = session.beginTransaction();
-        try {
-            transX.run(query.toString(),
+        try { transX.run(query.toString(),
                     parameters("n1", node1, "n2", node2, "rel", relationship));
             transX.success();
         } finally { transX.close(); }
@@ -590,6 +589,29 @@ public class Neo4jWrapper {
 
         }
         return true;
+    }
+
+    public void createQuestion(String src, String relation, String target){
+
+        src = Util.reduceStringToMinimum(src);
+        target = Util.reduceStringToMinimum(target);
+        relation = Util.reduceStringToMinimum(relation);
+
+        StringBuilder query = new StringBuilder();
+        query.append("MATCH (s) WHERE s.name = {n1} ")
+                .append("MERGE (s)-[rel:`" + relation + "`]->(t{name:{n2}}) ")
+                .append("ON MATCH SET rel.frequency = rel.frequency + 1 ")
+                .append("ON CREATE ")
+                .append("SET rel.frequency = 0")
+                .append(", t: Logging");
+
+        Transaction transX = session.beginTransaction();
+        try { transX.run(query.toString(),
+                parameters("n1", src, "n2", target, "rel", relation));
+            transX.success();
+        } finally { transX.close(); }
+
+        Log.db("Created Relationship: " + src + " -> " + target);
     }
 
     /**

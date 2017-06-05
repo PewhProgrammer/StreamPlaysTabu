@@ -307,11 +307,7 @@ public class GameModel extends Observable{
 
             mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,false);
         } else {
-            String relation = question;
-            String targetNode = answer;
-            boolean isExplain = false;
-
-            mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,false);
+            mOntologyDataBase.createQuestion(word,question,answer);
         }
     }
 
