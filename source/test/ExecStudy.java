@@ -32,15 +32,20 @@ public class ExecStudy extends TestCase {
     }
 
     public void testSetUpNodes() {
+        database.resetRelationships();
+        database.resetDatabase();
 
         try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
 
             String sCurrentLine = br.readLine();
             sCurrentLine = br.readLine();
 
+            int i = 0 ;
             while (!sCurrentLine.startsWith("CreateNodesAndRelationships:")) {
                 try {
                     database.createNode(sCurrentLine, true);
+                    i++;
+                    if(i == 5) database.setSimulation(false);
                 } catch (DatabaseException e) {
                     Log.db(e.getMessage());
                     //fail();
@@ -51,6 +56,8 @@ public class ExecStudy extends TestCase {
             while (sCurrentLine != null) {
                 String[] parts = sCurrentLine.split(";");
                 try {
+                    i++;
+                    if(i == 15) database.setSimulation(true);
                     database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true);
                 }catch (ArrayIndexOutOfBoundsException e){
                     Log.db("Wrong Formatting: "+ parts.toString());
@@ -61,6 +68,7 @@ public class ExecStudy extends TestCase {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public void testGetUserRankings(){

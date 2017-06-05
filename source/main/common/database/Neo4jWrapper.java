@@ -74,9 +74,9 @@ public class Neo4jWrapper {
             createNode(node2, node2Explain);
         } catch (ServiceUnavailableException | common.database.DatabaseException e) {
             //If the start node is from type explain, update end node to potential category
-            if (isNode1Explain && node2Explain) setExplainWordToCategory(node2);
             Log.debug(e.getLocalizedMessage());
         }
+        if (isNode1Explain && node2Explain) setExplainWordToCategory(node2);
         return createRelationship(node1, node2, relationship, reliableFlag);
     }
 
@@ -164,7 +164,7 @@ public class Neo4jWrapper {
         LinkedList<String> results = new LinkedList<>();
         StringBuilder query = new StringBuilder();
         query.append("MATCH (s:Node) ")
-                .append("WHERE s.needValidation = true AND s.type = 'explain' ")
+                .append("WHERE s.validationLock <> true AND s.needValidation = true AND s.type = 'explain' ")
                 .append("RETURN s");
         Transaction transX = session.beginTransaction();
         try {
@@ -192,7 +192,7 @@ public class Neo4jWrapper {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (s:Node)-[rel]->(t:Node) ")
                 .append("WHERE s.needValidation = false AND s.type = 'explain' ")
-                .append("AND rel.needValidationTaboo = true ")
+                .append("AND rel.needValidationTaboo = true AND rel.validationLock <> true ")
                 .append("RETURN s,t");
         Transaction transX = session.beginTransaction();
         try {
@@ -224,7 +224,7 @@ public class Neo4jWrapper {
         query.append("MATCH (s:Node)-[rel]->(t:Node) ")
                 .append("WHERE s.needValidation = false AND s.type = 'explain' ")
                 .append("AND t.type <> 'basic' ")
-                .append("AND rel.needValidationCategory = true ")
+                .append("AND rel.needValidationCategory = true AND rel.validationLock <> true ")
                 .append("RETURN s,t");
         Transaction transX = session.beginTransaction();
         try {
@@ -446,7 +446,8 @@ public class Neo4jWrapper {
         Transaction transX = session.beginTransaction();
         try {
             transX.run("CREATE (a: " + label + " {name: {name}," +
-                            " type: {type}, needValidation: {validateBoolean} , validateRating: 0 })",
+                            " type: {type}, needValidation: {validateBoolean} , validateRating: 0, validationLock: "
+                    +!needValidation+" })",
                     parameters("name", nodeName, "type", type, "validateBoolean", validate));
             transX.success();
         } finally {
@@ -512,6 +513,7 @@ public class Neo4jWrapper {
                 .append(", rel.validateRatingCategory = 0 ")
                 .append(", rel.validateFrequencyCategory = 0 ")
                 .append(", rel.needValidationCategory = " + needValidation + " ")
+                .append(", rel.validationLock = " + !needValidation + " ")
                 .append("WITH rel," +
                         "(CASE WHEN rel.frequency > 1 THEN false ELSE " + needValidation + " END) AS flag ")
                 .append("SET rel.needValidationTaboo = flag ");
@@ -1007,7 +1009,6 @@ public class Neo4jWrapper {
 
         StringBuilder builder = new StringBuilder();
         int count = 1;
-        try (Session session = driver.session()) {
             try (Transaction tx = session.beginTransaction()) {
 
                 StatementResult sResult = tx.run("MATCH (s)-[rel]->(t) WHERE t.name = {name} " +
@@ -1033,10 +1034,7 @@ public class Neo4jWrapper {
                 } else builder.append(nodeName + " did not qualifiy as category with " + count + " incoming edges");
                 tx.success();
             }
-
-        }
-
-        Log.info(builder.toString());
+        Log.db(builder.toString());
     }
 
     /**

@@ -219,7 +219,6 @@ function createExplanationEvent(exp) {
 }
 
 function createAnswerEvent(answer) {
-
     var q = questions[activeQuestion];
     var a = answer;
     return JSON.stringify({
@@ -228,8 +227,6 @@ function createAnswerEvent(answer) {
         'password': pw
     });
 }
-
-
 
 function createPasswordEvent() {
     console.debug("password set");
