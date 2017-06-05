@@ -77,7 +77,6 @@ function onGiverJoined() {
 }
 
 function chosenCat1() {
-    showGame();
     loadingIndicator();
     onCategoryChosen(document.getElementById("category1").innerHTML);
 }
