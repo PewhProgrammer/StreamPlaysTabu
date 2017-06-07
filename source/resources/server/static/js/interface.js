@@ -105,6 +105,11 @@ function showTabooWords(tabooWords) {
 function sendExplanation(explanation) {
     console.log('<< Send explanation.');
     sendToServer('/sendExplanation', explanation);
+    document.getElementById("templatesDiv").innerHTML = document.getElementById("templatesDiv").innerHTML
+        + "<div id='successfullySendPanel' class='panel panel-success' style='position: absolute; top: 47.5%; width: 75%; left: 12.5%; z-index: 5; display: none'><div class='panel-heading' style='text-align: center'>Explanation successfully sent!</div></div>";
+    $("#successfullySendPanel").fadeIn("slow").delay(1000).fadeOut("slow", function() {
+        $(this).remove();
+    });
 }
 
 function showQuestion(question) {
@@ -138,6 +143,11 @@ function chosenQuestion(num, p) {
 function sendAnswer(QandA) {
     console.log('<< Send answer.');
     sendToServer('/sendQandA', QandA);
+    document.getElementById("templatesDiv").innerHTML = document.getElementById("templatesDiv").innerHTML
+        + "<div id='successfullySendPanel' class='panel panel-success' style='position: absolute; top: 47.5%; width: 75%; left: 12.5%; z-index: 5; display: none'><div class='panel-heading' style='text-align: center'>Answer successfully sent!</div></div>";
+    $("#successfullySendPanel").fadeIn("slow").delay(1000).fadeOut("slow", function() {
+        $(this).remove();
+    });
 }
 
 function requestSkip(request) {
