@@ -7,6 +7,7 @@ import model.GameModel;
 import model.Language;
 import org.apache.commons.cli.*;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -99,6 +100,16 @@ public class Main {
 
         Log.info("Launching webinterface ...");
         RunInterface.main(new String[] {});
+
+        try {
+            Runtime rt = Runtime.getRuntime();
+            String url = "http://localhost:8080";
+            rt.exec("rundll32 url.dll,FileProtocolHandler " + url);
+        }catch(IOException e){
+            e.printStackTrace();
+            System.exit(1);
+        }
+
 
                 /*String url = "http://www.google.com/";
 
