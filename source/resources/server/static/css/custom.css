@@ -127,20 +127,21 @@ body {
 
 #validateDiv {
     position: absolute;
-    width: 48%;
+    width: 25.5%;
     height: 22.5%;
-    left: 1%;
-    bottom: 5px;
+    left: 35%;
+    bottom: 1%;
     font-size: 2vmin;
-    padding: 5px 5px 5px 5px;
+    padding-top: 0.25%;
+    text-align: center;
 }
 
 #guessesDiv {
     position: absolute;
-    width: 48%;
+    width: 38%;
     height: 22.5%;
     right: 1%;
-    bottom: 5px;
+    bottom: 1%;
     font-size: 3vmin;
     padding-left: 0.5%;
     padding-top: 0.5%;
@@ -148,13 +149,15 @@ body {
 
 #firstGuess,
 #secondGuess,
-#thirdGuess,
-#fourthGuess,
-#fifthGuess {
-    width: 25%;
+#thirdGuess {
+    width: 32%;
     height: 55%;
     position: absolute;
     bottom: 0px;
+    text-align: center;
+    border: 2px hidden #fff;
+    border-right: solid;
+    font-size: 2.5vmin;
 }
 
 #skip {
@@ -202,10 +205,13 @@ body {
 
 #chat {
     position: absolute;
-    height: 98%;
-    width: 50%;
-    left: 0;
+    height: 22.5%;
+    max-height: 22.5%;
+    width: 33.5%;
     padding: 1%;
+    left: 1%;
+    bottom: 1%;
+    font-size: 2vmin;
 }
 
 #qAndABlock {
@@ -219,7 +225,7 @@ body {
 }
 
 .rate-container>i {
-    float: right;
+    position: absolute;
 }
 
 .rate-container>i:HOVER,

@@ -46,31 +46,24 @@ function showGuesses(guesses) {
     console.log('>> Received guesses: ' + guesses);
 
     if (json.guess1 != "") {
-        if (json.guess5 != "") {
-            document.getElementById("firstGuess").innerHTML = json.guess1 + "<br><br>" + json.guess5;
+        if (json.guess4 != "") {
+            document.getElementById("firstGuess").innerHTML = json.guess1 + "<br><br>" + json.guess4;
         } else {
             document.getElementById("firstGuess").innerHTML = json.guess1;
         }
     }
     if (json.guess2 != "") {
-        if (json.guess6 != "") {
-            document.getElementById("secondGuess").innerHTML = json.guess2 + "<br><br>" + json.guess6;
+        if (json.guess5 != "") {
+            document.getElementById("secondGuess").innerHTML = json.guess2 + "<br><br>" + json.guess5;
         } else {
             document.getElementById("secondGuess").innerHTML = json.guess2;
         }
     }
     if (json.guess3 != "") {
-        if (json.guess7 != "") {
-            document.getElementById("thirdGuess").innerHTML = json.guess3 + "<br><br>" + json.guess7;
+        if (json.guess6 != "") {
+            document.getElementById("thirdGuess").innerHTML = json.guess3 + "<br><br>" + json.guess6;
         } else {
             document.getElementById("thirdGuess").innerHTML = json.guess3;
-        }
-    }
-    if (json.guess4 != "") {
-        if (json.guess8 != "") {
-            document.getElementById("fourthGuess").innerHTML = json.guess4 + "<br><br>" + json.guess8;
-        } else {
-            document.getElementById("fourthGuess").innerHTML = json.guess4;
         }
     }
 }
