@@ -165,7 +165,10 @@ function onExplanation() {
     document.getElementById("explanationText").innerHTML = "";
     document.getElementById("input2").innerHTML = "";
     document.getElementById("input3").innerHTML = "";
-}
+
+/*    document.getElementById("templatesDiv").innerHTML = document.getElementById("templatesDiv").innerHTML
+        + "<div id='successFullySendPanel' class='panel panel-success' style='position: absolute; top: 50%; width: 75%; left: 12.5%; z-index: 5;'><div class='panel-body'>Answer successfully sent!</div></div>"
+*/}
 
 function onAnswer() {
     sendAnswer(createAnswerEvent());
