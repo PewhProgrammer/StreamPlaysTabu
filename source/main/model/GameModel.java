@@ -333,20 +333,10 @@ public class GameModel extends Observable{
         prevoting.get(ID).increaseScore();
     }
 
-    public String[] getPrevotedCategories() {
-        String[] prevotedCategories = new String[5];
+    public ArrayList<PrevoteCategory> getPrevotedCategories() {
         Collections.sort(prevoting);
-        Iterator<PrevoteCategory> it = prevoting.iterator();
 
-        for (int i = 0; i < 5; i++) {
-            if (it.hasNext()) {
-                prevotedCategories[i] = it.next().getCategory();
-            } else {
-                break;
-            }
-        }
-
-        return prevotedCategories;
+        return prevoting;
     }
 
     public String[] getPrevoteCategories() {

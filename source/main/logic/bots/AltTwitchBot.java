@@ -167,8 +167,10 @@ public class AltTwitchBot extends Bot {
         for (int i = 0; i < viewers.length(); i++) {
             if (!viewers.getString(i).equals("streamplaystaboo")) {
                 users.add(viewers.getString(i));
+                System.out.println(viewers.getString(i));
             }
         }
+        System.out.println("Found " + users.size() + " users in channel " + channel);
         return users;
     }
 
