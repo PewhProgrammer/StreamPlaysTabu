@@ -36,7 +36,7 @@ public class AltTwitchBot extends Bot {
         public void onMessage(String channel, String sender,
                               String login, String hostname, String message) {
 
-            if (sender.equals("streamplaystaboo") | sender.equals(channel)){
+            if (sender.equals("streamplaystaboo") || sender.equals(channel)){
                 if (message.startsWith("!shutdown")) {
                     Log.debug("shutdown command received!");
                     model.pushCommand(new Host(model, channel, channel));
@@ -113,7 +113,7 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void whisperRules(String user) {
-        sendChatMessage("/w " + user + " Rules: 1. No form or part of ANY word on the card (word to explain + taboo words) may be given as a explanation. Examples: If the Guess Word is LEAGUE OF LEGENDS,"+" Legends "+"cannot be given a an explanation. 2. No initials or abbreviations can be given if the words they represent are included on the card. Examples: LoL cannot be used if LEAGUE OF LEGENDS is the Guess Word or a TABOO word. 3. Players can be voted out with !votekick, if they do not follow the rules.");
+        sendChatMessage("/w " + user + " Rules: 1. No form or part of ANY word on the card (word to explain + taboo words) may be given as an explanation. Examples: If the Guess Word is LEAGUE OF LEGENDS,"+" Legends "+"cannot be given as an explanation. 2. No initials or abbreviations can be given if the words they represent are included on the card. Examples: LoL cannot be used if LEAGUE OF LEGENDS is the Guess Word or a TABOO word. 3. Players can be voted out with !votekick or kicked by a moderator, if they do not follow the rules.");
     }
 
     @Override
@@ -238,7 +238,10 @@ public class AltTwitchBot extends Bot {
         if (parts[0].equals("!validate")) {
             int ID = Integer.parseInt(parts[1]);
             int valScore = Integer.parseInt(parts[2]);
-            return new Validate(model, channel, ID, valScore, sender);
+            if ((ID == 1) || (ID == 2) || (ID == 3) || (ID == 4) || (ID == 5)){
+                return  new Validate(model, channel, ID, valScore, sender);
+            }
+            return new Validate(model, channel, parts[1], valScore, sender);
         }
 
         // !taboo
