@@ -36,7 +36,7 @@ public class AltTwitchBot extends Bot {
         public void onMessage(String channel, String sender,
                               String login, String hostname, String message) {
 
-            if (sender.equals("streamplaystaboo") | sender.equals(channel)){
+            if (sender.equals("streamplaystaboo") | ("#" + sender).equals(channel)){
                 if (message.startsWith("!shutdown")) {
                     Log.debug("shutdown command received!");
                     model.pushCommand(new Host(model, channel, channel));
@@ -130,13 +130,13 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void announceWinner(String user) {
-        sendChatMessage("The Winner is " + user + ". Congratulations!"); //PogChamp?
+        sendChatMessage("The Winner is " + user + ". Congratulations!");
     }
 
-    public void announceNoWinner() {
-        sendChatMessage("There is no Winner!! Next time :)"); //PogChamp?
+    public void announceNoWinner()
+    {
+        sendChatMessage("There is no Winner!! Next time :)");
     }
-
     @Override
     public void announceGiverNotAccepted(String user) {
         sendChatMessage( user + " did not accept his offer to explain the word. New Registration phase!");
