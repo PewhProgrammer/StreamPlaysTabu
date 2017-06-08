@@ -1,12 +1,9 @@
 package logic.commands;
 
 import common.Log;
-import logic.GameControl;
 import model.GameModel;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -55,7 +52,8 @@ public class Validate extends Command {
         }
 
         Log.trace("Received Validation: " + reference);
-        gameModel.getNeo4jWrapper().validateExplainAndTaboo(reference, s, score * 2 - 4);
+        //TODO what kind of validation?
+        //gameModel.getNeo4jWrapper().validateConnection(reference, s, score * 2 - 4);
     }
 
     @Override

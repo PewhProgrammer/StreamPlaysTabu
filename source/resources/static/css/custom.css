@@ -332,6 +332,11 @@ Leaderboard
     font-family: "Helvetica Neue";
 }
 
+.leaderboard ol li::before {
+    width: 30px;
+    left: 10px;
+}
+
 @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
 fieldset,
 label {

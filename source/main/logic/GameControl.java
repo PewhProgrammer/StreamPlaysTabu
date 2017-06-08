@@ -224,14 +224,13 @@ public class GameControl extends Observable{
             }catch(NullPointerException n){
                 try {
 
-                    //Log.trace("No commands to be processed. sleeping...");
+                    //Log.db("No commands to be processed. sleeping...");
                     Thread.sleep(1500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             } catch(Exception e) {
                 e.printStackTrace();
-                break;
             }
         }
     }

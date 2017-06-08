@@ -8,13 +8,22 @@ var templateId = 0;
 var tempString = "";
 var templateLayer = 0;
 var timer;
+var tempUsage = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
 
 $(function () {
     $("form").on('submit', function (e) {
         e.preventDefault();
     });
     $("#pw").click(function () {
-        onPassword();
+
+        pw_cmp = getParameterByName('pw');
+        console.log(pw_cmp);
+        if (pw_cmp === "root") {
+
+            onCategoryChosen(document.getElementById("category1").innerHTML);
+            showGame();
+        } else
+            onPassword();
     });
     $("#category").click(function () {
         onCategoryChosen();
@@ -30,19 +39,10 @@ $(function () {
     });
 });
 
-var express = require('express'),
-    app = express(),
-    server = require('http').createServer(app),
-    io = require('socket.io').listen(server),
-    conf = require('./config.json');
-
-server.listen(conf.port);
-
 
 app.get('/', function (req, res) {
     var n = req.param('pw');
     pw = n;
-    console.log("set pw externally");
 });
 
 // Update the count down every 1 second
@@ -77,7 +77,6 @@ function onGiverJoined() {
 }
 
 function chosenCat1() {
-    showGame();
     loadingIndicator();
     onCategoryChosen(document.getElementById("category1").innerHTML);
 }
@@ -113,8 +112,6 @@ function onCategoryChosen(category) {
     console.log('<< SEND explanation: ' + 'The word to be explained is from the category ' + category);
     sendExplanation(createExplanationEvent('The word to be explained is from the category ' + category));
 }
-
-var tempUsage = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
 
 function onExplanation() {
     if (tempUsage[templateId] === 0) {
@@ -155,13 +152,11 @@ function onExplanation() {
         console.log("Sent explanation: " + result);
         if (activeField == "templates") {
             sendExplanation(createExplanationEvent(result));
-        } else {
-            if (activeQuestion > 1) {
-                sendAnswer(createAnswerEvent(result));
-                questions[activeQuestion] = null;
-                refreshQuestions();
-                activeQuestion = -1;
-            }
+        } else if (activeQuestion > 1) {
+            sendAnswer(createAnswerEvent(result));
+            questions[activeQuestion] = null;
+            refreshQuestions();
+            activeQuestion = -1;
         }
     }
 
@@ -229,7 +224,6 @@ function createExplanationEvent(exp) {
 }
 
 function createAnswerEvent(answer) {
-
     var q = questions[activeQuestion];
     var a = answer;
     return JSON.stringify({
@@ -239,11 +233,7 @@ function createAnswerEvent(answer) {
     });
 }
 
-
-
 function createPasswordEvent() {
-    console.debug("password set");
-
     pw_cmp = getParameterByName('pw');
     if (pw_cmp.length === 5 && pw_cmp.substring(5) === "") {
         pw_cmp = pw_cmp.substring(0, 4);
@@ -291,7 +281,7 @@ function showCategories() {
         top: "-=2%"
     }, 800);
 
-    $("#category1").delay(400).fadeIn();
+    $("#category1").delay(400).fadeIn("slow");
     $("#category3").delay(600).fadeIn("slow");
     $("#category5").delay(800).fadeIn("slow");
     $("#category4").delay(1000).fadeIn("slow");
@@ -423,13 +413,31 @@ function handleTemplateDropDownDouble(description, description2, id) {
 function handleStars(id, count) {
     console.log("id: " + id + " , count: " + count);
     var label = "";
-    if (id === 1) label = "one";
-    if (id === 2) label = "two";
-    if (id === 3) label = "three";
+    if (id === 1) {
+        label = "one";
+        document.getElementById("val1").style.visibility = "hidden";
+        document.getElementById("val1").style.zIndex = "-2";
+        document.getElementById("val3").style.zIndex = "-1";
+        document.getElementById("val2").style.zIndex = "0";
+        document.getElementById("val2").style.visibility = "visible";
+        document.getElementById("valHeader").innerHTML = "You gained +10 seconds extra time!";
+    }
+    if (id === 2) {
+        label = "two";
+        document.getElementById("val2").style.visibility = "hidden";
+        document.getElementById("val1").style.zIndex = "-1";
+        document.getElementById("val3").style.zIndex = "0";
+        document.getElementById("val2").style.zIndex = "-2";
+        document.getElementById("val3").style.visibility = "visible";
+        document.getElementById("valHeader").innerHTML = "You gained +20 seconds extra time!";
+    }
+    if (id === 3) {
+        label = "three";
+        document.getElementById("val3").style.visibility = "hidden";
+        document.getElementById("valHeader").innerHTML = "You gained +30 seconds extra time!";
+    }
     var cat = document.getElementById('validationCategoryLabel_' + label).textContent;
     var taboo = document.getElementById('validationTabooLabel_' + label).textContent;
-    document.getElementById('validationCategoryLabel_' + label).textContent = "Thanks a lot!";
-    document.getElementById('validationTabooLabel_' + label).textContent = "You've gained 20s more!";
     document.getElementById('stars_' + label).style.display = 'none';
     timeLeft += 10;
     timeMax += 10;

@@ -5,8 +5,9 @@ import common.Log;
 import common.database.Neo4jWrapper;
 import common.Util;
 import gui.webinterface.containers.StreamRankingContainer;
-import junit.framework.TestCase;
-import model.Language;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 import org.neo4j.driver.v1.exceptions.ServiceUnavailableException;
 
 import java.io.BufferedReader;
@@ -17,46 +18,45 @@ import java.util.*;
 /**
  * Created by Thinh-Laptop on 16.04.2017.
  */
-public class Neo4jWrapperTest extends TestCase {
+public class Neo4jWrapperTest {
 
-    private final short players = 2 ;
-    private boolean simulation = true;
-    private String neo4jbindAddr = "localhost:7687";
-    private final Language language = Language.Ger;
     private Neo4jWrapper database ;
-    private final String label = "Node";
     private final int RATING_TRESHOLD = 3 ; // How many rating to validate a connection
     private final Random randomizer = new Random(new Date().getTime());
     private static final String FILENAME = "database_config.txt";
     private final String channelName = "streamplaystaboo";
 
+    @Before
     @org.junit.Test
     public void setUp() throws Exception {
         int seed = randomizer.nextInt(100);
-        database = new Neo4jWrapper(simulation,neo4jbindAddr,seed);
-        database.resetRelationships();
-        database.resetDatabase();
-        Log.setLevel(Log.Level.TRACE);
+        database = new Neo4jWrapper(true, "localhost:7687",seed);
+        //database.resetRelationships();
+        //database.resetDatabase();
+        Log.setLevel(Log.Level.INFO);
     }
 
+    @Test
     public void testDoReset(){
 
     }
 
+    @Test
     public void testCreateNode(){
         try {
             database.createNode("Nautilus",true);
             database.createNode("Nautilus",true);
-            fail();
+            Assert.fail();
         }
         catch(ServiceUnavailableException | DatabaseException e){
-            Log.trace(e.getMessage());
+            Log.db(e.getMessage());
         }
     }
 
 
-    public void testCreateUser(){
-        String[] usr = {"John","Mike","Berta","Joseph","Genital"};
+    @Test
+    public void createMultipleUser(){
+        String[] usr = {"John","John","Berta","Joseph","Genital"};
         String ch = "streamplaystaboo";
         try {
             database.createUser(usr[0],ch);
@@ -64,14 +64,13 @@ public class Neo4jWrapperTest extends TestCase {
             database.createUser(usr[2],ch);
             database.createUser(usr[3],ch);
             database.createUser(usr[4],ch);
-
-            fail();
         }
         catch(ServiceUnavailableException e){
-            Log.trace(e.getMessage());
+            Log.db(e.getMessage());
         }
     }
 
+    @Test
     public void testResetDatabase(){
         try {
             database.createNode("Nautilus",true);
@@ -80,77 +79,64 @@ public class Neo4jWrapperTest extends TestCase {
         }
         catch(ServiceUnavailableException | DatabaseException e){
             Log.info(e.getMessage());
-            fail();
+            Assert.fail();
         }
     }
 
+    @Test
     public void testLookUpNode(){
-        assertEquals("Should not find the Node!"
-                ,false,
-                database.lookUpNode("Maokai",label,channelName));
+        String label = "Node";
+        Assert.assertEquals("Should not find the Node!"
+                , false,
+                database.lookUpNode("Maokai", label, channelName));
         try {
             database.createNode("Maokai",true);
             database.createNode("nau tilus",true);
         }catch(DatabaseException e){
             e.getMessage();
-            fail();
+            Assert.fail();
         }
-        assertEquals("lookUp could not find the node!"
-                ,true,
-                database.lookUpNode("Maokai",label,channelName));
+        Assert.assertEquals("lookUp could not find the node!"
+                , true,
+                database.lookUpNode("Maokai", label, channelName));
 
         //lookup with whitespaces
-        assertEquals("lookUp could not find the node!"
-                ,true,
-                database.lookUpNode("Nautilus",label,channelName));
+        Assert.assertEquals("lookUp could not find the node!"
+                , true,
+                database.lookUpNode("Nautilus", label, channelName));
 
         String userLabel = "userNode";
         //lookup with whitespaces
         String test = "Manuel";
-        assertEquals("lookUp could find the node " + test +"!",false,
-                database.lookUpNode(test,userLabel,channelName));
+        Assert.assertEquals("lookUp could find the node " + test + "!", false,
+                database.lookUpNode(test, userLabel, channelName));
 
     }
 
-    public void testValidateForGiver(){
-
-        try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
-
-            String sCurrentLine = br.readLine();
-            sCurrentLine = br.readLine();
-
-            while (!sCurrentLine.startsWith("CreateNodesAndRelationships:")) {
-                try {
-                    database.createNode(sCurrentLine, true);
-                } catch (DatabaseException e) {
-                    Log.trace(e.getMessage());
-                    fail();
-                }
-                sCurrentLine = br.readLine();
-            }
-            sCurrentLine = br.readLine();
-            while (sCurrentLine != null) {
-                String[] parts = sCurrentLine.split(";");
-                database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true);
-                sCurrentLine = br.readLine();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        ArrayList<ArrayList<String>> k = database.getTabooWordsForValidationForGiver();
-        Log.info(k.toString());
+    @Test
+    public void validate(){
+        int score = 5 ;
+        database.setSimulation(false);
+        ArrayList<Neo4jWrapper.Pair> validation = database.getValidationForGiver();
+        database.validateNode(validation.get(0).getFirst().toString(),score);
+        database.validateConnectionTaboo(validation.get(1).getFirst().toString()
+                ,validation.get(1).getSecond().toString(),score);
+        database.validateConnectionCategory(validation.get(2).getFirst().toString()
+                ,validation.get(2).getSecond().toString(),score);
+        //database.validateConnection();
     }
 
+    @Test
+    public void createQuestion(){
+        database.createQuestion("sivir","is it blue?","no");
+    }
 
-
+    @Test
     public void testCreateRelationship(){
-        assertEquals("No such relationship could be created!"
-                ,true,
-                database.insertNodesAndRelationshipIntoOntology("Nautilus","Hallo",true,
-                        "IS",false));
+        Assert.assertEquals("No such relationship could be created!"
+                , true,
+                database.insertNodesAndRelationshipIntoOntology("Nautilus", "Hallo", true,
+                        "IS", false));
         //test increase of rating And false flag override
         database.insertNodesAndRelationshipIntoOntology("Nautilus","Hallo",true,
                 "IS RELATED TO",false);
@@ -160,33 +146,37 @@ public class Neo4jWrapperTest extends TestCase {
                 "IS NOT RELATED TO",false);
     }
 
+    @Test
     public void testClearRelationships(){
-        assertEquals("No such relationshio could be created!"
-                ,true,
-                database.insertNodesAndRelationshipIntoOntology("Nautilus","Nautilus",true,
-                        "RATING",true));
-        assertEquals("Something went wrong when clearing the ratings!"
-                ,true,
+        Assert.assertEquals("No such relationshio could be created!"
+                , true,
+                database.insertNodesAndRelationshipIntoOntology("Nautilus", "Nautilus", true,
+                        "RATING", true));
+        Assert.assertEquals("Something went wrong when clearing the ratings!"
+                , true,
                 database.clearFailedRelationships());
     }
 
+    @Test
     public void testGetUserPoints(){
         String user ="John";
         database.createUser(user,channelName);
 
-        assertEquals("Points were incorrect!",
-                0,database.getUserPoints(user,channelName));
-        assertEquals("Points were incorrect!",
-                200,database.updateUserPoints(user,200,channelName));
-        assertEquals("Points were incorrect!",
-                200,database.getUserPoints(user,channelName));
+        Assert.assertEquals("Points were incorrect!",
+                0, database.getUserPoints(user, channelName));
+        Assert.assertEquals("Points were incorrect!",
+                200, database.updateUserPoints(user, 200, channelName));
+        Assert.assertEquals("Points were incorrect!",
+                200, database.getUserPoints(user, channelName));
     }
 
+    @Test
     public void testGetUserRankings(){
         LinkedHashMap<String,Integer> list = database.getHighScoreList(3,channelName);
         Log.info(list.toString());
     }
 
+    @Test
     public void testGetStreamRankings(){
         database.createUser("John","streamplaystaboo");
         database.createUser("John","realwasabimc");
@@ -203,16 +193,18 @@ public class Neo4jWrapperTest extends TestCase {
         System.out.println(sh);
     }
 
+    @Test
     public void testGetUserErrors(){
         String user ="Manuel";
         database.createUser(user,channelName);
 
-        assertEquals("Points were incorrect!",
-                0,database.getUserError(user,channelName));
-        assertEquals("Points were incorrect!",
-                1,database.increaseUserError(user,channelName));
+        Assert.assertEquals("Points were incorrect!",
+                0, database.getUserError(user, channelName));
+        Assert.assertEquals("Points were incorrect!",
+                1, database.increaseUserError(user, channelName));
     }
 
+    @Test
     public void testVoteKicked(){
         String user ="Manuel";
         database.setUserErrorTimeStamp("Manuel",new Date());
@@ -221,6 +213,7 @@ public class Neo4jWrapperTest extends TestCase {
 
     }
 
+    @Test
     public void testGetExplainWord(){
         String explain = "";
         String category = "simulation";
@@ -229,36 +222,37 @@ public class Neo4jWrapperTest extends TestCase {
         //test taboo word as explain word
         try {
             database.createNode("nautilus",false);
-            assertEquals("Should not retrieve an explain word!","",database.getExplainWord(category,usedWords));
+            Assert.assertEquals("Should not retrieve an explain word!", "", database.getExplainWord(category, usedWords));
         }catch(DatabaseException e){
-            Log.trace(e.getMessage());
+            Log.db(e.getMessage());
         }
 
         //test category as explain word
         try {
             database.createNode("maokai",false);
             database.setCategory("maokai");
-            assertEquals("Should retrieve an explain word!","maokai",database.getExplainWord(category,usedWords));
+            Assert.assertEquals("Should retrieve an explain word!", "maokai", database.getExplainWord(category, usedWords));
             usedWords.add("maokai");
             database.getExplainWord(category,usedWords);
-            fail();
+            Assert.fail();
         }catch(DatabaseException e){
-            Log.trace(e.getMessage());
+            Log.db(e.getMessage());
         }
 
         //Test among all nodes
         try {
             database.createNode("alistar",true);
-            assertEquals("Should retrieve an explain word!","alistar",database.getExplainWord(category,usedWords));
+            Assert.assertEquals("Should retrieve an explain word!", "alistar", database.getExplainWord(category, usedWords));
             usedWords.add("alistar");
             database.getExplainWord(category,usedWords);
-            fail();
+            Assert.fail();
         }catch(DatabaseException e){
-            Log.trace(e.getMessage());
+            Log.db(e.getMessage());
         }
 
     }
 
+    @Test
     public void testExplainWordRandomizer(){
         String category = "simulation";
         Set<String> usedWords = new HashSet<>();
@@ -271,11 +265,14 @@ public class Neo4jWrapperTest extends TestCase {
             database.createNode("Yorick",true);
             database.getExplainWord(category,usedWords);
         }catch(DatabaseException e){
-            Log.trace(e.getMessage());
+            Log.db(e.getMessage());
         }
     }
 
+    @Test
     public void testSetCategory(){
+        database.resetDatabase();
+        database.resetRelationships();
         //watch database for type:category
 
         String category = "League of Legends";
@@ -295,12 +292,14 @@ public class Neo4jWrapperTest extends TestCase {
         database.insertNodesAndRelationshipIntoOntology(explain[2],category,true,relation1,true);
     }
 
+    @Test
     public void testReliableChange(){
         //Test if reliableflag changes with more than three entries
 
 
     }
 
+    @Test
     public void testGetCategories(){
 
         String[] explain = {"alistar","maokai","nautilus"};
@@ -318,15 +317,17 @@ public class Neo4jWrapperTest extends TestCase {
         database.setCategory(explain[2]);
 
         Set<String> result = database.getCategories(10);
-        assertTrue("given Categories are in size not equal 3" , result.size() == 3);
+        Assert.assertTrue("given Categories are in size not equal 3", result.size() == 3);
     }
 
+    @Test
     public void testGetTabooWords(){
 
         String explain = "Mario";
         String relation1 = "It appears in ";
         Set<String> result = new HashSet<>();
         int i = 3 ;
+        database.setSimulation(true);
 
         database.insertNodesAndRelationshipIntoOntology("Peach",explain,true,relation1,true);
         database.insertNodesAndRelationshipIntoOntology("Peach",explain,true,relation1,true);
@@ -337,23 +338,13 @@ public class Neo4jWrapperTest extends TestCase {
         database.insertNodesAndRelationshipIntoOntology("Toad",explain,true,relation1,true);
         database.insertNodesAndRelationshipIntoOntology("Toad",explain,true,relation1,true);
 
-        result = database.getTabooWords(explain,i); //fetch three words
+        result = database.getTabooWords(explain,"",i); //fetch three words
         for(String r:result){
-            assertFalse(r.equals("Bowser")); //Bowser only got one rating therefore is not
-            //included
+            Assert.assertFalse(r.equals("bowser"));
         }
     }
 
-    public void testValidateExplainTaboo(){
-        String explain = "league of legends";
-        String taboo = "alistar";
-
-        database.insertNodesAndRelationshipIntoOntology(taboo,explain,true,"is used for taboo",true);
-        database.insertNodesAndRelationshipIntoOntology(taboo,explain,true,"has no meaning whatsoever",true);
-
-        database.validateExplainAndTaboo(explain,taboo,2);
-    }
-
+    @Test
     public void testGetUserTimeoutStamp(){
         database.createUser("John","streamplaystaboo");
         database.setUserErrorTimeStamp("John",new Date());
@@ -362,6 +353,7 @@ public class Neo4jWrapperTest extends TestCase {
         Log.info(result.toString());
     }
 
+    @Test
     public void testOntology(){
 
         String explainWord = "Mario";
@@ -391,29 +383,38 @@ public class Neo4jWrapperTest extends TestCase {
 
     }
 
+    @Test
     public void testSetUpNodes() {
+        database.resetRelationships();
+        database.resetDatabase();
 
         try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
 
             String sCurrentLine = br.readLine();
             sCurrentLine = br.readLine();
 
+            int i = 0 ;
             while (!sCurrentLine.startsWith("CreateNodesAndRelationships:")) {
                 try {
                     database.createNode(sCurrentLine, true);
+                    i++;
+                    if(i == 5) database.setSimulation(false);
                 } catch (DatabaseException e) {
-                    Log.trace(e.getMessage());
+                    Log.db(e.getMessage());
                     //fail();
                 }
                 sCurrentLine = br.readLine();
             }
             sCurrentLine = br.readLine();
+            database.setSimulation(true);
             while (sCurrentLine != null) {
                 String[] parts = sCurrentLine.split(";");
                 try {
+                    i++;
+                    if(i == 15) database.setSimulation(true);
                     database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true);
                 }catch (ArrayIndexOutOfBoundsException e){
-                    Log.trace("Wrong Formatting: "+ parts.toString());
+                    Log.db("Wrong Formatting: "+ parts.toString());
                 }
                 sCurrentLine = br.readLine();
             }

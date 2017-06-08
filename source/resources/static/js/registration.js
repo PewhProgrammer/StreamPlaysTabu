@@ -10,12 +10,9 @@ var x = setInterval(function() {
 }
 
     if (timeLeft == 0) {
-    document.getElementById("progressbar").style.color = 'black';
-     document.getElementById("progressbar").innerHTML = "";
-        document.getElementById("statusInfo").style.fontWeight = 'bold';
-        document.getElementById("statusInfo").style.fontSize = 'x-large';
-        document.getElementById("statusInfo").style.color = 'white';
-        document.getElementById("statusInfo").innerHTML = "The next registered user will become the giver!";
+        document.getElementById("progressbar").innerHTML = "Waiting...";
+        document.getElementById("progressbar").style.width = "100%";
+        document.getElementById("statusInfo").innerHTML = "Next User to register will become the giver!";
     }
 }, 1000);
 
@@ -81,7 +78,7 @@ function updateValidation(validation) {
     var json = JSON.parse(validation.body);
     var string = "<big>" + json.reference + "</big>" + "<br><small>";
     if (json.taboo1 != "") {
-        string = string + "<ul><li>" + json.taboo1 + "</li>"
+        string = string + "<ol><li>" + json.taboo1 + "</li>"
     }
     if (json.taboo2 != "") {
         string = string + "<li>" + json.taboo2 + "</li>"
@@ -93,7 +90,7 @@ function updateValidation(validation) {
         string = string + "<li>" + json.taboo4 + "</li>"
     }
     if (json.taboo5 != "") {
-        string = string + "<li>" + json.taboo5 + "</li></ul></small>"
+        string = string + "<li>" + json.taboo5 + "</li></ol></small>"
     }
 
     document.getElementById("validateText").innerHTML = string;

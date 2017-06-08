@@ -24,8 +24,7 @@
             <h1 class="form-signin-heading" style="text-align: center">StreamPlaysTaboo</h1>
             <h2 class="form-signin-heading" style="text-align: center; margin-bottom: 50px;">You are the giver!</h2>
 
-
-            <button class="btn btn-lg btn-primary btn-block btn-danger" onclick="showCategories()" type="submit" id="pw">Start round!</button>
+            <button class="btn btn-lg btn-primary btn-block btn-danger" type="submit" id="pw">Start round!</button>
         </form>
     </div>
     <div id="categories">
@@ -67,7 +66,7 @@
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_size" onclick="handleTemplateDropDownDouble('The size of its','is',2)">Size</button>
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_shape" onclick="handleTemplateDropDownDouble('The shape of its','is',3)">Shape</button>
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_clothing" onclick="handleTemplateDropDown('It wears',4)">Clothing</button>
-                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_property" onclick="handleTemplateDropDown('It has a/an',5)">Property</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_property" onclick="handleTemplateDropDown('It has',5)">Property</button>
                     <button class="btn btn-lg btn-primary btn-block btn-warning" style="position: absolute; bottom: 20%; right: 2%; width: 10%" type="submit" onclick=handleTemplateLayerPrevious(2)>Back</button>
                 </div>
 
@@ -79,13 +78,13 @@
 
                 <div id="template_layer4" style="display:none;">
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_appearance" onclick="handleTemplateDropDown('It appears in',8)">Appearance</button>
-                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15%" type="submit" id="template_part" onclick="handleTemplateDropDown('It is part of a/an',9)">Part</button>
-                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_requirement" onclick="handleTemplateDropDown('It requires a/an',10)">Requirement</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15%" type="submit" id="template_part" onclick="handleTemplateDropDown('It is part of',9)">Part</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_requirement" onclick="handleTemplateDropDown('It requires',10)">Requirement</button>
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_ability" onclick="handleTemplateDropDown('It has the ability to',11)">Ability</button>
 
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 50%; right: 75%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_known" onclick="handleTemplateDropDown2('It is known for','it is known as',12)">Known</button>
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 50%; right: 55%; width: 15%;height:15%" type="submit" id="template_receive" onclick="handleTemplateDropDown('It can be received from',13)">Receive</button>
-                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 50%; right: 35%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_work" onclick="handleTemplateDropDown('It works as a/an',14)">Work</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 50%; right: 35%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_work" onclick="handleTemplateDropDown('It works as',14)">Work</button>
                     <button class="btn btn-lg btn-primary btn-block btn-primary" onclick="handleTemplateDropDown('Its character is',15)" style="position: absolute; bottom: 50%; right: 15%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_character">Character</button>
 
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 75%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_typically" onclick="handleTemplateDropDownMultiple('It is typically in','It is typically near','It is typically on',16)">Typically</button>
@@ -139,7 +138,7 @@
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 2%; right: 2%; width: 10%" type="submit" id="explanation">Send</button>
                 </div>
             </div>
-            <div id="endGameDiv" style="height:73%; width:98%; font-size: 6vmin; text-align: center; position:absolute; top: 25%; z-index: 0"></div>
+            <div id="endGameDiv" style="height:73%; width:98%; font-size: 6vmin; text-align: center; position:absolute; top: 25%; z-index: 0; visibility: hidden;"></div>
         </div>
 
         <div id="tabooCard" class="background">
@@ -152,56 +151,60 @@
             <button class="btn btn-lg btn-primary btn-block btn-warning" type="submit" id="skip">Skip word</button>
         </div>
 
+        <div id="chat" class="scrollable background">
+            Chat:
+        </div>
+
         <div id="validateDiv" class="background">
-            <ul class="nav nav-tabs" style="height: 25%">
-                <li class="active"><a data-toggle="tab" href="#chat" style="padding: 1vmin 10px;">Chat</a></li>
-                <li><a data-toggle="tab" href="#validate" style="padding: 1vmin 10px;">Gain extra time</a></li>
-            </ul>
-            <div class="tab-content" style="height: 75%;">
-                <div id="chat" class="tab-pane fade in active scrollable"></div>
-                <div id="validate" class="tab-pane fade">
-                    <h6 style="font-size: 1.5vmin;">Do these taboo words fit to the category? Help us rate them and gain extra Time!</h6>
-                    <div class="panel panel-primary" style="width:25%;border-radius: 10px; position: absolute; left: 6%; top: 46%;">
-                        <div id="validate_category_1" class="panel-heading" style="text-align: center; font-size: 2vmin;padding:0.5%;"><label id="validationCategoryLabel_one"></label></div>
-                        <div id="validate_taboo_1" class="panel-body" style="text-align: center;color:#000000; font-size: 2vmin;padding:1%">
-                            <div></div>
-                            <label id="validationTabooLabel_one" style="margin-top: 5%;"></label>
-                            <div class="rate-container" id="stars_one">
-                                <i class="fa fa-star" onclick="handleStars(1,5)"></i>
-                                <i class="fa fa-star" onclick="handleStars(1,4)"></i>
-                                <i class="fa fa-star" onclick="handleStars(1,3)"></i>
-                                <i class="fa fa-star" onclick="handleStars(1,2)"></i>
-                                <i class="fa fa-star" onclick="handleStars(1,1)"></i>
-                            </div>
+            <div id="validate" style="height: 100%; width: 100%; position: absolute;">
+                <h6 id="valHeader" style="font-size: 1.5vmin;">Does this taboo word fit to its category? Help us rate it and gain extra Time!</h6>
+                <div class="panel panel-primary" id="val1" style="width:40%;border-radius: 10px; position: absolute; left: 30%; top: 30%; z-index: 0">
+                    <div id="validate_category_1" class="panel-heading" style="text-align: center; font-size: 2vmin;padding:0.5%;">
+                        <label id="validationCategoryLabel_one"></label>
+                    </div>
+                    <div id="validate_taboo_1" class="panel-body" style="text-align: center;color:#000000; font-size: 2vmin;padding:1%; height: 50%;">
+                        <p></p>
+                        <label id="validationTabooLabel_one"></label>
+                        <p><br></p>
+                        <div class="rate-container" id="stars_one">
+                            <i class="fa fa-star" style="left: 67.5%; bottom: 5%;" onclick="handleStars(1,5)"></i>
+                            <i class="fa fa-star" style="left: 57.5%; bottom: 5%;" onclick="handleStars(1,4)"></i>
+                            <i class="fa fa-star" style="left: 47.5%; bottom: 5%;" onclick="handleStars(1,3)"></i>
+                            <i class="fa fa-star" style="left: 37.5%; bottom: 5%;" onclick="handleStars(1,2)"></i>
+                            <i class="fa fa-star" style="left: 27.5%; bottom: 5%;" onclick="handleStars(1,1)"></i>
                         </div>
                     </div>
-                    <div class="panel panel-primary" style="width:25%;border-radius: 10px; position: absolute; left: 37.5%; top: 46%;">
-                        <div id="validate_category_1" class="panel-heading" style="text-align: center; font-size: 2vmin; padding:0.5%;">
-                            <label id="validationCategoryLabel_two"></label>
-                        </div>
-                        <div id="validate_taboo_1" class="panel-body" style="text-align: center;color:#000000; font-size: 2vmin;padding:1%">
-                            <label id="validationTabooLabel_two" style="margin-top: 5%;"></label>
-                            <div class="rate-container" id="stars_two">
-                                <i class="fa fa-star" onclick="handleStars(2,5)"></i>
-                                <i class="fa fa-star" onclick="handleStars(2,4)"></i>
-                                <i class="fa fa-star" onclick="handleStars(2,3)"></i>
-                                <i class="fa fa-star" onclick="handleStars(2,2)"></i>
-                                <i class="fa fa-star" onclick="handleStars(2,1)"></i>
-                            </div>
+                </div>
+                <div class="panel panel-primary" id="val2" style="width:40%;border-radius: 10px; position: absolute; left: 30%; top: 30%; z-index: -1; visibility: hidden;">
+                    <div id="validate_category_1" class="panel-heading" style="text-align: center; font-size: 2vmin; padding:0.5%;">
+                        <label id="validationCategoryLabel_two"></label>
+                    </div>
+                    <div id="validate_taboo_1" class="panel-body" style="text-align: center;color:#000000; font-size: 2vmin;padding:1%">
+                        <p></p>
+                        <label id="validationTabooLabel_two"></label>
+                        <p><br></p>
+                        <div class="rate-container" id="stars_two">
+                            <i class="fa fa-star" style="left: 67.5%; bottom: 5%;" onclick="handleStars(2,5)"></i>
+                            <i class="fa fa-star" style="left: 57.5%; bottom: 5%;" onclick="handleStars(2,4)"></i>
+                            <i class="fa fa-star" style="left: 47.5%; bottom: 5%;" onclick="handleStars(2,3)"></i>
+                            <i class="fa fa-star" style="left: 37.5%; bottom: 5%;" onclick="handleStars(2,2)"></i>
+                            <i class="fa fa-star" style="left: 27.5%; bottom: 5%;" onclick="handleStars(2,1)"></i>
                         </div>
                     </div>
-                    <div class="panel panel-primary" style="width:25%;border-radius: 10px;position: absolute; right: 6%; top: 46%;">
-                        <div id="validate_category_1" class="panel-heading" style="text-align: center; font-size: 2vmin; padding:0.5%;">
-                            <label id="validationCategoryLabel_three"></label></div>
-                        <div id="validate_taboo_1" class="panel-body" style="text-align: center;color:#000000; font-size: 2vmin;padding:1%">
-                            <label id="validationTabooLabel_three" style="margin-top: 5%;"></label>
-                            <div class="rate-container" id="stars_three">
-                                <i class="fa fa-star" onclick="handleStars(3,5)"></i>
-                                <i class="fa fa-star" onclick="handleStars(3,4)"></i>
-                                <i class="fa fa-star" onclick="handleStars(3,3)"></i>
-                                <i class="fa fa-star" onclick="handleStars(3,2)"></i>
-                                <i class="fa fa-star" onclick="handleStars(3,1)"></i>
-                            </div>
+                </div>
+                <div class="panel panel-primary" id="val3" style="width:40%;border-radius: 10px; position: absolute; left: 30%; top: 30%; z-index: -2; visibility: hidden;">
+                    <div id="validate_category_1" class="panel-heading" style="text-align: center; font-size: 2vmin; padding:0.5%;">
+                        <label id="validationCategoryLabel_three"></label></div>
+                    <div id="validate_taboo_1" class="panel-body" style="text-align: center;color:#000000; font-size: 2vmin;padding:1%">
+                        <p></p>
+                        <label id="validationTabooLabel_three"></label>
+                        <p><br></p>
+                        <div class="rate-container" id="stars_three">
+                            <i class="fa fa-star" style="left: 67.5%; bottom: 5%;" onclick="handleStars(3,5)"></i>
+                            <i class="fa fa-star" style="left: 57.5%; bottom: 5%;" onclick="handleStars(3,4)"></i>
+                            <i class="fa fa-star" style="left: 47.5%; bottom: 5%;" onclick="handleStars(3,3)"></i>
+                            <i class="fa fa-star" style="left: 37.5%; bottom: 5%;" onclick="handleStars(3,2)"></i>
+                            <i class="fa fa-star" style="left: 27.5%; bottom: 5%;" onclick="handleStars(3,1)"></i>
                         </div>
                     </div>
                 </div>
@@ -216,9 +219,8 @@
         <div id="guessesDiv" class="background">
             <p>Most recent guesses:</p>
             <p id="firstGuess" style="left:1%"></p>
-            <p id="secondGuess" style="left:26%;"></p>
-            <p id="thirdGuess" style="left:51%;"></p>
-            <p id="fourthGuess" style="left:76%;"></p>
+            <p id="secondGuess" style="left:34%;"></p>
+            <p id="thirdGuess" style="left:67%; border-right: hidden;"></p>
         </div>
     </div>
 

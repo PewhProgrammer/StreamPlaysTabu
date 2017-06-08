@@ -46,31 +46,24 @@ function showGuesses(guesses) {
     console.log('>> Received guesses: ' + guesses);
 
     if (json.guess1 != "") {
-        if (json.guess5 != "") {
-            document.getElementById("firstGuess").innerHTML = json.guess1 + "<br><br>" + json.guess5;
+        if (json.guess4 != "") {
+            document.getElementById("firstGuess").innerHTML = json.guess1 + "<br><br>" + json.guess4;
         } else {
             document.getElementById("firstGuess").innerHTML = json.guess1;
         }
     }
     if (json.guess2 != "") {
-        if (json.guess6 != "") {
-            document.getElementById("secondGuess").innerHTML = json.guess2 + "<br><br>" + json.guess6;
+        if (json.guess5 != "") {
+            document.getElementById("secondGuess").innerHTML = json.guess2 + "<br><br>" + json.guess5;
         } else {
             document.getElementById("secondGuess").innerHTML = json.guess2;
         }
     }
     if (json.guess3 != "") {
-        if (json.guess7 != "") {
-            document.getElementById("thirdGuess").innerHTML = json.guess3 + "<br><br>" + json.guess7;
+        if (json.guess6 != "") {
+            document.getElementById("thirdGuess").innerHTML = json.guess3 + "<br><br>" + json.guess6;
         } else {
             document.getElementById("thirdGuess").innerHTML = json.guess3;
-        }
-    }
-    if (json.guess4 != "") {
-        if (json.guess8 != "") {
-            document.getElementById("fourthGuess").innerHTML = json.guess4 + "<br><br>" + json.guess8;
-        } else {
-            document.getElementById("fourthGuess").innerHTML = json.guess4;
         }
     }
 }
@@ -112,6 +105,11 @@ function showTabooWords(tabooWords) {
 function sendExplanation(explanation) {
     console.log('<< Send explanation.');
     sendToServer('/sendExplanation', explanation);
+    document.getElementById("templatesDiv").innerHTML = document.getElementById("templatesDiv").innerHTML
+        + "<div id='successfullySendPanel' class='panel panel-success' style='position: absolute; top: 47.5%; width: 75%; left: 12.5%; z-index: 5; display: none'><div class='panel-heading' style='text-align: center'>Explanation successfully sent!</div></div>";
+    $("#successfullySendPanel").fadeIn("slow").delay(1000).fadeOut("slow", function() {
+        $(this).remove();
+    });
 }
 
 function showQuestion(question) {
@@ -145,6 +143,11 @@ function chosenQuestion(num, p) {
 function sendAnswer(QandA) {
     console.log('<< Send answer.');
     sendToServer('/sendQandA', QandA);
+    document.getElementById("templatesDiv").innerHTML = document.getElementById("templatesDiv").innerHTML
+        + "<div id='successfullySendPanel' class='panel panel-success' style='position: absolute; top: 47.5%; width: 75%; left: 12.5%; z-index: 5; display: none'><div class='panel-heading' style='text-align: center'>Answer successfully sent!</div></div>";
+    $("#successfullySendPanel").fadeIn("slow").delay(1000).fadeOut("slow", function() {
+        $(this).remove();
+    });
 }
 
 function requestSkip(request) {
@@ -207,6 +210,7 @@ function closeGame(status) {
     document.getElementById("tempDiv").style.visibility = "hidden";
     document.getElementById("tempDiv").style.zIndex = "0";
     document.getElementById("endGameDiv").style.zIndex = "1";
+    document.getElementById("endGameDiv").style.visibility = "visible";
 
     var json = JSON.parse(status);
     if (json.status === "Win") {

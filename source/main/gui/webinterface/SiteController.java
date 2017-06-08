@@ -1,11 +1,11 @@
 package gui.webinterface;
 
 import common.Log;
+import common.database.Neo4jWrapper;
 import gui.webinterface.containers.*;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
-import jdk.nashorn.internal.parser.JSONParser;
 import logic.GameControl;
 import logic.commands.*;
 import model.GameModel;
@@ -140,45 +140,20 @@ public class SiteController implements IObserver {
     }
 
     public void reqValidation() {
-        System.out.println("Received reqValidation.");
+        Log.info("Received Validation Request from Server");
         String[] references = new String[3];
         String[] taboos = new String[3];
 
-        ArrayList<ArrayList<String>>  k = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidationForGiver();
+        ArrayList<Neo4jWrapper.Pair>  k =
+                gm.getNeo4jWrapper().getValidationForGiver();
+
         Collections.shuffle(k);
         int i = 0;
-        for(ArrayList<String> container : k){
-            if(i == 3) break;
-            references[i] = container.get(0);
-            taboos[i] = container.get(1);
+        for(Neo4jWrapper.Pair container : k){
+            references[i] = container.getFirst().toString();
+            taboos[i] = container.getSecond().toString();
             i++;
         }
-
-        /*
-        Map m = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidation(null, 1);
-        Iterator<Map.Entry<String, Set<String>>> it = m.entrySet().iterator();
-        Map.Entry<String, Set<String>> mE = it.next();
-        Iterator<String> itS = mE.getValue().iterator();
-
-        references[0] = mE.getKey();
-        taboos[0] = itS.next();
-
-        m = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidation(null, 1);
-        it = m.entrySet().iterator();
-        mE = it.next();
-        itS = mE.getValue().iterator();
-
-        references[1] = mE.getKey();
-        taboos[1] = itS.next();
-
-        m = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidation(null, 1);
-        it = m.entrySet().iterator();
-        mE = it.next();
-        itS = mE.getValue().iterator();
-
-        references[2] = mE.getKey();
-        taboos[2] = itS.next();*/
-
 
         send("/validation", new GiverValidation(references, taboos).toJSONObject());
     }
@@ -209,7 +184,9 @@ public class SiteController implements IObserver {
 
     public void receiveValidation(String reference, String taboo, int score) {
         Log.info("Received sendValidation");
-        gm.getNeo4jWrapper().validateExplainAndTaboo(reference, taboo, score * 2 - 4);
+        //TODO decide which validation
+
+        //gm.getNeo4jWrapper().validateConnection(reference, taboo, score * 2 - 4);
         //Give user 10 more seconds
         gm.setRoundTime(gm.getRoundTime() + 10);
         gm.notifyUpdateTime();

@@ -19,7 +19,6 @@ app.get('/', function (req, res) {
     }
 });
 
-
 app.use(express.static(__dirname + '/static'));
 
 

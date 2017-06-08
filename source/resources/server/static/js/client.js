@@ -14,8 +14,8 @@ $(document).ready(function () {
         if (pass == pw_cmp.toString()) {
             console.log('Password accepted.');
             pw = pw_cmp;
-            showCategories();
             onGiverJoined();
+            showCategories();
         }
     });
     //depricated use

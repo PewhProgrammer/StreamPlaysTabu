@@ -66,34 +66,65 @@ public class Util {
 
         String newTmp = "";
         String[] userInput;
+        String[] help;
 
         if (tmp.startsWith("The color of its ")){
             newTmp = "The color of its";
-            userInput =tmp.split(" ");
-            return parseTemplate(newTmp, userInput[4], " "+userInput[6]);
+            help = tmp.split("The color of its ");
+            userInput = help[1].split(" is ");
+            if ((userInput[0].equals(" ")) || (userInput[1].equals(" "))){
+                //ERROR
+            }
+            return parseTemplate(newTmp, userInput[0], " "+userInput[1]);
         }
 
         if (tmp.startsWith("The size of its ")){
             newTmp = "The size of its";
-            userInput =tmp.split(" ");
-            return parseTemplate(newTmp, userInput[4], " "+userInput[6]);
+            help = tmp.split("The size of its ");
+            userInput = help[1].split(" is ");
+            if ((userInput[0].equals(" ")) || (userInput[1].equals(" "))){
+                //ERROR
+            }
+            return parseTemplate(newTmp, userInput[0], " "+userInput[1]);
         }
 
         if (tmp.startsWith("The shape of its ")){
             newTmp = "The shape of its";
-            userInput =tmp.split(" ");
-            return parseTemplate(newTmp, userInput[4], " "+userInput[6]);
+            help = tmp.split("The shape of its ");
+            userInput = help[1].split(" is ");
+            if ((userInput[0].equals(" ")) || (userInput[1].equals(" "))){
+                //ERROR
+            }
+            return parseTemplate(newTmp, userInput[0], " "+userInput[1]);
         }
 
         if (tmp.startsWith("It wears a ")){
-            newTmp = "It wears a";
+            newTmp = "It wears";
             userInput =tmp.split("It wears a ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
         if (tmp.startsWith("It wears an ")){
-            newTmp = "It wears an";
+            newTmp = "It wears";
             userInput =tmp.split("It wears an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It wears ")){
+            newTmp = "It wears";
+            userInput =tmp.split("It wears ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is used for a ")){
+            newTmp = "It is used for";
+            userInput =tmp.split("It is used for a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is used for an ")){
+            newTmp = "It is used for";
+            userInput =tmp.split("It is used for an ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -109,9 +140,33 @@ public class Util {
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("It enhances a ")){
+            newTmp = "It enhances";
+            userInput =tmp.split("It enhances a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It enhances an ")){
+            newTmp = "It enhances";
+            userInput =tmp.split("It enhances an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         if (tmp.startsWith("It enhances ")){
             newTmp = "It enhances";
             userInput =tmp.split("It enhances ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It appears in a ")){
+            newTmp = "It appears in";
+            userInput =tmp.split("It appears in a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It appears in an ")){
+            newTmp = "It appears in";
+            userInput =tmp.split("It appears in an ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -122,26 +177,38 @@ public class Util {
         }
 
         if (tmp.startsWith("It is a part of a ")){
-            newTmp = "It is a part of a";
+            newTmp = "It is a part of";
             userInput =tmp.split("It is a part of a ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
         if (tmp.startsWith("It is a part of an ")){
-            newTmp = "It is a part of an";
+            newTmp = "It is a part of";
             userInput =tmp.split("It is a part of an ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("It is a part of ")){
+            newTmp = "It is a part of";
+            userInput =tmp.split("It is a part of ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         if (tmp.startsWith("It requires a ")){
-            newTmp = "It requires a";
+            newTmp = "It requires";
             userInput =tmp.split("It requires a ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
         if (tmp.startsWith("It requires an ")){
-            newTmp = "It requires an";
-            userInput =tmp.split("It requires ann ");
+            newTmp = "It requires";
+            userInput =tmp.split("It requires an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It requires ")){
+            newTmp = "It requires";
+            userInput =tmp.split("It requires ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -151,15 +218,51 @@ public class Util {
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("It is known for a ")){
+            newTmp = "It is known for";
+            userInput =tmp.split("It is known for a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is known for an ")){
+            newTmp = "It is known for";
+            userInput =tmp.split("It is known for an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         if (tmp.startsWith("It is known for ")){
             newTmp = "It is known for";
             userInput =tmp.split("It is known for ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("It is known as a ")){
+            newTmp = "It is known as";
+            userInput =tmp.split("It is known as a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is known as an ")){
+            newTmp = "It is known as";
+            userInput =tmp.split("It is known as an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         if (tmp.startsWith("It is known as ")){
             newTmp = "It is known as";
             userInput =tmp.split("It is known as ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It can be received from a ")){
+            newTmp = "It can be received from";
+            userInput =tmp.split("It can be received from a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It can be received from an ")){
+            newTmp = "It can be received from";
+            userInput =tmp.split("It can be received from an ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -170,14 +273,20 @@ public class Util {
         }
 
         if (tmp.startsWith("It works as a ")){
-            newTmp = "It works as a";
+            newTmp = "It works as";
             userInput =tmp.split("It works as a ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
         if (tmp.startsWith("It works as an ")){
-            newTmp = "It works as an";
+            newTmp = "It works as";
             userInput =tmp.split("It works as an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It works as ")){
+            newTmp = "It works as";
+            userInput =tmp.split("It works as ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -187,9 +296,33 @@ public class Util {
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("Its genre is a ")){
+            newTmp = "Its genre is";
+            userInput =tmp.split("Its genre is a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("Its genre is an ")){
+            newTmp = "Its genre is";
+            userInput =tmp.split("Its genre is an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         if (tmp.startsWith("Its genre is ")){
             newTmp = "Its genre is";
             userInput =tmp.split("Its genre is ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It sets in a ")){
+            newTmp = "It sets in";
+            userInput =tmp.split("It sets in a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It sets in an ")){
+            newTmp = "It sets in";
+            userInput =tmp.split("It sets in an ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -199,9 +332,33 @@ public class Util {
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("It is published by a ")){
+            newTmp = "It is published by";
+            userInput =tmp.split("It is published by a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is published by an ")){
+            newTmp = "It is published by";
+            userInput =tmp.split("It is published by an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         if (tmp.startsWith("It is published by ")){
             newTmp = "It is published by";
             userInput =tmp.split("It is published by ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It was released in a ")){
+            newTmp = "It was released in";
+            userInput =tmp.split("It was released in a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It was released in an ")){
+            newTmp = "It was released in";
+            userInput =tmp.split("It was released in an ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -211,9 +368,33 @@ public class Util {
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("It is typically near a ")){
+            newTmp = "It is typically near";
+            userInput =tmp.split("It is typically near a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is typically near an ")){
+            newTmp = "It is typically near";
+            userInput =tmp.split("It is typically near an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         if (tmp.startsWith("It is typically near ")){
             newTmp = "It is typically near";
             userInput =tmp.split("It is typically near ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is typically on a ")){
+            newTmp = "It is typically on";
+            userInput =tmp.split("It is typically on a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is typically on an ")){
+            newTmp = "It is typically on";
+            userInput =tmp.split("It is typically on an ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -223,15 +404,51 @@ public class Util {
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("It is typically in a ")){
+            newTmp = "It is typically in";
+            userInput =tmp.split("It is typically in a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is typically in an ")){
+            newTmp = "It is typically in";
+            userInput =tmp.split("It is typically in an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         if (tmp.startsWith("It is typically in ")){
             newTmp = "It is typically in";
             userInput =tmp.split("It is typically in ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("It is the opposite of a ")){
+            newTmp = "It is the opposite of";
+            userInput =tmp.split("It is the opposite of a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is the opposite of an ")){
+            newTmp = "It is the opposite of";
+            userInput =tmp.split("It is the opposite of an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         if (tmp.startsWith("It is the opposite of ")){
             newTmp = "It is the opposite of";
             userInput =tmp.split("It is the opposite of ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is related to a ")){
+            newTmp = "It is related to";
+            userInput =tmp.split("It is related to a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is related to an ")){
+            newTmp = "It is related to";
+            userInput =tmp.split("It is related to an ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -242,14 +459,32 @@ public class Util {
         }
 
         if (tmp.startsWith("It has a ")){
-            newTmp = "It has a";
+            newTmp = "It has";
             userInput =tmp.split("It has a ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
         if (tmp.startsWith("It has an ")){
-            newTmp = "It has an";
+            newTmp = "It has";
             userInput =tmp.split("It has an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It has ")){
+            newTmp = "It has";
+            userInput =tmp.split("It has ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is a ")){
+            newTmp = "It is";
+            userInput = tmp.split("It is a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is an ")){
+            newTmp = "It is";
+            userInput = tmp.split("It is an ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -258,13 +493,6 @@ public class Util {
             userInput = tmp.split("It is ");
             return parseTemplate(newTmp, userInput[1], "");
         }
-
-        if (tmp.startsWith("It has ")){
-            newTmp = "It has";
-            userInput = tmp.split("It has ");
-            return parseTemplate(newTmp, userInput[1], "");
-        }
-
 
         return null;
     }
@@ -283,33 +511,25 @@ public class Util {
 
         // The color of its ___ is ___
                 if (tmp.equals("The color of its")) {
-                    return getPair("its color is", userInput, userInput2, "false");
+                    return getPair("has", userInput, userInput2, "false");
                 }
             // The size of its ___ is ___
                 if (tmp.equals("The size of its")) {
-                    return getPair("its size is", userInput, userInput2, "false");
+                    return getPair("has", userInput, userInput2, "false");
                 }
             // The shape of its ___ is ___
                 if (tmp.equals("The shape of its")) {
-                    return getPair("its shape is", userInput, userInput2, "false");
+                    return getPair("has", userInput, userInput2, "false");
                 }
-            // It wears a ___
-                if (tmp.equals("It wears a")) {
-                    return getPair("wears a", userInput, "", "true");
-                }
-            // It wears an ___
-                if (tmp.equals("It wears an")) {
-                    return getPair("wears an", userInput, "", "true");
-                }
+
+             // It wears ___
+                 if (tmp.equals("It wears")) {
+                     return getPair("wears", userInput, "", "true");
+                 }
 
             // It has a ___
-                if (tmp.equals("It has a")) {
-                    return getPair("has a", userInput, "", "true");
-                }
-
-            // It has an ___
-                if (tmp.equals("It has an")) {
-                    return getPair("has an", userInput, "", "true");
+                if (tmp.equals("It has")) {
+                    return getPair("has", userInput, "", "true");
                 }
 
         /* Purpose */
@@ -368,24 +588,14 @@ public class Util {
                 if (tmp.equals("It appears in")) {
                     return getPair("appears in", userInput, "", "true");
                 }
-            // It is a part of a ___
-                if (tmp.equals("It is a part of a")) {
+            // It is a part of ___
+                if (tmp.equals("It is a part of")) {
                     return getPair(tmp, userInput, "", "true");
                 }
 
-            // It is a part of an ___
-                if (tmp.equals("It is a part of an")) {
-                    return getPair(tmp, userInput, "", "true");
-                }
-
-            // It requires a ___
-                if (tmp.equals("It requires a")) {
-                    return getPair("requires a", userInput, "", "true");
-                }
-
-            // It requires an ___
-                if (tmp.equals("It requires an")) {
-                    return getPair("requires an", userInput, "", "true");
+            // It requires ___
+                if (tmp.equals("It requires")) {
+                    return getPair("requires", userInput, "", "true");
                 }
 
             // It has the ability to ___
@@ -405,13 +615,8 @@ public class Util {
                     return getPair("can be received from", userInput, "", "true");
                 }
             // It works as a ___
-                if (tmp.equals("It works as a")) {
-                    return getPair("works as a", userInput, "", "true");
-                }
-
-            // It works as an ___
-                if (tmp.equals("It works as an")) {
-                    return getPair("works as an", userInput, "", "true");
+                if (tmp.equals("It works as")) {
+                    return getPair("works as", userInput, "", "true");
                 }
 
             // Its character is ____
