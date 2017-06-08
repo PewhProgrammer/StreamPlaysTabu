@@ -9,7 +9,7 @@ import model.Language;
  */
 public class SpellTest extends TestCase {
 
-    private GameModel gm;
+/*    private GameModel gm;
 
     public void testEnSimple() {
         short length = 2;
@@ -31,5 +31,5 @@ public class SpellTest extends TestCase {
 
     private void checkSpelling(String text) {
         gm.checkSpelling(text);
-    }
+    }*/
 }

@@ -26,7 +26,7 @@ public class CommandTest extends TestCase{
 
     @org.junit.Test
     public void setUp() throws Exception {
-        gModel = new GameModel(lang,MIN_PLAYERS
+        gModel = new GameModel(/*lang,*/MIN_PLAYERS
         ,neo);
     }
 

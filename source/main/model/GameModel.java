@@ -14,10 +14,10 @@ import logic.bots.AltTwitchBot;
 import logic.bots.BeamBot;
 import logic.bots.Bot;
 import logic.commands.Command;
-import org.languagetool.JLanguageTool;
-import org.languagetool.language.BritishEnglish;
-import org.languagetool.language.GermanyGerman;
-import org.languagetool.rules.RuleMatch;
+//import org.languagetool.JLanguageTool;
+//import org.languagetool.language.BritishEnglish;
+//import org.languagetool.language.GermanyGerman;
+//import org.languagetool.rules.RuleMatch;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -43,7 +43,7 @@ public class GameModel extends Observable{
     private int errCounter = 0;
     private short MIN_PLAYERS;
 
-    private Language lang;
+    //private Language lang;
     private GameMode gameMode;
     private final Neo4jWrapper mOntologyDataBase;
 
@@ -75,16 +75,16 @@ public class GameModel extends Observable{
     private Set<String> hosts;
 
     private StanfordCoreNLP pipeline;
-    private JLanguageTool langTool;
+   // private JLanguageTool langTool;
 
-    public GameModel(Language l, short minPlayers, Neo4jWrapper neo){
+    public GameModel(/* lang l,*/short minPlayers, Neo4jWrapper neo){
         mGameState = GameState.Registration;
         mNumPlayers = 0;
         registeredPlayers = new ArrayList<>();
         tabooWords = new HashSet<>();
         explanations = new LinkedList<>();
         qAndA = new LinkedList<>();
-        lang = l;
+        //lang = l;
         MIN_PLAYERS = minPlayers;
         mOntologyDataBase = neo;
         hosts = new HashSet<>();
@@ -98,12 +98,12 @@ public class GameModel extends Observable{
         props.setProperty("annotators", "tokenize,ssplit,pos,lemma,parse,natlog");
         pipeline = new StanfordCoreNLP(props);
 
-        if (lang.equals(Language.Eng)) {
+       /* if (lang.equals(Language.Eng)) {
             langTool = new JLanguageTool(new BritishEnglish());
         } else {
             langTool = new JLanguageTool(new GermanyGerman());
         }
-        generateVotingCategories();
+        generateVotingCategories();*/
     }
 
     public Set<String> getHosts() {
@@ -144,13 +144,13 @@ public class GameModel extends Observable{
         return mNumPlayers;
     }
 
-    public Language getLang() {
+    /*public Language getLang() {
         return lang;
-    }
+    }*/
 
-    public void setLang(Language lang) {
+    /*public void setLang(Language lang) {
         this.lang = lang;
-    }
+    }*/
 
     public GameMode getGameMode() {
         return gameMode;
@@ -560,7 +560,7 @@ public class GameModel extends Observable{
         return lemmas;
     }
 
-    public void checkSpelling(String text) {
+   /* public void checkSpelling(String text) {
         try {
             List<RuleMatch> matches = langTool.check(text);
             for (RuleMatch match : matches) {
@@ -573,7 +573,7 @@ public class GameModel extends Observable{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public boolean contribute(String user, String channel) {
 
