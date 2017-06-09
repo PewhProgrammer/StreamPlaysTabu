@@ -37,12 +37,14 @@ public class AltTwitchBot extends Bot {
 
             if (sender.equals("streamplaystaboo") | ("#" + sender).equals(channel)){
                 if (message.startsWith("!shutdown")) {
+                    if (model.getGiverChannel().equals(sender)) {
+                        System.exit(1);
+                    }
                     Log.debug("shutdown command received!");
                     model.pushCommand(new Host(model, channel, channel));
                     partChannel(sender);
                     disconnect();
                     dispose();
-
                 }
             }
 
@@ -117,7 +119,7 @@ public class AltTwitchBot extends Bot {
     }
 
     @Override
-    public void announceNewRound() {
+    public void announceNewRound()  {
         sendChatMessage("------------------------------------------------------------------" +
                 " A new round has started. Good Luck!!!" +
                 " ------------------------------------------------------------------");
