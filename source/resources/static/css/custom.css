@@ -223,8 +223,8 @@ Leaderboard
 }
 
 .leaderboard ol li:nth-child(6)::after {
-    background: #cd4b4b;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.08);
+    background: #c64e4e;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.08);
 }
 
 .leaderboard ol li:nth-child(6) mark::before,
@@ -258,7 +258,7 @@ Leaderboard
 
 .leaderboard ol li:nth-child(8)::after {
     background: #cd4b4b;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0px 0 rgba(0, 0, 0, 0.1);
 }
 
 .leaderboard ol li:nth-child(8) mark::before,
@@ -274,8 +274,8 @@ Leaderboard
 }
 
 .leaderboard ol li:nth-child(9)::after {
-    background: #cd4b4b;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+    background: #963434;
+    box-shadow: 0 -2px 0 rgba(0, 0, 0, 0.15);
 }
 
 .leaderboard ol li:nth-child(9) mark::before,
@@ -291,8 +291,9 @@ Leaderboard
 }
 
 .leaderboard ol li:nth-child(10)::after {
-    background: #cd4b4b;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+    background: #742626;
+    box-shadow: 0 -2.5px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 0 0 10px 10px;
 }
 
 .leaderboard ol li:nth-child(10) mark::before,
@@ -343,7 +344,6 @@ label {
     margin: 0;
     padding: 0;
 }
-
 
 h1 {
     font-size: 1.5em;
