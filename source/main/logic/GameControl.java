@@ -198,6 +198,7 @@ public class GameControl extends Observable{
         users = users.stream().filter(
                user -> !user.equals("streamplaystaboo")).collect(Collectors.toList());
         Log.trace("New giver has been chosen from registration pool");
+        Log.trace("userSize:  " + users.size());
         int index = rand.nextInt(users.size());
         String newGiver =  users.get(index);
         mModel.setGiver(newGiver);
