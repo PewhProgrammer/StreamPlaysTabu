@@ -494,6 +494,24 @@ public class Util {
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("It is a kind of a ")){
+            newTmp = "It is a kind of";
+            userInput = tmp.split("It is akind of a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is a kind of an ")){
+            newTmp = "It is a kind of";
+            userInput = tmp.split("It is akind of an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("It is a kind of ")){
+            newTmp = "It is a kind of";
+            userInput = tmp.split("It is akind of ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         return null;
     }
 
@@ -580,6 +598,12 @@ public class Util {
                 if (tmp.equals("It is")) {
                     return getPair("is", userInput, "", "true");
                 }
+
+            // It is ___
+                if (tmp.equals("It is a kind of")) {
+                    return getPair("is a kind of", userInput, "", "true");
+                }
+
             // It has ___
                 if (tmp.equals("It has")) {
                     return getPair("has", userInput, "", "true");

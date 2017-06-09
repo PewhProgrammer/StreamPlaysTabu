@@ -88,7 +88,7 @@ public class Main {
 
         Neo4jWrapper neoWrapper = new Neo4jWrapper(defaultDatbase, neo4jbindAddr, seed);
 
-        GameModel model = new GameModel(language, (short) players, neoWrapper);
+        GameModel model = new GameModel(/*language, */(short) players, neoWrapper);
 
         mTHREAD = new Thread() {
             @Override
@@ -203,11 +203,11 @@ public class Main {
                             defaultDatbase = Boolean.valueOf(line.getOptionValue("defaultdata"));
                         else
                             throw new ParseException("-defaultdata not specified!");
-                        if (line.hasOption("lang")) {
+                       /* if (line.hasOption("lang")) {
                             if (line.getOptionValue("lang").equals("ger"))
                                 language = Language.Ger;
                             else language = Language.Eng;
-                        } else throw new ParseException("-lang not specified!");
+                        } else throw new ParseException("-lang not specified!");*/
                         break;
                     default:
                         //abort("No launch mode specified");

@@ -42,7 +42,7 @@ public class AltTwitchBot extends Bot {
                     partChannel(sender);
                     disconnect();
                     dispose();
-                    Thread.currentThread().interrupt();
+
                 }
             }
 
