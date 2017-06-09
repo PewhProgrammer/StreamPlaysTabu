@@ -18,7 +18,7 @@ public class LemmaTests extends TestCase {
     @org.junit.Test
     public void setUp() {
         short length = 2;
-        this.gm = new GameModel(Language.Eng, length, null);
+        this.gm = new GameModel(/*Language.Eng,*/ length, null);
     }
 
     public void testEnSimple() {

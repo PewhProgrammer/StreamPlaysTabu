@@ -19,7 +19,7 @@ public class CheatingTests extends TestCase {
     @org.junit.Test
     public void setUp() {
         short lel = 2;
-        this.gm = new GameModel(Language.Eng, lel, null);
+        this.gm = new GameModel(/*Language.Eng,*/ lel, null);
     }
 
     public void testInvalidCharacters() {

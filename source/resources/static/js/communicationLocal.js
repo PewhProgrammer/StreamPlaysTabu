@@ -16,7 +16,6 @@ function connectLoc() {
             updateRanking(ranking);
         });
         stompClientLoc.subscribe('/localJS/updateTime', function (ranking) {
-            console.log('>>>>>>>>> RECEIVED RANKING' + ranking);
             updateTime();
         });
         stompClientLoc.subscribe('/localJS/prevoteCategory', function (categories) {
