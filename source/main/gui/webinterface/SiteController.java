@@ -105,7 +105,8 @@ public class SiteController implements IObserver {
             public void call(Object... args) {
                 JSONObject obj = new JSONObject((String)args[0]);
                 if (validatePW(obj.getString("password"))) {
-                    receiveValidation(obj.getString("reference"), obj.getString("taboo"), obj.getInt("score"));
+                    receiveValidation(obj.getString("reference"), obj.getString("taboo"), obj.getInt("score"),
+                            obj.getInt("id"));
                 }
             }
         });
@@ -147,7 +148,6 @@ public class SiteController implements IObserver {
         ArrayList<Neo4jWrapper.Pair>  k =
                 gm.getNeo4jWrapper().getValidationForGiver();
 
-        Collections.shuffle(k);
         int i = 0;
         for(Neo4jWrapper.Pair container : k){
             references[i] = container.getFirst().toString();
@@ -182,7 +182,7 @@ public class SiteController implements IObserver {
         gm.pushCommand(cmd);
     }
 
-    public void receiveValidation(String reference, String taboo, int score) {
+    public void receiveValidation(String reference, String taboo, int score,int id) {
         Log.info("Received sendValidation");
         //TODO decide which validation
 

@@ -173,7 +173,7 @@ function showValidation(validation) {
     document.getElementById("validationCategoryLabel_two").textContent = json.reference2;
     document.getElementById("validationCategoryLabel_three").textContent = json.reference3;
 
-    document.getElementById("validationTabooLabel_one").textContent = json.taboo1;
+    //First validation refers to explain word only
     document.getElementById("validationTabooLabel_two").textContent = json.taboo2;
     document.getElementById("validationTabooLabel_three").textContent = json.taboo3;
 

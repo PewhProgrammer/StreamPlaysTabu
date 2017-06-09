@@ -15,11 +15,9 @@ $(function () {
         e.preventDefault();
     });
     $("#pw").click(function () {
-
         pw_cmp = getParameterByName('pw');
         console.log(pw_cmp);
         if (pw_cmp === "root") {
-
             onCategoryChosen(document.getElementById("category1").innerHTML);
             showGame();
         } else
@@ -37,6 +35,11 @@ $(function () {
     $("#answer").click(function () {
         onAnswer();
     });
+});
+
+app.get('/', function (req, res) {
+    var n = req.param('pw');
+    pw = n;
 });
 
 // Update the count down every 1 second
@@ -152,7 +155,7 @@ function onExplanation() {
                 activeQuestion = -1;
                 hideTemplates();
             }
-        }
+
     }
 
     document.getElementById("explanationText").innerHTML = "";
@@ -168,8 +171,8 @@ function onSkip() {
     requestSkip(createSkipRequest());
 }
 
-function onValidation(explain, taboo, score) {
-    sendValidation(createValidationEvent(explain, taboo, score));
+function onValidation(explain, taboo, score,id) {
+    sendValidation(createValidationEvent(explain, taboo, score,id));
 }
 
 function createGiverJoinedEvent() {
@@ -248,12 +251,13 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-function createValidationEvent(explain, taboo, score) {
+function createValidationEvent(explain, taboo, score,id) {
     return JSON.stringify({
         'password': pw,
         'reference': explain,
         'taboo': taboo,
         'score': score,
+        'id': id,
     });
 }
 
@@ -451,7 +455,7 @@ function handleStars(id, count) {
     document.getElementById('stars_' + label).style.display = 'none';
     timeLeft += 10;
     timeMax += 10;
-    onValidation(cat, taboo, count);
+    onValidation(cat, taboo, count,id);
 }
 
 function showTemplateUsage(i){
