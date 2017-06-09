@@ -22,9 +22,6 @@ $(document).ready(function () {
     socket.on(base + '/pwErr', function (data) {
         var json = JSON.parse(data);
         var pass = json["password"];
-        if (pass == pw_cmp.toString()) {
-            //window.alert('Incorrect password. Please try again.');
-        }
     });
     socket.on(base + '/prevotedCategories', function (data) {
         if (vpw) {

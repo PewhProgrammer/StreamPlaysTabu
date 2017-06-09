@@ -55,7 +55,7 @@ public class GameControl extends Observable{
             //processNextCommand();
             if(Util.diffTimeStamp(d,new Date()) > mModel.getRoundTime()){
                 mModel.setGiver("");
-                mModel.getBot().announceNoWinner();
+                mModel.announceNoWinner();
                 mModel.setGameState(GameState.Lose);
                 mModel.clear();
                 break;
@@ -116,7 +116,7 @@ public class GameControl extends Observable{
                 sleepThread(10);
             }
             mModel.setTimeStamp();
-            mModel.getBot().announceRegistration();
+            mModel.announceRegistration();
             sleepThread(30);
 
             if(mModel.getGameMode() == GameMode.Streamer){
@@ -130,6 +130,7 @@ public class GameControl extends Observable{
                     break gameLoop;
             }
 
+            Log.info("Entering Stand by: Anyone can type !register to become giver");
             while(true){
                 try {
                     //if user is registered but no giver, then new giver
@@ -139,7 +140,6 @@ public class GameControl extends Observable{
                             break gameLoop;
                         }
                     }
-                    Log.trace("Entering Stand by: Anyone can type !register to become giver");
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -161,7 +161,7 @@ public class GameControl extends Observable{
 
         mModel.setGameState(GameState.WaitingForGiver);
         Log.info("Starting the round");
-        mModel.getBot().announceNewRound();
+        mModel.announceNewRound();
 
 
 
@@ -172,7 +172,7 @@ public class GameControl extends Observable{
         while(mModel.getGameState() == GameState.WaitingForGiver){
             Date d = mModel.getTimeStamp();
             if(Util.diffTimeStamp(d,new Date()) > 20){
-                mModel.getBot().announceGiverNotAccepted(mModel.getGiver());
+                mModel.announceGiverNotAccepted(mModel.getGiver());
                 mModel.setGiver("");
                 mModel.setGameState(GameState.GameStarted.Registration);
                 mModel.clear();
@@ -198,6 +198,7 @@ public class GameControl extends Observable{
         users = users.stream().filter(
                user -> !user.equals("streamplaystaboo")).collect(Collectors.toList());
         Log.trace("New giver has been chosen from registration pool");
+        Log.trace("userSize:  " + users.size());
         int index = rand.nextInt(users.size());
         String newGiver =  users.get(index);
         mModel.setGiver(newGiver);

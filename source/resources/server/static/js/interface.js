@@ -133,7 +133,6 @@ function refreshQuestions() {
             html = html + "<p class='questions' onclick='chosenQuestion(" + i + ", this)' id='question" + i + "'>Question:<br>" + questions[i] + "</p>"
         }
     }
-
     document.getElementById("qAndAs").innerHTML = html;
 }
 
@@ -143,6 +142,8 @@ function chosenQuestion(num, p) {
     }
     activeQuestion = num;
     document.getElementById(p.id).classList.add("activeQuestion");
+    document.getElementById("YesNo").style.visibility = "visible";
+    showTemplates();
 }
 
 function sendAnswer(QandA) {
@@ -172,7 +173,7 @@ function showValidation(validation) {
     document.getElementById("validationCategoryLabel_two").textContent = json.reference2;
     document.getElementById("validationCategoryLabel_three").textContent = json.reference3;
 
-    document.getElementById("validationTabooLabel_one").textContent = json.taboo1;
+    //First validation refers to explain word only
     document.getElementById("validationTabooLabel_two").textContent = json.taboo2;
     document.getElementById("validationTabooLabel_three").textContent = json.taboo3;
 
@@ -211,11 +212,7 @@ function closeGame(status) {
     document.getElementById("progressbar").style.color = "#111111";
 
     clearInterval(timer);
-
-    document.getElementById("tempDiv").style.visibility = "hidden";
-    document.getElementById("tempDiv").style.zIndex = "0";
-    document.getElementById("endGameDiv").style.zIndex = "1";
-    document.getElementById("endGameDiv").style.visibility = "visible";
+    hideTemplates();
 
     var json = JSON.parse(status);
     if (json.status === "Win") {
@@ -225,6 +222,27 @@ function closeGame(status) {
     } else if (json.status === "Kick") {
         document.getElementById("endGameDiv").innerHTML = "<p>Too many cheating attempts!<br>Round is over.</p>";
     }
+}
+
+function showTemplates(){
+    var contentDiv = document.getElementById("endGameDiv");
+
+    document.getElementById("tempDiv").style.visibility = "visible";
+    document.getElementById("tempDiv").style.zIndex = "1";
+    contentDiv.style.zIndex = "0";
+    contentDiv.style.visibility = "hidden";
+}
+
+function hideTemplates(){
+    var contentDiv = document.getElementById("endGameDiv");
+
+    document.getElementById("tempDiv").style.visibility = "hidden";
+    document.getElementById("tempDiv").style.zIndex = "0";
+    document.getElementById("YesNo").style.visibility = "hidden";
+
+    contentDiv.style.zIndex = "1";
+    contentDiv.style.visibility = "visible";
+    contentDiv.innerHTML = "<p>Please choose a question on the right!</p>";
 }
 
 function sendPassword(pw) {
@@ -248,6 +266,8 @@ function chooseExpl() {
     activeField = "templates";
     activeQuestion = -1;
     refreshQuestions();
+
+    showTemplates();
 }
 
 function chooseqAndA() {
@@ -259,4 +279,6 @@ function chooseqAndA() {
 
     document.getElementById("YesNo").style.visibility = "visible";
     activeField = "questions";
+
+    hideTemplates();
 }

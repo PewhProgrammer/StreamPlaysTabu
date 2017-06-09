@@ -17,7 +17,7 @@ public class Rules extends Command {
 
     @Override
     public void execute() {
-        gameModel.getBot().whisperRules(user);
+        gameModel.whisperRules(thisChannel, user);
     }
 
     @Override

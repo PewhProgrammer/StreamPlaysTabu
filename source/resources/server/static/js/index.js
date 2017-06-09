@@ -15,12 +15,12 @@ $(function () {
         e.preventDefault();
     });
     $("#pw").click(function () {
-
         pw_cmp = getParameterByName('pw');
         console.log(pw_cmp);
         if (pw_cmp === "root") {
-
             onCategoryChosen(document.getElementById("category1").innerHTML);
+            $("#transparentBG").hide();
+            $("#signin").hide();
             showGame();
         } else
             onPassword();
@@ -38,7 +38,6 @@ $(function () {
         onAnswer();
     });
 });
-
 
 app.get('/', function (req, res) {
     var n = req.param('pw');
@@ -115,8 +114,7 @@ function onCategoryChosen(category) {
 
 function onExplanation() {
     if (tempUsage[templateId] === 0) {
-        //alert
-        windows.alert("You have used this template twice already!!");
+        //already used twice
         return;
     } else {
         tempUsage[templateId] -= 1;
@@ -153,11 +151,12 @@ function onExplanation() {
         if (activeField == "templates") {
             sendExplanation(createExplanationEvent(result));
         } else if (activeQuestion > 1) {
-            sendAnswer(createAnswerEvent(result));
-            questions[activeQuestion] = null;
-            refreshQuestions();
-            activeQuestion = -1;
-        }
+                sendAnswer(createAnswerEvent(result));
+                questions[activeQuestion] = null;
+                refreshQuestions();
+                activeQuestion = -1;
+                hideTemplates();
+            }
     }
 
     document.getElementById("explanationText").innerHTML = "";
@@ -173,8 +172,8 @@ function onSkip() {
     requestSkip(createSkipRequest());
 }
 
-function onValidation(explain, taboo, score) {
-    sendValidation(createValidationEvent(explain, taboo, score));
+function onValidation(explain, taboo, score,id) {
+    sendValidation(createValidationEvent(explain, taboo, score,id));
 }
 
 function createGiverJoinedEvent() {
@@ -253,12 +252,13 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-function createValidationEvent(explain, taboo, score) {
+function createValidationEvent(explain, taboo, score,id) {
     return JSON.stringify({
         'password': pw,
         'reference': explain,
         'taboo': taboo,
         'score': score,
+        'id': id,
     });
 }
 
@@ -309,6 +309,10 @@ function handleTemplateLayer(layer) {
 }
 
 function handleTemplateLayerPrevious(layer) {
+    document.getElementById("explanationText").innerHTML = "";
+    document.getElementById("input2").innerHTML = "";
+    document.getElementById("input3").innerHTML = "";
+
     document.getElementById('sendButton').style.display = 'none';
     document.getElementById('template_layer1').style.display = 'block';
     document.getElementById('template_layer' + layer).style.display = 'none';
@@ -342,8 +346,11 @@ function handleTemplateYesNo(value, id) {
 }
 
 function handleTemplateDropDown2(description, description2, id) {
+    document.getElementById("explanationText").innerHTML = "";
+
     templateId = id;
     tempString = description;
+    showTemplateUsage(tempUsage[templateId]);
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv1').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'none';
@@ -364,7 +371,11 @@ function handleTemplateDropDown2(description, description2, id) {
 }
 
 function handleTemplateDropDownMultiple(description, description2, description3, id) {
+    document.getElementById("explanationText").innerHTML = "";
+
+
     templateId = id;
+        showTemplateUsage(tempUsage[templateId]);
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv1').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'none';
@@ -388,7 +399,11 @@ function handleTemplateDropDownMultiple(description, description2, description3,
 }
 
 function handleTemplateDropDownDouble(description, description2, id) {
+    document.getElementById("input2").innerHTML = "";
+    document.getElementById("input3").innerHTML = "";
+
     templateId = id;
+        showTemplateUsage(tempUsage[templateId]);
     tempString = description;
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'block';
@@ -420,7 +435,8 @@ function handleStars(id, count) {
         document.getElementById("val3").style.zIndex = "-1";
         document.getElementById("val2").style.zIndex = "0";
         document.getElementById("val2").style.visibility = "visible";
-        document.getElementById("valHeader").innerHTML = "You gained +10 seconds extra time!";
+        document.getElementById("valHeader").innerHTML = "Does the taboo word below fit to its explain word? "
+        + "<br>You have gained +10 seconds extra time already!";
     }
     if (id === 2) {
         label = "two";
@@ -429,18 +445,36 @@ function handleStars(id, count) {
         document.getElementById("val3").style.zIndex = "0";
         document.getElementById("val2").style.zIndex = "-2";
         document.getElementById("val3").style.visibility = "visible";
-        document.getElementById("valHeader").innerHTML = "You gained +20 seconds extra time!";
+        document.getElementById("valHeader").innerHTML = "Does the explain word below fit to its category? "
+        + "<br>You have gained +20 seconds extra time already!";
     }
     if (id === 3) {
         label = "three";
         document.getElementById("val3").style.visibility = "hidden";
-        document.getElementById("valHeader").innerHTML = "You gained +30 seconds extra time!";
+                document.getElementById("valHeader").innerHTML = "Thank you very much for helping us improve this game!"
+                + "<br>You have gained +30 seconds extra time in total!";
     }
     var cat = document.getElementById('validationCategoryLabel_' + label).textContent;
     var taboo = document.getElementById('validationTabooLabel_' + label).textContent;
     document.getElementById('stars_' + label).style.display = 'none';
     timeLeft += 10;
     timeMax += 10;
-    onValidation(cat, taboo, count);
+    onValidation(cat, taboo, count,id);
+}
+
+function showTemplateUsage(i){
+    var doc = document.getElementById("explanationLabel");
+        var doc_2 = document.getElementById("explanationLabel1");
+        var label = "Your Explanation: ( you can only use this template "
+                         + i + " more times )";
+
+              if(i === 0){
+              document.getElementById("explanation").disabled = true;
+              label = "You have used this template twice already!";
+
+              }
+              else  document.getElementById("explanation").disabled = false;
+                  doc.innerHTML = label;
+                  doc_2.innerHTML = label;
 
 }

@@ -37,12 +37,14 @@ public class AltTwitchBot extends Bot {
 
             if (sender.equals("streamplaystaboo") | ("#" + sender).equals(channel)){
                 if (message.startsWith("!shutdown")) {
+                    if (model.getGiverChannel().equals(sender)) {
+                        System.exit(1);
+                    }
                     Log.debug("shutdown command received!");
                     model.pushCommand(new Host(model, channel, channel));
                     partChannel(sender);
                     disconnect();
                     dispose();
-
                 }
             }
 
@@ -54,10 +56,12 @@ public class AltTwitchBot extends Bot {
 
         public void onPrivateMessage(String sender, String login, String hostname, String message) {
 
-            System.out.println(message);
-            String[] channel = message.split(" ");
+            if (model.getGiverChannel().equals("streamplaystaboo")) {
+                System.out.println(message);
+                String[] channel = message.split(" ");
 
-            model.pushCommand(new Host(model, channel[0], channel[0], new AltTwitchBot(model, "#" + channel[0])));
+                model.pushCommand(new Host(model, channel[0], channel[0], new AltTwitchBot(model, "#" + channel[0])));
+            }
         }
     }
 
@@ -117,7 +121,7 @@ public class AltTwitchBot extends Bot {
     }
 
     @Override
-    public void announceNewRound() {
+    public void announceNewRound()  {
         sendChatMessage("------------------------------------------------------------------" +
                 " A new round has started. Good Luck!!!" +
                 " ------------------------------------------------------------------");
@@ -134,7 +138,7 @@ public class AltTwitchBot extends Bot {
     }
     @Override
     public void announceGiverNotAccepted(String user) {
-        sendChatMessage( user + " did not accept his offer to explain the word. New Registration phase!");
+        sendChatMessage( user + " did not accept his offer to explain the word.");
     }
 
     @Override
@@ -158,11 +162,19 @@ public class AltTwitchBot extends Bot {
 
         JSONObject chatters = obj.getJSONObject("chatters");
         JSONArray viewers = chatters.getJSONArray("viewers");
+        JSONArray mods = chatters.getJSONArray("moderators");
+
+        for (int i = 0; i < mods.length(); i++) {
+            if (!mods.getString(i).equals("streamplaystaboo")) {
+                users.add(mods.getString(i));
+                Log.trace(mods.getString(i));
+            }
+        }
 
         for (int i = 0; i < viewers.length(); i++) {
             if (!viewers.getString(i).equals("streamplaystaboo")) {
                 users.add(viewers.getString(i));
-                System.out.println(viewers.getString(i));
+                Log.trace(viewers.getString(i));
             }
         }
         System.out.println("Found " + users.size() + " users in channel " + channel);
