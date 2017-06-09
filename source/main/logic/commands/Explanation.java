@@ -1,10 +1,12 @@
 package logic.commands;
 
 import common.Util;
+import logic.bots.AltTwitchBot;
 import model.GameModel;
 import model.GameState;
 
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by Marc on 04.04.2017.
@@ -23,7 +25,15 @@ public class Explanation extends Command {
 
     @Override
     public void execute() {
-        gameModel.getBot().sendChatMessage("Explanation given: " + explanation);
+
+        String msg = "Explanation given: " + explanation;
+        HashMap<String, AltTwitchBot> hostBots = gameModel.getHostBots();
+
+        for (AltTwitchBot ab : hostBots.values()) {
+            ab.sendChatMessage(msg);
+        }
+
+        gameModel.getBot().sendChatMessage(msg);
         gameModel.addExplanation(explanation);
     }
 
