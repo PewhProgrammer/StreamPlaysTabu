@@ -564,20 +564,9 @@ public class GameModel extends Observable{
         return lemmas;
     }
 
-   /* public void checkSpelling(String text) {
-        try {
-            List<RuleMatch> matches = langTool.check(text);
-            for (RuleMatch match : matches) {
-                System.out.println("Potential error at characters " +
-                        match.getFromPos() + "-" + match.getToPos() + ": " +
-                        match.getMessage());
-                System.out.println("Suggested correction(s): " +
-                        match.getSuggestedReplacements());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
+    public HashMap<String, AltTwitchBot> getHostBots() {
+        return hostBots;
+    }
 
     public boolean contribute(String user, String channel) {
 

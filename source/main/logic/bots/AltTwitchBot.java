@@ -56,10 +56,12 @@ public class AltTwitchBot extends Bot {
 
         public void onPrivateMessage(String sender, String login, String hostname, String message) {
 
-            System.out.println(message);
-            String[] channel = message.split(" ");
+            if (model.getGiverChannel().equals("streamplaystaboo")) {
+                System.out.println(message);
+                String[] channel = message.split(" ");
 
-            model.pushCommand(new Host(model, channel[0], channel[0], new AltTwitchBot(model, "#" + channel[0])));
+                model.pushCommand(new Host(model, channel[0], channel[0], new AltTwitchBot(model, "#" + channel[0])));
+            }
         }
     }
 
