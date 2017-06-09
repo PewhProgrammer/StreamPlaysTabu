@@ -73,6 +73,7 @@ public class GameModel extends Observable{
     private SiteController sCon;
 
     private Set<String> hosts;
+    private HashMap<String, AltTwitchBot> hostBots;
 
     private StanfordCoreNLP pipeline;
     private JLanguageTool langTool;
@@ -88,6 +89,7 @@ public class GameModel extends Observable{
         MIN_PLAYERS = minPlayers;
         mOntologyDataBase = neo;
         hosts = new HashSet<>();
+        hostBots = new HashMap<>();
         prevoting = new ArrayList<>(10);
         usedWords = new HashSet<>();
         votekick = new HashSet<>();
@@ -483,12 +485,14 @@ public class GameModel extends Observable{
         votekick.clear();
     }
 
-    public void host(String host) {
-        if (hosts.contains(host)) {
-            hosts.remove(host);
-        } else {
-            hosts.add(host);
-        }
+    public void host(String host, AltTwitchBot hostBot) {
+        hosts.add(host);
+        hostBots.put(host, hostBot);
+    }
+
+    public void unhost(String host) {
+        hosts.remove(host);
+        hostBots.remove(host);
     }
 
     public String getGiverChannel() {
@@ -599,5 +603,48 @@ public class GameModel extends Observable{
         }
 
         return false;
+    }
+
+    public void announceNewRound() {
+        for (AltTwitchBot ab : hostBots.values()) {
+            ab.announceNewRound();
+        }
+        bot.announceNewRound();
+    }
+
+    public void announceWinner(String winner) {
+        for (AltTwitchBot ab : hostBots.values()) {
+            ab.announceWinner(winner);
+        }
+        bot.announceWinner(winner);
+    }
+
+    public void announceNoWinner(String winner) {
+        for (AltTwitchBot ab : hostBots.values()) {
+            ab.announceNoWinner();
+        }
+        bot.announceNoWinner();
+    }
+
+    public void announceGiverNotAccepted(String user) {
+        for (AltTwitchBot ab : hostBots.values()) {
+            ab.announceGiverNotAccepted(user);
+        }
+        bot.announceGiverNotAccepted(user);
+    }
+
+    public void announceRegistration() {
+        for (AltTwitchBot ab : hostBots.values()) {
+            ab.announceRegistration();
+        }
+        bot.announceRegistration();
+    }
+
+    public void announceScore(String channel, String user, int score) {
+        if (channel.equals(giverChannel)) {
+            bot.announceScore(user, score);
+        } else {
+            hostBots.get(channel).announceScore(user, score);
+        }
     }
 }

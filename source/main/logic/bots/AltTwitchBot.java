@@ -19,7 +19,6 @@ public class AltTwitchBot extends Bot {
     public AltTwitchBot(GameModel gm, String channel) {
         super(gm, channel);
         connectToChatroom(channel);
-
     }
 
     private class Pirc extends PircBot {
@@ -58,10 +57,7 @@ public class AltTwitchBot extends Bot {
             System.out.println(message);
             String[] channel = message.split(" ");
 
-            model.pushCommand(new Host(model, channel[0], channel[0]));
-
-            new AltTwitchBot(model, "#"+channel[0]);
-
+            model.pushCommand(new Host(model, channel[0], channel[0], new AltTwitchBot(model, "#" + channel[0])));
         }
     }
 
@@ -93,18 +89,17 @@ public class AltTwitchBot extends Bot {
             bot.connect("irc.chat.twitch.tv",
                     6667,
                     "oauth:" + "ksfaxec4iil2ao18nf2d91ua9she0z"); //streamplaystaboo
+            bot.joinChannel(user);
         } catch (Exception e) {
             bot.dispose();
         }
 
-        bot.joinChannel(user);
         Log.info("connected to " + user);
     }
 
     @Override
     public void sendChatMessage(String msg) {
         bot.sendMessage(channel, msg);
-
     }
 
     private void sendPrivMessage(String msg,String user){
