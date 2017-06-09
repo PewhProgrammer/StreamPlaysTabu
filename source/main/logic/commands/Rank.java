@@ -17,7 +17,7 @@ public class Rank extends Command {
 
     @Override
     public void execute() {
-        gameModel.getBot().announceScore(user, gameModel.getScore(user,getChannel()));
+        gameModel.announceScore(thisChannel, user, gameModel.getScore(user,getChannel()));
     }
 
     @Override

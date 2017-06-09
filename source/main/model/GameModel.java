@@ -419,7 +419,7 @@ public class GameModel extends Observable{
         updateScore(winner, score,ch);
         updateScore(giver, score,ch);
         notifyWinner();
-        getBot().announceWinner(winner);
+        announceWinner(winner);
         for (int i = 0; i < 3 && i < guesses.size(); i++) {
             if(guesses.get(i).getScore() > 1)
                 mOntologyDataBase.insertNodesAndRelationshipIntoOntology(guesses.get(i).getGuess(),word,true, "is related to",true);
@@ -619,7 +619,7 @@ public class GameModel extends Observable{
         bot.announceWinner(winner);
     }
 
-    public void announceNoWinner(String winner) {
+    public void announceNoWinner() {
         for (AltTwitchBot ab : hostBots.values()) {
             ab.announceNoWinner();
         }
@@ -645,6 +645,18 @@ public class GameModel extends Observable{
             bot.announceScore(user, score);
         } else {
             hostBots.get(channel).announceScore(user, score);
+        }
+    }
+
+    public void whisperRules(String channel, String user) {
+        if (channel.equals(giverChannel)) {
+            bot.whisperRules(user);
+        } else {
+            AltTwitchBot ab = hostBots.get(channel);
+            if (ab == null) {
+                throw new IllegalArgumentException("Not a valid channel");
+            }
+            ab.whisperRules(user);
         }
     }
 }
