@@ -130,6 +130,7 @@ public class GameControl extends Observable{
                     break gameLoop;
             }
 
+            Log.info("Entering Stand by: Anyone can type !register to become giver");
             while(true){
                 try {
                     //if user is registered but no giver, then new giver
@@ -139,7 +140,6 @@ public class GameControl extends Observable{
                             break gameLoop;
                         }
                     }
-                    Log.trace("Entering Stand by: Anyone can type !register to become giver");
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

@@ -10,6 +10,7 @@ var templateLayer = 0;
 var timer;
 var tempUsage = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
 
+
 $(function () {
     $("form").on('submit', function (e) {
         e.preventDefault();
@@ -37,12 +38,6 @@ $(function () {
     $("#answer").click(function () {
         onAnswer();
     });
-});
-
-
-app.get('/', function (req, res) {
-    var n = req.param('pw');
-    pw = n;
 });
 
 // Update the count down every 1 second
@@ -114,13 +109,15 @@ function onCategoryChosen(category) {
 }
 
 function onExplanation() {
+    console.log("tempusage: " + tempUsage[templateId]);
     if (tempUsage[templateId] === 0) {
-        //alert
-        windows.alert("You have used this template twice already!!");
+        //already used twice
         return;
     } else {
         tempUsage[templateId] -= 1;
     }
+
+        console.log("tempusage: " + tempUsage[templateId]);
 
     if (templateId === 24 || templateId === 25) {
         document.getElementById('sendButton').style.display = 'none';
@@ -158,6 +155,7 @@ function onExplanation() {
                 questions[activeQuestion] = null;
                 refreshQuestions();
                 activeQuestion = -1;
+                hideTemplates();
             }
         }
     }
@@ -314,6 +312,10 @@ function handleTemplateLayer(layer) {
 }
 
 function handleTemplateLayerPrevious(layer) {
+    document.getElementById("explanationText").innerHTML = "";
+    document.getElementById("input2").innerHTML = "";
+    document.getElementById("input3").innerHTML = "";
+
     document.getElementById('sendButton').style.display = 'none';
     document.getElementById('template_layer1').style.display = 'block';
     document.getElementById('template_layer' + layer).style.display = 'none';
@@ -323,6 +325,7 @@ function handleTemplateDropDown(description, id) {
     //$('.selectpicker').selectpicker('val', 'Mustard');
     templateId = id;
     tempString = description;
+    showTemplateUsage(tempUsage[templateId]);
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv1').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'none';
@@ -347,8 +350,11 @@ function handleTemplateYesNo(value, id) {
 }
 
 function handleTemplateDropDown2(description, description2, id) {
+    document.getElementById("explanationText").innerHTML = "";
+
     templateId = id;
     tempString = description;
+    showTemplateUsage(tempUsage[templateId]);
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv1').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'none';
@@ -369,7 +375,11 @@ function handleTemplateDropDown2(description, description2, id) {
 }
 
 function handleTemplateDropDownMultiple(description, description2, description3, id) {
+    document.getElementById("explanationText").innerHTML = "";
+
+
     templateId = id;
+        showTemplateUsage(tempUsage[templateId]);
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv1').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'none';
@@ -393,7 +403,11 @@ function handleTemplateDropDownMultiple(description, description2, description3,
 }
 
 function handleTemplateDropDownDouble(description, description2, id) {
+    document.getElementById("input2").innerHTML = "";
+    document.getElementById("input3").innerHTML = "";
+
     templateId = id;
+        showTemplateUsage(tempUsage[templateId]);
     tempString = description;
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'block';
@@ -447,5 +461,21 @@ function handleStars(id, count) {
     timeLeft += 10;
     timeMax += 10;
     onValidation(cat, taboo, count);
+}
+
+function showTemplateUsage(i){
+    var doc = document.getElementById("explanationLabel");
+        var doc_2 = document.getElementById("explanationLabel1");
+        var label = "Your Explanation: ( you can only use this template "
+                         + i + " more times )";
+
+              if(i === 0){
+              document.getElementById("explanation").disabled = true;
+              label = "You have used this template twice already!";
+
+              }
+              else  document.getElementById("explanation").disabled = false;
+                  doc.innerHTML = label;
+                  doc_2.innerHTML = label;
 
 }

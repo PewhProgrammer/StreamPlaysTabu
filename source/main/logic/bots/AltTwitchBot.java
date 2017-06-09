@@ -139,7 +139,7 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void announceGiverNotAccepted(String user) {
-        sendChatMessage( user + " did not accept his offer to explain the word. New Registration phase!");
+        sendChatMessage( user + " did not accept his offer to explain the word.");
     }
 
     @Override
