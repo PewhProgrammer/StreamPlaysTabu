@@ -19,6 +19,8 @@ $(function () {
         console.log(pw_cmp);
         if (pw_cmp === "root") {
             onCategoryChosen(document.getElementById("category1").innerHTML);
+            $("#transparentBG").hide();
+            $("#signin").hide();
             showGame();
         } else
             onPassword();
@@ -155,7 +157,6 @@ function onExplanation() {
                 activeQuestion = -1;
                 hideTemplates();
             }
-
     }
 
     document.getElementById("explanationText").innerHTML = "";
@@ -434,7 +435,8 @@ function handleStars(id, count) {
         document.getElementById("val3").style.zIndex = "-1";
         document.getElementById("val2").style.zIndex = "0";
         document.getElementById("val2").style.visibility = "visible";
-        document.getElementById("valHeader").innerHTML = "You gained +10 seconds extra time!";
+        document.getElementById("valHeader").innerHTML = "Does the taboo word below fit to its explain word? "
+        + "<br>You have gained +10 seconds extra time already!";
     }
     if (id === 2) {
         label = "two";
@@ -443,12 +445,14 @@ function handleStars(id, count) {
         document.getElementById("val3").style.zIndex = "0";
         document.getElementById("val2").style.zIndex = "-2";
         document.getElementById("val3").style.visibility = "visible";
-        document.getElementById("valHeader").innerHTML = "You gained +20 seconds extra time!";
+        document.getElementById("valHeader").innerHTML = "Does the explain word below fit to its category? "
+        + "<br>You have gained +20 seconds extra time already!";
     }
     if (id === 3) {
         label = "three";
         document.getElementById("val3").style.visibility = "hidden";
-        document.getElementById("valHeader").innerHTML = "You gained +30 seconds extra time!";
+                document.getElementById("valHeader").innerHTML = "Thank you very much for helping us improve this game!"
+                + "<br>You have gained +30 seconds extra time in total!";
     }
     var cat = document.getElementById('validationCategoryLabel_' + label).textContent;
     var taboo = document.getElementById('validationTabooLabel_' + label).textContent;
