@@ -20,6 +20,7 @@ var timer = setInterval(function () {
 }, 1000);
 
 function updateTime() {
+    console.log("Increased time by 10 seconds");
     timeLeft += 10;
     timeMax += 10;
 }

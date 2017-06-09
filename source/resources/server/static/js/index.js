@@ -10,7 +10,6 @@ var templateLayer = 0;
 var timer;
 var tempUsage = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
 
-
 $(function () {
     $("form").on('submit', function (e) {
         e.preventDefault();
@@ -109,15 +108,12 @@ function onCategoryChosen(category) {
 }
 
 function onExplanation() {
-    console.log("tempusage: " + tempUsage[templateId]);
     if (tempUsage[templateId] === 0) {
         //already used twice
         return;
     } else {
         tempUsage[templateId] -= 1;
     }
-
-        console.log("tempusage: " + tempUsage[templateId]);
 
     if (templateId === 24 || templateId === 25) {
         document.getElementById('sendButton').style.display = 'none';
@@ -149,8 +145,7 @@ function onExplanation() {
         console.log("Sent explanation: " + result);
         if (activeField == "templates") {
             sendExplanation(createExplanationEvent(result));
-        } else {
-            if (activeQuestion > 1) {
+        } else if (activeQuestion > 1) {
                 sendAnswer(createAnswerEvent(result));
                 questions[activeQuestion] = null;
                 refreshQuestions();
@@ -163,10 +158,7 @@ function onExplanation() {
     document.getElementById("explanationText").innerHTML = "";
     document.getElementById("input2").innerHTML = "";
     document.getElementById("input3").innerHTML = "";
-
-/*    document.getElementById("templatesDiv").innerHTML = document.getElementById("templatesDiv").innerHTML
-        + "<div id='successFullySendPanel' class='panel panel-success' style='position: absolute; top: 50%; width: 75%; left: 12.5%; z-index: 5;'><div class='panel-body'>Answer successfully sent!</div></div>"
-*/}
+}
 
 function onAnswer() {
     sendAnswer(createAnswerEvent());
@@ -284,7 +276,7 @@ function showCategories() {
         top: "-=2%"
     }, 800);
 
-    $("#category1").delay(400).fadeIn();
+    $("#category1").delay(400).fadeIn("slow");
     $("#category3").delay(600).fadeIn("slow");
     $("#category5").delay(800).fadeIn("slow");
     $("#category4").delay(1000).fadeIn("slow");
@@ -325,7 +317,6 @@ function handleTemplateDropDown(description, id) {
     //$('.selectpicker').selectpicker('val', 'Mustard');
     templateId = id;
     tempString = description;
-    showTemplateUsage(tempUsage[templateId]);
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv1').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'none';

@@ -162,6 +162,10 @@ public class GameControl extends Observable{
         mModel.setGameState(GameState.WaitingForGiver);
         Log.info("Starting the round");
         mModel.getBot().announceNewRound();
+
+
+
+
         mModel.getBot().whisperLink(mModel.getGiver(),extBindAddr, mModel.getSiteController().generatePW()); // send link
         mModel.setTimeStamp();
 

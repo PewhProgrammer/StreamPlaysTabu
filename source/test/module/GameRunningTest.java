@@ -27,7 +27,7 @@ public class GameRunningTest extends TestCase {
     @org.junit.Test
     public void setUp() throws Exception {
         database = new Neo4jWrapper(simulation,neo4jbindAddr,20);
-        gModel = new GameModel(language,(short)2,database);
+        gModel = new GameModel(/*language,*/(short)2,database);
         controller = new GameControl(gModel, 1337,ext_bindAddr);
         Thread mTHREAD = new Thread() {
             @Override

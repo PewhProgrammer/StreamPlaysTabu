@@ -18,11 +18,16 @@ function showPrevotedCategories(prevotedCategories) {
     console.log('>> Received prevoting categories: ' + prevotedCategories);
     var json = JSON.parse(prevotedCategories);
 
-    document.getElementById("category1").innerHTML = json.cat1;
-    document.getElementById("category2").innerHTML = json.cat2;
-    document.getElementById("category3").innerHTML = json.cat3;
-    document.getElementById("category4").innerHTML = json.cat4;
-    document.getElementById("category5").innerHTML = json.cat5;
+    if(json.i1 !== "Random choice") document.getElementById("category1").innerHTML = json.cat1 + "<br><br><small>Votes: " + json.i1 + "</small>";
+    else document.getElementById("category1").innerHTML = json.cat1 + "<br><br><small>" + json.i1 + "</small>";
+    if(json.i2 !== "Random choice") document.getElementById("category2").innerHTML = json.cat2 + "<br><br><small>Votes: " + json.i2 + "</small>";
+    else document.getElementById("category2").innerHTML = json.cat2 + "<br><br><small>" + json.i2 + "</small>";
+    if(json.i3 !== "Random choice") document.getElementById("category3").innerHTML = json.cat3 + "<br><br><small>Votes: " + json.i3 + "</small>";
+    else document.getElementById("category3").innerHTML = json.cat3 + "<br><br><small>" + json.i3 + "</small>";
+    if(json.i4 !== "Random choice") document.getElementById("category4").innerHTML = json.cat4 + "<br><br><small>Votes: " + json.i4 + "</small>";
+    else document.getElementById("category4").innerHTML = json.cat4 + "<br><br><small>" + json.i4 + "</small>";
+    if(json.i5 !== "Random choice") document.getElementById("category5").innerHTML = json.cat5 + "<br><br><small>Votes: " + json.i5 + "</small>";
+    else document.getElementById("category5").innerHTML = json.cat5 + "<br><br><small>" + json.i5 + "</small>";
 }
 
 function sendCategory(chosenCategory) {
@@ -105,6 +110,11 @@ function showTabooWords(tabooWords) {
 function sendExplanation(explanation) {
     console.log('<< Send explanation.');
     sendToServer('/sendExplanation', explanation);
+    document.getElementById("templatesDiv").innerHTML = document.getElementById("templatesDiv").innerHTML
+        + "<div id='successfullySendPanel' class='panel panel-success' style='position: absolute; top: 47.5%; width: 75%; left: 12.5%; z-index: 5; display: none'><div class='panel-heading' style='text-align: center'>Explanation successfully sent!</div></div>";
+    $("#successfullySendPanel").fadeIn("slow").delay(1000).fadeOut("slow", function() {
+        $(this).remove();
+    });
 }
 
 function showQuestion(question) {
@@ -139,6 +149,11 @@ function chosenQuestion(num, p) {
 function sendAnswer(QandA) {
     console.log('<< Send answer.');
     sendToServer('/sendQandA', QandA);
+    document.getElementById("templatesDiv").innerHTML = document.getElementById("templatesDiv").innerHTML
+        + "<div id='successfullySendPanel' class='panel panel-success' style='position: absolute; top: 47.5%; width: 75%; left: 12.5%; z-index: 5; display: none'><div class='panel-heading' style='text-align: center'>Answer successfully sent!</div></div>";
+    $("#successfullySendPanel").fadeIn("slow").delay(1000).fadeOut("slow", function() {
+        $(this).remove();
+    });
 }
 
 function requestSkip(request) {

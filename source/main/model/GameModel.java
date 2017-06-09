@@ -14,10 +14,10 @@ import logic.bots.AltTwitchBot;
 import logic.bots.BeamBot;
 import logic.bots.Bot;
 import logic.commands.Command;
-import org.languagetool.JLanguageTool;
-import org.languagetool.language.BritishEnglish;
-import org.languagetool.language.GermanyGerman;
-import org.languagetool.rules.RuleMatch;
+//import org.languagetool.JLanguageTool;
+//import org.languagetool.language.BritishEnglish;
+//import org.languagetool.language.GermanyGerman;
+//import org.languagetool.rules.RuleMatch;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -43,7 +43,7 @@ public class GameModel extends Observable{
     private int errCounter = 0;
     private short MIN_PLAYERS;
 
-    private Language lang;
+    //private Language lang;
     private GameMode gameMode;
     private final Neo4jWrapper mOntologyDataBase;
 
@@ -73,21 +73,23 @@ public class GameModel extends Observable{
     private SiteController sCon;
 
     private Set<String> hosts;
+    private HashMap<String, AltTwitchBot> hostBots;
 
     private StanfordCoreNLP pipeline;
-    private JLanguageTool langTool;
+   // private JLanguageTool langTool;
 
-    public GameModel(Language l, short minPlayers, Neo4jWrapper neo){
+    public GameModel(/* lang l,*/short minPlayers, Neo4jWrapper neo){
         mGameState = GameState.Registration;
         mNumPlayers = 0;
         registeredPlayers = new ArrayList<>();
         tabooWords = new HashSet<>();
         explanations = new LinkedList<>();
         qAndA = new LinkedList<>();
-        lang = l;
+        //lang = l;
         MIN_PLAYERS = minPlayers;
         mOntologyDataBase = neo;
         hosts = new HashSet<>();
+        hostBots = new HashMap<>();
         prevoting = new ArrayList<>(10);
         usedWords = new HashSet<>();
         votekick = new HashSet<>();
@@ -98,12 +100,12 @@ public class GameModel extends Observable{
         props.setProperty("annotators", "tokenize,ssplit,pos,lemma,parse,natlog");
         pipeline = new StanfordCoreNLP(props);
 
-        if (lang.equals(Language.Eng)) {
+       /* if (lang.equals(Language.Eng)) {
             langTool = new JLanguageTool(new BritishEnglish());
         } else {
             langTool = new JLanguageTool(new GermanyGerman());
         }
-        generateVotingCategories();
+        generateVotingCategories();*/
     }
 
     public Set<String> getHosts() {
@@ -144,13 +146,13 @@ public class GameModel extends Observable{
         return mNumPlayers;
     }
 
-    public Language getLang() {
+    /*public Language getLang() {
         return lang;
-    }
+    }*/
 
-    public void setLang(Language lang) {
+    /*public void setLang(Language lang) {
         this.lang = lang;
-    }
+    }*/
 
     public GameMode getGameMode() {
         return gameMode;
@@ -333,20 +335,10 @@ public class GameModel extends Observable{
         prevoting.get(ID).increaseScore();
     }
 
-    public String[] getPrevotedCategories() {
-        String[] prevotedCategories = new String[5];
+    public ArrayList<PrevoteCategory> getPrevotedCategories() {
         Collections.sort(prevoting);
-        Iterator<PrevoteCategory> it = prevoting.iterator();
 
-        for (int i = 0; i < 5; i++) {
-            if (it.hasNext()) {
-                prevotedCategories[i] = it.next().getCategory();
-            } else {
-                break;
-            }
-        }
-
-        return prevotedCategories;
+        return prevoting;
     }
 
     public String[] getPrevoteCategories() {
@@ -493,12 +485,14 @@ public class GameModel extends Observable{
         votekick.clear();
     }
 
-    public void host(String host) {
-        if (hosts.contains(host)) {
-            hosts.remove(host);
-        } else {
-            hosts.add(host);
-        }
+    public void host(String host, AltTwitchBot hostBot) {
+        hosts.add(host);
+        hostBots.put(host, hostBot);
+    }
+
+    public void unhost(String host) {
+        hosts.remove(host);
+        hostBots.remove(host);
     }
 
     public String getGiverChannel() {
@@ -570,7 +564,7 @@ public class GameModel extends Observable{
         return lemmas;
     }
 
-    public void checkSpelling(String text) {
+   /* public void checkSpelling(String text) {
         try {
             List<RuleMatch> matches = langTool.check(text);
             for (RuleMatch match : matches) {
@@ -583,7 +577,7 @@ public class GameModel extends Observable{
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public boolean contribute(String user, String channel) {
 
@@ -609,5 +603,48 @@ public class GameModel extends Observable{
         }
 
         return false;
+    }
+
+    public void announceNewRound() {
+        for (AltTwitchBot ab : hostBots.values()) {
+            ab.announceNewRound();
+        }
+        bot.announceNewRound();
+    }
+
+    public void announceWinner(String winner) {
+        for (AltTwitchBot ab : hostBots.values()) {
+            ab.announceWinner(winner);
+        }
+        bot.announceWinner(winner);
+    }
+
+    public void announceNoWinner(String winner) {
+        for (AltTwitchBot ab : hostBots.values()) {
+            ab.announceNoWinner();
+        }
+        bot.announceNoWinner();
+    }
+
+    public void announceGiverNotAccepted(String user) {
+        for (AltTwitchBot ab : hostBots.values()) {
+            ab.announceGiverNotAccepted(user);
+        }
+        bot.announceGiverNotAccepted(user);
+    }
+
+    public void announceRegistration() {
+        for (AltTwitchBot ab : hostBots.values()) {
+            ab.announceRegistration();
+        }
+        bot.announceRegistration();
+    }
+
+    public void announceScore(String channel, String user, int score) {
+        if (channel.equals(giverChannel)) {
+            bot.announceScore(user, score);
+        } else {
+            hostBots.get(channel).announceScore(user, score);
+        }
     }
 }

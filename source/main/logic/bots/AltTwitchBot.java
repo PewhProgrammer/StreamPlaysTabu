@@ -19,7 +19,6 @@ public class AltTwitchBot extends Bot {
     public AltTwitchBot(GameModel gm, String channel) {
         super(gm, channel);
         connectToChatroom(channel);
-
     }
 
     private class Pirc extends PircBot {
@@ -36,14 +35,14 @@ public class AltTwitchBot extends Bot {
         public void onMessage(String channel, String sender,
                               String login, String hostname, String message) {
 
-            if (sender.equals("streamplaystaboo") | sender.equals(channel)){
+            if (sender.equals("streamplaystaboo") | ("#" + sender).equals(channel)){
                 if (message.startsWith("!shutdown")) {
                     Log.debug("shutdown command received!");
                     model.pushCommand(new Host(model, channel, channel));
                     partChannel(sender);
                     disconnect();
                     dispose();
-                    Thread.currentThread().interrupt();
+
                 }
             }
 
@@ -58,10 +57,7 @@ public class AltTwitchBot extends Bot {
             System.out.println(message);
             String[] channel = message.split(" ");
 
-            model.pushCommand(new Host(model, channel[0], channel[0]));
-
-            new AltTwitchBot(model, "#"+channel[0]);
-
+            model.pushCommand(new Host(model, channel[0], channel[0], new AltTwitchBot(model, "#" + channel[0])));
         }
     }
 
@@ -93,18 +89,17 @@ public class AltTwitchBot extends Bot {
             bot.connect("irc.chat.twitch.tv",
                     6667,
                     "oauth:" + "ksfaxec4iil2ao18nf2d91ua9she0z"); //streamplaystaboo
+            bot.joinChannel(user);
         } catch (Exception e) {
             bot.dispose();
         }
 
-        bot.joinChannel(user);
         Log.info("connected to " + user);
     }
 
     @Override
     public void sendChatMessage(String msg) {
         bot.sendMessage(channel, msg);
-
     }
 
     private void sendPrivMessage(String msg,String user){
@@ -113,7 +108,7 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void whisperRules(String user) {
-        sendChatMessage("/w " + user + " Rules: 1. No form or part of ANY word on the card (word to explain + taboo words) may be given as a explanation. Examples: If the Guess Word is LEAGUE OF LEGENDS,"+" Legends "+"cannot be given a an explanation. 2. No initials or abbreviations can be given if the words they represent are included on the card. Examples: LoL cannot be used if LEAGUE OF LEGENDS is the Guess Word or a TABOO word. 3. Players can be voted out with !votekick, if they do not follow the rules.");
+        sendChatMessage("/w " + user + " Rules: 1. No form or part of ANY word on the card (word to explain + taboo words) may be given as an explanation. Examples: If the Guess Word is LEAGUE OF LEGENDS,"+" Legends "+"cannot be given as an explanation. 2. No initials or abbreviations can be given if the words they represent are included on the card. Examples: LoL cannot be used if LEAGUE OF LEGENDS is the Guess Word or a TABOO word. 3. Players can be voted out with !votekick or kicked by a moderator, if they do not follow the rules.");
     }
 
     @Override
@@ -130,13 +125,13 @@ public class AltTwitchBot extends Bot {
 
     @Override
     public void announceWinner(String user) {
-        sendChatMessage("The Winner is " + user + ". Congratulations!"); //PogChamp?
+        sendChatMessage("The Winner is " + user + ". Congratulations!");
     }
 
-    public void announceNoWinner() {
-        sendChatMessage("There is no Winner!! Next time :)"); //PogChamp?
+    public void announceNoWinner()
+    {
+        sendChatMessage("There is no Winner!! Next time :)");
     }
-
     @Override
     public void announceGiverNotAccepted(String user) {
         sendChatMessage( user + " did not accept his offer to explain the word.");
@@ -167,8 +162,10 @@ public class AltTwitchBot extends Bot {
         for (int i = 0; i < viewers.length(); i++) {
             if (!viewers.getString(i).equals("streamplaystaboo")) {
                 users.add(viewers.getString(i));
+                System.out.println(viewers.getString(i));
             }
         }
+        System.out.println("Found " + users.size() + " users in channel " + channel);
         return users;
     }
 
@@ -236,7 +233,10 @@ public class AltTwitchBot extends Bot {
         if (parts[0].equals("!validate")) {
             int ID = Integer.parseInt(parts[1]);
             int valScore = Integer.parseInt(parts[2]);
-            return new Validate(model, channel, ID, valScore, sender);
+            if ((ID == 1) || (ID == 2) || (ID == 3) || (ID == 4) || (ID == 5)){
+                return  new Validate(model, channel, ID, valScore, sender);
+            }
+            return new Validate(model, channel, parts[1], valScore, sender);
         }
 
         // !taboo
