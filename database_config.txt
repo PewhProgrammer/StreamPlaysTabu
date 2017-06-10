@@ -1,4 +1,6 @@
 CreateExplainNode:
+alan wake
+left4dead
 dota2
 league of legends
 heroes of the storm
@@ -17,8 +19,6 @@ skyrim
 mass effect
 far cry 4
 resident evil
-alan wake
-left4dead
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
 alan wake;is published by;remedy entertainment
 alan wake;is known for;insomnia

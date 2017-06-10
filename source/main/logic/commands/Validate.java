@@ -17,6 +17,7 @@ public class Validate extends Command {
     private final String sender;
     private final String word;
     private final Set<String> tabooWords;
+    private final int valLevel;
 
     public Validate(GameModel gm, String ch, int ID, int valScore, String sender) {
         super(gm, ch);
@@ -25,8 +26,10 @@ public class Validate extends Command {
         this.score = valScore;
         this.sender = sender;
 
-        reference = gameModel.getExplainWord();
-        tabooWords = gameModel.getTabooWords();
+        valLevel = gm.getValidationLevel();
+
+        reference = gameModel.getValidationKey();
+        tabooWords = gameModel.getValidationObjects();
     }
 
     public Validate(GameModel gm, String ch, String word, int valScore, String sender) {
@@ -36,12 +39,15 @@ public class Validate extends Command {
         this.sender = sender;
         this.ID = -1;
 
-        reference = gameModel.getExplainWord();
-        tabooWords = gameModel.getTabooWords();
+        valLevel = gm.getValidationLevel();
+
+        reference = gameModel.getValidationKey();
+        tabooWords = gameModel.getValidationObjects();
     }
 
     @Override
     public void execute() {
+
         Iterator<String> it = tabooWords.iterator();
         String s = "";
         for (int i = 0; i < ID; i++) {
@@ -51,7 +57,13 @@ public class Validate extends Command {
             }
         }
 
-        gameModel.getNeo4jWrapper().validateConnectionTaboo(reference, s, score * 2 - 4);
+        if(valLevel == 0){
+            gameModel.getNeo4jWrapper().validateNode(s,score * 2 - 4);
+        } else if(valLevel == 1){
+            gameModel.getNeo4jWrapper().validateConnectionTaboo(reference, s, score * 2 - 4);
+        } else {
+            gameModel.getNeo4jWrapper().validateConnectionCategory(reference, s, score * 2 - 4);
+        }
     }
 
     @Override

@@ -169,9 +169,22 @@ function requestValidation(request) {
 function showValidation(validation) {
     console.log('>> Received validation: ' + validation);
     var json = JSON.parse(validation);
-    document.getElementById("validationCategoryLabel_one").textContent = json.reference1;
-    document.getElementById("validationCategoryLabel_two").textContent = json.reference2;
-    document.getElementById("validationCategoryLabel_three").textContent = json.reference3;
+
+    var labelOne = document.getElementById("validationCategoryLabel_one");
+    if(json.reference1 != 'EMPTY'){
+    document.getElementById("val1").style.visibility = "visible";
+    } else if(json.reference2 != 'EMPTY'){
+            document.getElementById("val2").style.visibility = "visible";
+    }else if(json.reference3 != 'EMPTY'){
+    document.getElementById("val3").style.visibility = "visible";
+    } else {
+        document.getElementById("valHeader").innerHTML = "<b> There is currently no need for " +
+        " validation :)";
+    }
+
+    labelOne.textContent = json.reference1;
+                document.getElementById("validationCategoryLabel_two").textContent = json.reference2;
+        document.getElementById("validationCategoryLabel_three").textContent = json.reference3;
 
     //First validation refers to explain word only
     document.getElementById("validationTabooLabel_two").textContent = json.taboo2;

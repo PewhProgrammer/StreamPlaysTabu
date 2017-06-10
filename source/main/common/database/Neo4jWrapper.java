@@ -122,7 +122,6 @@ public class Neo4jWrapper {
                               String explainWord, String outcome, GameMode mode) {
 
 
-
         String result;
         LinkedList<String> results = new LinkedList<>();
         StringBuilder temp = new StringBuilder();
@@ -141,29 +140,28 @@ public class Neo4jWrapper {
                 .append(", s.gameMode = {mode} ")
                 .append(", s.numRegisteredPlayers = {numRegistered}");
 
-        int i = 0 ;
-        for(String[] qA : qAnda){
-            String attach = qA[0] + " -> " + qA[1] ;
-            query.append(", s.qA"+i+" = " + attach);
+        int i = 0;
+        for (String[] qA : qAnda) {
+            String attach = qA[0] + " -> " + qA[1];
+            query.append(", s.qA" + i + " = " + attach);
             i++;
         }
 
-        for(String taboo : tabooWords){
+        for (String taboo : tabooWords) {
             temp.append(taboo).append(", ");
         }
         query.append(", s.tabooWords = ").append(temp).append(" ");
         temp = new StringBuilder();
 
-        for(String taboo : tabooWords){
+        for (String taboo : tabooWords) {
             temp.append(taboo).append(", ");
         }
         query.append(", s.tabooWords = ").append(temp).append(" ");
 
 
-
         Transaction transX = session.beginTransaction();
         try {
-            StatementResult sResult = transX.run(query.toString(),parameters("name","Games"));
+            StatementResult sResult = transX.run(query.toString(), parameters("name", "Games"));
             while (sResult.hasNext()) {
                 result = sResult.next().values().get(0).
                         asNode().get("name").toString().replaceAll("\"", "");
@@ -199,6 +197,8 @@ public class Neo4jWrapper {
         return result;
     }
 
+
+
     private String getRandomExplainWord(int querySize) {
         String explain = "";
         Set<String> cat = fetchFilteredCategoryFromDatabase(querySize);
@@ -213,7 +213,14 @@ public class Neo4jWrapper {
     public ArrayList<Pair> getValidationForGiver() {
         ArrayList<Pair> result = new ArrayList<>();
         //get explain
-        result.add(new Pair(getExplainForValidation(), ""));
+        String explain;
+        try {
+            explain = getExplainForValidation(1).getFirst();
+        } catch (NoSuchElementException e) {
+            explain = "EMPTY";
+        }
+        result.add(new Pair(explain, ""));
+
         //get taboo - explain
         result.add(getTabooExplainForValidation());
         //get explain - category
@@ -224,7 +231,7 @@ public class Neo4jWrapper {
         return result;
     }
 
-    public String getExplainForValidation() {
+    public LinkedList<String> getExplainForValidation(int i) {
         String result;
         LinkedList<String> results = new LinkedList<>();
         StringBuilder query = new StringBuilder();
@@ -245,11 +252,9 @@ public class Neo4jWrapper {
         }
 
         Collections.shuffle(results, randomizer);
-        try {
-            return results.getFirst();
-        } catch (NoSuchElementException e) {
-            return "EMPTY";
-        }
+        LinkedList<String> k = new LinkedList<>();
+        k.addAll(results.subList(0,i));
+        return k;
     }
 
     public Pair getTabooExplainForValidation() {
@@ -290,7 +295,7 @@ public class Neo4jWrapper {
                 .append("WHERE s.needValidation = false AND s.type = 'explain' ")
                 .append("AND t.type <> 'basic' ")
                 .append("AND rel.needValidationCategory = true AND rel.validationLock <> true ")
-                .append("RETURN s,t");
+                .append("RETURN s,t ");
         Transaction transX = session.beginTransaction();
         try {
             StatementResult sResult = transX.run(query.toString());

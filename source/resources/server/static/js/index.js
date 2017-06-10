@@ -9,6 +9,7 @@ var tempString = "";
 var templateLayer = 0;
 var timer;
 var tempUsage = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
+var validated = 0;
 
 $(function () {
     $("form").on('submit', function (e) {
@@ -129,7 +130,7 @@ function onCategoryChosen(category) {
 }
 
 function onExplanation() {
-        console.log("On Explanation process");
+    console.log("On Explanation process");
     if (tempUsage[templateId] === 0) {
         //already used twice
         return;
@@ -151,7 +152,7 @@ function onExplanation() {
         document.getElementById('template_layer1').style.display = 'block';
         document.getElementById('template_layer' + templateLayer).style.display = 'none';
 
-        console.log("id: "+ templateId + " active: " + activeQuestion );
+        console.log("id: " + templateId + " active: " + activeQuestion);
         var result = "";
         if (templateId < 4 && templateId >= 1) {
             result += tempString;
@@ -171,13 +172,13 @@ function onExplanation() {
             console.log("Sent Explanation");
             sendExplanation(createExplanationEvent(result));
         } else if (activeQuestion > -1) {
-                console.log("Sent Answer");
-                sendAnswer(createAnswerEvent(result));
-                questions[activeQuestion] = null;
-                refreshQuestions();
-                activeQuestion = -1;
-                hideTemplates();
-            }
+            console.log("Sent Answer");
+            sendAnswer(createAnswerEvent(result));
+            questions[activeQuestion] = null;
+            refreshQuestions();
+            activeQuestion = -1;
+            hideTemplates();
+        }
     }
 
     document.getElementById("explanationText").innerHTML = "";
@@ -193,8 +194,8 @@ function onSkip() {
     requestSkip(createSkipRequest());
 }
 
-function onValidation(explain, taboo, score,id) {
-    sendValidation(createValidationEvent(explain, taboo, score,id));
+function onValidation(explain, taboo, score, id) {
+    sendValidation(createValidationEvent(explain, taboo, score, id));
 }
 
 function createGiverJoinedEvent() {
@@ -273,7 +274,7 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-function createValidationEvent(explain, taboo, score,id) {
+function createValidationEvent(explain, taboo, score, id) {
     return JSON.stringify({
         'password': pw,
         'reference': explain,
@@ -396,7 +397,7 @@ function handleTemplateDropDownMultiple(description, description2, description3,
 
 
     templateId = id;
-        showTemplateUsage(tempUsage[templateId]);
+    showTemplateUsage(tempUsage[templateId]);
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv1').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'none';
@@ -424,7 +425,7 @@ function handleTemplateDropDownDouble(description, description2, id) {
     document.getElementById("input3").innerHTML = "";
 
     templateId = id;
-        showTemplateUsage(tempUsage[templateId]);
+    showTemplateUsage(tempUsage[templateId]);
     tempString = description;
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'block';
@@ -449,15 +450,15 @@ function handleTemplateDropDownDouble(description, description2, id) {
 function handleStars(id, count) {
     console.log("id: " + id + " , count: " + count);
     var label = "";
+    validated += 1;
     if (id === 1) {
         label = "one";
+        nextLabel = "two";
         document.getElementById("val1").style.visibility = "hidden";
         document.getElementById("val1").style.zIndex = "-2";
         document.getElementById("val3").style.zIndex = "-1";
         document.getElementById("val2").style.zIndex = "0";
-        document.getElementById("val2").style.visibility = "visible";
-        document.getElementById("valHeader").innerHTML = "Does the taboo word below fit to its explain word? "
-        + "<br>You have gained +10 seconds extra time already!";
+        showNextValidation(1);
     }
     if (id === 2) {
         label = "two";
@@ -465,37 +466,67 @@ function handleStars(id, count) {
         document.getElementById("val1").style.zIndex = "-1";
         document.getElementById("val3").style.zIndex = "0";
         document.getElementById("val2").style.zIndex = "-2";
-        document.getElementById("val3").style.visibility = "visible";
-        document.getElementById("valHeader").innerHTML = "Does the explain word below fit to its category? "
-        + "<br>You have gained +20 seconds extra time already!";
+        showNextValidation(2);
     }
     if (id === 3) {
         label = "three";
         document.getElementById("val3").style.visibility = "hidden";
-                document.getElementById("valHeader").innerHTML = "Thank you very much for helping us improve this game!"
-                + "<br>You have gained +30 seconds extra time in total!";
+        document.getElementById("valHeader").innerHTML = "Thank you very much for helping us improve this game!" +
+            "<br>You have gained +" + validated + "0 seconds extra time in total!";
     }
+
+
     var cat = document.getElementById('validationCategoryLabel_' + label).textContent;
     var taboo = document.getElementById('validationTabooLabel_' + label).textContent;
     document.getElementById('stars_' + label).style.display = 'none';
     timeLeft += 10;
     timeMax += 10;
-    onValidation(cat, taboo, count,id);
+    onValidation(cat, taboo, count, id);
 }
 
-function showTemplateUsage(i){
+function showNextValidation(i) {
+    var gain = "<br>You have gained +" + validated + "0 seconds extra time already!";
+    var categoryLabel = "Does the explain word below fit to its category? ";
+
+    if (i === 1) {
+        if (document.getElementById("validationCategoryLabel_two").textContent != 'EMPTY') {
+            document.getElementById("val2").style.visibility = "visible";
+            document.getElementById("valHeader").innerHTML = "Does the taboo word below fit to its explain word? " +
+                gain;
+        } else if (document.getElementById("validationCategoryLabel_three").textContent != 'EMPTY') {
+            document.getElementById("val3").style.visibility = "visible";
+            document.getElementById("valHeader").innerHTML = categoryLabel +
+                gain;
+        } else {
+            document.getElementById("val3").style.visibility = "hidden";
+            document.getElementById("valHeader").innerHTML = "Thank you very much for helping us improve this game!" +
+                "<br>You have gained +" + validated + "0 seconds extra time in total!";
+        }
+    } else if (i === 2) {
+        if (document.getElementById("validationCategoryLabel_three").textContent != 'EMPTY') {
+            document.getElementById("val3").style.visibility = "visible";
+            document.getElementById("valHeader").innerHTML = categoryLabel +
+                gain;
+        } else {
+            document.getElementById("val3").style.visibility = "hidden";
+            document.getElementById("valHeader").innerHTML = "Thank you very much for helping us improve this game!" +
+                "<br>You have gained +" + validated + "0 seconds extra time in total!";
+        }
+    }
+}
+
+function showTemplateUsage(i) {
     var doc = document.getElementById("explanationLabel");
-        var doc_2 = document.getElementById("explanationLabel1");
-        var label = "Your Explanation: ( you can only use this template "
-                         + i + " more times )";
+    var doc_2 = document.getElementById("explanationLabel1");
+    var label = "Your Explanation: ( you can only use this template " +
+        i + " more times )";
 
-              if(i === 0){
-              document.getElementById("explanation").disabled = true;
-              label = "You have used this template twice already!";
+    if (i === 0) {
+        document.getElementById("explanation").disabled = true;
+        label = "You have used this template twice already!";
 
-              }
-              else  document.getElementById("explanation").disabled = false;
-                  doc.innerHTML = label;
-                  doc_2.innerHTML = label;
+    } else document.getElementById("explanation").disabled = false;
+    doc.innerHTML = label;
+    doc_2.innerHTML = label;
 
 }

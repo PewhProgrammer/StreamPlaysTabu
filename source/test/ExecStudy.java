@@ -17,6 +17,7 @@ public class ExecStudy extends TestCase {
 
     private boolean simulation = false;
     private String neo4jbindAddr = "pewhgames.com:7687";
+    //private String neo4jbindAddr = "localhost:7687";
     private Neo4jWrapper database;
     private final Random randomizer = new Random(new Date().getTime());
     private static final String FILENAME = "database_config.txt";
@@ -45,7 +46,7 @@ public class ExecStudy extends TestCase {
                 try {
                     database.createNode(sCurrentLine, true);
                     i++;
-                    if(i == 4) database.setSimulation(false);
+                    if(i == 7) database.setSimulation(false);
                 } catch (DatabaseException e) {
                     Log.db(e.getMessage());
                     //fail();
@@ -54,12 +55,12 @@ public class ExecStudy extends TestCase {
             }
             i = 0;
             sCurrentLine = br.readLine();
-            database.setSimulation(true);
+            database.setSimulation(false);
             while (sCurrentLine != null) {
                 String[] parts = sCurrentLine.split(";");
                 try {
                     i++;
-                    if(i == 2) database.setSimulation(true);
+                    if(i == 6) database.setSimulation(true);
                     database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true);
                 }catch (ArrayIndexOutOfBoundsException e){
                     Log.db("Wrong Formatting: "+ parts.toString());
@@ -70,7 +71,6 @@ public class ExecStudy extends TestCase {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void testGetUserRankings(){

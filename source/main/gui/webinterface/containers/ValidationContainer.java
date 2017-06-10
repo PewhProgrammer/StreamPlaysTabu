@@ -14,10 +14,12 @@ public class ValidationContainer {
     private String taboo3 = "";
     private String taboo4 = "";
     private String taboo5 = "";
+    private int id = 0 ;
 
-    public ValidationContainer(String reference, Set<String> tabooWords) {
+    public ValidationContainer(String reference, Set<String> tabooWords,int id) {
         this.reference = reference;
         Iterator<String> it = tabooWords.iterator();
+        this.id = id ;
 
         if (it.hasNext()) {
             taboo1 = it.next();
@@ -63,4 +65,6 @@ public class ValidationContainer {
     public String getTaboo5() {
         return taboo5;
     }
+
+    public int getId(){ return id;}
 }

@@ -398,20 +398,21 @@ public class Neo4jWrapperTest {
                 try {
                     database.createNode(sCurrentLine, true);
                     i++;
-                    if(i == 5) database.setSimulation(false);
+                    if(i == 7) database.setSimulation(false);
                 } catch (DatabaseException e) {
                     Log.db(e.getMessage());
                     //fail();
                 }
                 sCurrentLine = br.readLine();
             }
+            i = 0;
             sCurrentLine = br.readLine();
-            database.setSimulation(true);
+            database.setSimulation(false);
             while (sCurrentLine != null) {
                 String[] parts = sCurrentLine.split(";");
                 try {
                     i++;
-                    if(i == 15) database.setSimulation(true);
+                    if(i == 6) database.setSimulation(true);
                     database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true);
                 }catch (ArrayIndexOutOfBoundsException e){
                     Log.db("Wrong Formatting: "+ parts.toString());

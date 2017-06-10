@@ -61,11 +61,16 @@ public class GameModel extends Observable{
 
     private HashMap<String, Set<String>> validationInfo;
 
+    private String validationKey;
+    private Set<String> validationObjects;
+
     private String giverChannel = "";
 
     private String category, giver = "", word, winner;
     private int gainedPoints = 0;
     private int difficultyLevel = 1 ;
+
+    private int validationLevel = -1 ;
 
     private ArrayList<PrevoteCategory> prevoting;
 
@@ -319,6 +324,14 @@ public class GameModel extends Observable{
         notifyQandA();
     }
 
+    public int getValidationLevel() {
+        return validationLevel;
+    }
+
+    public void setValidationLevel(int validationLevel) {
+        this.validationLevel = validationLevel;
+    }
+
     public void setCategory(String category) {
         this.category = category;
         notifyCategoryChosen();
@@ -391,6 +404,22 @@ public class GameModel extends Observable{
         }
         usedWords.add(word);
         return word;
+    }
+
+    public String getValidationKey() {
+        return validationKey;
+    }
+
+    public void setValidationKey(String validationKey) {
+        this.validationKey = validationKey;
+    }
+
+    public Set<String> getValidationObjects() {
+        return validationObjects;
+    }
+
+    public void setValidationObjects(Set<String> validationObjects) {
+        this.validationObjects = validationObjects;
     }
 
     public void setExplainWord(String word) {
@@ -482,6 +511,7 @@ public class GameModel extends Observable{
         prevoting.clear();
         usedWords.clear();
         setNumPlayers(0);
+        setValidationLevel(-1);
         clearRegisteredPlayers();
         generateVotingCategories();
     }

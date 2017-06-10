@@ -143,6 +143,7 @@ function updateCategoryVote(categories) {
 function updateValidation(validation) {
 
     var json = JSON.parse(validation.body);
+    console.log("Validation container: " + JSON.stringify(json));
     var string = "<big>" + json.reference + "</big>" + "<br><small>";
     if (json.taboo1 != "") {
         string = string + "<ol><li>" + json.taboo1 + "</li>"
@@ -160,6 +161,21 @@ function updateValidation(validation) {
         string = string + "<li>" + json.taboo5 + "</li></ol></small>"
     }
 
+    if(json.id == 0){
+    document.getElementById("validateDescription").innerHTML = "<small>How good can these words be explained<br> Type</small> !validate &lt;ID&gt; &lt;1-5&gt; <small>(1 = bad, 5 = good):</small>";
+        document.getElementById("tabooText").innerHTML =
+        '<small>Do you have an idea for a new word to explain? <br>Type</small> !taboo &lt;word&gt;<small> to share it with us.</small>';
+    }
+    else if(json.id == 1){
+        document.getElementById("validateDescription").innerHTML = "<small>How fitting are these taboo words??<br> Type</small> !validate &lt;ID&gt; &lt;1-5&gt; <small>(1 = bad, 5 = good):</small>";
+        document.getElementById("tabooText").innerHTML =
+                '<small>Do you have an idea for a new taboo word? <br>Type</small> !taboo &lt;word&gt;<small> to share it with us.</small>';
+    }
+    else if(json.id == 2){
+        document.getElementById("validateDescription").innerHTML = "<small>How much does this word fit to its category?<br> Type</small> !validate &lt;ID&gt; &lt;1-5&gt; <small>(1 = bad, 5 = good):</small>";
+        document.getElementById("tabooText").innerHTML =
+                        '<small>Ideas for a new word to explain fitting this category? <br>Type</small> !taboo &lt;word&gt;<small> to share it with us.</small>';
+    }
     document.getElementById("validateText").innerHTML = string;
 }
 
