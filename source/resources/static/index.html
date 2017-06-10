@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="css/setup.css" th:href="@{/css/setup.css}"/>
 </head>
 
-<body onload="connectLoc()">
+<body onload="loadPage()">
 
 <div class="backgroundImg">
     <img src="images/start.png" th:src="@{images/start.png}"/>
@@ -22,11 +22,11 @@
 <div class="container">
 
     <form class="form-signin">
-        <h1 class="form-signin-heading">StreamPlaysTaboo</h1>
-        <h2 class="form-signin-heading">Settings</h2>
+        <h1 id="heading" style="display: none" class="form-signin-heading">StreamPlaysTaboo</h1>
+        <h2 id="h2" style="display: none" class="form-signin-heading">Settings</h2>
 
         <!-- Dropdown for Gamemode -->
-        <div class="dropdown">
+        <div id="mode" style="display: none" class="dropdown">
             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMode" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 Free for all
                 <span class="caret"></span>
@@ -38,7 +38,7 @@
         </div>
         <br/>
         <!-- Dropdown for Platforms -->
-        <div class="dropdown">
+        <div id="platforms" class="dropdown" style="display: none">
             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownPlatform" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Twitch
                 <span class="caret"></span>
@@ -51,13 +51,14 @@
         <br/>
         <!-- Textbox for Channel -->
         <label for="channelName" class="sr-only">Channelname</label>
-        <input type="text" id="channelName" class="form-control" placeholder="Channelname..." required="required"/>
+        <input style="display: none" type="text" id="channelName" class="form-control" placeholder="Channelname..." required="required"/>
         <br/>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" id="startGame">Start Game</button>
+        <button style="display: none" class="btn btn-lg btn-primary btn-block" type="submit" id="startGame">Start Game</button>
     </form>
 
-
-</div> <!-- /container -->
+</div>
+<!-- /container -->
+<div id="botText" style="position: relative; display: none; opacity: 0; text-align: center; font-size: 2.5vmin; width: 100%;">You can end the game by typing !shutdown into your streams chat!</div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
     <script src="js/setup.js" th:src="@{/js/setup.js}"></script>

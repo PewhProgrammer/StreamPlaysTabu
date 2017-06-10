@@ -30,3 +30,23 @@ function sendSetup() {
         })
     );
 }
+
+function loadPage() {
+    $('#botText').css('display', 'block');
+    $('#botText').animate({
+        opacity: 0
+    }, 0);
+
+    $("#heading").fadeIn();
+    $("#h2").delay(200).fadeIn();
+    $("#mode").delay(400).fadeIn();
+    $("#platforms").delay(600).fadeIn();
+    $("#channelName").delay(800).fadeIn();
+    $("#startGame").delay(1000).fadeIn();
+    $("#botText").delay(1200).animate({
+        opacity: 1,
+        top: "+=5%"
+    }, 1000);
+
+    connectLoc();
+}

@@ -2,7 +2,7 @@ var timeLeft = 30;
 // Update the count down every 1 second
 var x = setInterval(function() {
 
-       if(timeLeft != 0){
+    if(timeLeft != 0){
     timeLeft = timeLeft - 1;
 
     document.getElementById("progressbar").innerHTML = timeLeft + "s";
@@ -15,6 +15,44 @@ var x = setInterval(function() {
         document.getElementById("statusInfo").innerHTML = "Next User to register will become the giver!";
     }
 }, 1000);
+
+function animateRank() {
+    var aTime = 450;
+    $('#first').fadeTo(aTime, 1, function () {
+        $(this).delay(9000).fadeTo(aTime, 0);
+    });
+    $('#second').delay(200).fadeTo(aTime, 1, function () {
+        $(this).delay(9000).fadeTo(aTime, 0);
+    });
+    $('#third').delay(400).fadeTo(aTime, 1, function () {
+        $(this).delay(9000).fadeTo(aTime, 0);
+    });
+    $('#fourth').delay(600).fadeTo(aTime, 1, function () {
+        $(this).delay(9000).fadeTo(aTime, 0);
+    });
+    $('#fifth').delay(800).fadeTo(aTime, 1, function () {
+        $(this).delay(9000).fadeTo(aTime, 0);
+    });
+    $('#sixth').delay(200).fadeTo(aTime, 1, function () {
+        $(this).delay(9000).fadeTo(aTime, 0);
+    });
+    $('#seventh').delay(400).fadeTo(aTime, 1, function () {
+        $(this).delay(9000).fadeTo(aTime, 0);
+    });
+    $('#eighth').delay(600).fadeTo(aTime, 1, function () {
+        $(this).delay(9000).fadeTo(aTime, 0);
+    });
+    $('#ninth').delay(800).fadeTo(aTime, 1, function () {
+        $(this).delay(9000).fadeTo(aTime, 0);
+    });
+    $('#tenth').delay(1000).fadeTo(aTime, 1, function () {
+        $(this).delay(9000).fadeTo(aTime, 0);
+    });
+}
+animateRank();
+var a = setInterval(function() {
+    animateRank();
+}, 11000);
 
 function updateRanking(ranking) {
     if (window.location.href == 'http://localhost:8080/registerFFA.html') {
@@ -30,6 +68,35 @@ function updateRanking(ranking) {
         document.getElementById("ninth").innerHTML = json.ninthName + "<br>" + json.ninthPoints + " Pts.";
         document.getElementById("tenth").innerHTML = json.tenthName + "<br>" + json.tenthPoints + " Pts.";
     } else {
+        document.getElementByID("sndStream").innerHTML = json.stream2 + "<br>" + json.points2 + " Pts.";
+        if (json.contributors2[0] != "")
+            document.getElementByID("firstCont2").innerHTML = json.contributors2[0] + "<br>" + json.userPoints2[0] + " Pts.";
+
+        if (json.contributors2[1] != "")
+            document.getElementByID("sndCont2").innerHTML = json.contributors2[1] + "<br>" + json.userPoints2[1] + " Pts.";
+
+        if (json.contributors2[2] != "")
+            document.getElementByID("thirdCont2").innerHTML = json.contributors2[2] + "<br>" + json.userPoints2[2] + " Pts.";
+
+        document.getElementByID("firstStream").innerHTML = json.stream1 + "<br>" + json.points1 + " Pts.";
+        if (json.contributors1[0] != "")
+            document.getElementByID("firstCont1").innerHTML = json.contributors1[0] + "<br>" + json.userPoints1[0] + " Pts.";
+
+        if (json.contributors1[1] != "")
+            document.getElementByID("sndCont1").innerHTML = json.contributors1[1] + "<br>" + json.userPoints1[1] + " Pts.";
+
+        if (json.contributors1[2] != "")
+            document.getElementByID("thirdCont1").innerHTML = json.contributors1[2] + "<br>" + json.userPoints1[2] + " Pts.";
+
+        document.getElementByID("thirdStream").innerHTML = json.stream3 + "<br>" + json.points3 + " Pts.";
+        if (json.contributors3[0] != "")
+            document.getElementByID("firstCont3").innerHTML = json.contributors3[0] + "<br>" + json.userPoints3[0] + " Pts.";
+
+        if (json.contributors3[1] != "")
+            document.getElementByID("sndCont3").innerHTML = json.contributors3[1] + "<br>" + json.userPoints3[1] + " Pts.";
+
+        if (json.contributors3[2] != "")
+            document.getElementByID("thirdCont3").innerHTML = json.contributors3[2] + "<br>" + json.userPoints3[2] + " Pts.";
         //TODO write json content into StreamScore
     }
 }

@@ -167,11 +167,19 @@ public class AltTwitchBot extends Bot {
 
         JSONObject chatters = obj.getJSONObject("chatters");
         JSONArray viewers = chatters.getJSONArray("viewers");
+        JSONArray mods = chatters.getJSONArray("moderators");
+
+        for (int i = 0; i < mods.length(); i++) {
+            if (!mods.getString(i).equals("streamplaystaboo")) {
+                users.add(mods.getString(i));
+                Log.trace(mods.getString(i));
+            }
+        }
 
         for (int i = 0; i < viewers.length(); i++) {
             if (!viewers.getString(i).equals("streamplaystaboo")) {
                 users.add(viewers.getString(i));
-                System.out.println(viewers.getString(i));
+                Log.trace(viewers.getString(i));
             }
         }
         System.out.println("Found " + users.size() + " users in channel " + channel);
