@@ -1,6 +1,8 @@
 package common.database;
 
 import common.*;
+import model.GameMode;
+import model.Guess;
 import org.neo4j.driver.v1.*;
 import org.neo4j.driver.v1.exceptions.*;
 
@@ -19,7 +21,7 @@ public class Neo4jWrapper {
     private final Config config;
     private final int DEL_TRESHHOLD = 2; //
     private final int CATEGORY_TRESHOLD = 3; //word qualifies as category if more equal than 3 incoming arcs are available
-    private final int VALIDATE_THRESHOLD = 8 ; //only need a validation score of eight
+    private final int VALIDATE_THRESHOLD = 8; //only need a validation score of eight
     private final String label;
     private final Driver driver;
     private final Random randomizer;
@@ -110,6 +112,69 @@ public class Neo4jWrapper {
         if (result.size() < querySize)
             Log.db("Could not retrieve enough taboo words. Missing -> Expected " + querySize + "; Actual " + result.size());
         return result;
+    }
+
+    //Called after a new game
+    public void updateNewGame(int roundTime, String giver, int difficulty,
+                              LinkedList<Guess> guesses, LinkedList<String[]> qAnda,
+                              List<String> registeredPlayers, Set<String> tabooWords,
+                              Set<String> skippedWords, List<String> explanations,
+                              String explainWord, String outcome, GameMode mode) {
+
+
+
+        String result;
+        LinkedList<String> results = new LinkedList<>();
+        StringBuilder temp = new StringBuilder();
+        StringBuilder logQuery = new StringBuilder();
+        logQuery.append("MATCH (s: " + "Logging" + ") WHERE name = {name} ")
+                .append("SET s.games = s.games + 1 ")
+                .append("RETURN s.games");
+        StringBuilder query = new StringBuilder();
+        query
+                .append("CREATE (s: " + "Logging" + " {name: {numGames}}) ")
+                .append("SET s.roundTime = {roundTime} ")
+                .append(", s.giver = {giver} ")
+                .append(", s.gameDifficulty = {difficulty} ")
+                .append(", s.toExplain = {explainWord} ")
+                .append(", s.gameOutcome = {outcome} ")
+                .append(", s.gameMode = {mode} ")
+                .append(", s.numRegisteredPlayers = {numRegistered}");
+
+        int i = 0 ;
+        for(String[] qA : qAnda){
+            String attach = qA[0] + " -> " + qA[1] ;
+            query.append(", s.qA"+i+" = " + attach);
+            i++;
+        }
+
+        for(String taboo : tabooWords){
+            temp.append(taboo).append(", ");
+        }
+        query.append(", s.tabooWords = ").append(temp).append(" ");
+        temp = new StringBuilder();
+
+        for(String taboo : tabooWords){
+            temp.append(taboo).append(", ");
+        }
+        query.append(", s.tabooWords = ").append(temp).append(" ");
+
+
+
+        Transaction transX = session.beginTransaction();
+        try {
+            StatementResult sResult = transX.run(query.toString(),parameters("name","Games"));
+            while (sResult.hasNext()) {
+                result = sResult.next().values().get(0).
+                        asNode().get("name").toString().replaceAll("\"", "");
+                results.add(result);
+            }
+            transX.success();
+        } finally {
+            transX.close();
+        }
+
+        Log.db("Updated a new game instance");
     }
 
     /**
@@ -254,7 +319,7 @@ public class Neo4jWrapper {
      * increases all connection between source and target node
      *
      * @param source target
-     * @param target   source
+     * @param target source
      */
     public void validateConnectionTaboo(String source, String target, int i) {
         source = Util.reduceStringToMinimum(source);
@@ -269,11 +334,14 @@ public class Neo4jWrapper {
                 .append("SET rel.needValidationTaboo = flag");
 
         Transaction transX = session.beginTransaction();
-        try { transX.run(query.toString(),
+        try {
+            transX.run(query.toString(),
                     parameters("n1", source, "n2", target));
             transX.success();
-            Log.db("VALIDATED taboo connection " + source + "-> "+ target +" with " + i + " score");
-        } finally { transX.close(); }
+            Log.db("VALIDATED taboo connection " + source + "-> " + target + " with " + i + " score");
+        } finally {
+            transX.close();
+        }
     }
 
     public void validateConnectionCategory(String source, String target, int i) {
@@ -289,11 +357,14 @@ public class Neo4jWrapper {
                 .append("SET rel.needValidationCategory = flag");
 
         Transaction transX = session.beginTransaction();
-        try { transX.run(query.toString(),
-                parameters("n1", source, "n2", target));
+        try {
+            transX.run(query.toString(),
+                    parameters("n1", source, "n2", target));
             transX.success();
-            Log.db("VALIDATED category connection " + source + "-> "+ target +" with " + i + " score");
-        } finally { transX.close(); }
+            Log.db("VALIDATED category connection " + source + "-> " + target + " with " + i + " score");
+        } finally {
+            transX.close();
+        }
     }
 
     public void validateNode(String source, int i) {
@@ -308,11 +379,14 @@ public class Neo4jWrapper {
                 .append("SET s.needValidation = flag");
 
         Transaction transX = session.beginTransaction();
-        try { transX.run(query.toString(),
+        try {
+            transX.run(query.toString(),
                     parameters("n1", source));
             transX.success();
             Log.db("VALIDATED " + source + " with " + i + " score");
-        } finally { transX.close(); }
+        } finally {
+            transX.close();
+        }
     }
 
     public void setUserErrorTimeStamp(String user, Date d) {
@@ -447,7 +521,7 @@ public class Neo4jWrapper {
         try {
             transX.run("CREATE (a: " + label + " {name: {name}," +
                             " type: {type}, needValidation: {validateBoolean} , validateRating: 0, validationLock: "
-                    +!needValidation+" })",
+                            + !needValidation + " })",
                     parameters("name", nodeName, "type", type, "validateBoolean", validate));
             transX.success();
         } finally {
@@ -519,10 +593,13 @@ public class Neo4jWrapper {
                 .append("SET rel.needValidationTaboo = flag ");
 
         Transaction transX = session.beginTransaction();
-        try { transX.run(query.toString(),
+        try {
+            transX.run(query.toString(),
                     parameters("n1", node1, "n2", node2, "rel", relationship));
             transX.success();
-        } finally { transX.close(); }
+        } finally {
+            transX.close();
+        }
 
         Log.db("Created Relationship: " + node1 + " -> " + node2);
         return true;
@@ -593,7 +670,7 @@ public class Neo4jWrapper {
         return true;
     }
 
-    public void createQuestion(String src, String relation, String target){
+    public void createQuestion(String src, String relation, String target) {
 
         src = Util.reduceStringToMinimum(src);
         target = Util.reduceStringToMinimum(target);
@@ -608,10 +685,13 @@ public class Neo4jWrapper {
                 .append(", t: Logging");
 
         Transaction transX = session.beginTransaction();
-        try { transX.run(query.toString(),
-                parameters("n1", src, "n2", target, "rel", relation));
+        try {
+            transX.run(query.toString(),
+                    parameters("n1", src, "n2", target, "rel", relation));
             transX.success();
-        } finally { transX.close(); }
+        } finally {
+            transX.close();
+        }
 
         Log.db("Created Relationship: " + src + " -> " + target);
     }
@@ -851,7 +931,7 @@ public class Neo4jWrapper {
     private void generateUserNodeInDatabase(String user) throws common.database.DatabaseException {
         StringBuilder query = new StringBuilder();
         query
-                .append("MERGE (s: "+ userLabel+ " {name: {name}}) ")
+                .append("MERGE (s: " + userLabel + " {name: {name}}) ")
                 .append("ON CREATE ")
                 .append("SET s.name = {name} ")
                 .append(", s.mistakes = 0 ")
@@ -863,7 +943,9 @@ public class Neo4jWrapper {
             transX.run(query.toString(),
                     parameters("name", user, "points", 0, "v1", "none"));
             transX.success();
-        } finally { transX.close(); }
+        } finally {
+            transX.close();
+        }
     }
 
     private void generateNodeInDatabase(customNode data) throws common.database.DatabaseException {
@@ -974,10 +1056,10 @@ public class Neo4jWrapper {
                 List<Record> list = sResult.list();
                 list = list.stream().sorted(
                         (o2, o1) -> ((Integer) (o1.get("rel").asRelationship().get("validateRatingTaboo").asInt()
-                         + (Integer) o1.get("rel").asRelationship().get("frequency").asInt() ) )
-                        .compareTo((Integer) o2.get("rel").asRelationship().get("validateRatingTaboo").asInt()
-                        + (Integer) o2.get("rel").asRelationship().get("frequency").asInt()
-                        )).limit(count).collect(Collectors.toList());
+                                + (Integer) o1.get("rel").asRelationship().get("frequency").asInt()))
+                                .compareTo((Integer) o2.get("rel").asRelationship().get("validateRatingTaboo").asInt()
+                                        + (Integer) o2.get("rel").asRelationship().get("frequency").asInt()
+                                )).limit(count).collect(Collectors.toList());
 
                 builder.append("Fetched Taboo Words: [");
                 if (list.size() < 1) builder.append("EMPTY");
@@ -1008,31 +1090,31 @@ public class Neo4jWrapper {
 
         StringBuilder builder = new StringBuilder();
         int count = 1;
-            try (Transaction tx = session.beginTransaction()) {
+        try (Transaction tx = session.beginTransaction()) {
 
-                StatementResult sResult = tx.run("MATCH (s)-[rel]->(t) WHERE t.name = {name} " +
-                                "AND rel.needValidationCategory = false " +
-                                "RETURN s",
-                        parameters("name", nodeName));
+            StatementResult sResult = tx.run("MATCH (s)-[rel]->(t) WHERE t.name = {name} " +
+                            "AND rel.needValidationCategory = false " +
+                            "RETURN s",
+                    parameters("name", nodeName));
 
-                for (Record r : sResult.list()) { //Iterate over all possible word connected to category
-                    Node node = r.get("s").asNode();
-                    String type = node.get("type").toString().replaceAll("\"", "");
-                    String name = node.get("name").toString().replaceAll("\"", "");
-                    if (type.toString().equals("explain")) { //if its an explain word
-                        count++;
-                    }
+            for (Record r : sResult.list()) { //Iterate over all possible word connected to category
+                Node node = r.get("s").asNode();
+                String type = node.get("type").toString().replaceAll("\"", "");
+                String name = node.get("name").toString().replaceAll("\"", "");
+                if (type.toString().equals("explain")) { //if its an explain word
+                    count++;
                 }
-                if (count >= CATEGORY_TRESHOLD) {
-                    tx.run("MATCH (s:Node)" +
-                            "WHERE s.name = {n1} " +
-                            "AND s.type = {c}" +
-                            "RETURN s", parameters("n1", nodeName, "c", "category"));
-
-                    builder.append(nodeName + " did qualifiy as category with " + count + " incoming edges");
-                } else builder.append(nodeName + " did not qualifiy as category with " + count + " incoming edges");
-                tx.success();
             }
+            if (count >= CATEGORY_TRESHOLD) {
+                tx.run("MATCH (s:Node)" +
+                        "WHERE s.name = {n1} " +
+                        "AND s.type = {c}" +
+                        "RETURN s", parameters("n1", nodeName, "c", "category"));
+
+                builder.append(nodeName + " did qualifiy as category with " + count + " incoming edges");
+            } else builder.append(nodeName + " did not qualifiy as category with " + count + " incoming edges");
+            tx.success();
+        }
         Log.db(builder.toString());
     }
 

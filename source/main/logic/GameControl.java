@@ -67,6 +67,8 @@ public class GameControl extends Observable{
             }
         }
 
+        mModel.setPlayRoundTime((int)Util.diffTimeStamp(d,new Date()));
+
         if(mModel.getGameState() == GameState.Kick) mModel.setGiver("");
         try {
             Thread.sleep(5000);
@@ -162,9 +164,6 @@ public class GameControl extends Observable{
         mModel.setGameState(GameState.WaitingForGiver);
         Log.info("Starting the round");
         mModel.announceNewRound();
-
-
-
 
         mModel.getBot().whisperLink(mModel.getGiver(),extBindAddr, mModel.getSiteController().generatePW()); // send link
         mModel.setTimeStamp();

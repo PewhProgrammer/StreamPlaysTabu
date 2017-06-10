@@ -40,6 +40,7 @@ public class GameModel extends Observable{
     private GameState mGameState;
     private int mNumPlayers;
     private int roundTime = 105;
+    private int playRoundTime = 0 ;
     private int errCounter = 0;
     private short MIN_PLAYERS;
 
@@ -64,6 +65,7 @@ public class GameModel extends Observable{
 
     private String category, giver = "", word, winner;
     private int gainedPoints = 0;
+    private int difficultyLevel = 1 ;
 
     private ArrayList<PrevoteCategory> prevoting;
 
@@ -100,12 +102,7 @@ public class GameModel extends Observable{
         props.setProperty("annotators", "tokenize,ssplit,pos,lemma,parse,natlog");
         pipeline = new StanfordCoreNLP(props);
 
-       /* if (lang.equals(Language.Eng)) {
-            langTool = new JLanguageTool(new BritishEnglish());
-        } else {
-            langTool = new JLanguageTool(new GermanyGerman());
-        }
-        generateVotingCategories();*/
+        generateVotingCategories();
     }
 
     public Set<String> getHosts() {
@@ -238,7 +235,7 @@ public class GameModel extends Observable{
         if (score >= LEVEL_6) {
             lvl = 6;
         }
-
+        this.difficultyLevel = lvl;
         return lvl;
     }
 
@@ -359,6 +356,7 @@ public class GameModel extends Observable{
 
     public void generateVotingCategories() {
         if (mOntologyDataBase != null) {
+            Log.info("Generating Prevote Categories");
             Set<String> categories = mOntologyDataBase.getCategories(10);
             Iterator<String> it = categories.iterator();
             for (int i = 0; i < 10; i++) {
@@ -453,6 +451,29 @@ public class GameModel extends Observable{
     }
 
     public void clear() {
+        String outcome = " ";
+        switch(mGameState){
+            case Win:{
+                outcome = "win";
+                break;
+            }
+            case Lose:{
+                outcome = "lose";
+                break;
+            }
+            case Kick:{
+                outcome = "kick";
+                break;
+            }
+        }
+
+        //update game instance
+        if(false)
+        mOntologyDataBase.updateNewGame(this.playRoundTime,giver,difficultyLevel,
+                guesses,qAndA,registeredPlayers,tabooWords,usedWords,explanations,
+                word,outcome,gameMode
+                );
+
         setRoundTime(105);
         clearExplanations();
         clearQAndA();
@@ -472,6 +493,8 @@ public class GameModel extends Observable{
     public int getRoundTime(){
         return this.roundTime;
     }
+
+    public void setPlayRoundTime(int i){ this.playRoundTime = i ;}
 
     public int increaseErrCounter() {
         return ++errCounter;

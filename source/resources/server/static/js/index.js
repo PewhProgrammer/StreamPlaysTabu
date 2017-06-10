@@ -49,6 +49,9 @@ function runTimer() {
 
     timer = setInterval(function () {
 
+
+        $('li').toggleClass('nth-child(1)');
+
         timeLeft = timeLeft - 1;
 
         document.getElementById("progressbar").innerHTML = timeLeft + "s";

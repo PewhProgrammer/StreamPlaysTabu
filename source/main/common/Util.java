@@ -494,21 +494,27 @@ public class Util {
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("An example for it is ")){
+            newTmp = "an example is";
+            userInput = tmp.split("An example for it is ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         if (tmp.startsWith("It is a kind of a ")){
             newTmp = "It is a kind of";
-            userInput = tmp.split("It is akind of a ");
+            userInput = tmp.split("It is a kind of a ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
         if (tmp.startsWith("It is a kind of an ")){
             newTmp = "It is a kind of";
-            userInput = tmp.split("It is akind of an ");
+            userInput = tmp.split("It is a kind of an ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
         if (tmp.startsWith("It is a kind of ")){
             newTmp = "It is a kind of";
-            userInput = tmp.split("It is akind of ");
+            userInput = tmp.split("It is a kind of ");
             return parseTemplate(newTmp, userInput[1], "");
         }
 
@@ -637,10 +643,6 @@ public class Util {
             // It can be received from ___
                 if (tmp.equals("It can be received from")) {
                     return getPair("can be received from", userInput, "", "true");
-                }
-            // It works as a ___
-                if (tmp.equals("It works as")) {
-                    return getPair("works as", userInput, "", "true");
                 }
 
             // Its character is ____

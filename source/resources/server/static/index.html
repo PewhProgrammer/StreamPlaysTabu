@@ -51,7 +51,7 @@
             <div id="tempDiv" style="height: 100%; width: 100%; z-index: 1">
                 <h1 style="text-align: center; width: 100%; font-size: 3vmin; margin-top: 1%;">Choose a category, get a template and explain fast!</h1>
                 <div id="template_layer1">
-                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_one" onclick=handleTemplateLayer(2)>Appearance</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 15%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_one" onclick=handleTemplateLayer(2)>Visual<br>Appearance</button>
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 35%; width: 15%;height:15%" type="submit" id="template_two" onclick=handleTemplateLayer(3)>Purpose</button>
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_three" onclick=handleTemplateLayer(4)>Characteristic</button>
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 75%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_four" onclick=handleTemplateLayer(5)>Game Specific</button>
@@ -84,7 +84,7 @@
 
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 50%; right: 75%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_known" onclick="handleTemplateDropDown2('It is known for','it is known as',12)">Known</button>
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 50%; right: 55%; width: 15%;height:15%" type="submit" id="template_receive" onclick="handleTemplateDropDown('It can be received from',13)">Receive</button>
-                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 50%; right: 35%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_work" onclick="handleTemplateDropDown('It works as',14)">Work</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 50%; right: 35%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_work" onclick="handleTemplateDropDown('An example for it is',14)">Example</button>
                     <button class="btn btn-lg btn-primary btn-block btn-primary" onclick="handleTemplateDropDown('Its character is',15)" style="position: absolute; bottom: 50%; right: 15%; width: 15%;height:15% ; padding:10px 0px" type="submit" id="template_character">Character</button>
 
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 30%; right: 75%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_typically" onclick="handleTemplateDropDownMultiple('It is typically in','It is typically near','It is typically on',16)">Typically</button>
@@ -157,7 +157,7 @@
 
         <div id="validateDiv" class="background">
             <div id="validate" style="height: 100%; width: 100%; position: absolute;">
-                <h6 id="valHeader" style="font-size: 1.5vmin;">How good can this word be explained?<br> Help us rate it and gain extra Time!</h6>
+                <h6 id="valHeader" style="font-size: 1.5vmin;"><b style="font-size: 2vmin;">How good can this word be explained?</b><br>Help us rate it and gain extra Time!</h6>
                 <div class="panel panel-primary" id="val1" style="width:40%;border-radius: 10px; position: absolute; left: 30%; top: 30%; z-index: 0">
                     <div id="validate_category_1" class="panel-heading" style="text-align: center; font-size: 2vmin;padding:0.5%;">
                         <label id="validationCategoryLabel_one"></label>
