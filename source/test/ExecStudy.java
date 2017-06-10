@@ -45,7 +45,7 @@ public class ExecStudy extends TestCase {
                 try {
                     database.createNode(sCurrentLine, true);
                     i++;
-                    if(i == 9) database.setSimulation(false);
+                    if(i == 4) database.setSimulation(false);
                 } catch (DatabaseException e) {
                     Log.db(e.getMessage());
                     //fail();
@@ -59,7 +59,7 @@ public class ExecStudy extends TestCase {
                 String[] parts = sCurrentLine.split(";");
                 try {
                     i++;
-                    if(i == 20) database.setSimulation(true);
+                    if(i == 2) database.setSimulation(true);
                     database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true);
                 }catch (ArrayIndexOutOfBoundsException e){
                     Log.db("Wrong Formatting: "+ parts.toString());

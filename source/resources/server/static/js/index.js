@@ -32,7 +32,7 @@ $(function () {
         onSkip();
     });
     $("#explanation").click(function () {
-        onExplanation();
+        //onExplanation();
     });
     $("#answer").click(function () {
         onAnswer();
@@ -116,6 +116,7 @@ function onCategoryChosen(category) {
 }
 
 function onExplanation() {
+        console.log("On Explanation process");
     if (tempUsage[templateId] === 0) {
         //already used twice
         return;
@@ -131,11 +132,13 @@ function onExplanation() {
         questions[activeQuestion] = null;
         refreshQuestions();
         activeQuestion = -1;
+        hideTemplates();
     } else if ($("#explanationText").val() != "" || ($("#input2").val() != "" && $("#input3").val() != "")) {
         document.getElementById('sendButton').style.display = 'none';
         document.getElementById('template_layer1').style.display = 'block';
         document.getElementById('template_layer' + templateLayer).style.display = 'none';
 
+        console.log("id: "+ templateId + " active: " + activeQuestion );
         var result = "";
         if (templateId < 4 && templateId >= 1) {
             result += tempString;
@@ -150,10 +153,12 @@ function onExplanation() {
             result = tempString;
             result += " " + $("#explanationText").val();
         }
-        console.log("Sent explanation: " + result);
+
         if (activeField == "templates") {
+            console.log("Sent Explanation");
             sendExplanation(createExplanationEvent(result));
-        } else if (activeQuestion > 1) {
+        } else if (activeQuestion > -1) {
+                console.log("Sent Answer");
                 sendAnswer(createAnswerEvent(result));
                 questions[activeQuestion] = null;
                 refreshQuestions();
