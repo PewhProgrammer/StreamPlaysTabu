@@ -453,7 +453,6 @@ function handleStars(id, count) {
     validated += 1;
     if (id === 1) {
         label = "one";
-        nextLabel = "two";
         document.getElementById("val1").style.visibility = "hidden";
         document.getElementById("val1").style.zIndex = "-2";
         document.getElementById("val3").style.zIndex = "-1";
@@ -518,14 +517,22 @@ function showNextValidation(i) {
 function showTemplateUsage(i) {
     var doc = document.getElementById("explanationLabel");
     var doc_2 = document.getElementById("explanationLabel1");
-    var label = "Your Explanation: ( you can only use this template " +
-        i + " more times )";
+    var label;
 
-    if (i === 0) {
+    if(i >= 2) {
+        label = "Your Explanation: ( you can only use this template <span style='color: #337ab7'>"
+            + i + "</span> more times )";
+        document.getElementById("explanation").disabled = false;
+    } else if(i === 1) {
+        label = "Your Explanation: ( you can only use this template <span style='color: orange'>"
+            + i + "</span> more times )";
+        document.getElementById("explanation").disabled = false;
+    }
+    else if(i === 0){
         document.getElementById("explanation").disabled = true;
-        label = "You have used this template twice already!";
+        label = "<span style='color: red'>You have used this template twice already!</span>";
+    }
 
-    } else document.getElementById("explanation").disabled = false;
     doc.innerHTML = label;
     doc_2.innerHTML = label;
 
