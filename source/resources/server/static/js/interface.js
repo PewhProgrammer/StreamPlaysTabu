@@ -242,7 +242,7 @@ function hideTemplates(){
 
     contentDiv.style.zIndex = "1";
     contentDiv.style.visibility = "visible";
-    contentDiv.innerHTML = "<p>Please choose a question <br> on the right side!</p>";
+    contentDiv.innerHTML = "<p>Choose either your explain word on the left or<br>a new question on the right side!</p>";
 }
 
 function sendPassword(pw) {
