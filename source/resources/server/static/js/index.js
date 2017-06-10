@@ -344,6 +344,7 @@ function handleTemplateDropDown(description, id) {
     //$('.selectpicker').selectpicker('val', 'Mustard');
     templateId = id;
     tempString = description;
+    showTemplateUsage(tempUsage[templateId]);
     document.getElementById('sendButton').style.display = 'block';
     document.getElementById('template_dropDownDiv1').style.display = 'block';
     document.getElementById('template_dropDownDiv2').style.display = 'none';
@@ -518,17 +519,17 @@ function showTemplateUsage(i) {
     var doc = document.getElementById("explanationLabel");
     var doc_2 = document.getElementById("explanationLabel1");
     var label;
+    console.log("entered " + i);
 
-    if(i >= 2) {
-        label = "Your Explanation: ( you can only use this template <span style='color: #337ab7'>"
-            + i + "</span> more times )";
+    if (i >= 2) {
+        label = "Your Explanation: ( you can only use this template <span style='color: #337ab7'>" +
+            i + "</span> more times )";
         document.getElementById("explanation").disabled = false;
-    } else if(i === 1) {
-        label = "Your Explanation: ( you can only use this template <span style='color: orange'>"
-            + i + "</span> more times )";
+    } else if (i === 1) {
+        label = "Your Explanation: ( you can only use this template <span style='color: orange'>" +
+            i + "</span> more times )";
         document.getElementById("explanation").disabled = false;
-    }
-    else if(i === 0){
+    } else if (i === 0) {
         document.getElementById("explanation").disabled = true;
         label = "<span style='color: red'>You have used this template twice already!</span>";
     }
