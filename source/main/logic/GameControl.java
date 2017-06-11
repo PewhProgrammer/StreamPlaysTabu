@@ -222,7 +222,7 @@ public class GameControl extends Observable{
             Command c = mModel.pollNextCommand();
             try {
                 if(c.validate()) {
-                    Log.trace(c.toString()+ " Command received!");
+                    Log.info(c.toString()+ " Command received!");
                     c.execute();
                 }
             }catch(NullPointerException n){

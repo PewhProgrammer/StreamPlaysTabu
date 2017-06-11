@@ -248,8 +248,18 @@ public class AltTwitchBot extends Bot {
 
         // !validate
         if (parts[0].equals("!validate")) {
-            int ID = Integer.parseInt(parts[1]);
-            int valScore = Integer.parseInt(parts[2]);
+            int ID = 0 ;
+            int valScore = 0 ;
+            try{
+                valScore = Integer.parseInt(parts[2]);
+            }catch(NumberFormatException e){
+                return new ChatMessage(model, channel, sender, message);
+            }
+            try{
+                ID = Integer.parseInt(parts[1]);
+            }catch(NumberFormatException e){
+                return new Validate(model, channel, parts[1], valScore, sender);
+            }
             if ((ID == 1) || (ID == 2) || (ID == 3) || (ID == 4) || (ID == 5)){
                 return  new Validate(model, channel, ID, valScore, sender);
             }

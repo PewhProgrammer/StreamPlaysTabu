@@ -410,3 +410,8 @@ h1 {
 .rating>input:checked~label:hover~label {
     color: #FFED85;
 }
+
+display:-moz-inline-stack;
+display:inline-block;
+zoom:1;
+*display:inline;
