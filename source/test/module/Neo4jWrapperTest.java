@@ -5,6 +5,9 @@ import common.Log;
 import common.database.Neo4jWrapper;
 import common.Util;
 import gui.webinterface.containers.StreamRankingContainer;
+import model.GameMode;
+import model.Guess;
+import opennlp.tools.util.HashList;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -354,6 +357,18 @@ public class Neo4jWrapperTest {
     }
 
     @Test
+    public void gameUpdate(){
+        LinkedList<Guess> guess = new LinkedList<>();
+        LinkedList<String[]> qAnda = new LinkedList<>();
+        List<String> registered = new ArrayList<>();
+        Set<String> taboo = new HashSet<>();
+        Set<String> skipped = new HashSet<>();
+        List<String> explanation = new ArrayList<>();
+
+        database.updateNewGame(100,"john",2,guess,qAnda,registered,taboo,skipped,explanation,"word","win", GameMode.Normal);
+    }
+
+    @Test
     public void testOntology(){
 
         String explainWord = "Mario";
@@ -387,6 +402,7 @@ public class Neo4jWrapperTest {
     public void testSetUpNodes() {
         database.resetRelationships();
         database.resetDatabase();
+        database.initLogging();
 
         try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
 
