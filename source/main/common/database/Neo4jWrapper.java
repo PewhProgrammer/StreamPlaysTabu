@@ -1101,7 +1101,7 @@ public class Neo4jWrapper {
         try {
             StatementResult sResult = tx.run(
                     "MATCH (s)-[rel]->(t) WHERE s.name = {name} " +
-                            "AND rel.needValidationTaboo = false RETURN rel,s", parameters("name", explainWord));
+                            "AND rel.needValidationTaboo = false RETURN rel,t", parameters("name", explainWord));
             List<Record> list = sResult.list();
             list = list.stream().sorted(
                     (o2, o1) -> ((Integer) (o1.get("rel").asRelationship().get("validateRatingTaboo").asInt()
