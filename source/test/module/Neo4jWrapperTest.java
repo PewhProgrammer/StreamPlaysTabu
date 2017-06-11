@@ -136,14 +136,14 @@ public class Neo4jWrapperTest {
         Assert.assertEquals("No such relationship could be created!"
                 , true,
                 database.insertNodesAndRelationshipIntoOntology("Nautilus", "Hallo", true,
-                        "IS", false));
+                        "IS", false,""));
         //test increase of rating And false flag override
         database.insertNodesAndRelationshipIntoOntology("Nautilus","Hallo",true,
-                "IS RELATED TO",false);
+                "IS RELATED TO",false,"");
         database.insertNodesAndRelationshipIntoOntology("Nautilus","Hallo",true,
-                "IS RELATED TO",false);
+                "IS RELATED TO",false,"");
         database.insertNodesAndRelationshipIntoOntology("Nautilus","Hallo",true,
-                "IS NOT RELATED TO",false);
+                "IS NOT RELATED TO",false,"");
     }
 
     @Test
@@ -151,7 +151,7 @@ public class Neo4jWrapperTest {
         Assert.assertEquals("No such relationshio could be created!"
                 , true,
                 database.insertNodesAndRelationshipIntoOntology("Nautilus", "Nautilus", true,
-                        "RATING", true));
+                        "RATING", true,""));
         Assert.assertEquals("Something went wrong when clearing the ratings!"
                 , true,
                 database.clearFailedRelationships());
@@ -287,9 +287,9 @@ public class Neo4jWrapperTest {
             Log.debug(e.getMessage());
         }
 
-        database.insertNodesAndRelationshipIntoOntology(explain[0],category,true,relation1,true);
-        database.insertNodesAndRelationshipIntoOntology(explain[1],category,true,relation1,true);
-        database.insertNodesAndRelationshipIntoOntology(explain[2],category,true,relation1,true);
+        database.insertNodesAndRelationshipIntoOntology(explain[0],category,true,relation1,true,"");
+        database.insertNodesAndRelationshipIntoOntology(explain[1],category,true,relation1,true,"");
+        database.insertNodesAndRelationshipIntoOntology(explain[2],category,true,relation1,true,"");
     }
 
     @Test
@@ -329,14 +329,14 @@ public class Neo4jWrapperTest {
         int i = 3 ;
         database.setSimulation(true);
 
-        database.insertNodesAndRelationshipIntoOntology("Peach",explain,true,relation1,true);
-        database.insertNodesAndRelationshipIntoOntology("Peach",explain,true,relation1,true);
-        database.insertNodesAndRelationshipIntoOntology("Bowser",explain,true,relation1,true);
-        database.insertNodesAndRelationshipIntoOntology("Luigi",explain,true,relation1,true);
-        database.insertNodesAndRelationshipIntoOntology("Luigi",explain,true,relation1,true);
-        database.insertNodesAndRelationshipIntoOntology("Luigi",explain,true,relation1,true);
-        database.insertNodesAndRelationshipIntoOntology("Toad",explain,true,relation1,true);
-        database.insertNodesAndRelationshipIntoOntology("Toad",explain,true,relation1,true);
+        database.insertNodesAndRelationshipIntoOntology("Peach",explain,true,relation1,true,"");
+        database.insertNodesAndRelationshipIntoOntology("Peach",explain,true,relation1,true,"");
+        database.insertNodesAndRelationshipIntoOntology("Bowser",explain,true,relation1,true,"");
+        database.insertNodesAndRelationshipIntoOntology("Luigi",explain,true,relation1,true,"");
+        database.insertNodesAndRelationshipIntoOntology("Luigi",explain,true,relation1,true,"");
+        database.insertNodesAndRelationshipIntoOntology("Luigi",explain,true,relation1,true,"");
+        database.insertNodesAndRelationshipIntoOntology("Toad",explain,true,relation1,true,"");
+        database.insertNodesAndRelationshipIntoOntology("Toad",explain,true,relation1,true,"");
 
         result = database.getTabooWords(explain,"",i); //fetch three words
         for(String r:result){
@@ -377,7 +377,7 @@ public class Neo4jWrapperTest {
             boolean isExplain = Boolean.parseBoolean(content[2]);
 
             database.insertNodesAndRelationshipIntoOntology(explainWord,
-                    targetNode,isExplain, relation,true);
+                    targetNode,isExplain, relation,true,"");
         }
 
 
@@ -413,7 +413,7 @@ public class Neo4jWrapperTest {
                 try {
                     i++;
                     if(i == 6) database.setSimulation(true);
-                    database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true);
+                    database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true,"");
                 }catch (ArrayIndexOutOfBoundsException e){
                     Log.db("Wrong Formatting: "+ parts.toString());
                 }

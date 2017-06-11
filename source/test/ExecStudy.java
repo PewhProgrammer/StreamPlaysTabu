@@ -61,7 +61,7 @@ public class ExecStudy extends TestCase {
                 try {
                     i++;
                     if(i == 6) database.setSimulation(true);
-                    database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true);
+                    database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true,"");
                 }catch (ArrayIndexOutOfBoundsException e){
                     Log.db("Wrong Formatting: "+ parts.toString());
                 }
