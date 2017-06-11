@@ -54,7 +54,7 @@ public class Neo4jWrapper {
      * @param relationship
      * @return
      */
-    public boolean insertNodesAndRelationshipIntoOntology(String node1, String node2, Boolean node2Explain, String relationship, Boolean reliableFlag) {
+    public boolean insertNodesAndRelationshipIntoOntology(String node1, String node2, Boolean node2Explain, String relationship, Boolean reliableFlag,String attr) {
         boolean isNode1Explain = false;
 
         try {
@@ -79,7 +79,7 @@ public class Neo4jWrapper {
             Log.error(e.getLocalizedMessage());
         }
         if (isNode1Explain && node2Explain) setExplainWordToCategory(node2);
-        return createRelationship(node1, node2, relationship, reliableFlag);
+        return createRelationship(node1, node2, relationship, reliableFlag,attr);
     }
 
     public void createUser(String str, String ch) {
@@ -260,7 +260,14 @@ public class Neo4jWrapper {
 
         Collections.shuffle(results, randomizer);
         LinkedList<String> k = new LinkedList<>();
-        k.addAll(results.subList(0, i));
+        while(true) {
+            try {
+                k.addAll(results.subList(0, i));
+                break;
+            }catch(IndexOutOfBoundsException e){
+                i--;
+            }
+        }
         return k;
     }
 
@@ -537,7 +544,7 @@ public class Neo4jWrapper {
         try {
             tx.run("CREATE (a: " + label + " {name: {name}," +
                             " type: {type}, needValidation: {validateBoolean} , validateRating: 0, validationLock: "
-                            + !needValidation + " })",
+                            + !needValidation + ", asExplain: 0 })",
                     parameters("name", nodeName, "type", type, "validateBoolean", validate));
             tx.success();
         } finally {
@@ -587,7 +594,7 @@ public class Neo4jWrapper {
      * @param relationship
      * @return
      */
-    private boolean createRelationship(String node1, String node2, String relationship, Boolean reliableFlag) {
+    private boolean createRelationship(String node1, String node2, String relationship, Boolean reliableFlag,String attr) {
         node1 = Util.reduceStringToMinimum(node1);
         node2 = Util.reduceStringToMinimum(node2);
         relationship = Util.reduceStringToMinimum(relationship);
@@ -597,7 +604,9 @@ public class Neo4jWrapper {
         query.append("MATCH (s),(t) WHERE s.name = {n1} AND t.name = {n2} ")
                 .append("MERGE (s)-[rel:`" + relationship + "`]->(t) ")
                 .append("ON MATCH SET rel.frequency = rel.frequency + 1 ")
+                .append(", rel.attribute = rel.attribute" + attr)
                 .append("ON CREATE SET rel.frequency = 0 ")
+                .append(", rel.attribute = " + attr)
                 .append(", rel.validateRatingTaboo = 0 ")
                 .append(", rel.validateFrequencyTaboo = 0 ")
                 .append(", rel.validateRatingCategory = 0 ")
@@ -1031,7 +1040,7 @@ public class Neo4jWrapper {
 
             }
         } else {
-
+            LinkedList<String> list = new LinkedList<>();
             Transaction tx = getTransaction();
             try {
                 StatementResult sResult = tx.run("MATCH (s:Node)-[rel]->(t:Node) WHERE t.name ={category} RETURN s",
@@ -1048,13 +1057,22 @@ public class Neo4jWrapper {
                     String name = node.get("name").toString().replaceAll("\"", "");
                     if (!type.equals("basic") && !usedWords.contains(name)) { //if its an explain word and not in usedWord
                         builder.append("," + name);
-                        if (result.equals("") || randomizer.nextBoolean()) {
-                            result = name;
-                        }
+                        list.add(name);
                     }
                 }
+
+                Collections.shuffle(list);
+                try {
+                    result = list.getFirst();
+                }catch(NoSuchElementException e){
+                    Log.error("No more explain words in this category. Reshuffling");
+                    return fetchConnectedWordFromDatabase(category, new HashSet<String>());
+                }
+
                 builder.append("] -> " + result);
 
+                tx.run("MATCH (s:Node) WHERE s.name ={name} SET s.asExplain = s.asExplain +1",
+                        parameters("name", result));
                 tx.success();
             } finally {
                 tx.close();
@@ -1062,7 +1080,7 @@ public class Neo4jWrapper {
         }
 
         if (result.equals("")) throw new common.database.DatabaseException("No more explain words available!");
-        Log.info(builder.toString());
+        Log.db(builder.toString());
         return result;
     }
 
@@ -1154,9 +1172,9 @@ public class Neo4jWrapper {
     }
 
     public Transaction getTransaction() {
-        Transaction tx = null;
-        while (tx == null) {
+        Transaction tx;
             try {
+                this.session = driver.session();
                 tx = session.beginTransaction();
             } catch (ServiceUnavailableException e) {
                 driver = acquireDriver("bolt://" + neo4jbindAddr,
@@ -1164,7 +1182,6 @@ public class Neo4jWrapper {
                 this.session = driver.session();
                 tx = session.beginTransaction();
             }
-        }
 
         return tx;
     }

@@ -19,6 +19,22 @@ skyrim
 mass effect
 far cry 4
 resident evil
+prototype
+kiting
+sniping
+afk
+quickscope
+ragequit
+crowd-control
+pre-fire
+pop-flashing
+rushing
+resetting
+Firelink Shrine
+Bonfire
+Portal Gun
+Lara Croft
+Prince of Persia
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
 alan wake;is published by;remedy entertainment
 alan wake;is known for;insomnia
@@ -74,3 +90,18 @@ undead;is related to;warcraft 3
 warcraft 3;is published by;blizzard
 world of warcraft;is published by;blizzard
 overwatch;is published by;blizzard
+kiting;is related to;prototype
+sniping;is related to;prototype
+afk;is related to;prototype
+quickscope;is related to;prototype
+ragequit;is related to;prototype
+crowd-control;is related to;prototype
+pre-fire;is related to;prototype
+pop-flashing;is related to;prototype
+rushing;is related to;prototype
+resetting;is related to;prototype
+Firelink Shrine;is related to;prototype
+Bonfire;is related to;prototype
+Portal Gun;is related to;prototype
+Lara Croft;is related to;prototype
+Prince of Persia;is related to;prototype

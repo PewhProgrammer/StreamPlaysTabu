@@ -57,32 +57,47 @@ public class WebAPI implements IObserver {
         if(validateRotation == 0){ //explain
 
             LinkedList<String> explains = db.getExplainForValidation(5);
+            if(explains.isEmpty() || true) validateRotation++;
+
             Set<String> set = new HashSet<>();
             set.addAll(explains);
             send("/validation", new ValidationContainer("",set,0));
             GameControl.mModel.setValidationKey("");
             GameControl.mModel.setValidationObjects(set);
-            validateRotation++ ;
-        }else if (validateRotation == 1){ // explain - taboo
+        }
+        if (validateRotation == 1){ // explain - taboo
 
             Map m = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidation(null, 5);
             Iterator<Map.Entry<String, Set<String>>> it = m.entrySet().iterator();
             if (it.hasNext()) {
                 Map.Entry<String, Set<String>> mE = it.next();
-                send("/validation", new ValidationContainer(mE.getKey(), mE.getValue(),1));
-                GameControl.mModel.setValidationKey(mE.getKey());
-                GameControl.mModel.setValidationObjects(mE.getValue());
+                if(mE.getKey().equals("EMPTY") || true){
+                    validateRotation++;
+                } else {
+                    send("/validation", new ValidationContainer(mE.getKey(), mE.getValue(), 1));
+                    GameControl.mModel.setValidationKey(mE.getKey());
+                    GameControl.mModel.setValidationObjects(mE.getValue());
+                }
             }
-            validateRotation++ ;
-        } else if (validateRotation == 2){ // category - explain
+        }
+        if (validateRotation == 2){ // category - explain
             Neo4jWrapper.Pair explainCategory = db.getExplainCategoryForValidation();
             Set<String> set = new HashSet<>();
             set.add((String)explainCategory.getFirst());
-            send("/validation", new ValidationContainer((String)explainCategory.getSecond(),set,2));
-            GameControl.mModel.setValidationKey((String)explainCategory.getSecond());
-            GameControl.mModel.setValidationObjects(set);
-            validateRotation = 0;
+            String first = ((String)explainCategory.getSecond());
+            if(first.equals("EMPTY") || true){
+                first = "We will ask you later if there is a need to validate!";
+                set.clear();
+                set.add("");
+                send("/validation", new ValidationContainer(first, set, 2));
+            }else {
+                send("/validation", new ValidationContainer(first, set, 2));
+                GameControl.mModel.setValidationKey((String) explainCategory.getSecond());
+                GameControl.mModel.setValidationObjects(set);
+                validateRotation = -1;
+            }
         }
+        validateRotation++;
     }
 
     @MessageMapping("/reqGiverInfo")
