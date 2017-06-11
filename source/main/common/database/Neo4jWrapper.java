@@ -1113,7 +1113,7 @@ public class Neo4jWrapper {
             builder.append("Fetched Taboo Words: [");
             if (list.size() < 1) builder.append("EMPTY");
             for (Record s : list) {
-                String name = s.get("s").asNode().get("name").toString().replaceAll("\"", "");
+                String name = s.get("t").asNode().get("name").toString().replaceAll("\"", "");
                 if (!name.equals(forbiddenWord)) {
                     result.add(name);
                     builder.append(name + ", ");
