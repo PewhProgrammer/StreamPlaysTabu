@@ -8,6 +8,7 @@ import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
 import logic.GameControl;
 import logic.commands.*;
+import model.GameMode;
 import model.GameModel;
 import model.GameState;
 import model.IObserver;
@@ -129,7 +130,10 @@ public class SiteController implements IObserver {
 
     public void reqPrevotedCategories() {
         System.out.println("Received reqPrevotedCategories.");
-        send("/prevotedCategories", new PrevotedCategoriesContainer(gm.getPrevotedCategories()).toJSONObject());
+        GameModel.prevotingLock.lock();
+        JSONObject obj = new PrevotedCategoriesContainer(gm.getPrevotedCategories()).toJSONObject();
+        GameModel.prevotingLock.unlock();
+        send("/prevotedCategories", obj);
     }
 
     public void reqGiver() {

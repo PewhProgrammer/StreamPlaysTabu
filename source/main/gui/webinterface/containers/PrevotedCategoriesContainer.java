@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class PrevotedCategoriesContainer {
 
-    private String cat1;
+    private String cat1 = "";
     private String i1;
     private String cat2;
     private String i2;
@@ -20,6 +20,7 @@ public class PrevotedCategoriesContainer {
     private String i5;
 
     public PrevotedCategoriesContainer(ArrayList<PrevoteCategory> categories) {
+        //index out of bounds
         cat1 = categories.get(0).getCategory();
         i1 = Integer.toString(categories.get(0).getScore());
         if (cat1 == null) {

@@ -24,6 +24,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 public class GameModel extends Observable{
@@ -34,15 +35,13 @@ public class GameModel extends Observable{
     private static final int LEVEL_5 = 1200;
     private static final int LEVEL_6 = 1800;
 
-    private static final double ROUND_TIME = 1000.0 * 105.0;
     private static final double THIRTY_MINUTES = 1000.0 * 60.0 * 30.0;
 
     private GameState mGameState;
     private int mNumPlayers;
-    private int roundTime = 105;
+    private double roundTime = 105;
     private int playRoundTime = 0 ;
     private int errCounter = 0;
-    private short MIN_PLAYERS;
 
     //private Language lang;
     private GameMode gameMode;
@@ -73,6 +72,7 @@ public class GameModel extends Observable{
     private int validationLevel = -1 ;
 
     private ArrayList<PrevoteCategory> prevoting;
+    public static ReentrantLock prevotingLock = new ReentrantLock();
 
     private Date timeStamp;
 
@@ -83,17 +83,13 @@ public class GameModel extends Observable{
     private HashMap<String, AltTwitchBot> hostBots;
 
     private StanfordCoreNLP pipeline;
-   // private JLanguageTool langTool;
 
-    public GameModel(/* lang l,*/short minPlayers, Neo4jWrapper neo){
+    public GameModel(Neo4jWrapper neo){
         mGameState = GameState.Registration;
         mNumPlayers = 0;
         registeredPlayers = new ArrayList<>();
         tabooWords = new HashSet<>();
         explanations = new LinkedList<>();
-        qAndA = new LinkedList<>();
-        //lang = l;
-        MIN_PLAYERS = minPlayers;
         mOntologyDataBase = neo;
         hosts = new HashSet<>();
         hostBots = new HashMap<>();
@@ -102,6 +98,8 @@ public class GameModel extends Observable{
         votekick = new HashSet<>();
         guesses = new LinkedList<>();
         tabooSuggestions = new HashMap<>();
+
+        qAndA = new LinkedList<>();
 
         Properties props = new Properties();
         props.setProperty("annotators", "tokenize,ssplit,pos,lemma,parse,natlog");
@@ -112,14 +110,6 @@ public class GameModel extends Observable{
 
     public Set<String> getHosts() {
         return this.hosts;
-    }
-
-    public HashMap<String, Set<String>> getValidationInfo() {
-        return validationInfo;
-    }
-
-    public void setValidationInfo(HashMap<String, Set<String>> validationInfo) {
-        this.validationInfo = validationInfo;
     }
 
     public void setBot(String platform, String channel) {
@@ -147,14 +137,6 @@ public class GameModel extends Observable{
     public int getNumPlayers(){
         return mNumPlayers;
     }
-
-    /*public Language getLang() {
-        return lang;
-    }*/
-
-    /*public void setLang(Language lang) {
-        this.lang = lang;
-    }*/
 
     public GameMode getGameMode() {
         return gameMode;
@@ -255,10 +237,10 @@ public class GameModel extends Observable{
         String[] content = Util.parseTemplate(explanation);
         String relation = content[0].toLowerCase();
         String targetNode = content[1].toLowerCase();
-        boolean isExplain = Boolean.parseBoolean(content[2]);
+        String att = content[2].toLowerCase();
+        boolean isExplain = Boolean.parseBoolean(content[3]);
 
-
-        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,true,"");
+        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, isExplain, relation,true, att);
     }
 
     public void clearExplanations() {
@@ -307,9 +289,10 @@ public class GameModel extends Observable{
             String[] content = Util.parseTemplate(answer);
             String relation = content[0].toLowerCase();
             String targetNode = content[1].toLowerCase();
+            String att = content[2].toLowerCase();
             boolean isExplain = false;
 
-            mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,false,"");
+            mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode, isExplain, relation,false, att);
         } else {
             mOntologyDataBase.createQuestion(word,question,answer);
         }
@@ -342,17 +325,21 @@ public class GameModel extends Observable{
     }
 
     public void prevote(int ID) {
+        prevotingLock.lock();
         prevoting.get(ID).increaseScore();
+        prevotingLock.unlock();
     }
 
     public ArrayList<PrevoteCategory> getPrevotedCategories() {
+        prevotingLock.lock();
         Collections.sort(prevoting);
-
+        prevotingLock.unlock();
         return prevoting;
     }
 
     public String[] getPrevoteCategories() {
         String[] prevotedCategories = new String[10];
+        prevotingLock.lock();
         Collections.sort(prevoting);
         Iterator<PrevoteCategory> it = prevoting.iterator();
 
@@ -363,6 +350,7 @@ public class GameModel extends Observable{
                 break;
             }
         }
+        prevotingLock.unlock();
 
         return prevotedCategories;
     }
@@ -377,7 +365,13 @@ public class GameModel extends Observable{
                     break;
                 }
                 String category = it.next();
-                prevoting.add(i, new PrevoteCategory(category));
+                PrevoteCategory pc = new PrevoteCategory(category);
+                prevotingLock.lock();
+                if (prevoting.contains(pc)) {
+                    continue;
+                }
+                prevoting.add(i, pc);
+                prevotingLock.unlock();
             }
         }
     }
@@ -431,11 +425,18 @@ public class GameModel extends Observable{
     }
 
     public void win(String winner,String ch) {
+
+        if (getGameState() != GameState.GameStarted || !getGameState().equals(GameState.GameStarted)) {
+            System.out.println("!= : " + (getGameState() != GameState.GameStarted) + " ; " + "equals : " + (!getGameState().equals(GameState.GameStarted)));
+            return;
+        }
+
         this.winner  = winner;
         Date joinedTime = new Date();
         Date referenceTime = getTimeStamp();
         long diff = joinedTime.getTime() - referenceTime.getTime();
-        double q = (double) diff / ROUND_TIME;
+        double t = roundTime * 1000.0;
+        double q = (double) diff / t;
         int score = (int) ((tabooWords.size() + 1) * 100 - q * (tabooWords.size() + 1) * 100);
 
         Log.trace("Q: " + q + " and "+getTimeStamp() + " joined: " + joinedTime);
@@ -445,6 +446,7 @@ public class GameModel extends Observable{
 
         updateScore(winner, score,ch);
         updateScore(giver, score,ch);
+        setGameState(GameState.Win);
         notifyWinner();
         announceWinner(winner);
         for (int i = 0; i < 3 && i < guesses.size(); i++) {
@@ -507,8 +509,11 @@ public class GameModel extends Observable{
         clearExplanations();
         clearQAndA();
         clearGuesses();
+        clearVotekick();
         errCounter = 0;
+        prevotingLock.lock();
         prevoting.clear();
+        prevotingLock.unlock();
         usedWords.clear();
         setNumPlayers(0);
         setValidationLevel(-1);
@@ -521,7 +526,7 @@ public class GameModel extends Observable{
     }
 
     public int getRoundTime(){
-        return this.roundTime;
+        return (int) this.roundTime;
     }
 
     public void setPlayRoundTime(int i){ this.playRoundTime = i ;}

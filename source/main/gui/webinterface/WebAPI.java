@@ -4,6 +4,7 @@ import common.Log;
 import common.database.Neo4jWrapper;
 import gui.webinterface.containers.*;
 import logic.GameControl;
+import model.Guess;
 import logic.commands.Setup;
 import model.GameMode;
 import model.GameModel;
@@ -51,7 +52,12 @@ public class WebAPI implements IObserver {
     @MessageMapping("/reqRegisterInfo")
     public void requestRegisterInfo() {
         onNotifyScoreUpdate();
-        send("/prevoteCategory", new PrevoteCategoryContainer(GameControl.mModel.getPrevoteCategories()));
+
+        GameModel.prevotingLock.lock();
+        PrevoteCategoryContainer pcc = new PrevoteCategoryContainer(GameControl.mModel.getPrevoteCategories());
+        GameModel.prevotingLock.unlock();
+
+        send("/prevoteCategory", pcc);
 
         GameControl.mModel.setValidationLevel(validateRotation);
         if(validateRotation == 0){ //explain
@@ -146,13 +152,13 @@ public class WebAPI implements IObserver {
     }
 
     public void onNotifyQandA() {
-        System.out.println("Received Q&A.");
-        String q ="", a = "";
         if(GameControl.mModel.getQAndA().size() > 0) {
+            System.out.println("Received Q&A.");
+            String q ="", a = "";
             q = GameControl.mModel.getQAndA().getFirst()[0];
             a = GameControl.mModel.getQAndA().getFirst()[1];
+            send("/qAndA", new QandAContainer(q,a));
         }
-        send("/qAndA", new QandAContainer(q,a));
     }
 
     public void onNotifyCategoryChosen() {
@@ -170,7 +176,10 @@ public class WebAPI implements IObserver {
 
     public void onNotifyGuess() {
         System.out.println("Guess!");
-        send("/guesses", new GuessesContainer(GameControl.mModel.getGuesses()));
+        List<Guess> guesses = GameControl.mModel.getGuesses();
+        if (!guesses.isEmpty()) {
+            send("/guesses", new GuessesContainer(GameControl.mModel.getGuesses()));
+        }
     }
 
     public void onNotifyScoreUpdate() {

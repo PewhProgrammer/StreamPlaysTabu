@@ -17,8 +17,6 @@ import java.util.Set;
 public class CommandTest extends TestCase{
 
     private GameModel gModel;
-    private final short MIN_PLAYERS =2;
-    private final Language lang = Language.Ger;
     private final Neo4jWrapper neo =
             new Neo4jWrapper(true,
                     "localhost:7687",20);
@@ -26,8 +24,7 @@ public class CommandTest extends TestCase{
 
     @org.junit.Test
     public void setUp() throws Exception {
-        gModel = new GameModel(/*lang,*/MIN_PLAYERS
-        ,neo);
+        gModel = new GameModel(neo);
     }
 
     public void testCode(){

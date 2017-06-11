@@ -1,5 +1,7 @@
 package model;
 
+import logic.commands.Prevote;
+
 /**
  * Created by Lenovo on 18.04.2017.
  */
@@ -35,5 +37,17 @@ public class PrevoteCategory implements Comparable<PrevoteCategory> {
         }
 
         return 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (!o.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        PrevoteCategory pc = (PrevoteCategory) o;
+
+        return this.category.equals(pc.getCategory());
     }
 }

@@ -17,8 +17,7 @@ public class GuessSortingTests extends SampleTest {
 
     @org.junit.Test
     public void setUp() {
-        short length = 2;
-        gm = new GameModel(/*Language.Eng,*/ length, null);
+        gm = new GameModel(null);
     }
 
     public void testOrderSimple() {

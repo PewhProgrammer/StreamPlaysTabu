@@ -88,7 +88,7 @@ public class Main {
 
         Neo4jWrapper neoWrapper = new Neo4jWrapper(defaultDatbase, neo4jbindAddr, seed);
 
-        GameModel model = new GameModel(/*language, */(short) players, neoWrapper);
+        GameModel model = new GameModel(neoWrapper);
 
         mTHREAD = new Thread() {
             @Override
