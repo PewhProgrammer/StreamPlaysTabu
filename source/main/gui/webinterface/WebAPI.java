@@ -57,13 +57,14 @@ public class WebAPI implements IObserver {
         if(validateRotation == 0){ //explain
 
             LinkedList<String> explains = db.getExplainForValidation(5);
-            if(explains.isEmpty() || true) validateRotation++;
-
-            Set<String> set = new HashSet<>();
-            set.addAll(explains);
-            send("/validation", new ValidationContainer("",set,0));
-            GameControl.mModel.setValidationKey("");
-            GameControl.mModel.setValidationObjects(set);
+            if(explains.isEmpty()) validateRotation++;
+            else {
+                Set<String> set = new HashSet<>();
+                set.addAll(explains);
+                send("/validation", new ValidationContainer("", set, 0));
+                GameControl.mModel.setValidationKey("");
+                GameControl.mModel.setValidationObjects(set);
+            }
         }
         if (validateRotation == 1){ // explain - taboo
 
@@ -71,7 +72,7 @@ public class WebAPI implements IObserver {
             Iterator<Map.Entry<String, Set<String>>> it = m.entrySet().iterator();
             if (it.hasNext()) {
                 Map.Entry<String, Set<String>> mE = it.next();
-                if(mE.getKey().equals("EMPTY") || true){
+                if(mE.getKey().equals("EMPTY")){
                     validateRotation++;
                 } else {
                     send("/validation", new ValidationContainer(mE.getKey(), mE.getValue(), 1));
@@ -85,11 +86,11 @@ public class WebAPI implements IObserver {
             Set<String> set = new HashSet<>();
             set.add((String)explainCategory.getFirst());
             String first = ((String)explainCategory.getSecond());
-            if(first.equals("EMPTY") || true){
+            if(first.equals("EMPTY")){
                 first = "We will ask you later if there is a need to validate!";
                 set.clear();
                 set.add("");
-                send("/validation", new ValidationContainer(first, set, 2));
+                send("/validation", new ValidationContainer(first, set, 3));
             }else {
                 send("/validation", new ValidationContainer(first, set, 2));
                 GameControl.mModel.setValidationKey((String) explainCategory.getSecond());

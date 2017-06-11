@@ -113,10 +113,8 @@ public class AltTwitchBot extends Bot {
     @Override
     public void whisperRules(String user) {
         sendChatMessage("/w " + user + " " +
-                "Rules: 1. No form or part of ANY word on the card (word to explain + taboo words) may be given as an explanation. " +
-                "Examples: If the Guess Word is LEAGUE OF LEGENDS,"+" Legends "+"cannot be given as an explanation. " +
-                "2. No initials or abbreviations can be given if the words they represent are included on the card. " +
-                "Examples: LoL cannot be used if LEAGUE OF LEGENDS is the Guess Word or a TABOO word. " +
+                "Rules: 1. In every round, there will be a person trying to explain a certain word. " +
+                "2. This person has to construct his explanations while considering our sentence templates " +
                 "3. Players can be voted out with !votekick or kicked by a moderator, if they do not follow the rules.");
     }
 

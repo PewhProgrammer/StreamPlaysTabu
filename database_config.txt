@@ -30,11 +30,11 @@ pre-fire
 pop-flashing
 rushing
 resetting
-Firelink Shrine
-Bonfire
-Portal Gun
-Lara Croft
-Prince of Persia
+firelink shrine
+bonfire
+portal gun
+lara croft
+prince of persia
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
 alan wake;is published by;remedy entertainment
 alan wake;is known for;insomnia

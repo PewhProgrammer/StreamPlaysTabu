@@ -604,9 +604,9 @@ public class Neo4jWrapper {
         query.append("MATCH (s),(t) WHERE s.name = {n1} AND t.name = {n2} ")
                 .append("MERGE (s)-[rel:`" + relationship + "`]->(t) ")
                 .append("ON MATCH SET rel.frequency = rel.frequency + 1 ")
-                .append(", rel.attribute = rel.attribute" + attr)
+                .append(", rel.attribute = rel.attribute " + attr + " ")
                 .append("ON CREATE SET rel.frequency = 0 ")
-                .append(", rel.attribute = " + attr)
+                .append(", rel.attribute = {attr} ")
                 .append(", rel.validateRatingTaboo = 0 ")
                 .append(", rel.validateFrequencyTaboo = 0 ")
                 .append(", rel.validateRatingCategory = 0 ")
@@ -620,7 +620,7 @@ public class Neo4jWrapper {
         Transaction tx = getTransaction();
         try {
             tx.run(query.toString(),
-                    parameters("n1", node1, "n2", node2, "rel", relationship));
+                    parameters("n1", node1, "n2", node2, "rel", relationship,"attr",attr));
             tx.success();
         } finally {
             tx.close();

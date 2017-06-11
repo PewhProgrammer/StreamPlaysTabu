@@ -162,12 +162,12 @@ function updateValidation(validation) {
     }
 
     if(json.id == 0){
-    document.getElementById("validateDescription").innerHTML = "<small>How good can these words be explained<br> Type</small> !validate &lt;ID&gt; &lt;1-5&gt; <small>(1 = bad, 5 = good):</small>";
+    document.getElementById("validateDescription").innerHTML = "<small>How good can these words be explained?<br> Type</small> !validate &lt;ID&gt; &lt;1-5&gt; <small>(1 = bad, 5 = good):</small>";
         document.getElementById("tabooText").innerHTML =
         '<small>Do you have an idea for a new word to explain? <br>Type</small> !taboo &lt;word&gt;<small> to share it with us.</small>';
     }
     else if(json.id == 1){
-        document.getElementById("validateDescription").innerHTML = "<small>How fitting are these taboo words??<br> Type</small> !validate &lt;ID&gt; &lt;1-5&gt; <small>(1 = bad, 5 = good):</small>";
+        document.getElementById("validateDescription").innerHTML = "<small>How fitting are these taboo words?<br> Type</small> !validate &lt;ID&gt; &lt;1-5&gt; <small>(1 = bad, 5 = good):</small>";
         document.getElementById("tabooText").innerHTML =
                 '<small>Do you have an idea for a new taboo word? <br>Type</small> !taboo &lt;word&gt;<small> to share it with us.</small>';
     }
@@ -175,6 +175,10 @@ function updateValidation(validation) {
         document.getElementById("validateDescription").innerHTML = "<small>How much does this word fit to its category?<br> Type</small> !validate &lt;ID&gt; &lt;1-5&gt; <small>(1 = bad, 5 = good):</small>";
         document.getElementById("tabooText").innerHTML =
                         '<small>Ideas for a new word to explain fitting this category? <br>Type</small> !taboo &lt;word&gt;<small> to share it with us.</small>';
+    }
+    else if(json.id == 3){
+            document.getElementById("validateDescription").innerHTML = " ";
+            document.getElementById("tabooText").innerHTML = '';
     }
     document.getElementById("validateText").innerHTML = string;
 }
