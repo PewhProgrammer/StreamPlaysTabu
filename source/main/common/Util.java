@@ -62,6 +62,15 @@ public class Util {
         return pair;
     }
 
+    public static String[] getPair2(String tmp, String userInput, String userInput2, String isword) {
+        String[] pair = {tmp, userInput2, userInput, isword};
+        return pair;
+    }
+
+    //The color of its skin is blue
+    //getPair2(has, skin, blue, false)
+    //getPair2(Kante, Knoten, Atrribut, Attribut)
+
     public static String[] parseTemplate(String tmp) {
 
         String newTmp = "";
@@ -75,7 +84,7 @@ public class Util {
             if ((userInput[0].equals(" ")) || (userInput[1].equals(" "))){
                 //ERROR
             }
-            return parseTemplate(newTmp, userInput[0], " "+userInput[1]);
+            return getPair2("has", userInput[1], userInput[0], "false");
         }
 
         if (tmp.startsWith("The size of its ")){
@@ -85,7 +94,7 @@ public class Util {
             if ((userInput[0].equals(" ")) || (userInput[1].equals(" "))){
                 //ERROR
             }
-            return parseTemplate(newTmp, userInput[0], " "+userInput[1]);
+            return getPair2("has", userInput[1], userInput[0], "false");
         }
 
         if (tmp.startsWith("The shape of its ")){
@@ -95,7 +104,7 @@ public class Util {
             if ((userInput[0].equals(" ")) || (userInput[1].equals(" "))){
                 //ERROR
             }
-            return parseTemplate(newTmp, userInput[0], " "+userInput[1]);
+            return getPair2("has", userInput[1], userInput[0], "false");
         }
 
         if (tmp.startsWith("It wears a ")){
