@@ -8,7 +8,7 @@ var templateId = 0;
 var tempString = "";
 var templateLayer = 0;
 var timer;
-var tempUsage = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
+var tempUsage = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
 var validated = 0;
 
 $(function () {
