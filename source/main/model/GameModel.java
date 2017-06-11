@@ -258,7 +258,7 @@ public class GameModel extends Observable{
         boolean isExplain = Boolean.parseBoolean(content[2]);
 
 
-        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,true);
+        mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,true,"");
     }
 
     public void clearExplanations() {
@@ -309,7 +309,7 @@ public class GameModel extends Observable{
             String targetNode = content[1].toLowerCase();
             boolean isExplain = false;
 
-            mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,false);
+            mOntologyDataBase.insertNodesAndRelationshipIntoOntology(word, targetNode,isExplain, relation,false,"");
         } else {
             mOntologyDataBase.createQuestion(word,question,answer);
         }
@@ -449,7 +449,7 @@ public class GameModel extends Observable{
         announceWinner(winner);
         for (int i = 0; i < 3 && i < guesses.size(); i++) {
             if(guesses.get(i).getScore() > 1)
-                mOntologyDataBase.insertNodesAndRelationshipIntoOntology(guesses.get(i).getGuess(),word,true, "is related to",true);
+                mOntologyDataBase.insertNodesAndRelationshipIntoOntology(guesses.get(i).getGuess(),word,true, "is related to",true,"");
         }
         clear();
         setGiver(winner);
@@ -586,7 +586,7 @@ public class GameModel extends Observable{
         for (int i = 0; i < sortedSuggestions.size(); i++) {
             //TODO tim fragen wies funktioniert
             mOntologyDataBase.insertNodesAndRelationshipIntoOntology(sortedSuggestions.get(i).getExplanation(),
-                    sortedSuggestions.get(i).getContent(),false, "isRelatedTo",true);
+                    sortedSuggestions.get(i).getContent(),false, "isRelatedTo",true,"");
         }
 
         tabooSuggestions.clear();
