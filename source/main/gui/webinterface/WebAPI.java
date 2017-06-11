@@ -91,12 +91,13 @@ public class WebAPI implements IObserver {
                 set.clear();
                 set.add("");
                 send("/validation", new ValidationContainer(first, set, 3));
+
             }else {
                 send("/validation", new ValidationContainer(first, set, 2));
                 GameControl.mModel.setValidationKey((String) explainCategory.getSecond());
                 GameControl.mModel.setValidationObjects(set);
-                validateRotation = -1;
             }
+            validateRotation = -1;
         }
         validateRotation++;
     }
