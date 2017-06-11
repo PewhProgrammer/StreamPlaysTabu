@@ -30,7 +30,7 @@ public class Neo4jWrapperTest {
     @org.junit.Test
     public void setUp() throws Exception {
         int seed = randomizer.nextInt(100);
-        database = new Neo4jWrapper(true, "localhost:7687",seed);
+        database = new Neo4jWrapper(true, "pewhgames.com:7687",seed);
         //database.resetRelationships();
         //database.resetDatabase();
         Log.setLevel(Log.Level.INFO);

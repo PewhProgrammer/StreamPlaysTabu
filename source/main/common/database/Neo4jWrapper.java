@@ -54,7 +54,7 @@ public class Neo4jWrapper {
      * @param relationship
      * @return
      */
-    public boolean insertNodesAndRelationshipIntoOntology(String node1, String node2, Boolean node2Explain, String relationship, Boolean reliableFlag,String attr) {
+    public boolean insertNodesAndRelationshipIntoOntology(String node1, String node2, Boolean node2Explain, String relationship, Boolean reliableFlag, String attr) {
         boolean isNode1Explain = false;
 
         try {
@@ -79,7 +79,7 @@ public class Neo4jWrapper {
             Log.error(e.getLocalizedMessage());
         }
         if (isNode1Explain && node2Explain) setExplainWordToCategory(node2);
-        return createRelationship(node1, node2, relationship, reliableFlag,attr);
+        return createRelationship(node1, node2, relationship, reliableFlag, attr);
     }
 
     public void createUser(String str, String ch) {
@@ -165,7 +165,6 @@ public class Neo4jWrapper {
         query.append(", s.tabooWords = ").append(temp).append(" ");
 
 
-
         Transaction tx = getTransaction();
         try {
             StatementResult sResult = tx.run(query.toString(), parameters("name", "Games"));
@@ -245,26 +244,28 @@ public class Neo4jWrapper {
                 .append("WHERE s.validationLock <> true AND s.needValidation = true AND s.type = 'explain' ")
                 .append("RETURN s");
 
-        Transaction tx = getTransaction();
-        try {
-            StatementResult sResult = tx.run(query.toString());
-            while (sResult.hasNext()) {
-                result = sResult.next().values().get(0).
-                        asNode().get("name").toString().replaceAll("\"", "");
-                results.add(result);
+
+        try (Session session = driver.session()) {
+            try (Transaction tx = session.beginTransaction()) {
+                StatementResult sResult = tx.run(query.toString());
+                while (sResult.hasNext()) {
+                    result = sResult.next().values().get(0).
+                            asNode().get("name").toString().replaceAll("\"", "");
+                    results.add(result);
+                }
+                tx.success();
             }
-            tx.success();
-        } finally {
-            tx.close();
         }
 
         Collections.shuffle(results, randomizer);
         LinkedList<String> k = new LinkedList<>();
-        while(true) {
+        while (true)
+
+        {
             try {
                 k.addAll(results.subList(0, i));
                 break;
-            }catch(IndexOutOfBoundsException e){
+            } catch (IndexOutOfBoundsException e) {
                 i--;
             }
         }
@@ -594,17 +595,18 @@ public class Neo4jWrapper {
      * @param relationship
      * @return
      */
-    private boolean createRelationship(String node1, String node2, String relationship, Boolean reliableFlag,String attr) {
+    private boolean createRelationship(String node1, String node2, String relationship, Boolean reliableFlag, String attr) {
         node1 = Util.reduceStringToMinimum(node1);
         node2 = Util.reduceStringToMinimum(node2);
         relationship = Util.reduceStringToMinimum(relationship);
+        if(!attr.equals("")) attr = ", " +attr;
 
         StringBuilder query = new StringBuilder();
         int i = 0;
         query.append("MATCH (s),(t) WHERE s.name = {n1} AND t.name = {n2} ")
                 .append("MERGE (s)-[rel:`" + relationship + "`]->(t) ")
                 .append("ON MATCH SET rel.frequency = rel.frequency + 1 ")
-                .append(", rel.attribute = rel.attribute " + attr + " ")
+                .append(", rel.attribute = rel.attribute + {attr} ")
                 .append("ON CREATE SET rel.frequency = 0 ")
                 .append(", rel.attribute = {attr} ")
                 .append(", rel.validateRatingTaboo = 0 ")
@@ -620,7 +622,7 @@ public class Neo4jWrapper {
         Transaction tx = getTransaction();
         try {
             tx.run(query.toString(),
-                    parameters("n1", node1, "n2", node2, "rel", relationship,"attr",attr));
+                    parameters("n1", node1, "n2", node2, "rel", relationship, "attr", attr));
             tx.success();
         } finally {
             tx.close();
@@ -788,7 +790,6 @@ public class Neo4jWrapper {
         StringBuilder builder = new StringBuilder();
 
 
-
         Transaction tx = getTransaction();
         try {
             StatementResult sResult = tx.run("MATCH (n:" + userLabel + ")-[rel]->(t) WHERE n.name = {name}" +
@@ -806,7 +807,7 @@ public class Neo4jWrapper {
                 builder.append("Fetched " + property + ": " + String.format("%s %s ", user,
                         result));
             }
-        }finally {
+        } finally {
             tx.close();
         }
 
@@ -1064,7 +1065,7 @@ public class Neo4jWrapper {
                 Collections.shuffle(list);
                 try {
                     result = list.getFirst();
-                }catch(NoSuchElementException e){
+                } catch (NoSuchElementException e) {
                     Log.error("No more explain words in this category. Reshuffling");
                     return fetchConnectedWordFromDatabase(category, new HashSet<String>());
                 }
@@ -1173,15 +1174,15 @@ public class Neo4jWrapper {
 
     public Transaction getTransaction() {
         Transaction tx;
-            try {
-                this.session = driver.session();
-                tx = session.beginTransaction();
-            } catch (ServiceUnavailableException e) {
-                driver = acquireDriver("bolt://" + neo4jbindAddr,
-                        AuthTokens.basic("neo4j", "streamplaystabu"), config);
-                this.session = driver.session();
-                tx = session.beginTransaction();
-            }
+        try {
+            this.session = driver.session();
+            tx = session.beginTransaction();
+        } catch (ServiceUnavailableException e) {
+            driver = acquireDriver("bolt://" + neo4jbindAddr,
+                    AuthTokens.basic("neo4j", "streamplaystabu"), config);
+            this.session = driver.session();
+            tx = session.beginTransaction();
+        }
 
         return tx;
     }
