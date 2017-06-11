@@ -113,11 +113,11 @@ public class AltTwitchBot extends Bot {
     @Override
     public void whisperRules(String user) {
         sendChatMessage("/w " + user + " " +
-                "Rules: 1. In every round, there will be a person trying to explain a certain word. " +
-                "2. This person has to construct his explanations while considering our sentence templates on an external webpage. " +
-                "3. The others in the stream can ask questions and will try to guess the word "+
-                "4. The first to guess the word will be the winner of the round and both the guesser and explanator will be given points." +
-                "5. Players can be voted out with !votekick or kicked by a moderator, if they do not follow the rules. ");
+                "Rules: 1. Every round, one person tries to explain a certain word. " +
+                "2. This person constructs explanations while considering given sentence templates on an external webpage. " +
+                "3. The other players in the stream can ask questions and try to guess the word "+
+                "4. The first one to guess the word will be the winner of the round. Both, the guesser and giver, will be given points." +
+                "5. Players can kicked with !votekick if they do not follow the rules. ");
     }
 
     @Override

@@ -35,9 +35,6 @@ $(function () {
     $("#explanation").click(function () {
         //onExplanation();
     });
-    $("#answer").click(function () {
-        onAnswer();
-    });
 });
 
 app.get('/', function (req, res) {
@@ -186,9 +183,6 @@ function onExplanation() {
     document.getElementById("input3").innerHTML = "";
 }
 
-function onAnswer() {
-    sendAnswer(createAnswerEvent());
-}
 
 function onSkip() {
     requestSkip(createSkipRequest());
