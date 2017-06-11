@@ -704,7 +704,7 @@ public class Neo4jWrapper {
         relation = Util.reduceStringToMinimum(relation);
 
         StringBuilder query = new StringBuilder();
-        query.append("MATCH (s) WHERE s.name = {n1} ")
+        query.append("MATCH (s),(t) WHERE s.name = {n1} AND t.name = {n2} ")
                 .append("MERGE (s)-[rel:`" + relation + "`]->(t{name:{n2}}) ")
                 .append("ON MATCH SET rel.frequency = rel.frequency + 1 ")
                 .append("ON CREATE ")
@@ -1100,7 +1100,7 @@ public class Neo4jWrapper {
         Transaction tx = getTransaction();
         try {
             StatementResult sResult = tx.run(
-                    "MATCH (s)-[rel]->(t) WHERE t.name = {name} " +
+                    "MATCH (s)-[rel]->(t) WHERE s.name = {name} " +
                             "AND rel.needValidationTaboo = false RETURN rel,s", parameters("name", explainWord));
             List<Record> list = sResult.list();
             list = list.stream().sorted(
