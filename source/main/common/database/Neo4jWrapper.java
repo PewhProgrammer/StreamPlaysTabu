@@ -121,7 +121,7 @@ public class Neo4jWrapper {
     }
 
     //Called after a new game
-    public void updateNewGame(int roundTime, String giver, int difficulty,
+        public void updateNewGame(int roundTime, String giver, int difficulty,
                               LinkedList<Guess> guesses, LinkedList<String[]> qAnda,
                               List<String> registeredPlayers, Set<String> tabooWords,
                               Set<String> skippedWords, List<String> explanations,

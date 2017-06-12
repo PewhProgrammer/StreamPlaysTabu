@@ -499,7 +499,6 @@ public class GameModel extends Observable{
         }
 
         //update game instance
-        if(false)
         mOntologyDataBase.updateNewGame(this.playRoundTime,giver,difficultyLevel,
                 guesses,qAndA,registeredPlayers,tabooWords,usedWords,explanations,
                 word,outcome,gameMode
