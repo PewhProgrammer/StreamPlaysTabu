@@ -21,7 +21,7 @@ public class Neo4jWrapper {
     private final Config config;
     private final int DEL_TRESHHOLD = 2; //
     private final int CATEGORY_TRESHOLD = 3; //word qualifies as category if more equal than 3 incoming arcs are available
-    private final int VALIDATE_THRESHOLD = 6; //only need a validation score of eight
+    private final int VALIDATE_THRESHOLD = 5; //only need a validation score of eight
     private final String label;
     private Driver driver;
     private final Random randomizer;
@@ -352,7 +352,8 @@ public class Neo4jWrapper {
                 .append("SET rel.validateRatingTaboo = rel.validateRatingTaboo+").append(i).append(" ")
                 .append(", rel.validateFrequencyTaboo = rel.validateFrequencyTaboo+").append(1).append(" ")
                 .append("WITH rel, ")
-                .append("(CASE WHEN rel.validateRatingTaboo > "+VALIDATE_THRESHOLD+" THEN false ELSE " + needValidation + " END) AS flag ")
+                .append("(CASE WHEN rel.validateRatingTaboo > " + VALIDATE_THRESHOLD + " OR rel.validateRatingTaboo < "+(-VALIDATE_THRESHOLD)+
+                        " THEN false ELSE " + needValidation + " END) AS flag, ")
                 .append("SET rel.needValidationTaboo = flag");
 
         Transaction tx = getTransaction();
@@ -375,7 +376,8 @@ public class Neo4jWrapper {
                 .append("SET rel.validateRatingCategory = rel.validateRatingCategory+").append(i).append(" ")
                 .append(", rel.validateFrequencyCategory = rel.validateFrequencyCategory+").append(1).append(" ")
                 .append("WITH rel, ")
-                .append("(CASE WHEN rel.validateRatingCategory > 8 THEN false ELSE " + needValidation + " END) AS flag ")
+                .append("(CASE WHEN rel.validateRatingCategory > "+VALIDATE_THRESHOLD+" OR rel.validateRatingCategory < "+
+                        (-VALIDATE_THRESHOLD)+" THEN false ELSE " + needValidation + " END) AS flag ")
                 .append("SET rel.needValidationCategory = flag");
 
         Transaction tx = getTransaction();
@@ -613,15 +615,18 @@ public class Neo4jWrapper {
 
         StringBuilder query = new StringBuilder();
         int i = 0;
+        int validate = 0 ;
+        if(!needValidation)
+            validate = 100;
         query.append("MATCH (s),(t) WHERE s.name = {n1} AND t.name = {n2} ")
                 .append("MERGE (s)-[rel:`" + relationship + "`]->(t) ")
                 .append("ON MATCH SET rel.frequency = rel.frequency + 1 ")
                 .append(", rel.attribute = rel.attribute + {attr} ")
                 .append("ON CREATE SET rel.frequency = 0 ")
                 .append(", rel.attribute = {attr} ")
-                .append(", rel.validateRatingTaboo = 0 ")
+                .append(", rel.validateRatingTaboo = " + validate)
                 .append(", rel.validateFrequencyTaboo = 0 ")
-                .append(", rel.validateRatingCategory = 0 ")
+                .append(", rel.validateRatingCategory = " + validate)
                 .append(", rel.validateFrequencyCategory = 0 ")
                 .append(", rel.needValidationCategory = " + needValidation + " ")
                 .append(", rel.validationLock = " + !needValidation + " ")
@@ -1111,7 +1116,7 @@ public class Neo4jWrapper {
         try {
             StatementResult sResult = tx.run(
                     "MATCH (s)-[rel]->(t) WHERE s.name = {name} " +
-                            "AND rel.needValidationTaboo = false RETURN rel,t", parameters("name", explainWord));
+                            "AND rel.validateRatingTaboo > "+VALIDATE_THRESHOLD+" RETURN rel,t", parameters("name", explainWord));
             List<Record> list = sResult.list();
             list = list.stream().sorted(
                     (o2, o1) -> ((Integer) (o1.get("rel").asRelationship().get("validateRatingTaboo").asInt()
@@ -1155,7 +1160,7 @@ public class Neo4jWrapper {
         try {
 
             StatementResult sResult = tx.run("MATCH (s)-[rel]->(t) WHERE t.name = {name} " +
-                            "AND rel.needValidationCategory = false " +
+                            "AND rel.needValidationCategory > "+VALIDATE_THRESHOLD+" " +
                             "RETURN s",
                     parameters("name", nodeName));
 
