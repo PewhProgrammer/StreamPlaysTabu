@@ -73,12 +73,6 @@ function updateGuesses(guesses) {
         document.getElementById("Bar6").style.visibility = "visible";
         document.getElementById("6thGuessBar").style.width = parseFloat(incJson.nr6) * 100 + "%";
     }
-    if (incJson.guess7 != "") {
-        document.getElementById("7thGuess").innerHTML = incJson.guess7;
-        document.getElementById("7thGuess").style.visibility = "visible";
-        document.getElementById("Bar7").style.visibility = "visible";
-        document.getElementById("7thGuessBar").style.width = parseFloat(incJson.nr7) * 100 + "%";
-    }
 }
 
 function updateExplanations(explanations) {
