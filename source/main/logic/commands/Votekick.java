@@ -9,19 +9,20 @@ import model.GameState;
 public class Votekick extends Command {
 
     private String votingUser;
+    private int players;
 
-    public Votekick(GameModel gm, String ch, String votingUser) {
+    public Votekick(GameModel gm, String ch, String votingUser, int i) {
         super(gm, ch);
         this.votingUser = votingUser;
+        players = i;
     }
 
     @Override
     public void execute() {
-        int numPlayers = gameModel.getNumPlayers();
         gameModel.getVotekick().add(votingUser);
         int numVotes = gameModel.getVotekick().size();
 
-        if (numVotes > numPlayers * 0.5f) {
+        if (numVotes > players * 0.5f) {
             gameModel.clear();
             gameModel.getNeo4jWrapper().increaseUserError(gameModel.getGiver(), thisChannel);
             gameModel.getNeo4jWrapper().increaseUserError(gameModel.getGiver(), thisChannel);

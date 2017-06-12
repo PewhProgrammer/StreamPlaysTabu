@@ -115,8 +115,8 @@ public class AltTwitchBot extends Bot {
         sendChatMessage("/w " + user + " " +
                 "Rules: 1. Every round, one person tries to explain a certain word. " +
                 "2. This person constructs explanations while considering given sentence templates on an external webpage. " +
-                "3. The other players in the stream can ask questions and try to guess the word "+
-                "4. The first one to guess the word will be the winner of the round. Both, the guesser and giver, will be given points." +
+                "3. The other players in can !ask questions and try to !guess the word "+
+                "4. The first one to !guess the word will be the winner of the round. Both, the guesser and giver, will be given points." +
                 "5. Players can kicked with !votekick if they do not follow the rules. ");
     }
 
@@ -237,8 +237,8 @@ public class AltTwitchBot extends Bot {
         }
 
         // !votekick
-        if (parts[0].equals("!votekick")) {
-            return new Votekick(model, channel, sender);
+        if ((parts[0].equals("!votekick") && parts.length == 1) || (parts.length == 2 && parts[1].equals(model.getGiver()))) {
+            return new Votekick(model, channel, sender, getUsers(channel.substring(1)).size());
         }
 
         // !streamerExplains
@@ -275,8 +275,10 @@ public class AltTwitchBot extends Bot {
         if (parts[0].equals("!vote")) {
             int[] preVotes = new int[parts.length-1];
             for (int i = 1; i < parts.length; i++){
-                int vote = Integer.parseInt(parts[i]);
-                preVotes[i-1] = vote;
+                try {
+                    int vote = Integer.parseInt(parts[i]);
+                    preVotes[i - 1] = vote;
+                } catch (NumberFormatException e) { }
             }
             return new Prevote(model, channel, preVotes, sender);
         }

@@ -172,7 +172,7 @@ public class WebAPI implements IObserver {
         }
 
         if (state.equals(GameState.Kick)) {
-            send("/endGame", new GameCloseContainer("Kick", winner, points, word));
+            send("/endGame", new GameCloseContainer("Kick", GameControl.mModel.getGiver(), points, word));
             return;
         }
 
