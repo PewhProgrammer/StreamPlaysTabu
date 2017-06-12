@@ -35,6 +35,7 @@ public class ExecStudy extends TestCase {
     public void testSetUpNodes() {
         database.resetRelationships();
         database.resetDatabase();
+        database.initLogging();
 
         try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
 

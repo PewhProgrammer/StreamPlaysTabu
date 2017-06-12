@@ -21,7 +21,7 @@ public class Neo4jWrapper {
     private final Config config;
     private final int DEL_TRESHHOLD = 2; //
     private final int CATEGORY_TRESHOLD = 3; //word qualifies as category if more equal than 3 incoming arcs are available
-    private final int VALIDATE_THRESHOLD = 8; //only need a validation score of eight
+    private final int VALIDATE_THRESHOLD = 6; //only need a validation score of eight
     private final String label;
     private Driver driver;
     private final Random randomizer;
@@ -127,12 +127,11 @@ public class Neo4jWrapper {
                               Set<String> skippedWords, List<String> explanations,
                               String explainWord, String outcome, GameMode mode) {
 
-
         String result;
         LinkedList<String> results = new LinkedList<>();
         StringBuilder temp = new StringBuilder();
         StringBuilder logQuery = new StringBuilder();
-        logQuery.append("MATCH (s: " + "Logging" + ") WHERE name = {name} ")
+        logQuery.append("MATCH (s: " + "Logging" + ") WHERE s.name = {name} ")
                 .append("SET s.games = s.games + 1 ")
                 .append("RETURN s.games");
         StringBuilder query = new StringBuilder();
@@ -156,23 +155,26 @@ public class Neo4jWrapper {
         for (String taboo : tabooWords) {
             temp.append(taboo).append(", ");
         }
-        query.append(", s.tabooWords = ").append(temp).append(" ");
-        temp = new StringBuilder();
-
-        for (String taboo : tabooWords) {
-            temp.append(taboo).append(", ");
-        }
-        query.append(", s.tabooWords = ").append(temp).append(" ");
+        temp.append(", end");
+        query.append(", s.tabooWords = {temp} ");
+        //temp = new StringBuilder();
 
 
         Transaction tx = getTransaction();
         try {
-            StatementResult sResult = tx.run(query.toString(), parameters("name", "Games"));
-            while (sResult.hasNext()) {
-                result = sResult.next().values().get(0).
-                        asNode().get("name").toString().replaceAll("\"", "");
-                results.add(result);
+            StatementResult sr = tx.run(logQuery.toString(),parameters("name","Games"));
+            int games = 0 ;
+            String gameName = "Game #" ;
+            while(sr.hasNext()){
+
+                Record r = sr.next() ;
+                Value val = r.get("s.games");
+                games = sr.next().get("s.games").asInt();
+                gameName += games ;
+                Log.info("sd");
             }
+            tx.run(query.toString(), parameters("numGames",gameName,"roundTime",roundTime,"giver",giver,"difficulty",difficulty,
+                    "explainWord",explainWord,"outcome",outcome,"mode",mode.toString(),"numRegistered",registeredPlayers.size(),"temp",temp.toString()));
             tx.success();
         } finally {
             tx.close();
@@ -354,7 +356,7 @@ public class Neo4jWrapper {
                 .append("SET rel.validateRatingTaboo = rel.validateRatingTaboo+").append(i).append(" ")
                 .append(", rel.validateFrequencyTaboo = rel.validateFrequencyTaboo+").append(1).append(" ")
                 .append("WITH rel, ")
-                .append("(CASE WHEN rel.validateRatingTaboo > 8 THEN false ELSE " + needValidation + " END) AS flag ")
+                .append("(CASE WHEN rel.validateRatingTaboo > "+VALIDATE_THRESHOLD+" THEN false ELSE " + needValidation + " END) AS flag ")
                 .append("SET rel.needValidationTaboo = flag");
 
         Transaction tx = getTransaction();
@@ -552,6 +554,18 @@ public class Neo4jWrapper {
             tx.close();
         }
         Log.db("Created Node: " + nodeName + " " + label);
+    }
+
+    public void initLogging() throws ServiceUnavailableException {
+        Transaction tx = getTransaction();
+        try {
+            tx.run("CREATE (a:Logging {name: {name},games = 0 })",
+                    parameters("name", "Games"));
+            tx.success();
+        } finally {
+            tx.close();
+        }
+        Log.db("init Logging");
     }
 
     public boolean lookUpNode(String nodeName, String label, String ch) {
