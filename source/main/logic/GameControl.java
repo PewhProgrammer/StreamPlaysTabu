@@ -54,10 +54,10 @@ public class GameControl extends Observable{
         while(mModel.getGameState() == GameState.GameStarted){
             //processNextCommand();
             if(Util.diffTimeStamp(d,new Date()) > mModel.getRoundTime()){
-                mModel.setPlayRoundTime((int)Util.diffTimeStamp(d,new Date()));
                 mModel.setGiver("");
                 mModel.announceNoWinner();
                 mModel.setGameState(GameState.Lose);
+                mModel.setGameOutcome("Lose");
                 mModel.clear();
                 break;
             }
@@ -68,8 +68,10 @@ public class GameControl extends Observable{
             }
         }
 
-
-        if(mModel.getGameState() == GameState.Kick) mModel.setGiver("");
+        mModel.setGameOutcome(mModel.getGameState().toString());
+        if(mModel.getGameState() == GameState.Kick) {
+            mModel.setGiver("");
+        }
         try {
             Thread.sleep(5000);
             mModel.setGameState(GameState.GameStarted.Registration);
@@ -78,7 +80,6 @@ public class GameControl extends Observable{
         }
         isStarted = false;
         waitingForPlayers();
-
     }
 
     public void waitingForConfig(){
@@ -122,14 +123,12 @@ public class GameControl extends Observable{
             sleepThread(30);
 
             if(mModel.getGameMode() == GameMode.Streamer){
-                mModel.setGiver(mModel.getGiverChannel());
-                break gameLoop;
+                mModel.setGiver(mModel.getGiverChannel()); break gameLoop;
             }
 
             if(mModel.getRegisteredPlayers().contains(mModel.getWinner())){
                 mModel.setGiver(mModel.getWinner());
-                if(!mModel.getGiver().equals(""))
-                    break gameLoop;
+                if(!mModel.getGiver().equals("")) break gameLoop;
             }
 
             Log.info("Entering Stand by: Anyone can type !register to become giver");
@@ -147,18 +146,6 @@ public class GameControl extends Observable{
                     e.printStackTrace();
                 }
             }
-
-
-            /*
-            //random giver
-            List<String> usersInChannel = mModel.getBot().getUsers(mModel.getGiverChannel()) ;
-            if(usersInChannel.size() > 1) {
-                chooseNewGiver(mModel.getBot().getUsers(mModel.getGiverChannel()));
-                if(!mModel.getGiver().equals(""))
-                    break;
-            }*/
-
-
         }
 
         mModel.setGameState(GameState.WaitingForGiver);
@@ -171,6 +158,7 @@ public class GameControl extends Observable{
         while(mModel.getGameState() == GameState.WaitingForGiver){
             Date d = mModel.getTimeStamp();
             if(Util.diffTimeStamp(d,new Date()) > 20){
+                mModel.incMissedOffer();
                 mModel.announceGiverNotAccepted(mModel.getGiver());
                 mModel.setGiver("");
                 mModel.setGameState(GameState.GameStarted.Registration);

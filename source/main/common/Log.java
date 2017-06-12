@@ -1,8 +1,15 @@
 package common;
 
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A Simple Log Class with different Levels
@@ -50,6 +57,21 @@ public class Log {
     private static void print(String msg, PrintStream out) {
         out.println(new SimpleDateFormat("HH:mm:ss").format(new Date()) + ". " +
             msg);
+
+        List<String> lines = Arrays.asList(new SimpleDateFormat("dd.MM HH:mm:ss").format(new Date()) + ". " +
+                msg);
+
+        List<String> debug = Arrays.asList(new SimpleDateFormat("dd.MM HH:mm:ss").format(new Date()) + ". " +
+                msg);
+        Path file = Paths.get("Logging.txt");
+        Path fileDebug = Paths.get("Debug.txt");
+        try {
+            Files.write(file, lines, Charset.forName("UTF-8"));
+            if(msg.startsWith("E"))
+                Files.write(fileDebug, debug, Charset.forName("UTF-8"));
+        }catch(IOException e){
+
+        }
     }
 
     /**

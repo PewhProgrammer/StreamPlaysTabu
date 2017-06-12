@@ -14,6 +14,7 @@ import logic.bots.AltTwitchBot;
 import logic.bots.BeamBot;
 import logic.bots.Bot;
 import logic.commands.Command;
+import org.neo4j.driver.v1.exceptions.ServiceUnavailableException;
 //import org.languagetool.JLanguageTool;
 //import org.languagetool.language.BritishEnglish;
 //import org.languagetool.language.GermanyGerman;
@@ -40,7 +41,6 @@ public class GameModel extends Observable{
     private GameState mGameState;
     private int mNumPlayers;
     private double roundTime = 105;
-    private int playRoundTime = 0 ;
     private int errCounter = 0;
 
     //private Language lang;
@@ -64,10 +64,12 @@ public class GameModel extends Observable{
     private Set<String> validationObjects;
 
     private String giverChannel = "";
+    private String gameOutcome = "Not determined";
 
     private String category, giver = "", word, winner;
     private int gainedPoints = 0;
     private int difficultyLevel = 1 ;
+    private int missedOffer = 0 ;
 
     private int validationLevel = -1 ;
 
@@ -321,6 +323,8 @@ public class GameModel extends Observable{
         notifyCategoryChosen();
     }
 
+    public void incMissedOffer(){missedOffer += 1;}
+
     public String getCategory() {
         return this.category;
     }
@@ -491,29 +495,23 @@ public class GameModel extends Observable{
     }
 
     public void clear() {
-        String outcome = " ";
-        switch(mGameState){
-            case Win:{
-                outcome = "win";
-                break;
-            }
-            case Lose:{
-                outcome = "lose";
-                break;
-            }
-            case Kick:{
-                outcome = "kick";
-                break;
-            }
-            default: outcome = mGameState.toString();
-        }
+
+        Date now = new Date() ;
+        int playRoundTime = getRoundTime() - (int)Util.diffTimeStamp(timeStamp,now)  ;
+        playRoundTime = playRoundTime >= 0 ? playRoundTime : 0 ;
 
         //update game instance
-        mOntologyDataBase.updateNewGame(this.playRoundTime,giver,difficultyLevel,
-                guesses,qAndA,registeredPlayers,tabooWords,usedWords,explanations,
-                word,outcome,gameMode
-                );
+        try {
+            mOntologyDataBase.updateNewGame(playRoundTime, giver, difficultyLevel, missedOffer,
+                    guesses, qAndA, registeredPlayers, tabooWords, usedWords, explanations,
+                    word, gameOutcome, gameMode
+            );
+        }catch(ServiceUnavailableException e){
+            Log.error(e.getLocalizedMessage());
+        }
 
+        missedOffer = 0 ;
+        setGameOutcome("Not determined");
         setRoundTime(105);
         clearExplanations();
         clearQAndA();
@@ -531,6 +529,8 @@ public class GameModel extends Observable{
         generateVotingCategories();
     }
 
+    public void setGameOutcome(String s){this.gameOutcome = s;}
+
     public void setRoundTime(int i ){
         this.roundTime = i;
     }
@@ -538,8 +538,6 @@ public class GameModel extends Observable{
     public int getRoundTime(){
         return (int) this.roundTime;
     }
-
-    public void setPlayRoundTime(int i){ this.playRoundTime = i ;}
 
     public int increaseErrCounter() {
         return ++errCounter;

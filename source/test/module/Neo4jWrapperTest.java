@@ -365,7 +365,7 @@ public class Neo4jWrapperTest {
         Set<String> skipped = new HashSet<>();
         List<String> explanation = new ArrayList<>();
 
-        database.updateNewGame(100,"john",2,guess,qAnda,registered,taboo,skipped,explanation,"word","win", GameMode.Normal);
+        //database.updateNewGame(100,"john",2,guess,qAnda,registered,taboo,skipped,explanation,"word","win", GameMode.Normal);
     }
 
     @Test

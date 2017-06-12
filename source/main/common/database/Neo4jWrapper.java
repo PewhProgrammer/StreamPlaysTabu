@@ -14,6 +14,9 @@ import static org.neo4j.driver.v1.Values.parameters;
 
 import org.neo4j.driver.v1.types.Node;
 
+import javax.jnlp.UnavailableServiceException;
+import javax.xml.ws.Service;
+
 /**
  * Created by Thinh-Laptop on 08.04.2017.
  */
@@ -29,6 +32,8 @@ public class Neo4jWrapper {
     private boolean needValidation;
     private StringBuilder neo4jbindAddr = new StringBuilder();
     private String userLabel = "userNode";
+    private String forced = "mass effect";
+    private Set<String> forcedSet;
 
     public Neo4jWrapper(boolean simulation, String neo4jbind, int seed) {
         config = Config.build().withEncryptionLevel(Config.EncryptionLevel.REQUIRED).toConfig();//baut enkryptische Verbindung, um uns gegen "man-in-the-middle" attacken zu schützen
@@ -43,6 +48,10 @@ public class Neo4jWrapper {
         label = "Node";
         userLabel = "userNode";
         needValidation = !simulation;
+
+        forcedSet = new HashSet<>();
+        forcedSet.add("mass effect");
+        forcedSet.add("league of legends");
     }
 
     /**
@@ -60,7 +69,7 @@ public class Neo4jWrapper {
         try {
             createNode(node1, isNode1Explain);
         } catch (ServiceUnavailableException | common.database.DatabaseException e) {
-            Log.debug(e.getLocalizedMessage());
+            Log.error(e.getLocalizedMessage());
         }
 
         String type = "";
@@ -74,12 +83,13 @@ public class Neo4jWrapper {
 
         try {
             createNode(node2, node2Explain);
+            if (isNode1Explain && node2Explain) setExplainWordToCategory(node2);
+            return createRelationship(node1, node2, relationship, reliableFlag, attr);
         } catch (ServiceUnavailableException | common.database.DatabaseException e) {
-            //If the start node is from type explain, update end node to potential category
             Log.error(e.getLocalizedMessage());
         }
-        if (isNode1Explain && node2Explain) setExplainWordToCategory(node2);
-        return createRelationship(node1, node2, relationship, reliableFlag, attr);
+
+        return false;
     }
 
     public void createUser(String str, String ch) {
@@ -87,19 +97,18 @@ public class Neo4jWrapper {
             Thread.dumpStack();
             return;
         }
+
         try {
             generateUserNodeInDatabase(str);
+            createStreamNode(ch);
+            createRelationshipStreamer(str, ch, "plays in");
             Log.db("Created Node: \"" + str + "\" userNode");
         } catch (ServiceUnavailableException | common.database.DatabaseException e) {
-
-            Log.error(e.getMessage());
+            Log.error(e.getLocalizedMessage());
         }
-
-        createStreamNode(ch);
-        createRelationshipStreamer(str, ch, "plays in");
     }
 
-    private void createStreamNode(String ch) {
+    private void createStreamNode(String ch) throws ServiceUnavailableException {
         try {
             generateNodeInDatabase(new customNode(ch, "streamNode", true, ch));
             Log.db("Created streamNode: \"" + ch + "\"");
@@ -109,30 +118,36 @@ public class Neo4jWrapper {
     }
 
     public Set<String> getTabooWords(String explain, String forbiddenWord, int querySize) {
-        Set<String> result = new HashSet<>();
+        Set<String> result;
         try {
             result = fetchTabooWords(Util.reduceStringToMinimum(explain), forbiddenWord, querySize);
         } catch (ServiceUnavailableException e) {
-            Log.error(e.getMessage());
+            Log.error(e.getLocalizedMessage());
+            return forcedSet;
         }
+
         if (result.size() < querySize)
-            Log.db("Could not retrieve enough taboo words. Missing -> Expected " + querySize + "; Actual " + result.size());
+            Log.error("Could not retrieve enough taboo words. Missing -> Expected " + querySize + "; Actual " + result.size());
         return result;
     }
 
     //Called after a new game
-        public void updateNewGame(int roundTime, String giver, int difficulty,
+    public void updateNewGame(int roundTime, String giver, int difficulty, int missedOffer,
                               LinkedList<Guess> guesses, LinkedList<String[]> qAnda,
                               List<String> registeredPlayers, Set<String> tabooWords,
                               Set<String> skippedWords, List<String> explanations,
-                              String explainWord, String outcome, GameMode mode) {
+                              String explainWord, String outcome, GameMode mode) throws ServiceUnavailableException {
 
-        String result;
-        LinkedList<String> results = new LinkedList<>();
-        StringBuilder temp = new StringBuilder();
+
+        StringBuilder tabooBuilder = new StringBuilder();
+        StringBuilder guessBuilder = new StringBuilder();
+        StringBuilder explanationBuilder = new StringBuilder();
+        StringBuilder skippedWordBuilder = new StringBuilder();
+
         StringBuilder logQuery = new StringBuilder();
         logQuery.append("MATCH (s: " + "Logging" + ") WHERE s.name = {name} ")
                 .append("SET s.games = s.games + 1 ")
+                .append(", s.missedOffer = s.missedOffer + ").append(missedOffer).append(" ")
                 .append("RETURN s.games");
         StringBuilder query = new StringBuilder();
         query
@@ -152,25 +167,49 @@ public class Neo4jWrapper {
             i++;
         }
 
-        for (String taboo : tabooWords) {
-            temp.append(taboo).append(", ");
+        if (tabooWords.isEmpty()) tabooBuilder.append("isEmpty");
+        else {
+            for (String taboo : tabooWords) {
+                tabooBuilder.append(taboo).append(", ");
+            }
         }
-        temp.append(", end");
-        query.append(", s.tabooWords = {temp} ");
-        //temp = new StringBuilder();
+        query.append(", s.tabooWords = {tabooBuilder} ");
 
+        if (skippedWords.isEmpty()) skippedWordBuilder.append("isEmpty");
+        else {
+            for (String used : skippedWords) {
+                skippedWordBuilder.append(used).append(", ");
+            }
+        }
+        query.append(", s.skippedWords = {skippedWordBuilder} ");
+
+        if (explanations.isEmpty()) explanationBuilder.append("isEmpty");
+        else {
+            for (String explain : explanations) {
+                explanationBuilder.append(explain).append(", ");
+            }
+        }
+        query.append(", s.explanations = {explanationBuilder} ");
+
+        if (guesses.isEmpty()) guessBuilder.append("isEmpty");
+        else {
+            for (Guess guess : guesses) {
+                guessBuilder.append(guess.toString()).append(", ");
+            }
+        }
+        query.append(", s.guesses = {guessBuilder} ");
 
         Transaction tx = getTransaction();
         try {
-            StatementResult sr = tx.run(logQuery.toString(),parameters("name","Games"));
-            int games = 0 ;
-            String gameName = "Game #" ;
-            while(sr.hasNext()){
-                games = sr.next().get("s.games").asInt();
-                gameName += games ;
+            StatementResult sr = tx.run(logQuery.toString(), parameters("name", "Games"));
+            String gameName = "Game #";
+            while (sr.hasNext()) {
+                int games = sr.next().get("s.games").asInt();
+                gameName += games;
             }
-            tx.run(query.toString(), parameters("numGames",gameName,"roundTime",roundTime,"giver",giver,"difficulty",difficulty,
-                    "explainWord",explainWord,"outcome",outcome,"mode",mode.toString(),"numRegistered",registeredPlayers.size(),"temp",temp.toString()));
+            tx.run(query.toString(), parameters("numGames", gameName, "roundTime", roundTime, "giver", giver, "difficulty", difficulty,
+                    "explainWord", explainWord, "outcome", outcome, "mode", mode.toString(), "numRegistered", registeredPlayers.size(), "tabooBuilder", tabooBuilder.toString(),
+                    "explanationBuilder", explanationBuilder.toString(), "guessBuilder", guessBuilder.toString(), "skippedWordBuilder", skippedWordBuilder.toString()));
             tx.success();
         } finally {
             tx.close();
@@ -189,14 +228,23 @@ public class Neo4jWrapper {
     public HashMap<String, Set<String>> getTabooWordsForValidation(String explain, int querySize) {
         String category = "none";
         HashMap<String, Set<String>> result = new HashMap<>();
-        if (explain == null) explain = getRandomExplainWord(querySize);
+        try {
+            if (explain == null) explain = getRandomExplainWord(querySize);
 
-        Set<String> taboo = fetchTabooWords(Util.reduceStringToMinimum(explain), category, querySize);
-        if (taboo.size() > 0) {
-            result.put(explain, taboo);
-        } else {
-            explain = getRandomExplainWord(querySize);
-            taboo = fetchTabooWords(Util.reduceStringToMinimum(explain), category, querySize);
+            Set<String> taboo = fetchTabooWords(Util.reduceStringToMinimum(explain), category, querySize);
+            if (taboo.size() > 0) {
+                result.put(explain, taboo);
+            } else {
+                explain = getRandomExplainWord(querySize);
+                taboo = fetchTabooWords(Util.reduceStringToMinimum(explain), category, querySize);
+                result.put(explain, taboo);
+            }
+
+        } catch (ServiceUnavailableException e) {
+            Log.error(e.getLocalizedMessage());
+            HashMap<String, Set<String>> map = new HashMap<>();
+            map.put("EMPTY", new HashSet<>());
+            return map;
         }
         return result;
     }
@@ -204,13 +252,18 @@ public class Neo4jWrapper {
 
     private String getRandomExplainWord(int querySize) {
         String explain = "";
-        Set<String> cat = fetchFilteredCategoryFromDatabase(querySize);
-        for (String str : cat) {
-            if (randomizer.nextBoolean() || explain.equals("")) {
-                explain = str;
+        try {
+            Set<String> cat = fetchFilteredCategoryFromDatabase(querySize);
+            for (String str : cat) {
+                if (randomizer.nextBoolean() || explain.equals("")) {
+                    explain = str;
+                }
             }
+            return explain;
+        } catch (ServiceUnavailableException e) {
+            Log.error(e.getLocalizedMessage());
+            return forced;
         }
-        return explain;
     }
 
     public ArrayList<Pair> getValidationForGiver() {
@@ -222,6 +275,7 @@ public class Neo4jWrapper {
         } catch (NoSuchElementException e) {
             explain = "EMPTY";
         }
+
         result.add(new Pair(explain, ""));
 
         //get taboo - explain
@@ -243,23 +297,28 @@ public class Neo4jWrapper {
                 .append("RETURN s");
 
 
-        try (Session session = driver.session()) {
-            try (Transaction tx = session.beginTransaction()) {
-                StatementResult sResult = tx.run(query.toString());
-                while (sResult.hasNext()) {
-                    result = sResult.next().values().get(0).
-                            asNode().get("name").toString().replaceAll("\"", "");
-                    results.add(result);
+        try {
+            try (Session session = driver.session()) {
+                try (Transaction tx = session.beginTransaction()) {
+                    StatementResult sResult = tx.run(query.toString());
+                    while (sResult.hasNext()) {
+                        result = sResult.next().values().get(0).
+                                asNode().get("name").toString().replaceAll("\"", "");
+                        results.add(result);
+                    }
+                    tx.success();
                 }
-                tx.success();
             }
+        } catch (ServiceUnavailableException e) {
+            Log.error(e.getLocalizedMessage());
+            LinkedList<String> list = new LinkedList<>();
+            list.add("EMPTY");
+            return list;
         }
 
         Collections.shuffle(results, randomizer);
         LinkedList<String> k = new LinkedList<>();
-        while (true)
-
-        {
+        while (true) {
             try {
                 k.addAll(results.subList(0, i));
                 break;
@@ -280,6 +339,9 @@ public class Neo4jWrapper {
 
 
         Transaction tx = getTransaction();
+        if(tx == null){
+            return new Pair("mass effect","ubisoft");
+        }
         try {
             StatementResult sResult = tx.run(query.toString());
             while (sResult.hasNext()) {
@@ -314,6 +376,9 @@ public class Neo4jWrapper {
 
 
         Transaction tx = getTransaction();
+        if(tx == null){
+            return new Pair("mass effect","ubisoft");
+        }
         try {
             StatementResult sResult = tx.run(query.toString());
             while (sResult.hasNext()) {
@@ -352,11 +417,14 @@ public class Neo4jWrapper {
                 .append("SET rel.validateRatingTaboo = rel.validateRatingTaboo+").append(i).append(" ")
                 .append(", rel.validateFrequencyTaboo = rel.validateFrequencyTaboo+").append(1).append(" ")
                 .append("WITH rel, ")
-                .append("(CASE WHEN rel.validateRatingTaboo > " + VALIDATE_THRESHOLD + " OR rel.validateRatingTaboo < "+(-VALIDATE_THRESHOLD)+
+                .append("(CASE WHEN rel.validateRatingTaboo > " + VALIDATE_THRESHOLD + " OR rel.validateRatingTaboo < " + (-VALIDATE_THRESHOLD) +
                         " THEN false ELSE " + needValidation + " END) AS flag, ")
                 .append("SET rel.needValidationTaboo = flag");
 
         Transaction tx = getTransaction();
+        if(tx == null){
+            return;
+        }
         try {
             tx.run(query.toString(),
                     parameters("n1", source, "n2", target));
@@ -376,11 +444,12 @@ public class Neo4jWrapper {
                 .append("SET rel.validateRatingCategory = rel.validateRatingCategory+").append(i).append(" ")
                 .append(", rel.validateFrequencyCategory = rel.validateFrequencyCategory+").append(1).append(" ")
                 .append("WITH rel, ")
-                .append("(CASE WHEN rel.validateRatingCategory > "+VALIDATE_THRESHOLD+" OR rel.validateRatingCategory < "+
-                        (-VALIDATE_THRESHOLD)+" THEN false ELSE " + needValidation + " END) AS flag ")
+                .append("(CASE WHEN rel.validateRatingCategory > " + VALIDATE_THRESHOLD + " OR rel.validateRatingCategory < " +
+                        (-VALIDATE_THRESHOLD) + " THEN false ELSE " + needValidation + " END) AS flag ")
                 .append("SET rel.needValidationCategory = flag");
 
         Transaction tx = getTransaction();
+        if(tx == null) return;
         try {
             tx.run(query.toString(),
                     parameters("n1", source, "n2", target));
@@ -403,6 +472,7 @@ public class Neo4jWrapper {
                 .append("SET s.needValidation = flag");
 
         Transaction tx = getTransaction();
+        if(tx == null) return;
         try {
             tx.run(query.toString(),
                     parameters("n1", source));
@@ -420,7 +490,7 @@ public class Neo4jWrapper {
         builder.append(parts[0]).append(".").append(d.getDate()).append(".").append(d.getHours()).append(".").append(d.getMinutes());
         try {
             updateUserProperties(user, "cheat_occurence", builder.toString());
-        } catch (common.database.DatabaseException e) {
+        } catch (common.database.DatabaseException | ServiceUnavailableException e) {
             Log.error(e.getLocalizedMessage());
         }
     }
@@ -430,7 +500,7 @@ public class Neo4jWrapper {
             String callback = fetchUserPropertiesFromDatabase(user, "cheat_occurence");
             String[] result = callback.split("\\.");
             return result;
-        } catch (common.database.DatabaseException e) {
+        } catch (common.database.DatabaseException | ServiceUnavailableException e) {
             Log.error(e.getLocalizedMessage());
         }
         return null;
@@ -449,8 +519,9 @@ public class Neo4jWrapper {
         try {
             return "" + updateUserProperties(user, "votekicked", "1");
         } catch (common.database.DatabaseException e) {
-            Log.debug(e.getMessage());
             createUser(user, ch);
+        } catch(ServiceUnavailableException i){
+            Log.error(i.getLocalizedMessage());
         }
         return "0"; //default value
     }
@@ -459,8 +530,9 @@ public class Neo4jWrapper {
         try {
             return Integer.parseInt(fetchRelationshipProperties(user, "points", ch));
         } catch (common.database.DatabaseException e) {
-            Log.debug(e.getMessage());
             createUser(user, ch);
+        } catch(ServiceUnavailableException i){
+            Log.error(i.getLocalizedMessage());
         }
 
         return 0; //default value
@@ -469,9 +541,10 @@ public class Neo4jWrapper {
     public int updateUserPoints(String user, int i, String ch) {
         try {
             return Integer.parseInt(updateRelationshipProperties(new customRelationship(user, ch, "points", "" + i)));
-        } catch (common.database.DatabaseException e) {
-            Log.debug(e.getMessage());
+        } catch (common.database.DatabaseException  e) {
             createUser(user, ch);
+        }catch(ServiceUnavailableException k){
+            Log.error(k.getLocalizedMessage());
         }
         return 0; //default value
     }
@@ -487,8 +560,9 @@ public class Neo4jWrapper {
         try {
             return Integer.parseInt(updateUserProperties(user, "mistakes", "" + 1));
         } catch (common.database.DatabaseException e) {
-            Log.debug(e.getMessage());
             createUser(user, ch);
+        } catch(ServiceUnavailableException i){
+            Log.error(i.getLocalizedMessage());
         }
         return 0; //default value
     }
@@ -496,9 +570,10 @@ public class Neo4jWrapper {
     public int getUserError(String user, String ch) throws Neo4jException {
         try {
             return Integer.parseInt(fetchUserPropertiesFromDatabase(user, "mistakes"));
-        } catch (common.database.DatabaseException e) {
-            Log.debug(e.getMessage());
+        } catch (common.database.DatabaseException  e) {
             createUser(user, ch);
+        } catch(ServiceUnavailableException i){
+            Log.error(i.getLocalizedMessage());
         }
 
         return 0; //default value
@@ -511,11 +586,23 @@ public class Neo4jWrapper {
      * @return
      */
     public Set<String> getCategories(int querySize) {
-        return fetchFilteredCategoryFromDatabase(querySize);
+        try {
+            return fetchFilteredCategoryFromDatabase(querySize);
+        } catch (ServiceUnavailableException e) {
+            Log.error(e.getLocalizedMessage());
+            Set<String> set = new HashSet<>();
+            set.add(forced);
+            return set;
+        }
     }
 
     public String getExplainWord(String category, Set<String> skippedWords) throws common.database.DatabaseException {
-        return fetchConnectedWordFromDatabase(category, skippedWords);
+        try {
+            return fetchConnectedWordFromDatabase(category, skippedWords);
+        } catch (ServiceUnavailableException e) {
+            Log.error(e.getLocalizedMessage());
+            return forced;
+        }
     }
 
     //** TODO: Missing Logging system for user's activity
@@ -557,7 +644,7 @@ public class Neo4jWrapper {
     public void initLogging() throws ServiceUnavailableException {
         Transaction tx = getTransaction();
         try {
-            tx.run("CREATE (a:Logging {name: {name},games: 0 })",
+            tx.run("CREATE (a:Logging {name: {name},games: 0, missedOffer: 0 })",
                     parameters("name", "Games"));
             tx.success();
         } finally {
@@ -611,12 +698,12 @@ public class Neo4jWrapper {
         node1 = Util.reduceStringToMinimum(node1);
         node2 = Util.reduceStringToMinimum(node2);
         relationship = Util.reduceStringToMinimum(relationship);
-        if(!attr.equals("")) attr = ", " +attr;
+        if (!attr.equals("")) attr = ", " + attr;
 
         StringBuilder query = new StringBuilder();
         int i = 0;
-        int validate = 0 ;
-        if(!needValidation)
+        int validate = 0;
+        if (!needValidation)
             validate = 100;
         query.append("MATCH (s),(t) WHERE s.name = {n1} AND t.name = {n2} ")
                 .append("MERGE (s)-[rel:`" + relationship + "`]->(t) ")
@@ -655,7 +742,7 @@ public class Neo4jWrapper {
      * @param relationship
      * @return
      */
-    private boolean createRelationshipStreamer(String node1, String node2, String relationship) {
+    private boolean createRelationshipStreamer(String node1, String node2, String relationship) throws ServiceUnavailableException {
         Transaction tx = getTransaction();
         try {
             tx.run("MATCH (ee:userNode) WHERE ee.name =  \"" + node1 + "\" " +
@@ -743,7 +830,7 @@ public class Neo4jWrapper {
      *
      * @return
      */
-    public Set<String> fetchFilteredCategoryFromDatabase(int cap) {
+    public Set<String> fetchFilteredCategoryFromDatabase(int cap) throws ServiceUnavailableException {
         Set<String> result = new HashSet<>(cap);
         StringBuilder builder = new StringBuilder();
 
@@ -1026,7 +1113,7 @@ public class Neo4jWrapper {
      * @param usedWords Words already skipped
      * @return
      */
-    private String fetchConnectedWordFromDatabase(String category, Set<String> usedWords) throws common.database.DatabaseException {
+    private String fetchConnectedWordFromDatabase(String category, Set<String> usedWords) throws common.database.DatabaseException, ServiceUnavailableException {
         StringBuilder builder = new StringBuilder();
         String result = "";
 
@@ -1116,7 +1203,7 @@ public class Neo4jWrapper {
         try {
             StatementResult sResult = tx.run(
                     "MATCH (s)-[rel]->(t) WHERE s.name = {name} " +
-                            "AND rel.validateRatingTaboo > "+VALIDATE_THRESHOLD+" RETURN rel,t", parameters("name", explainWord));
+                            "AND rel.validateRatingTaboo > " + VALIDATE_THRESHOLD + " RETURN rel,t", parameters("name", explainWord));
             List<Record> list = sResult.list();
             list = list.stream().sorted(
                     (o2, o1) -> ((Integer) (o1.get("rel").asRelationship().get("validateRatingTaboo").asInt()
@@ -1160,7 +1247,7 @@ public class Neo4jWrapper {
         try {
 
             StatementResult sResult = tx.run("MATCH (s)-[rel]->(t) WHERE t.name = {name} " +
-                            "AND rel.needValidationCategory > "+VALIDATE_THRESHOLD+" " +
+                            "AND rel.needValidationCategory > " + VALIDATE_THRESHOLD + " " +
                             "RETURN s",
                     parameters("name", nodeName));
 
@@ -1188,15 +1275,14 @@ public class Neo4jWrapper {
     }
 
     public Transaction getTransaction() {
-        Transaction tx;
+        Transaction tx = null;
         try {
             this.session = driver.session();
             tx = session.beginTransaction();
         } catch (ServiceUnavailableException e) {
+            Log.error(e.getLocalizedMessage());
             driver = acquireDriver("bolt://" + neo4jbindAddr,
                     AuthTokens.basic("neo4j", "streamplaystabu"), config);
-            this.session = driver.session();
-            tx = session.beginTransaction();
         }
 
         return tx;
