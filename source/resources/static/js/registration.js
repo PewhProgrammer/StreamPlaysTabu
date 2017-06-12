@@ -202,7 +202,7 @@ function getWhitespaces(num) {
 }
 
 var  tips = ["Type !register to get into the giver pool! Being registered you have the chance to explain the next word!",
-"You can type !score to see your points. The top 3 players with the most points will be granted a badge!",
+"You can type !score to see your points.",
 "You can take a guess by using the !guess command. The faster you guess the right word, the more points you will get!",
 "Do you want to ask the giver anything? Type !ask and the giver can answer your question.",
 "Is a player not behaving right? Start a !votekick.",
