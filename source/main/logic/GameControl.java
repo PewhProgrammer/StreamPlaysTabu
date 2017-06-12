@@ -184,8 +184,6 @@ public class GameControl extends Observable{
             }
         }
         mModel.setTimeStamp();
-
-        mModel.clearRegisteredPlayers();
         isStarted = true;
         runGame();
     }
