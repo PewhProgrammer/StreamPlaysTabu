@@ -54,6 +54,7 @@ public class GameControl extends Observable{
         while(mModel.getGameState() == GameState.GameStarted){
             //processNextCommand();
             if(Util.diffTimeStamp(d,new Date()) > mModel.getRoundTime()){
+                mModel.setPlayRoundTime((int)Util.diffTimeStamp(d,new Date()));
                 mModel.setGiver("");
                 mModel.announceNoWinner();
                 mModel.setGameState(GameState.Lose);
@@ -67,7 +68,6 @@ public class GameControl extends Observable{
             }
         }
 
-        mModel.setPlayRoundTime((int)Util.diffTimeStamp(d,new Date()));
 
         if(mModel.getGameState() == GameState.Kick) mModel.setGiver("");
         try {

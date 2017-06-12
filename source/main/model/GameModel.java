@@ -505,6 +505,7 @@ public class GameModel extends Observable{
                 outcome = "kick";
                 break;
             }
+            default: outcome = mGameState.toString();
         }
 
         //update game instance
