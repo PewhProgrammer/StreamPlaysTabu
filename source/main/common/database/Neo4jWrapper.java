@@ -166,12 +166,8 @@ public class Neo4jWrapper {
             int games = 0 ;
             String gameName = "Game #" ;
             while(sr.hasNext()){
-
-                Record r = sr.next() ;
-                Value val = r.get("s.games");
                 games = sr.next().get("s.games").asInt();
                 gameName += games ;
-                Log.info("sd");
             }
             tx.run(query.toString(), parameters("numGames",gameName,"roundTime",roundTime,"giver",giver,"difficulty",difficulty,
                     "explainWord",explainWord,"outcome",outcome,"mode",mode.toString(),"numRegistered",registeredPlayers.size(),"temp",temp.toString()));
@@ -559,7 +555,7 @@ public class Neo4jWrapper {
     public void initLogging() throws ServiceUnavailableException {
         Transaction tx = getTransaction();
         try {
-            tx.run("CREATE (a:Logging {name: {name},games = 0 })",
+            tx.run("CREATE (a:Logging {name: {name},games: 0 })",
                     parameters("name", "Games"));
             tx.success();
         } finally {
@@ -718,7 +714,7 @@ public class Neo4jWrapper {
         relation = Util.reduceStringToMinimum(relation);
 
         StringBuilder query = new StringBuilder();
-        query.append("MATCH (s),(t) WHERE s.name = {n1} AND t.name = {n2} ")
+        query.append("MATCH (s) WHERE s.name = {n1} ")
                 .append("MERGE (s)-[rel:`" + relation + "`]->(t{name:{n2}}) ")
                 .append("ON MATCH SET rel.frequency = rel.frequency + 1 ")
                 .append("ON CREATE ")

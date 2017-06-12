@@ -22,8 +22,10 @@ import java.util.*;
 public class WebAPI implements IObserver {
 
     private String channel = "";
-    private int validateRotation = 0 ;
+    private int validateRotation = 0;
     private Neo4jWrapper db;
+
+    private String noNeed = "We will ask you later if there is a need to validate!";
 
     public WebAPI() {
         GameControl.mModel.addObserver(this);
@@ -35,7 +37,7 @@ public class WebAPI implements IObserver {
     @MessageMapping("/startGame")
     public void startGame(SetupInformationContainer si) {
         Setup sCmd = (new Setup(si, GameControl.mModel, si.getChannel()));
-        db = GameControl.mModel.getNeo4jWrapper() ;
+        db = GameControl.mModel.getNeo4jWrapper();
         if (sCmd.validate()) {
             channel = si.getChannel();
             sCmd.execute();
@@ -59,12 +61,23 @@ public class WebAPI implements IObserver {
 
         send("/prevoteCategory", pcc);
 
-        GameControl.mModel.setValidationLevel(validateRotation);
-        if(validateRotation == 0){ //explain
+        int i = 0;
 
+        GameControl.mModel.setValidationLevel(validateRotation);
+        while(i < 3)
+        if (validateRotation == 0) { //explain
+            i++;
             LinkedList<String> explains = db.getExplainForValidation(5);
-            if(explains.isEmpty()) validateRotation++;
-            else {
+            if (explains.isEmpty()) {
+                validateRotation++;
+                if (i == 3) {
+                    validateRotation = -1;
+                    Set<String> set = new HashSet<>();
+                    set.add("");
+                    send("/validation", new ValidationContainer(noNeed, set, 3));
+                }
+            } else {
+                i = 3 ;
                 Set<String> set = new HashSet<>();
                 set.addAll(explains);
                 send("/validation", new ValidationContainer("", set, 0));
@@ -72,46 +85,61 @@ public class WebAPI implements IObserver {
                 GameControl.mModel.setValidationObjects(set);
             }
         }
-        if (validateRotation == 1){ // explain - taboo
-
+        if (validateRotation == 1) { // explain - taboo
+            i++;
             Map m = GameControl.mModel.getNeo4jWrapper().getTabooWordsForValidation(null, 5);
             Iterator<Map.Entry<String, Set<String>>> it = m.entrySet().iterator();
             if (it.hasNext()) {
                 Map.Entry<String, Set<String>> mE = it.next();
-                if(mE.getKey().equals("EMPTY")){
+                if (mE.getKey().equals("EMPTY")) {
                     validateRotation++;
+                    if (i == 3) {
+                        validateRotation = -1;
+                        Set<String> set = new HashSet<>();
+                        set.clear();
+                        set.add("");
+                        send("/validation", new ValidationContainer(noNeed, set, 3));
+                    }
                 } else {
+                    i = 3 ;
                     send("/validation", new ValidationContainer(mE.getKey(), mE.getValue(), 1));
                     GameControl.mModel.setValidationKey(mE.getKey());
                     GameControl.mModel.setValidationObjects(mE.getValue());
                 }
             }
         }
-        if (validateRotation == 2){ // category - explain
+        if (validateRotation == 2) { // category - explain
+            i++;
             Neo4jWrapper.Pair explainCategory = db.getExplainCategoryForValidation();
             Set<String> set = new HashSet<>();
-            set.add((String)explainCategory.getFirst());
-            String first = ((String)explainCategory.getSecond());
-            if(first.equals("EMPTY")){
-                first = "We will ask you later if there is a need to validate!";
-                set.clear();
-                set.add("");
-                send("/validation", new ValidationContainer(first, set, 3));
+            set.add((String) explainCategory.getFirst());
+            String first = ((String) explainCategory.getSecond());
+            if (first.equals("EMPTY")) {
+                i++;
+                if (i == 3) {
+                    first = noNeed;
+                    set.clear();
+                    set.add("");
+                    send("/validation", new ValidationContainer(first, set, 3));
+                }
+                else validateRotation = 0 ;
 
-            }else {
+            } else {
+                i = 3 ;
                 send("/validation", new ValidationContainer(first, set, 2));
                 GameControl.mModel.setValidationKey((String) explainCategory.getSecond());
                 GameControl.mModel.setValidationObjects(set);
+                validateRotation = -1 ;
             }
-            validateRotation = -1;
         }
+
         validateRotation++;
     }
 
     @MessageMapping("/reqGiverInfo")
     public void requestGiverInfo() {
         String giver = GameControl.mModel.getGiver();
-        int score = GameControl.mModel.getNeo4jWrapper().getUserPoints(giver,GameControl.mModel.getGiverChannel());
+        int score = GameControl.mModel.getNeo4jWrapper().getUserPoints(giver, GameControl.mModel.getGiverChannel());
         int lvl = GameControl.mModel.getLevel(score);
         send("/giver", new GiverContainer(giver, score, lvl));
     }
@@ -152,12 +180,12 @@ public class WebAPI implements IObserver {
     }
 
     public void onNotifyQandA() {
-        if(GameControl.mModel.getQAndA().size() > 0) {
+        if (GameControl.mModel.getQAndA().size() > 0) {
             System.out.println("Received Q&A.");
-            String q ="", a = "";
+            String q = "", a = "";
             q = GameControl.mModel.getQAndA().getFirst()[0];
             a = GameControl.mModel.getQAndA().getFirst()[1];
-            send("/qAndA", new QandAContainer(q,a));
+            send("/qAndA", new QandAContainer(q, a));
         }
     }
 
@@ -222,7 +250,7 @@ public class WebAPI implements IObserver {
     }
 
     @Override
-    public void onNotifyUpdateTime(){
+    public void onNotifyUpdateTime() {
         Log.trace("Game time updated");
         send("/updateTime", new GameModeContainer(GameControl.mModel.getGameMode()));
     }

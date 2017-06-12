@@ -81,6 +81,8 @@ public class Main {
 
         Log.info(sBuild.toString());
 
+        defaultDatbase = false;
+
         if (defaultDatbase)
             Log.info("Connecting to neo4j default database with " + neo4jbindAddr);
         else
