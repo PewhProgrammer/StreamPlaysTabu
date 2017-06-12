@@ -172,9 +172,9 @@ function updateValidation(validation) {
                 '<small>Do you have an idea for a new taboo word? <br>Type</small> !taboo &lt;word&gt;<small> to share it with us.</small>';
     }
     else if(json.id == 2){
-        document.getElementById("validateDescription").innerHTML = "<small>How much does this word fit to its category?<br> Type</small> !validate &lt;ID&gt; &lt;1-5&gt; <small>(1 = bad, 5 = good):</small>";
+        document.getElementById("validateDescription").innerHTML = "<small>How good does this word fit to its category?<br> Type</small> !validate &lt;ID&gt; &lt;1-5&gt; <small>(1 = bad, 5 = good):</small>";
         document.getElementById("tabooText").innerHTML =
-                        '<small>Ideas for a new word to explain fitting this category? <br>Type</small> !taboo &lt;word&gt;<small> to share it with us.</small>';
+                        '<small>Ideas for a new word to explain in this category? Type</small> !taboo &lt;word&gt;';
     }
     else if(json.id == 3){
             document.getElementById("validateDescription").innerHTML = " ";
