@@ -20,8 +20,8 @@ public class Prevote extends Command {
     @Override
     public void execute() {
         for (int i = 0; i < id.length && i < 5; i++) {
-            if(!(id[i] < 1 || id[i] > 10))
-                gameModel.prevote(id[i]-1);
+            if(!(id[i] < 1 || id[i] >= gameModel.getPrevoteCategories().length))
+                gameModel.prevote(id[i]-1, sender);
         }
     }
 

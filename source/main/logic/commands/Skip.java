@@ -18,6 +18,7 @@ public class Skip extends Command {
         gameModel.clearQAndA();
         gameModel.clearExplanations();
         gameModel.clearGuesses();
+        gameModel.addExplanation("The word to be explained is from the category " + gameModel.getCategory());
     }
 
     public boolean validate() {

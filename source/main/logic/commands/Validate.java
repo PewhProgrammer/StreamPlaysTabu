@@ -58,11 +58,11 @@ public class Validate extends Command {
         }
 
         if(valLevel == 0){
-            gameModel.getNeo4jWrapper().validateNode(s,score * 2 - 4);
+            gameModel.getNeo4jWrapper().validateNode(s,score * 2 - 6);
         } else if(valLevel == 1){
-            gameModel.getNeo4jWrapper().validateConnectionTaboo(reference, s, score * 2 - 4);
+            gameModel.getNeo4jWrapper().validateConnectionTaboo(reference, s, score * 2 - 6);
         } else {
-            gameModel.getNeo4jWrapper().validateConnectionCategory(reference, s, score * 2 - 4);
+            gameModel.getNeo4jWrapper().validateConnectionCategory(reference, s, score * 2 - 6);
         }
     }
 

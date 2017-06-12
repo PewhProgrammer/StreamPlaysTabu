@@ -58,7 +58,7 @@ public class GameModel extends Observable{
     private LinkedList<Guess> guesses;
     private LinkedList<String[]> qAndA;
 
-    private HashMap<String, Set<String>> validationInfo;
+    private HashMap<String, Integer> votingUser;
 
     private String validationKey;
     private Set<String> validationObjects;
@@ -98,6 +98,7 @@ public class GameModel extends Observable{
         votekick = new HashSet<>();
         guesses = new LinkedList<>();
         tabooSuggestions = new HashMap<>();
+        votingUser = new HashMap<>();
 
         qAndA = new LinkedList<>();
 
@@ -324,9 +325,18 @@ public class GameModel extends Observable{
         return this.category;
     }
 
-    public void prevote(int ID) {
+    public void prevote(int ID, String s) {
         prevotingLock.lock();
-        prevoting.get(ID).increaseScore();
+        if (!votingUser.containsKey(s)) {
+            votingUser.put(s, 0);
+        }
+        if (votingUser.get(s) < 5) {
+            if (prevoting.get(ID).increaseScore(s)) {
+                int i = votingUser.get(s);
+                votingUser.remove(s);
+                votingUser.put(s, ++i);
+            }
+        }
         prevotingLock.unlock();
     }
 
@@ -340,7 +350,6 @@ public class GameModel extends Observable{
     public String[] getPrevoteCategories() {
         String[] prevotedCategories = new String[10];
         prevotingLock.lock();
-        Collections.sort(prevoting);
         Iterator<PrevoteCategory> it = prevoting.iterator();
 
         for (int i = 0; i < 10; i++) {
@@ -516,6 +525,7 @@ public class GameModel extends Observable{
         usedWords.clear();
         setNumPlayers(0);
         setValidationLevel(-1);
+        votingUser.clear();
         clearRegisteredPlayers();
         generateVotingCategories();
     }

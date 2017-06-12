@@ -189,9 +189,9 @@ public class SiteController implements IObserver {
     public void receiveValidation(String reference, String taboo, int score,int id) {
         Log.info("Received sendValidation");
         Neo4jWrapper db = gm.getNeo4jWrapper();
-        if(id == 1) db.validateNode(reference,score * 2 -4);
-        else if(id == 2) db.validateConnectionTaboo(reference,taboo,score * 2 -4);
-        else if(id == 3) db.validateConnectionCategory(reference,taboo,score * 2 -4);
+        if(id == 1) db.validateNode(reference,score * 2 -6);
+        else if(id == 2) db.validateConnectionTaboo(reference,taboo,score * 2 -6);
+        else if(id == 3) db.validateConnectionCategory(reference,taboo,score * 2 -6);
 
         //Give user 10 more seconds
         gm.setRoundTime(gm.getRoundTime() + 10);
