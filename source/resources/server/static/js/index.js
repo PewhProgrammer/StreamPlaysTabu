@@ -1,4 +1,4 @@
-var giver = "igotabot";
+var giver = "";
 var state = 'Waiting For Giver';
 var pw;
 var pw_cmp;
@@ -480,12 +480,12 @@ function handleStars(id, count) {
 
 function showNextValidation(i) {
     var gain = "<br>You have gained +" + validated + "0 seconds extra time already!";
-    var categoryLabel = "Does the explain word below fit to its category? ";
+    var categoryLabel = "Does the <span style='color: #337ab7'>explain word</span> below fit to its <span style='color: #337ab7'>category?</span>";
 
     if (i === 1) {
         if (document.getElementById("validationCategoryLabel_two").textContent != 'EMPTY') {
             document.getElementById("val2").style.visibility = "visible";
-            document.getElementById("valHeader").innerHTML = "Does the taboo word below fit to its explain word? " +
+            document.getElementById("valHeader").innerHTML = "Does the <span style='color: #337ab7'>taboo word</span> below fit to its <span style='color: #337ab7'>explain word?</span>" +
                 gain;
         } else if (document.getElementById("validationCategoryLabel_three").textContent != 'EMPTY') {
             document.getElementById("val3").style.visibility = "visible";
@@ -493,7 +493,7 @@ function showNextValidation(i) {
                 gain;
         } else {
             document.getElementById("val3").style.visibility = "hidden";
-            document.getElementById("valHeader").innerHTML = "Thank you very much for helping us improve this game!" +
+            document.getElementById("valHeader").innerHTML = "Thank you for helping us improve this game!" +
                 "<br>You have gained +" + validated + "0 seconds extra time in total!";
         }
     } else if (i === 2) {
@@ -503,7 +503,7 @@ function showNextValidation(i) {
                 gain;
         } else {
             document.getElementById("val3").style.visibility = "hidden";
-            document.getElementById("valHeader").innerHTML = "Thank you very much for helping us improve this game!" +
+            document.getElementById("valHeader").innerHTML = "Thank you for helping us improve this game!" +
                 "<br>You have gained +" + validated + "0 seconds extra time in total!";
         }
     }
