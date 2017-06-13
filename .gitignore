@@ -20,6 +20,16 @@ gen### JetBrains template
 # Readme
 README.md
 
+Debug.txt
+StreamPlaysTabu-1.0-SNAPSHOT.jar
+StreamPlaysTabu-1.0-SNAPSHOT.jar.original
+build/libs/
+source/resources/server/npm-debug.log
+
+*.jar
+*.jar.original
+
+
 # Sensitive or high-churn files:
 .idea/dataSources.ids
 .idea/dataSources.xml
