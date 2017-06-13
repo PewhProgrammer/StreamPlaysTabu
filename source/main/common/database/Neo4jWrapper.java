@@ -212,7 +212,8 @@ public class Neo4jWrapper {
             }
             tx.run(query.toString(), parameters("numGames", gameName, "roundTime", roundTime, "giver", giver, "difficulty", difficulty,
                     "explainWord", explainWord, "outcome", outcome, "mode", mode.toString(), "numRegistered", registeredPlayers.size(), "tabooBuilder", tabooBuilder.toString(),
-                    "explanationBuilder", explanationBuilder.toString(), "guessBuilder", guessBuilder.toString(), "skippedWordBuilder", skippedWordBuilder.toString()));
+                    "explanationBuilder", explanationBuilder.toString(), "guessBuilder", guessBuilder.toString(), "skippedWordBuilder", skippedWordBuilder.toString(),
+                    "qAndaBuilder",qAndaBuilder.toString()));
             tx.success();
         } finally {
             tx.close();
