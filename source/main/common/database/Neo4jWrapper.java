@@ -418,7 +418,7 @@ public class Neo4jWrapper {
                 .append(", rel.validateFrequencyTaboo = rel.validateFrequencyTaboo+").append(1).append(" ")
                 .append("WITH rel, ")
                 .append("(CASE WHEN rel.validateRatingTaboo > " + VALIDATE_THRESHOLD + " OR rel.validateRatingTaboo < " + (-VALIDATE_THRESHOLD) +
-                        " THEN false ELSE " + needValidation + " END) AS flag, ")
+                        " THEN false ELSE " + needValidation + " END) AS flag ")
                 .append("SET rel.needValidationTaboo = flag");
 
         Transaction tx = getTransaction();
@@ -1283,9 +1283,9 @@ public class Neo4jWrapper {
             Log.error(e.getLocalizedMessage());
             driver = acquireDriver("bolt://" + neo4jbindAddr,
                     AuthTokens.basic("neo4j", "streamplaystabu"), config);
+        }finally{
+            return tx;
         }
-
-        return tx;
     }
 
     /**
