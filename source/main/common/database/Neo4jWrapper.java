@@ -1281,6 +1281,7 @@ public class Neo4jWrapper {
             tx = session.beginTransaction();
         } catch (ServiceUnavailableException e) {
             Log.error(e.getLocalizedMessage());
+            if(!session.isOpen())
             driver = acquireDriver("bolt://" + neo4jbindAddr,
                     AuthTokens.basic("neo4j", "streamplaystabu"), config);
         }finally{
