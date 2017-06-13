@@ -115,7 +115,13 @@ public class SiteController implements IObserver {
     }
 
     private boolean validatePW(String pw) {
-        return(Integer.parseInt(pw) == this.pw);
+        Log.info("CORE >> VALIDATE PW: " + pw);
+        if (Integer.parseInt(pw) == this.pw) {
+            Log.info("CORE >> SUCCESSFULLY VALIDATED PW: " + pw);
+            return true;
+        }
+        Log.info("CORE >> PW ERROR! EXPECTED: " + this.pw + " BUT WAS: " + pw);
+        return false;
     }
 
     public void send(String event, JSONObject o) {
