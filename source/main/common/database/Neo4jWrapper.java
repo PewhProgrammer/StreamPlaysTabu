@@ -237,6 +237,7 @@ public class Neo4jWrapper {
             } else {
                 explain = getRandomExplainWord(querySize);
                 taboo = fetchTabooWords(Util.reduceStringToMinimum(explain), category, querySize);
+                if(taboo.size() == 0) result.put("EMPTY",taboo);
                 result.put(explain, taboo);
             }
 
