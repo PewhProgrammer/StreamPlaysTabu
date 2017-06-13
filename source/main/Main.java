@@ -6,6 +6,7 @@ import logic.GameControl;
 import model.GameModel;
 import model.Language;
 import org.apache.commons.cli.*;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
 import java.util.Date;
@@ -15,20 +16,22 @@ import java.util.regex.Pattern;
 /**
  * Created by Thinh-Laptop on 26.03.2017.
  */
+
+@SpringBootApplication
 public class Main {
 
     private static final int TRACE = 1, DEBUG = 2, INFO = 3;
 
     private final Options mOptions = new Options();
-    private String neo4jbindAddr = "";
-    private String ext_bindAddr = "";
-    private int seed;
+    private String neo4jbindAddr = "pewhgames.com:7687";
+    private String ext_bindAddr = "m.schubhan.de:1337";
+    private int seed = 222;
     private int players = 0;
-    private Language language;
+    private Language language = Language.Eng;
 
     private int mVerbosity = INFO;
-    private boolean guiSimulation = true;
-    private boolean defaultDatbase = true;
+    private boolean guiSimulation = false;
+    private boolean defaultDatbase = false;
     private boolean setSeed = false;
 
 
@@ -123,6 +126,11 @@ public class Main {
     }
 
     public void parseCommandLine(String[] args) {
+
+        if(args.length < 1){
+            doSemantics();
+            return;
+        }
         //initiates seed
         Random rand = new Random();
         rand.setSeed(new Date().getTime());

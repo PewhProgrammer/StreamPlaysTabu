@@ -143,6 +143,7 @@ public class Neo4jWrapper {
         StringBuilder guessBuilder = new StringBuilder();
         StringBuilder explanationBuilder = new StringBuilder();
         StringBuilder skippedWordBuilder = new StringBuilder();
+        StringBuilder qAndaBuilder = new StringBuilder();
 
         StringBuilder logQuery = new StringBuilder();
         logQuery.append("MATCH (s: " + "Logging" + ") WHERE s.name = {name} ")
@@ -163,9 +164,11 @@ public class Neo4jWrapper {
         int i = 0;
         for (String[] qA : qAnda) {
             String attach = qA[0] + " -> " + qA[1];
-            query.append(", s.qA" + i + " = " + attach);
             i++;
+            qAndaBuilder.append(attach).append(", ");
         }
+
+        query.append(", s.QandA = {qAndaBuilder} ");
 
         if (tabooWords.isEmpty()) tabooBuilder.append("isEmpty");
         else {
@@ -237,8 +240,9 @@ public class Neo4jWrapper {
             } else {
                 explain = getRandomExplainWord(querySize);
                 taboo = fetchTabooWords(Util.reduceStringToMinimum(explain), category, querySize);
-                if(taboo.size() == 0) result.put("EMPTY",taboo);
-                result.put(explain, taboo);
+                if(taboo.size() == 0) {
+                    result.put("EMPTY", taboo);
+                }
             }
 
         } catch (ServiceUnavailableException e) {
@@ -255,6 +259,7 @@ public class Neo4jWrapper {
         String explain = "";
         try {
             Set<String> cat = fetchFilteredCategoryFromDatabase(querySize);
+            randomizer.setSeed(new Date().getTime());
             for (String str : cat) {
                 if (randomizer.nextBoolean() || explain.equals("")) {
                     explain = str;
@@ -358,6 +363,7 @@ public class Neo4jWrapper {
             tx.close();
         }
 
+        randomizer.setSeed(new Date().getTime());
         Collections.shuffle(results, randomizer);
         try {
             return results.getFirst();
@@ -395,6 +401,7 @@ public class Neo4jWrapper {
             tx.close();
         }
 
+        randomizer.setSeed(new Date().getTime());
         Collections.shuffle(results, randomizer);
         try {
             return results.getFirst();
