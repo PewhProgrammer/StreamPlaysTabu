@@ -23,6 +23,7 @@ public class Votekick extends Command {
         int numVotes = gameModel.getVotekick().size();
 
         if (numVotes > players * 0.5f) {
+            gameModel.setGameOutcome(GameState.Kick.toString());
             gameModel.clear();
             gameModel.getNeo4jWrapper().increaseUserError(gameModel.getGiver(), thisChannel);
             gameModel.getNeo4jWrapper().increaseUserError(gameModel.getGiver(), thisChannel);

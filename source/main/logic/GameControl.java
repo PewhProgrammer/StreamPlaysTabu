@@ -68,7 +68,6 @@ public class GameControl extends Observable{
             }
         }
 
-        mModel.setGameOutcome(mModel.getGameState().toString());
         if(mModel.getGameState() == GameState.Kick) {
             mModel.setGiver("");
         }
@@ -162,7 +161,8 @@ public class GameControl extends Observable{
                 mModel.announceGiverNotAccepted(mModel.getGiver());
                 mModel.setGiver("");
                 mModel.setGameState(GameState.GameStarted.Registration);
-                mModel.clear();
+                //mModel.clear();
+                mModel.clearRegisteredPlayers();
                 break;
             }
             try {

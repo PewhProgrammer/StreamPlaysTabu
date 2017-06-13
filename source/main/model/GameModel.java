@@ -438,6 +438,7 @@ public class GameModel extends Observable{
     }
 
     public void win(String winner,String ch) {
+        this.gameOutcome = GameState.Win.toString();
 
         if (getGameState() != GameState.GameStarted || !getGameState().equals(GameState.GameStarted)) {
             System.out.println("!= : " + (getGameState() != GameState.GameStarted) + " ; " + "equals : " + (!getGameState().equals(GameState.GameStarted)));
