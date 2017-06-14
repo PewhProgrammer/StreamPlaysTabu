@@ -83,13 +83,18 @@ public class Neo4jWrapper {
 
         try {
             createNode(node2, node2Explain);
+        } catch (ServiceUnavailableException | common.database.DatabaseException e) {
+            Log.error(e.getLocalizedMessage());
+        }
+        try {
             if (isNode1Explain && node2Explain) setExplainWordToCategory(node2);
             return createRelationship(node1, node2, relationship, reliableFlag, attr);
-        } catch (ServiceUnavailableException | common.database.DatabaseException e) {
+        } catch (ServiceUnavailableException e) {
             Log.error(e.getLocalizedMessage());
         }
 
         return false;
+
     }
 
     public void createUser(String str, String ch) {
@@ -1265,7 +1270,7 @@ public class Neo4jWrapper {
         try {
 
             StatementResult sResult = tx.run("MATCH (s)-[rel]->(t) WHERE t.name = {name} " +
-                            "AND rel.needValidationCategory > " + VALIDATE_THRESHOLD + " " +
+                            "AND rel.validateRatingCategory > " + VALIDATE_THRESHOLD + " " +
                             "RETURN s",
                     parameters("name", nodeName));
 
