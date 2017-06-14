@@ -555,11 +555,17 @@ public class GameModel extends Observable{
     public void host(String host, AltTwitchBot hostBot) {
         hosts.add(host);
         hostBots.put(host, hostBot);
+        if (getGameMode() != GameMode.HOST) {
+            setGameMode(GameMode.Normal);
+        }
     }
 
     public void unhost(String host) {
         hosts.remove(host);
         hostBots.remove(host);
+        if (hosts.isEmpty()) {
+            setGameMode(GameMode.Normal);
+        }
     }
 
     public String getGiverChannel() {

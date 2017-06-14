@@ -279,7 +279,7 @@ function createValidationEvent(explain, taboo, score, id) {
 }
 
 function validatePW(password) {
-    return true;
+    return String(pw) === String(password);
 }
 
 function showCategories() {
