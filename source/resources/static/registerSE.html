@@ -73,24 +73,23 @@
 
 </div>
 
-<div class="background" style="padding: 1%; width: 20%; height: 7.5%; position: absolute; left: 45.5%; bottom: 21%">
-    <p style="width:100%; height:100%; text-align: center; font-size: 2vmin;">Use !register to get into the giver pool!</p>
+<div class="background" style="width: 45%; height: 7.5%; position: absolute; left: 7.5%; bottom: 23%">
+    <p style="width:100%; height:100%; text-align: center; font-size: 2vmin;"><big>Use !register to get into the giver pool!</big><br>Whisper StreamPlaysTaboo once to get notified, when you're the chosen one!</p>
 </div>
 <div class="background hintsText">
     <p id="hintText"><big>Did you know?</big><br><small>You can type !register to get into the giver pool. A giver has the chance to explain a word and get points based on his time.</small></p>
 </div>
-<div class="background rightText">
-    <div style="height: 40%; font-size: 3vmin">
-        <p>!vote &lt;number&gt; <small>for the category of the next word!</small></p>
-        <p id="categoryText2" style="width:50%; float: right"></p>
-        <p id="categoryText1" style="width:50%"></p>
-    </div>
-    <div style="height: 40%; font-size: 3vmin">
-        <p><small>Help us to</small> !validate &lt;ID&gt; &lt;1-5&gt;<small> our taboo words! <br>(1 = bad, 5 = good):</small></p>
-        <p id="validateText"></p>
-    </div>
-    <p id="tabooText"><small>Do you have an idea for a new taboo word? <br>Type</small> !taboo &lt;word&gt;<small> to tell us.</small></p>
+
+<div class="background rightText" style="height: 37.5%; top:10%; font-size: 3vmin">
+    <p>!vote &lt;number&gt; <small>for the category of the next word!</small></p>
+    <p id="categoryText2" style="width:50%; float: right"></p>
+    <p id="categoryText1" style="width:50%"></p>
 </div>
+<div class="background rightText" style="height: 40%; top:48%; font-size: 3vmin; background: linear-gradient(to bottom, #3a404d, #1f232e);">
+    <p id="validateDescription"></p>
+    <p id="validateText"></p>
+</div>
+<p class="background rightText" id="tabooText"></p>
 
 <svg style="display: none;">
     <symbol id="cup" x="0px" y="0px"
@@ -114,6 +113,7 @@
     c0-1.097,0.908-1.99,2.024-1.99c1.117,0,2.025,0.893,2.025,1.99C23.241,6.246,22.333,7.138,21.215,7.138z"/>
       </symbol>
 </svg>
+
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>

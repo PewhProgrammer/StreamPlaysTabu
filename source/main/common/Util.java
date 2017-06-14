@@ -770,7 +770,7 @@ public class Util {
 
     private static String checkWordDist(String input, List<String> lemmas) {
         for (String exp : lemmas) {
-            if (Util.getWordDist(exp, input) <= 1) {
+            if (Util.getWordDist(exp, input) < 1) {
                 if (!whiteList.contains(input) && !whiteList.contains(exp)) {
                     String error = "Found an invalid word: " + exp + " was matched to " + input + ".";
                     Log.info(error);

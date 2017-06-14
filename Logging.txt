@@ -1,1 +1,1 @@
-14.06 10:59:26. I >> CORE >> PW ERROR! EXPECTED: 8025 BUT WAS: 9259
+14.06 10:07:43. DB >> Ranking: {igotabot=474, pewhbot=220, k3uleee=203, wasssabibot=8, pammmel=0, leaswaghart=0, j_eye=0, terriblemilk=0}
