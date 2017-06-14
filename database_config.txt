@@ -19,7 +19,6 @@ skyrim
 mass effect
 far cry 4
 resident evil
-prototype
 kiting
 sniping
 skill
@@ -106,10 +105,6 @@ afk;is known for;bad behaviour
 quickscope;requires a lot of;skill
 ragequit;is;bad behaviour
 crowd-control;is known for;rooting enemies
-pre-fire;is related to;prototype
-pop-flashing;is related to;prototype
-rushing;is related to;prototype
-resetting;is related to;prototype
 firelink shrine;appears in;dark souls
 bonfire;is used for;restoring estus
 bonfire;appears in;dark souls
@@ -124,7 +119,11 @@ lara croft;is published by;activision
 prince of persia;is published by;ubisoft
 skill;appears in;league of legends
 league of legends;is known for;bad behaviour
-rooting enemies;is part of a;moba
-ubisoft;is;a publisher
-activision;is a;publisher
-valve;is a;publisher
+rooting enemies;is part of;moba
+ubisoft;is;publisher
+activision;is;publisher
+valve;is;publisher
+resetting;is part of;league of legends
+pre-fire;is part of;csgo
+pop-flashing;is part of;csgo
+rushing;is part of;csgo
