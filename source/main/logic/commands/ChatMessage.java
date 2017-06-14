@@ -21,6 +21,6 @@ public class ChatMessage extends Command {
 
     @Override
     public boolean validate() {
-        return true;
+        return !sender.equals("streamplaystaboo");
     }
 }

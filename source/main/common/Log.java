@@ -20,6 +20,9 @@ import java.util.List;
  * DB
  */
 public class Log {
+    static Path file = Paths.get("Logging.txt");
+    static Path fileDebug = Paths.get("Debug.txt");
+
     private static Level mLevel = Level.INFO;
 
     public static void debug(String msg) {
@@ -63,8 +66,6 @@ public class Log {
 
         List<String> debug = Arrays.asList(new SimpleDateFormat("dd.MM HH:mm:ss").format(new Date()) + ". " +
                 msg);
-        Path file = Paths.get("Logging.txt");
-        Path fileDebug = Paths.get("Debug.txt");
         try {
             Files.write(file, lines, Charset.forName("UTF-8"));
             if(msg.startsWith("E"))

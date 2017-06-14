@@ -465,7 +465,7 @@ function handleStars(id, count) {
     if (id === 3) {
         label = "three";
         document.getElementById("val3").style.visibility = "hidden";
-        document.getElementById("valHeader").innerHTML = "Thank you very much for helping us improve this game!" +
+        document.getElementById("valHeader").innerHTML = '<b style="font-size: 1.88vmin;">Thank you very much for helping us improve this game!</b>' +
             "<br>You have gained +" + validated + "0 seconds extra time in total!";
     }
 
@@ -485,7 +485,7 @@ function showNextValidation(i) {
     if (i === 1) {
         if (document.getElementById("validationCategoryLabel_two").textContent != 'EMPTY') {
             document.getElementById("val2").style.visibility = "visible";
-            document.getElementById("valHeader").innerHTML = '<b style="font-size: 2vmin;">' +
+            document.getElementById("valHeader").innerHTML = '<b style="font-size: 1.88vmin;">' +
             'Does the <span style="color: #337ab7">taboo word</span> below fit to its <span style="color: #337ab7">explain word?</span>"'  + '</b>' +
                 gain;
         } else if (document.getElementById("validationCategoryLabel_three").textContent != 'EMPTY') {
@@ -494,13 +494,13 @@ function showNextValidation(i) {
                 gain;
         } else {
             document.getElementById("val3").style.visibility = "hidden";
-            document.getElementById("valHeader").innerHTML = '<b style="font-size: 2vmin;">' +
+            document.getElementById("valHeader").innerHTML = '<b style="font-size: 1.88vmin;">' +
             'Thank you for helping us improve this game!'   + '</b>' + gain;
         }
     } else if (i === 2) {
         if (document.getElementById("validationCategoryLabel_three").textContent != 'EMPTY') {
             document.getElementById("val3").style.visibility = "visible";
-            document.getElementById("valHeader").innerHTML = '<b style="font-size: 2vmin;">' + categoryLabel  + '</b>' +
+            document.getElementById("valHeader").innerHTML = '<b style="font-size: 1.88vmin;">' + categoryLabel  + '</b>' +
                 gain;
         } else {
             document.getElementById("val3").style.visibility = "hidden";

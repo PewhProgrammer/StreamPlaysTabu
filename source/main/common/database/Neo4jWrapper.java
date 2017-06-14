@@ -159,7 +159,10 @@ public class Neo4jWrapper {
                 .append(", s.toExplain = {explainWord} ")
                 .append(", s.gameOutcome = {outcome} ")
                 .append(", s.gameMode = {mode} ")
-                .append(", s.numRegisteredPlayers = {numRegistered}");
+                .append(", s.numRegisteredPlayers = {numRegistered}")
+                .append(", s.date = {date}");
+
+        String date = new Date().toString();
 
         int i = 0;
         for (String[] qA : qAnda) {
@@ -213,7 +216,7 @@ public class Neo4jWrapper {
             tx.run(query.toString(), parameters("numGames", gameName, "roundTime", roundTime, "giver", giver, "difficulty", difficulty,
                     "explainWord", explainWord, "outcome", outcome, "mode", mode.toString(), "numRegistered", registeredPlayers.size(), "tabooBuilder", tabooBuilder.toString(),
                     "explanationBuilder", explanationBuilder.toString(), "guessBuilder", guessBuilder.toString(), "skippedWordBuilder", skippedWordBuilder.toString(),
-                    "qAndaBuilder",qAndaBuilder.toString()));
+                    "qAndaBuilder",qAndaBuilder.toString(),"date",date));
             tx.success();
         } finally {
             tx.close();
@@ -1112,7 +1115,6 @@ public class Neo4jWrapper {
         } finally {
             tx.close();
         }
-        return;
     }
 
     /**

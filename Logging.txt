@@ -1,1 +1,2 @@
-14.06 15:21:00. DB >> Fetched points: wasssabibot 65 
+14.06 15:21:00. DB >> Fetched points: wasssabibot 65
+14.06 12:42:08. I >> Control sleeps for 10 seconds...
