@@ -1,1 +1,1 @@
-14.06 19:17:24. E: Unable to connect to pewhgames.com:7687, ensure the database is running and that there is a working network connection to it.
+14.06 20:57:16. E: Node pewhtv is already in the database!

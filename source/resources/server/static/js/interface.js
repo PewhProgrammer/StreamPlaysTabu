@@ -180,17 +180,15 @@ function showValidation(validation) {
     document.getElementById("val3").style.visibility = "visible";
     } else {
         document.getElementById("valHeader").innerHTML = "<b> There is currently no need for " +
-        " validation :)";
+        " validation";
     }
-
-    labelOne.innerHTML = '<span style="color: orange">' + json.reference1;
-    document.getElementById("validationCategoryLabel_two").innerHTML = '<span style="color: orange">' + json.reference2;
-    document.getElementById("validationCategoryLabel_three").textContent = json.reference3;
+    labelOne.innerHTML = '<span style="color:orange">' + json.reference1 + '</span>';
+    document.getElementById("validationCategoryLabel_two").innerHTML = '<span style="color:orange">' + json.reference2 + '</span>';
+    document.getElementById("validationCategoryLabel_three").innerHTML = '<span style="color:orange">' +  json.reference3 + '</span>';
 
     //First validation refers to explain word only
-    document.getElementById("validationTabooLabel_two").textContent = '<span style="color: orange">' + json.taboo2;
-    document.getElementById("validationTabooLabel_three").textContent = json.taboo3;
-
+    document.getElementById("validationTabooLabel_two").innerHTML = '<span style="color:#337ab7">' + json.taboo2 + '</span>';
+    document.getElementById("validationTabooLabel_three").innerHTML = '<span style="color:#337ab7">' + json.taboo3 + '</span>';
 }
 
 function updateGameState(gameState) {
@@ -230,7 +228,7 @@ function closeGame(status) {
 
     var json = JSON.parse(status);
     if (json.status === "Win") {
-        document.getElementById("endGameDiv").innerHTML = '<p>Someone has guessed the word!<br>You have received <span style="color: green">+'
+        document.getElementById("endGameDiv").innerHTML = '<p>'+json.winner+' has guessed the word!<br>You have received <span style="color: #3CBC3C">+'
         + json.points + "</span> Points. </p>";
     } else if (json.status === "Lose") {
         document.getElementById("endGameDiv").innerHTML = '<p><span style="color: red">Game over!</span><br>The time has run out!</p>';

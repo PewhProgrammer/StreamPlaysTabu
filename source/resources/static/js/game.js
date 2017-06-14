@@ -144,7 +144,7 @@ function updateEndGame(endGame) {
     document.getElementById("explanations").style.visibility = "hidden";
     if (incJson.status == "Win") {
         document.getElementById("endGame").innerHTML = incJson.winner + 'has guessed the word <span style="color: orange">'+ incJson.word
-        +'</span><br> Both players received <span style="color: green">+' + incJson.points + "</span>";
+        +'</span><br> Both players received <span style="color: #3CBC3C">+' + incJson.points + "</span>";
     } else if (incJson.status == "Lose") {
         document.getElementById("endGame").innerHTML = 'Time is up! There is no winner.<br>The word was <span style="color: orange">'
          + incJson.word+ '</span>';
