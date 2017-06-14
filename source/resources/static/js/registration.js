@@ -12,7 +12,7 @@ var x = setInterval(function () {
     if (timeLeft == 0) {
         document.getElementById("progressbar").innerHTML = "Waiting...";
         document.getElementById("progressbar").style.width = "100%";
-        document.getElementById("statusInfo").innerHTML = "Next User to register will become the giver!";
+        document.getElementById("statusInfo").innerHTML = "Next user to register will become the giver!";
     }
 }, 1000);
 

@@ -12,6 +12,7 @@ import model.Observable;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import common.Util;
@@ -113,8 +114,19 @@ public class GameControl extends Observable{
         Log.info("Control is waiting for Players");
         gameLoop:
         while(mModel.getGameState() == GameState.Registration || !isStarted){
-            while(mModel.getBot().getUsers(mModel.getGiverChannel()).size() < 1){
+            Set<String> hosts = mModel.getHosts();
+            int p = 0;
+            for (String host : hosts) {
+                p += mModel.getBot().getUsers(host).size();
+            }
+            p += mModel.getBot().getUsers(mModel.getGiverChannel()).size();
+            while(p < 2){
                 sleepThread(10);
+                p = 0;
+                for (String host : hosts) {
+                    p += mModel.getBot().getUsers(host).size();
+                }
+                p += mModel.getBot().getUsers(mModel.getGiverChannel()).size();
             }
             mModel.setTimeStamp();
             mModel.announceRegistration();

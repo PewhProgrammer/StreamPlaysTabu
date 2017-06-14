@@ -56,6 +56,10 @@ public class AltTwitchBot extends Bot {
 
         public void onPrivateMessage(String sender, String login, String hostname, String message) {
 
+            if (model.getHosts().contains(hostname)) {
+                return;
+            }
+
             if (model.getGiverChannel().equals("streamplaystaboo")) {
                 System.out.println(message);
                 String[] channel = message.split(" ");
@@ -238,7 +242,7 @@ public class AltTwitchBot extends Bot {
 
         // !votekick
         if ((parts[0].equals("!votekick") && parts.length == 1) || (parts.length == 2 && parts[1].equals(model.getGiver()))) {
-            return new Votekick(model, channel, sender, getUsers(channel.substring(1)).size());
+            return new Votekick(model, channel, sender);
         }
 
         // !streamerExplains

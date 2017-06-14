@@ -3,18 +3,16 @@ package logic.commands;
 import model.GameModel;
 import model.GameState;
 
-/**
- * Created by Tim on 18.04.2017.
- */
+import java.util.Set;
+
+
 public class Votekick extends Command {
 
     private String votingUser;
-    private int players;
 
-    public Votekick(GameModel gm, String ch, String votingUser, int i) {
+    public Votekick(GameModel gm, String ch, String votingUser) {
         super(gm, ch);
         this.votingUser = votingUser;
-        players = i;
     }
 
     @Override
@@ -22,7 +20,14 @@ public class Votekick extends Command {
         gameModel.getVotekick().add(votingUser);
         int numVotes = gameModel.getVotekick().size();
 
-        if (numVotes > players * 0.5f) {
+        Set<String> hosts = gameModel.getHosts();
+        int p = 0;
+        for (String host : hosts) {
+            p += gameModel.getBot().getUsers(host).size();
+        }
+        p += gameModel.getBot().getUsers(gameModel.getGiverChannel()).size();
+
+        if (numVotes > p * 0.5f) {
             gameModel.setGameOutcome(GameState.Kick.toString());
             gameModel.clear();
             gameModel.getNeo4jWrapper().increaseUserError(gameModel.getGiver(), thisChannel);

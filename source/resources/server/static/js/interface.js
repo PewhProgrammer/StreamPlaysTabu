@@ -195,6 +195,10 @@ function updateGameState(gameState) {
     var json = JSON.parse(gameState);
     console.log('>> RECEIVED gameState: ' + json.state);
     state = json.state;
+    if (state === 'Register') {
+        socket.close();
+        window.alert("Too late, sorry bro.")
+    }
 }
 
 function sendValidation(validation) {
