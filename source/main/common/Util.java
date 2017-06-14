@@ -641,7 +641,7 @@ public class Util {
                 }
             // It is a part of ___
                 if (tmp.equals("It is a part of")) {
-                    return getPair(tmp, userInput, "", "true");
+                    return getPair("is part of", userInput, "", "true");
                 }
 
             // It requires ___
