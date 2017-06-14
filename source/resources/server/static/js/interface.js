@@ -183,12 +183,12 @@ function showValidation(validation) {
         " validation :)";
     }
 
-    labelOne.textContent = json.reference1;
-                document.getElementById("validationCategoryLabel_two").textContent = json.reference2;
-        document.getElementById("validationCategoryLabel_three").textContent = json.reference3;
+    labelOne.innerHTML = '<span style="color: orange">' + json.reference1;
+    document.getElementById("validationCategoryLabel_two").innerHTML = '<span style="color: orange">' + json.reference2;
+    document.getElementById("validationCategoryLabel_three").textContent = json.reference3;
 
     //First validation refers to explain word only
-    document.getElementById("validationTabooLabel_two").textContent = json.taboo2;
+    document.getElementById("validationTabooLabel_two").textContent = '<span style="color: orange">' + json.taboo2;
     document.getElementById("validationTabooLabel_three").textContent = json.taboo3;
 
 }
