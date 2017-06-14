@@ -1,1 +1,1 @@
-14.06 10:07:43. DB >> Ranking: {igotabot=474, pewhbot=220, k3uleee=203, wasssabibot=8, pammmel=0, leaswaghart=0, j_eye=0, terriblemilk=0}
+14.06 15:21:00. DB >> Fetched points: wasssabibot 65 
