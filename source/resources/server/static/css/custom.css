@@ -222,6 +222,7 @@ body {
     opacity: 0.6;
     visibility: visible;
     cursor: pointer;
+    pointer-events: none;
 }
 
 .rate-container>i {

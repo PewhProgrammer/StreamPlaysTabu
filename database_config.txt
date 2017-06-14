@@ -22,6 +22,7 @@ resident evil
 prototype
 kiting
 sniping
+skill
 afk
 quickscope
 ragequit
@@ -35,6 +36,14 @@ bonfire
 portal gun
 lara croft
 prince of persia
+bad behaviour
+rooting enemies
+glados
+portal
+rpg
+valve
+activision
+ubisoft
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
 alan wake;is published by;remedy entertainment
 alan wake;is known for;insomnia
@@ -45,7 +54,7 @@ alistar;is a character in;league of legends
 sivir;is a character in;league of legends
 kalista;is a character in;league of legends
 sejuani;is a character in;league of legends
-Shadow fiend; is a character in;dota2
+Shadow fiend;is a character in;dota2
 mario;is a character in;super mario bros.
 luigi;is a character in;super mario bros.
 Bowser;is a character in;super mario bros.
@@ -53,7 +62,7 @@ samus;is a character in;super smash bros.
 super smash bros.;is published by;nintendo
 super mario bros.;is published by;nintendo
 splatoon;is published by;nintendo
-the legend of zelda;is published by; nintendo
+the legend of zelda;is published by;nintendo
 Link;is a character in;the legend of zelda
 peach;is typically near;mario
 wario;is the opposite of;mario
@@ -90,18 +99,32 @@ undead;is related to;warcraft 3
 warcraft 3;is published by;blizzard
 world of warcraft;is published by;blizzard
 overwatch;is published by;blizzard
-kiting;is related to;prototype
-sniping;is related to;prototype
-afk;is related to;prototype
-quickscope;is related to;prototype
-ragequit;is related to;prototype
-crowd-control;is related to;prototype
+kiting;requires a lot of;skill
+sniping;requires a lot of;skill
+afk;is the opposite of;being active ingame
+afk;is known for;bad behaviour
+quickscope;requires a lot of;skill
+ragequit;is;bad behaviour
+crowd-control;is known for;rooting enemies
 pre-fire;is related to;prototype
 pop-flashing;is related to;prototype
 rushing;is related to;prototype
 resetting;is related to;prototype
-Firelink Shrine;is related to;prototype
-Bonfire;is related to;prototype
-Portal Gun;is related to;prototype
-Lara Croft;is related to;prototype
-Prince of Persia;is related to;prototype
+firelink shrine;appears in;dark souls
+bonfire;is used for;restoring estus
+bonfire;appears in;dark souls
+portal gun;has the ability to;shoot orange
+portal gun;has the ability to;shoot blue
+portal gun;can be received from;glados
+portal;genre is;rpg
+portal;is published by;valve
+glados;appears in;portal
+lara croft;is known for;sexappeal
+lara croft;is published by;activision
+prince of persia;is published by;ubisoft
+skill;appears in;league of legends
+league of legends;is known for;bad behaviour
+rooting enemies;is part of a;moba
+ubisoft;is;a publisher
+activision;is a;publisher
+valve;is a;publisher

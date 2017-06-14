@@ -137,6 +137,7 @@ function refreshQuestions() {
 }
 
 function chosenQuestion(num, p) {
+    chooseqAndA();
     if (activeQuestion > -1) {
         document.getElementById("question" + activeQuestion).classList.remove("activeQuestion");
     }
@@ -292,6 +293,4 @@ function chooseqAndA() {
 
     document.getElementById("YesNo").style.visibility = "visible";
     activeField = "questions";
-
-    hideTemplates();
 }
