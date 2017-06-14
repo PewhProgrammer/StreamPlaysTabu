@@ -127,13 +127,6 @@ function onCategoryChosen(category) {
 }
 
 function onExplanation() {
-    console.log("On Explanation process");
-    if (tempUsage[templateId] === 0) {
-        //already used twice
-        return;
-    } else {
-        tempUsage[templateId] -= 1;
-    }
 
     if (templateId === 24 || templateId === 25) {
         document.getElementById('sendButton').style.display = 'none';
@@ -145,6 +138,13 @@ function onExplanation() {
         activeQuestion = -1;
         hideTemplates();
     } else if ($("#explanationText").val() != "" || ($("#input2").val() != "" && $("#input3").val() != "")) {
+        if (tempUsage[templateId] === 0) {
+            //already used twice
+            return;
+        } else {
+            tempUsage[templateId] -= 1;
+        }
+
         document.getElementById('sendButton').style.display = 'none';
         document.getElementById('template_layer1').style.display = 'block';
         document.getElementById('template_layer' + templateLayer).style.display = 'none';
@@ -176,6 +176,9 @@ function onExplanation() {
             activeQuestion = -1;
             hideTemplates();
         }
+    }
+    else{
+    // show warning?
     }
 
     document.getElementById("explanationText").innerHTML = "";
@@ -478,15 +481,18 @@ function handleStars(id, count) {
     onValidation(cat, taboo, count, id);
 }
 
-function showNextValidation(i) {
     var gain = "<br>You have gained <span style='color: #337ab7'>+" + validated + "0 seconds </span> extra time in total!";
     var categoryLabel = "Does the <span style='color: #337ab7'>explain word</span> below fit to its <span style='color: #337ab7'>category?</span>";
+    var thanks = '<b style="font-size: 1.66vmin;">' +
+                             'Thank you for helping us improve this game!'   + '</b>' + gain;
+
+function showNextValidation(i) {
 
     if (i === 1) {
         if (document.getElementById("validationCategoryLabel_two").textContent != 'EMPTY') {
             document.getElementById("val2").style.visibility = "visible";
-            document.getElementById("valHeader").innerHTML = '<b style="font-size: 1.88vmin;">' +
-            'Does the <span style="color: #337ab7">taboo word</span> below fit to its <span style="color: #337ab7">explain word?</span>"'  + '</b>' +
+            document.getElementById("valHeader").innerHTML = '<b style="font-size: 1.66vmin;">' +
+            'Does the <span style="color: #337ab7">taboo word</span> below fit to its <span style="color: #337ab7">explain word?</span>'  + '</b>' +
                 gain;
         } else if (document.getElementById("validationCategoryLabel_three").textContent != 'EMPTY') {
             document.getElementById("val3").style.visibility = "visible";
@@ -494,17 +500,16 @@ function showNextValidation(i) {
                 gain;
         } else {
             document.getElementById("val3").style.visibility = "hidden";
-            document.getElementById("valHeader").innerHTML = '<b style="font-size: 1.88vmin;">' +
-            'Thank you for helping us improve this game!'   + '</b>' + gain;
+            document.getElementById("valHeader").innerHTML = thanks;
         }
     } else if (i === 2) {
         if (document.getElementById("validationCategoryLabel_three").textContent != 'EMPTY') {
             document.getElementById("val3").style.visibility = "visible";
-            document.getElementById("valHeader").innerHTML = '<b style="font-size: 1.88vmin;">' + categoryLabel  + '</b>' +
+            document.getElementById("valHeader").innerHTML = '<b style="font-size: 1.66vmin;">' + categoryLabel  + '</b>' +
                 gain;
         } else {
             document.getElementById("val3").style.visibility = "hidden";
-            document.getElementById("valHeader").innerHTML = "<b>Thank you for helping us improve this game!" + '</b>' + gain;
+            document.getElementById("valHeader").innerHTML = thanks;
         }
     }
 }

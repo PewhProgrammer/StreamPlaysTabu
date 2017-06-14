@@ -847,6 +847,9 @@ public class Neo4jWrapper {
         StringBuilder builder = new StringBuilder();
 
         Transaction tx = getTransaction();
+        if(tx == null){
+            return forcedSet;
+        }
         try {
 
             StatementResult sResult = tx.run(
@@ -878,6 +881,9 @@ public class Neo4jWrapper {
         StringBuilder builder = new StringBuilder();
 
         Transaction tx = getTransaction();
+        if(tx == null){
+            return "0";
+        }
         try {
             StatementResult sResult = tx.run("MATCH (n:" + userLabel + ") WHERE n.name = {name} " +
                             "RETURN n",
@@ -963,7 +969,7 @@ public class Neo4jWrapper {
         Transaction tx = getTransaction();
         try {
             StatementResult sResultTNode = tx.run("MATCH (t:streamNode)" +
-                    "RETURN t ORDER BY t.totalPoints DESC");
+                    "RETURN t ORDER BY t.totalPoints ASC");
 
             while (sResultTNode.hasNext()) {
                 StreamerHighscore result = new StreamerHighscore();

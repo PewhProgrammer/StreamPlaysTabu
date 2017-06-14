@@ -1,1 +1,1 @@
-14.06 15:18:56. E: Node: world of warcraft is already in the database!
+14.06 19:17:24. E: Unable to connect to pewhgames.com:7687, ensure the database is running and that there is a working network connection to it.

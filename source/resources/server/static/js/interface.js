@@ -230,11 +230,12 @@ function closeGame(status) {
 
     var json = JSON.parse(status);
     if (json.status === "Win") {
-        document.getElementById("endGameDiv").innerHTML = "<p>You won!<br>+" + json.points + "</p>";
+        document.getElementById("endGameDiv").innerHTML = '<p>Someone has guessed the word!<br>You have received <span style="color: green">+'
+        + json.points + "</span> Points. </p>";
     } else if (json.status === "Lose") {
-        document.getElementById("endGameDiv").innerHTML = "<p>Game over!</p>";
+        document.getElementById("endGameDiv").innerHTML = '<p><span style="color: red">Game over!</span><br>The time has run out!</p>';
     } else if (json.status === "Kick") {
-        document.getElementById("endGameDiv").innerHTML = "<p>Too many cheating attempts!<br>Round is over.</p>";
+        document.getElementById("endGameDiv").innerHTML = "<p>Too many cheating attempts!<br>The round is over.</p>";
     }
 }
 
