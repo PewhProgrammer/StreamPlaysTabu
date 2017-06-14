@@ -113,7 +113,6 @@ public class GameControl extends Observable{
         Log.info("Control is waiting for Players");
         gameLoop:
         while(mModel.getGameState() == GameState.Registration || !isStarted){
-
             while(mModel.getBot().getUsers(mModel.getGiverChannel()).size() < 1){
                 sleepThread(10);
             }

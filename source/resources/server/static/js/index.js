@@ -481,12 +481,12 @@ function handleStars(id, count) {
     onValidation(cat, taboo, count, id);
 }
 
-    var gain = "<br>You have gained <span style='color: #337ab7'>+" + validated + "0 seconds </span> extra time in total!";
-    var categoryLabel = "Does the <span style='color: #337ab7'>explain word</span> below fit to its <span style='color: #337ab7'>category?</span>";
+function showNextValidation(i) {
+
+    var gain = '<br>You have gained <span style="color: #337ab7">+' + validated + "0 seconds</span> extra time in total!";
+    var categoryLabel = 'Does the <span style="color: #337ab7">explain word</span> below fit to its <span style="color: #337ab7">category?</span>';
     var thanks = '<b style="font-size: 1.66vmin;">' +
                              'Thank you for helping us improve this game!'   + '</b>' + gain;
-
-function showNextValidation(i) {
 
     if (i === 1) {
         if (document.getElementById("validationCategoryLabel_two").textContent != 'EMPTY') {

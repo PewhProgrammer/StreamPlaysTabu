@@ -983,7 +983,7 @@ public class Neo4jWrapper {
                 StatementResult sResult = tx.run("MATCH (n:" + userLabel + ")-[rel]->(t:streamNode)" +
                         "WHERE t.name = {streamName}" +
                         "RETURN n,rel " +
-                        "ORDER BY t.totalPoints DESC", parameters("streamName", streamName));
+                        "ORDER BY rel.points ASC", parameters("streamName", streamName));
 
                 while (sResult.hasNext()) {
                     Record record = sResult.next();
@@ -1111,6 +1111,7 @@ public class Neo4jWrapper {
 
 
         Transaction tx = getTransaction();
+        if(tx == null) return;
         try {
             if (lookUpNode(data.name, data.label, stream)) {
                 throw new common.database.DatabaseException(label + " " + data.name + " is already in the database!");
@@ -1138,7 +1139,7 @@ public class Neo4jWrapper {
             try (Session session = driver.session()) {
                 try (Transaction tx = session.beginTransaction()) {
 
-                    StatementResult sResult = tx.run("MATCH (n:Node) RETURN n");
+                    StatementResult sResult = tx.run("MATCH (n:Node) WHERE n.needValidation <> true RETURN n");
 
                     if (!sResult.hasNext())
                         throw new common.database.DatabaseException("No Explain Word available!");
