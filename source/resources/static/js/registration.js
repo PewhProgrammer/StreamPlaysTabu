@@ -69,8 +69,8 @@ function wait(ms){
 }
 
 function updateRanking(ranking) {
+    var json = JSON.parse(ranking.body);
     if (window.location.href == 'http://localhost:8080/registerFFA.html') {
-        var json = JSON.parse(ranking.body);
         document.getElementById("first").innerHTML = json.firstName + "<br>" + json.firstPoints + " Pts.";
         document.getElementById("second").innerHTML = json.secondName + "<br>" + json.secondPoints + " Pts.";
         document.getElementById("third").innerHTML = json.thirdName + "<br>" + json.thirdPoints + " Pts.";
@@ -111,7 +111,6 @@ function updateRanking(ranking) {
 
         if ((json.contributors3[2] != "") && (json.contributors3[2] != null))
             document.getElementById("thirdCont3").innerHTML = json.contributors3[2] + "<br>" + json.userPoints3[2] + " Pts.";
-        //TODO write json content into StreamScore
     }
 }
 
