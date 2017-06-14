@@ -83,33 +83,33 @@ function updateRanking(ranking) {
         document.getElementById("tenth").innerHTML = json.tenthName + "<br>" + json.tenthPoints + " Pts.";
     } else {
         document.getElementById("sndStream").innerHTML = json.stream2 + "<br>" + json.points2 + " Pts.";
-        if (json.contributors2[0] != "")
+        if ((json.contributors2[0] != "") && (json.contributors2[0] != null))
             document.getElementById("firstCont2").innerHTML = json.contributors2[0] + "<br>" + json.userPoints2[0] + " Pts.";
 
-        if (json.contributors2[1] != "")
+        if ((json.contributors2[1] != "") && (json.contributors2[1] != null))
             document.getElementById("sndCont2").innerHTML = json.contributors2[1] + "<br>" + json.userPoints2[1] + " Pts.";
 
-        if (json.contributors2[2] != "")
+        if ((json.contributors2[2] != "") && (json.contributors2[2] != null))
             document.getElementById("thirdCont2").innerHTML = json.contributors2[2] + "<br>" + json.userPoints2[2] + " Pts.";
 
         document.getElementById("firstStream").innerHTML = json.stream1 + "<br>" + json.points1 + " Pts.";
-        if (json.contributors1[0] != "")
+        if ((json.contributors1[0] != "") && (json.contributors1[0] != null))
             document.getElementById("firstCont1").innerHTML = json.contributors1[0] + "<br>" + json.userPoints1[0] + " Pts.";
 
-        if (json.contributors1[1] != "")
+        if ((json.contributors1[1] != "") && (json.contributors1[1] != null))
             document.getElementById("sndCont1").innerHTML = json.contributors1[1] + "<br>" + json.userPoints1[1] + " Pts.";
 
-        if (json.contributors1[2] != "")
+        if ((json.contributors1[2] != "") && (json.contributors1[2] != null))
             document.getElementById("thirdCont1").innerHTML = json.contributors1[2] + "<br>" + json.userPoints1[2] + " Pts.";
 
         document.getElementById("thirdStream").innerHTML = json.stream3 + "<br>" + json.points3 + " Pts.";
-        if (json.contributors3[0] != "")
+        if ((json.contributors3[0] != "") && (json.contributors3[0] != null))
             document.getElementById("firstCont3").innerHTML = json.contributors3[0] + "<br>" + json.userPoints3[0] + " Pts.";
 
-        if (json.contributors3[1] != "")
+        if ((json.contributors3[1] != "") && (json.contributors3[1] != null))
             document.getElementById("sndCont3").innerHTML = json.contributors3[1] + "<br>" + json.userPoints3[1] + " Pts.";
 
-        if (json.contributors3[2] != "")
+        if ((json.contributors3[2] != "") && (json.contributors3[2] != null))
             document.getElementById("thirdCont3").innerHTML = json.contributors3[2] + "<br>" + json.userPoints3[2] + " Pts.";
         //TODO write json content into StreamScore
     }
