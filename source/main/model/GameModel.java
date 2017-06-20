@@ -556,7 +556,7 @@ public class GameModel extends Observable{
         hosts.add(host);
         hostBots.put(host, hostBot);
         if (getGameMode() != GameMode.HOST) {
-            setGameMode(GameMode.Normal);
+            setGameMode(GameMode.HOST);
         }
     }
 

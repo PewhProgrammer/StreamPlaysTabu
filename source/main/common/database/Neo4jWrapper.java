@@ -83,13 +83,18 @@ public class Neo4jWrapper {
 
         try {
             createNode(node2, node2Explain);
+        } catch (ServiceUnavailableException | common.database.DatabaseException e) {
+            Log.error(e.getLocalizedMessage());
+        }
+        try {
             if (isNode1Explain && node2Explain) setExplainWordToCategory(node2);
             return createRelationship(node1, node2, relationship, reliableFlag, attr);
-        } catch (ServiceUnavailableException | common.database.DatabaseException e) {
+        } catch (ServiceUnavailableException e) {
             Log.error(e.getLocalizedMessage());
         }
 
         return false;
+
     }
 
     public void createUser(String str, String ch) {
@@ -159,7 +164,10 @@ public class Neo4jWrapper {
                 .append(", s.toExplain = {explainWord} ")
                 .append(", s.gameOutcome = {outcome} ")
                 .append(", s.gameMode = {mode} ")
-                .append(", s.numRegisteredPlayers = {numRegistered}");
+                .append(", s.numRegisteredPlayers = {numRegistered}")
+                .append(", s.date = {date}");
+
+        String date = new Date().toString();
 
         int i = 0;
         for (String[] qA : qAnda) {
@@ -213,7 +221,7 @@ public class Neo4jWrapper {
             tx.run(query.toString(), parameters("numGames", gameName, "roundTime", roundTime, "giver", giver, "difficulty", difficulty,
                     "explainWord", explainWord, "outcome", outcome, "mode", mode.toString(), "numRegistered", registeredPlayers.size(), "tabooBuilder", tabooBuilder.toString(),
                     "explanationBuilder", explanationBuilder.toString(), "guessBuilder", guessBuilder.toString(), "skippedWordBuilder", skippedWordBuilder.toString(),
-                    "qAndaBuilder",qAndaBuilder.toString()));
+                    "qAndaBuilder",qAndaBuilder.toString(),"date",date));
             tx.success();
         } finally {
             tx.close();
@@ -844,6 +852,9 @@ public class Neo4jWrapper {
         StringBuilder builder = new StringBuilder();
 
         Transaction tx = getTransaction();
+        if(tx == null){
+            return forcedSet;
+        }
         try {
 
             StatementResult sResult = tx.run(
@@ -875,6 +886,9 @@ public class Neo4jWrapper {
         StringBuilder builder = new StringBuilder();
 
         Transaction tx = getTransaction();
+        if(tx == null){
+            return "0";
+        }
         try {
             StatementResult sResult = tx.run("MATCH (n:" + userLabel + ") WHERE n.name = {name} " +
                             "RETURN n",
@@ -960,7 +974,7 @@ public class Neo4jWrapper {
         Transaction tx = getTransaction();
         try {
             StatementResult sResultTNode = tx.run("MATCH (t:streamNode)" +
-                    "RETURN t ORDER BY t.totalPoints DESC");
+                    "RETURN t ORDER BY t.totalPoints ASC");
 
             while (sResultTNode.hasNext()) {
                 StreamerHighscore result = new StreamerHighscore();
@@ -974,7 +988,7 @@ public class Neo4jWrapper {
                 StatementResult sResult = tx.run("MATCH (n:" + userLabel + ")-[rel]->(t:streamNode)" +
                         "WHERE t.name = {streamName}" +
                         "RETURN n,rel " +
-                        "ORDER BY t.totalPoints DESC", parameters("streamName", streamName));
+                        "ORDER BY rel.points ASC", parameters("streamName", streamName));
 
                 while (sResult.hasNext()) {
                     Record record = sResult.next();
@@ -1102,6 +1116,7 @@ public class Neo4jWrapper {
 
 
         Transaction tx = getTransaction();
+        if(tx == null) return;
         try {
             if (lookUpNode(data.name, data.label, stream)) {
                 throw new common.database.DatabaseException(label + " " + data.name + " is already in the database!");
@@ -1112,7 +1127,6 @@ public class Neo4jWrapper {
         } finally {
             tx.close();
         }
-        return;
     }
 
     /**
@@ -1130,7 +1144,7 @@ public class Neo4jWrapper {
             try (Session session = driver.session()) {
                 try (Transaction tx = session.beginTransaction()) {
 
-                    StatementResult sResult = tx.run("MATCH (n:Node) RETURN n");
+                    StatementResult sResult = tx.run("MATCH (n:Node) WHERE n.needValidation <> true RETURN n");
 
                     if (!sResult.hasNext())
                         throw new common.database.DatabaseException("No Explain Word available!");
@@ -1256,7 +1270,7 @@ public class Neo4jWrapper {
         try {
 
             StatementResult sResult = tx.run("MATCH (s)-[rel]->(t) WHERE t.name = {name} " +
-                            "AND rel.needValidationCategory > " + VALIDATE_THRESHOLD + " " +
+                            "AND rel.validateRatingCategory > " + VALIDATE_THRESHOLD + " " +
                             "RETURN s",
                     parameters("name", nodeName));
 

@@ -498,8 +498,20 @@ public class Util {
             return parseTemplate(newTmp, userInput[1], "");
         }
 
+        if (tmp.startsWith("An example for it is a ")){
+            newTmp = "An example for it is";
+            userInput = tmp.split("An example for it is a ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
+        if (tmp.startsWith("An example for it is an ")){
+            newTmp = "An example for it is";
+            userInput = tmp.split("An example for it is an ");
+            return parseTemplate(newTmp, userInput[1], "");
+        }
+
         if (tmp.startsWith("An example for it is ")){
-            newTmp = "an example is";
+            newTmp = "An example for it is";
             userInput = tmp.split("An example for it is ");
             return parseTemplate(newTmp, userInput[1], "");
         }
@@ -609,9 +621,14 @@ public class Util {
                     return getPair("is", userInput, "", "true");
                 }
 
-            // It is ___
+            // It is kind ___
                 if (tmp.equals("It is a kind of")) {
                     return getPair("is a kind of", userInput, "", "true");
+                }
+
+            // An example for it is ___
+                if (tmp.equals("An example for it is")) {
+                    return getPair("is example of", userInput, "", "true");
                 }
 
             // It has ___
@@ -624,7 +641,7 @@ public class Util {
                 }
             // It is a part of ___
                 if (tmp.equals("It is a part of")) {
-                    return getPair(tmp, userInput, "", "true");
+                    return getPair("is part of", userInput, "", "true");
                 }
 
             // It requires ___

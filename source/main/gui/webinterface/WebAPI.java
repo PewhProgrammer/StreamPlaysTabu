@@ -224,10 +224,10 @@ public class WebAPI implements IObserver {
                 send("/gameMode", new GameModeContainer(GameMode.HOST));
                 send("/score", new StreamRankingContainer(sh));
             }
+        } else {
+            send("/gameMode", new GameModeContainer(GameMode.Normal));
+            send("/score", new RankingContainer(GameControl.mModel.getNeo4jWrapper().getHighScoreList(10, channel)));
         }
-
-        send("/gameMode", new GameModeContainer(GameMode.Normal));
-        send("/score", new RankingContainer(GameControl.mModel.getNeo4jWrapper().getHighScoreList(10, channel)));
     }
 
     public void onNotifyGameMode() {

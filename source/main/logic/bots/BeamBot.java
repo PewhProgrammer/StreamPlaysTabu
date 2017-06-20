@@ -144,7 +144,7 @@ public class BeamBot extends Bot {
             /* !votekick */
         if ((message[0].equals("!votekick") && message.length == 1) || (message.length == 2 && message[1].equals(model.getGiver()))) {
                 /* VOTEKICK DAT ASS*/
-            return new Votekick(model, channel, sender, getUsers(channel).size());
+            return new Votekick(model, channel, sender);
         }
 
             /* !streamerexplains*/

@@ -86,7 +86,7 @@ public class BotTest extends TestCase{
 
     public void testVotekickCommand() {
         String content = "!votekick";
-        Votekick v = new Votekick(null, channel, user, 3);
+        Votekick v = new Votekick(null, channel, user);
         parseInput(content, v);
     }
 

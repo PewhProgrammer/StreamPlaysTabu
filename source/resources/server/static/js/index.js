@@ -17,7 +17,7 @@ $(function () {
     });
     $("#pw").click(function () {
         pw_cmp = getParameterByName('pw');
-        console.log(pw_cmp);
+        //console.log(pw_cmp);
         if (pw_cmp === "root") {
             onCategoryChosen(document.getElementById("category1").innerHTML);
             $("#transparentBG").hide();
@@ -122,18 +122,11 @@ function onCategoryChosen(category) {
     sendCategory(createChosenCategoryEvent(category));
     requestGiverInfo(createGiverInfoRequest());
     requestValidation(createValidationRequest());
-    console.log('<< SEND explanation: ' + 'The word to be explained is from the category ' + category);
+    //console.log('<< SEND explanation: ' + 'The word to be explained is from the category ' + category);
     sendExplanation(createExplanationEvent('The word to be explained is from the category ' + category));
 }
 
 function onExplanation() {
-    console.log("On Explanation process");
-    if (tempUsage[templateId] === 0) {
-        //already used twice
-        return;
-    } else {
-        tempUsage[templateId] -= 1;
-    }
 
     if (templateId === 24 || templateId === 25) {
         document.getElementById('sendButton').style.display = 'none';
@@ -145,11 +138,18 @@ function onExplanation() {
         activeQuestion = -1;
         hideTemplates();
     } else if ($("#explanationText").val() != "" || ($("#input2").val() != "" && $("#input3").val() != "")) {
+        if (tempUsage[templateId] === 0) {
+            //already used twice
+            return;
+        } else {
+            tempUsage[templateId] -= 1;
+        }
+
         document.getElementById('sendButton').style.display = 'none';
         document.getElementById('template_layer1').style.display = 'block';
         document.getElementById('template_layer' + templateLayer).style.display = 'none';
 
-        console.log("id: " + templateId + " active: " + activeQuestion);
+        //console.log("id: " + templateId + " active: " + activeQuestion);
         var result = "";
         if (templateId < 4 && templateId >= 1) {
             result += tempString;
@@ -166,16 +166,19 @@ function onExplanation() {
         }
 
         if (activeField == "templates") {
-            console.log("Sent Explanation");
+            //console.log("Sent Explanation");
             sendExplanation(createExplanationEvent(result));
         } else if (activeQuestion > -1) {
-            console.log("Sent Answer");
+            //console.log("Sent Answer");
             sendAnswer(createAnswerEvent(result));
             questions[activeQuestion] = null;
             refreshQuestions();
             activeQuestion = -1;
             hideTemplates();
         }
+    }
+    else{
+    // show warning?
     }
 
     document.getElementById("explanationText").innerHTML = "";
@@ -283,7 +286,7 @@ function validatePW(password) {
 }
 
 function showCategories() {
-    console.log("wta");
+    //console.log("wta");
     $("#signin").fadeOut();
     $("#categories").show();
     document.getElementById("categories").style.zIndex = "1";
@@ -443,7 +446,7 @@ function handleTemplateDropDownDouble(description, description2, id) {
 }
 
 function handleStars(id, count) {
-    console.log("id: " + id + " , count: " + count);
+    //console.log("id: " + id + " , count: " + count);
     var label = "";
     validated += 1;
     if (id === 1) {
@@ -465,8 +468,8 @@ function handleStars(id, count) {
     if (id === 3) {
         label = "three";
         document.getElementById("val3").style.visibility = "hidden";
-        document.getElementById("valHeader").innerHTML = "Thank you very much for helping us improve this game!" +
-            "<br>You have gained +" + validated + "0 seconds extra time in total!";
+        document.getElementById("valHeader").innerHTML = '<b style="font-size: 1.88vmin;">Thank you very much for helping us improve this game!</b>' +
+            '<br><br>You have gained <span style="color: #3CBC3C">+' + validated + "0</span> seconds extra time in total!";
     }
 
 
@@ -479,14 +482,16 @@ function handleStars(id, count) {
 }
 
 function showNextValidation(i) {
-    var gain = "<br>You have gained <span style='color: #337ab7'>+" + validated + "0 seconds </span> extra time in total!";
-    var categoryLabel = "Does the <span style='color: #337ab7'>explain word</span> below fit to its <span style='color: #337ab7'>category?</span>";
+    var gain = '<br>You have gained <span style="color: #3CBC3C">+' + validated + "0 seconds</span> extra time in total!";
+    var categoryLabel = 'Does the <span style="color: #337ab7">explain word</span> below fit to its <span style="color: orange">category?</span>';
+    var thanks = '<b style="font-size: 1.66vmin;">' +
+                             'Thank you for helping us improve this game!'   + '</b>' + gain;
 
     if (i === 1) {
         if (document.getElementById("validationCategoryLabel_two").textContent != 'EMPTY') {
             document.getElementById("val2").style.visibility = "visible";
-            document.getElementById("valHeader").innerHTML = '<b style="font-size: 2vmin;">' +
-            'Does the <span style="color: #337ab7">taboo word</span> below fit to its <span style="color: #337ab7">explain word?</span>"'  + '</b>' +
+            document.getElementById("valHeader").innerHTML = '<b style="font-size: 1.66vmin;">' +
+            'Does the <span style="color: #337ab7">taboo word</span> fit to its <span style="color: orange">explain word?</span>'  + '</b>' +
                 gain;
         } else if (document.getElementById("validationCategoryLabel_three").textContent != 'EMPTY') {
             document.getElementById("val3").style.visibility = "visible";
@@ -494,17 +499,16 @@ function showNextValidation(i) {
                 gain;
         } else {
             document.getElementById("val3").style.visibility = "hidden";
-            document.getElementById("valHeader").innerHTML = '<b style="font-size: 2vmin;">' +
-            'Thank you for helping us improve this game!'   + '</b>' + gain;
+            document.getElementById("valHeader").innerHTML = thanks;
         }
     } else if (i === 2) {
         if (document.getElementById("validationCategoryLabel_three").textContent != 'EMPTY') {
             document.getElementById("val3").style.visibility = "visible";
-            document.getElementById("valHeader").innerHTML = '<b style="font-size: 2vmin;">' + categoryLabel  + '</b>' +
+            document.getElementById("valHeader").innerHTML = '<b style="font-size: 1.66vmin;">' + categoryLabel  + '</b>' +
                 gain;
         } else {
             document.getElementById("val3").style.visibility = "hidden";
-            document.getElementById("valHeader").innerHTML = "<b>Thank you for helping us improve this game!" + '</b>' + gain;
+            document.getElementById("valHeader").innerHTML = thanks;
         }
     }
 }
@@ -513,7 +517,7 @@ function showTemplateUsage(i) {
     var doc = document.getElementById("explanationLabel");
     var doc_2 = document.getElementById("explanationLabel1");
     var label;
-    console.log("entered " + i);
+    //console.log("entered " + i);
 
     if (i >= 2) {
         label = "Your Explanation: ( you can only use this template <span style='color: #337ab7'>" +

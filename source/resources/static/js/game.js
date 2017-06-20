@@ -20,7 +20,7 @@ var timer = setInterval(function () {
 }, 1000);
 
 function updateTime() {
-    console.log("Increased time by 10 seconds");
+    //console.log("Increased time by 10 seconds");
     timeLeft += 10;
     timeMax += 10;
 }
@@ -76,7 +76,7 @@ function updateGuesses(guesses) {
 }
 
 function updateExplanations(explanations) {
-    console.log(explanations);
+    //console.log(explanations);
     var incJson = JSON.parse(explanations.body);
 
     var string = "Explanations:<br><br>";
@@ -136,18 +136,20 @@ function prepareGame() {
 
 function categoryChosen(chosencategory) {
     //TODO: display chosen category as first explanation
-    console.log(chosencategory);
+    //console.log(chosencategory);
 }
 
 function updateEndGame(endGame) {
     var incJson = JSON.parse(endGame.body);
     document.getElementById("explanations").style.visibility = "hidden";
     if (incJson.status == "Win") {
-        document.getElementById("endGame").innerHTML = "Winner: " + incJson.winner + "<br> Points: +" + incJson.points;
+        document.getElementById("endGame").innerHTML = incJson.winner + 'has guessed the word <span style="color: orange">'+ incJson.word
+        +'</span><br> Both players received <span style="color: #3CBC3C">+' + incJson.points + "</span>";
     } else if (incJson.status == "Lose") {
-        document.getElementById("endGame").innerHTML = "Time is up! :( <br> No winner. The word was: " + incJson.word;
+        document.getElementById("endGame").innerHTML = 'Time is up! There is no winner.<br>The word was <span style="color: orange">'
+         + incJson.word+ '</span>';
     } else if (incJson.status == "Kick") {
-        document.getElementById("endGame").innerHTML = incJson.winner + " was kicked because he tried to betray the system! <br> The word was: " +
-            incJson.word + "<br>A new round will start soon.";
+        document.getElementById("endGame").innerHTML = incJson.winner + ' was <span style="color: red">kicked</span> because he tried to cheat!'
+        +'<br> The word was <span style="color: orange">' + incJson.word + '</span><br>A new round will start soon...';
     }
 }
