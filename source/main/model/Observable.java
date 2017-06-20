@@ -87,6 +87,12 @@ public abstract class Observable {
         }
     }
 
+    public void notifyUpdateTimerText(String s) {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyTimerText(s);
+        }
+    }
+
     public void addObserver(IObserver ob){
         listIObserver.add(0,ob);
     }

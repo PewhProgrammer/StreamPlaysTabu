@@ -39,6 +39,9 @@ function connectLoc() {
         stompClientLoc.subscribe('/localJS/endGame', function (endGame) {
             updateEndGame(endGame);
         });
+        stompClientLoc.subscribe('/localJS/updateTimerText', function (string) {
+            updateTimeText(string);
+        });
         stompClientLoc.subscribe('/localJS/category', function (categorychosen) {
             categoryChosen(categorychosen);
         });

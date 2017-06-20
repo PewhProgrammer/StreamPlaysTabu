@@ -40,4 +40,6 @@ public interface IObserver {
 
     public void onNotifyUpdateTime();
 
+    public void onNotifyTimerText(String s);
+
 }
