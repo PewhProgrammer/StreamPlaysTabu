@@ -19,7 +19,6 @@ function sendSetup() {
         {},
         JSON.stringify({
             'gameMode': gameMode,
-            'platform': platform,
             'channel': channel
         })
     );

@@ -2,13 +2,9 @@ package module;
 
 import common.Log;
 import common.database.Neo4jWrapper;
-import gui.ProtoAnchor;
 import junit.framework.TestCase;
 import logic.GameControl;
-import logic.commands.GiverJoined;
-import logic.commands.Register;
 import model.GameModel;
-import model.Language;
 
 /**
  * Created by Thinh-Laptop on 19.04.2017.
@@ -38,26 +34,5 @@ public class GameRunningTest extends TestCase {
         } ;
 
         mTHREAD.start();
-    }
-
-    public void testGameRunning(){
-
-        gModel.getCommands().push(new Register(gModel,"","John"));
-        //controller.waitingForPlayers();
-        gModel.getCommands().push(new Register(gModel,"","Maria"));
-        gModel.getCommands().push(new GiverJoined(gModel,""));
-
-        String[] param = {"testparam"};
-        if(true) {
-            Log.info("Launching prototype GUI...");
-            ProtoAnchor anchor = new ProtoAnchor();
-            anchor.setModel(gModel);
-            anchor.main(param);
-        }
-        else {
-            Log.info("Launching experimental GUI...");
-        }
-
-
     }
 }
