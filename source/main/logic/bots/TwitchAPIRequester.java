@@ -36,6 +36,7 @@ public class TwitchAPIRequester {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
 
         return new JSONObject(res);

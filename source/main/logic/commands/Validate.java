@@ -2,6 +2,7 @@ package logic.commands;
 
 import common.Log;
 import model.GameModel;
+import model.GameState;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -69,6 +70,7 @@ public class Validate extends Command {
     @Override
     public boolean validate() {
 
+        if(gameModel.getGameState() != GameState.Registration || gameModel.getGameState() != GameState.WaitingForGiver) return false;
         if (!gameModel.contribute(sender, thisChannel)) {
             return false;
         }
@@ -93,11 +95,7 @@ public class Validate extends Command {
             return false;
         }
 
-        if (score < 1 || score > 5) {
-            return false;
-        }
-
-        return true;
+        return !(score < 1 || score > 5);
     }
 
     public int getID() {

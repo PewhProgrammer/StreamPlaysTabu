@@ -183,14 +183,13 @@ public class GameControl extends Observable{
                 mModel.clearRegisteredPlayers();
                 break;
             }
-            try {
-                Thread.sleep(20000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            sleepThread(2);
         }
+
+        sleepThread(2);
         mModel.setTimeStamp();
         mModel.notifyUpdateTimeStamp(new SimpleDateFormat("HH:mm:ss").format(new Date()).toString());
+        mModel.notifyUpdateTimerText("go marci boi");
         isStarted = true;
         runGame();
     }

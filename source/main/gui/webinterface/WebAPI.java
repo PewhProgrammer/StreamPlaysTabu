@@ -245,7 +245,7 @@ public class WebAPI implements IObserver {
     }
 
     public void onNotifyTimerText(String s) {
-        System.out.println("New TimerText sent: " + s);
+        Log.info("New TimerText sent: " + s);
         send("/updateTimerText", new TimerTextContainer(s));
     }
 
