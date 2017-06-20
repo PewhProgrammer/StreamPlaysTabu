@@ -244,6 +244,11 @@ public class WebAPI implements IObserver {
         //Nothing to do here
     }
 
+    public void onNotifyTimerText(String s) {
+        System.out.println("New TimerText sent: " + s);
+        send("/updateTimerText", new TimerTextContainer(s));
+    }
+
     @Override
     public void onNotifyExplainWord() {
         //Nothing to do here

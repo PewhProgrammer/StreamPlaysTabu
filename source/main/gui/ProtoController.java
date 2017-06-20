@@ -332,4 +332,9 @@ public class ProtoController implements Initializable, IObserver {
     public void onNotifyUpdateTime() {
 
     }
+
+    @Override
+    public void onNotifyTimerText(String s) {
+
+    }
 }

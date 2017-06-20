@@ -10,11 +10,15 @@ var x = setInterval(function() {
 }
 
     if (timeLeft == 0) {
-        document.getElementById("progressbar").innerHTML = "Waiting...";
-        document.getElementById("progressbar").style.width = "100%";
-        document.getElementById("statusInfo").innerHTML = "Next User to register will become the giver!";
+        clearInterval(x);
     }
 }, 1000);
+
+function updateTimeText(string) {
+    document.getElementById("progressbar").innerHTML = "Waiting...";
+    document.getElementById("progressbar").style.width = "100%";
+    document.getElementById("statusInfo").innerHTML = string;
+}
 
 function animateRank() {
     var aTime = 450;

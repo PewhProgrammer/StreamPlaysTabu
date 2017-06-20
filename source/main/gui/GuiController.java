@@ -142,4 +142,9 @@ public class GuiController implements Initializable, IObserver {
     public void onNotifyUpdateTime() {
 
     }
+
+    @Override
+    public void onNotifyTimerText(String s) {
+
+    }
 }
