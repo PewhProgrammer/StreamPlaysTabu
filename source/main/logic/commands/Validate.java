@@ -79,6 +79,20 @@ public class Validate extends Command {
             }
         }
 
+        Iterator<String> it = tabooWords.iterator();
+        String s = "";
+        boolean found = false;
+        for (int i = 0; i < ID; i++) {
+            s = it.next();
+            if (s.equals(word)) {
+                found = true;
+            }
+        }
+
+        if (!found) {
+            return false;
+        }
+
         if (score < 1 || score > 5) {
             return false;
         }

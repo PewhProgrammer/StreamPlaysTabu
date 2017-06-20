@@ -3,6 +3,7 @@ package logic.bots;
 import common.Log;
 import logic.commands.*;
 import model.GameModel;
+import model.GameState;
 import org.jibble.pircbot.PircBot;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,11 +15,20 @@ public class AltTwitchBot extends Bot {
 
     private Pirc bot;
     private String sender;
-
+    private String feedback = "Thank you for your validation!" ;
 
     public AltTwitchBot(GameModel gm, String channel) {
         super(gm, channel);
         connectToChatroom(channel);
+        new Thread() {
+            @Override
+            public void run() {
+                Log.info("Starting new thread for validations processing...");
+                processValidation();
+                Log.info("Canceled Validation processing");
+            }
+
+        }.start() ;
     }
 
     private class Pirc extends PircBot {
@@ -252,6 +262,21 @@ public class AltTwitchBot extends Bot {
 
         // !validate
         if (parts[0].equals("!validate")) {
+
+            if( model.getGameState() != GameState.GameStarted) {
+                if ((feedback.length() + sender.length()) >= 500) {
+                    sendChatMessage(feedback);
+                    feedback = "Thank you for your validation!";
+                }
+                if (feedback.contains(sender)) {
+                } else {
+                    if (feedback.length() == 30)
+                        feedback = feedback + " " + sender;
+                    else
+                        feedback = feedback + ", " + sender;
+                }
+            }
+
             int ID = 0 ;
             int valScore = 0 ;
             try{
@@ -262,12 +287,40 @@ public class AltTwitchBot extends Bot {
             try{
                 ID = Integer.parseInt(parts[1]);
             }catch(NumberFormatException e){
-                return new Validate(model, channel, parts[1], valScore, sender);
+                Command c =  new Validate(model, channel, parts[1], valScore, sender);
+                if ( c.validate() == true){
+                        if ((feedback.length() + sender.length()) >= 500) {
+                            sendChatMessage(feedback);
+                            feedback = "Thank you for your validation!";
+                        }
+                        if (feedback.contains(sender)) {
+                        } else {
+                            if (feedback.length() == 30)
+                                feedback = feedback + " " + sender;
+                            else
+                                feedback = feedback + ", " + sender;
+                        }
+                }
+                return c;
+
             }
-            if ((ID == 1) || (ID == 2) || (ID == 3) || (ID == 4) || (ID == 5)){
-                return  new Validate(model, channel, ID, valScore, sender);
+            if ((ID == 1) || (ID == 2) || (ID == 3) || (ID == 4) || (ID == 5)) {
+                Command c = new Validate(model, channel, ID, valScore, sender);
+                if ( c.validate() == true){
+                        if ((feedback.length() + sender.length()) >= 500) {
+                            sendChatMessage(feedback);
+                            feedback = "Thank you for your validation!";
+                        }
+                        if (feedback.contains(sender)) {
+                        } else {
+                            if (feedback.length() == 30)
+                                feedback = feedback + " " + sender;
+                            else
+                                feedback = feedback + ", " + sender;
+                        }
+                }
+                return c;
             }
-            return new Validate(model, channel, parts[1], valScore, sender);
         }
 
         // !taboo
@@ -289,5 +342,24 @@ public class AltTwitchBot extends Bot {
 
         return new ChatMessage(model, channel, sender, message);
     }
+
+    private void processValidation(){
+        for (; ; ) {
+
+            try {
+                if (feedback.length()==30)
+                    Thread.sleep(10000);
+                else {
+                        sendChatMessage(feedback);
+                        feedback = "Thank you for your validation!";
+                }
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
 }
 
