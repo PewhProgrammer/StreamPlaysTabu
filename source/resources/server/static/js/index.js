@@ -50,12 +50,13 @@ function runTimer() {
 
         $('li').toggleClass('nth-child(1)');
 
-        timeLeft = timeLeft - 1;
+        var timeNow = new Date();
+        var timeDiff = Math.round((timeNow - stamp) / 1000);
 
-        document.getElementById("progressbar").innerHTML = timeLeft + "s";
-        document.getElementById("progressbar").style.width = (timeLeft / timeMax) * 100 + "%";
+        document.getElementById("progressbar").innerHTML = timeLeft - timeDiff + "s";
+        document.getElementById("progressbar").style.width = ((timeLeft - timeDiff) / timeMax) * 100 + "%";
 
-        if (timeLeft <= 0) {
+        if (timeLeft - timeDiff <= 0) {
             document.getElementById("progressbar").innerHTML = "Time's-Up!";
             document.getElementById("progressbar").style.color = "#111111";
             clearInterval(timer);
@@ -305,8 +306,6 @@ function showCategories() {
     $("#category5").delay(800).fadeIn("slow");
     $("#category4").delay(1000).fadeIn("slow");
     $("#category2").delay(1200).fadeIn("slow");
-
-    runTimer();
 }
 
 function showGame() {

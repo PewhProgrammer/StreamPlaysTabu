@@ -1,23 +1,29 @@
 var timeLeft = 30;
 // Update the count down every 1 second
-var x = setInterval(function() {
-
-    if(timeLeft != 0){
-    timeLeft = timeLeft - 1;
-
-    document.getElementById("progressbar").innerHTML = timeLeft + "s";
-    document.getElementById("progressbar").style.width = (timeLeft / 30) * 100 + "%";
-}
-
-    if (timeLeft == 0) {
-        clearInterval(x);
-    }
-}, 1000);
+var x;
 
 function updateTimeText(string) {
-    document.getElementById("progressbar").style.width = "100%";
-    console.log(JSON.parse(string.body).text);
-    document.getElementById("#statusInfo").innerHTML = JSON.parse(string.body).text;
+    var json = JSON.parse(string.body);
+    console.log(json.text);
+
+    if(json.text !== "go marci boi") {
+        clearInterval(x);
+        document.getElementById("progressbar").style.width = "100%";
+        document.getElementById("progressbar").innerHTML = "Waiting...";
+        document.getElementById("statusInfo").innerHTML = json.text;
+    } else {
+        timeLeft = 30;
+        x = setInterval(function() {
+            if(timeLeft !== 0){
+                timeLeft = timeLeft - 1;
+                document.getElementById("progressbar").innerHTML = timeLeft + "s";
+                document.getElementById("progressbar").style.width = (timeLeft / 30) * 100 + "%";
+            }
+            if (timeLeft === 0) {
+                clearInterval(x);
+            }
+        }, 1000);
+    }
 }
 
 function animateRank() {

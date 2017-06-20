@@ -105,6 +105,8 @@ function updateState(gamestate) {
         case "Waiting For Giver":
             {
                 document.getElementById("statusInfo").innerHTML = "Waiting for chosen giver!";
+                document.getElementById("progressbar").style.width = "100%";
+                document.getElementById("progressbar").innerHTML = "Waiting...";
                 timeLeft = 30;
                 break;
             }

@@ -3,6 +3,7 @@ var questions = [];
 var activeQuestion = -1;
 var numQuestions = 0;
 var activeField = "templates";
+var stamp;
 
 function sendGiverJoined(giverJoinedEvent) {
     //console.log('<< Send giver joined.');
@@ -71,6 +72,17 @@ function showGuesses(guesses) {
             document.getElementById("thirdGuess").innerHTML = json.guess3;
         }
     }
+}
+
+function updateTimer(time) {
+    var json = JSON.parse(JSON.stringify(time));
+    var timeArray = json.text.split(":");
+    stamp = new Date();
+    stamp.setHours(timeArray[0]);
+    stamp.setMinutes(timeArray[1]);
+    stamp.setSeconds(timeArray[2]);
+
+    runTimer();
 }
 
 function showExplainWord(explainWord) {

@@ -79,6 +79,12 @@ $(document).ready(function () {
             window.alert(json.msg);
         }
     });
+    socket.on(base + '/timeLeft', function (data) {
+        console.log(data);
+        if (vpw(data)) {
+            updateTimer(data);
+        }
+    });
 });
 
 function send(target, content) {

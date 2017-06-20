@@ -5,19 +5,24 @@
 var timeLeft = 105;
 var timeMax = 105;
 // Update the count down every 1 second
-var timer = setInterval(function () {
+var timer;
 
-    timeLeft = timeLeft - 1;
+function updateTimeText(string) {
+    console.log("Start timer");
+    timer = setInterval(function () {
+        if (timeLeft !== 0) {
+            timeLeft = timeLeft - 1;
+            document.getElementById("progressbar").innerHTML = timeLeft + "s";
+            document.getElementById("progressbar").style.width = (timeLeft / timeMax) * 100 + "%";
+        }
+        if (timeLeft === 0) {
+            clearInterval(timer);
+            document.getElementById("progressbar").innerHTML = "Time's-Up!"
+            document.getElementById("progressbar").style.color = "#111111"
+        }
+    }, 1000);
+}
 
-    document.getElementById("progressbar").innerHTML = timeLeft + "s";
-    document.getElementById("progressbar").style.width = (timeLeft / timeMax) * 100 + "%";
-
-    if (timeLeft == 0) {
-        document.getElementById("progressbar").innerHTML = "Time's-Up!";
-        document.getElementById("progressbar").style.color = "#111111";
-        clearInterval(timer);
-    }
-}, 1000);
 
 function updateTime() {
     //console.log("Increased time by 10 seconds");
