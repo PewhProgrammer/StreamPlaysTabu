@@ -28,37 +28,6 @@ function animateRank() {
           $(this).delay(9000).fadeTo(aTime, 0);
           wait(100);
         });
-
-   /*$('#first').fadeTo(aTime, 1, function () {
-        $(this).delay(9000).fadeTo(aTime, 0);
-    });
-    $('#second').delay(200).fadeTo(aTime, 1, function () {
-        $(this).delay(9000).fadeTo(aTime, 0);
-    });
-    $('#third').delay(400).fadeTo(aTime, 1, function () {
-        $(this).delay(9000).fadeTo(aTime, 0);
-    });
-    $('#fourth').delay(600).fadeTo(aTime, 1, function () {
-        $(this).delay(9000).fadeTo(aTime, 0);
-    });
-    $('#fifth').delay(800).fadeTo(aTime, 1, function () {
-        $(this).delay(9000).fadeTo(aTime, 0);
-    });
-    $('#sixth').delay(200).fadeTo(aTime, 1, function () {
-        $(this).delay(9000).fadeTo(aTime, 0);
-    });
-    $('#seventh').delay(400).fadeTo(aTime, 1, function () {
-        $(this).delay(9000).fadeTo(aTime, 0);
-    });
-    $('#eighth').delay(600).fadeTo(aTime, 1, function () {
-        $(this).delay(9000).fadeTo(aTime, 0);
-    });
-    $('#ninth').delay(800).fadeTo(aTime, 1, function () {
-        $(this).delay(9000).fadeTo(aTime, 0);
-    });
-    $('#tenth').delay(1000).fadeTo(aTime, 1, function () {
-        $(this).delay(9000).fadeTo(aTime, 0);
-    });*/
 }
 animateRank();
 var a = setInterval(function() {
