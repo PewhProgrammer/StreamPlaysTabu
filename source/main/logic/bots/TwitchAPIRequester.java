@@ -22,7 +22,7 @@ public class TwitchAPIRequester {
         String res = "";
         try {
             HttpURLConnection connection;
-            String url = "https://tmi.twitch.tv/group/user/" + channel + "/chatters";
+            String url = "https://tmi.twitch.tv/group/user/" + channel.toLowerCase() + "/chatters";
             connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setRequestMethod("GET");
 

@@ -11,7 +11,6 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 import gui.webinterface.SiteController;
 import logic.bots.AltTwitchBot;
-import logic.bots.BeamBot;
 import logic.bots.Bot;
 import logic.commands.Command;
 import org.neo4j.driver.v1.exceptions.ServiceUnavailableException;
@@ -115,9 +114,9 @@ public class GameModel extends Observable{
         return this.hosts;
     }
 
-    public void setBot(String platform, String channel) {
+    public void setBot(String channel) {
         try {
-            this.bot = platform.equals("Twitch") ? new AltTwitchBot(this, "#" + channel) : new BeamBot(this, channel);
+            this.bot = new AltTwitchBot(this, "#" + channel);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -481,10 +480,6 @@ public class GameModel extends Observable{
 
     public Bot getBot() {
         return bot;
-    }
-
-    public void setBot(Bot bot) {
-        this.bot = bot;
     }
 
     public void setSiteController(SiteController sc) {

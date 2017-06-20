@@ -1,7 +1,5 @@
 package model;
 
-import gui.ProtoController;
-
 import java.util.ArrayList;
 
 public abstract class Observable {
@@ -94,11 +92,6 @@ public abstract class Observable {
     }
 
     public void updateObserver(IObserver ob){
-        if(ob instanceof ProtoController) {
-            listIObserver.remove(0);
-            listIObserver.add(0, ob);
-            return;
-        }
         listIObserver.remove(1);
         listIObserver.add(1, ob);
     }
