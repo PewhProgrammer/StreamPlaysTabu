@@ -112,9 +112,11 @@ public class GameControl extends Observable{
      * @return NULL
      */
     private void waitingForPlayers(){
+
         Log.info("Control is waiting for Players");
         gameLoop:
         while(mModel.getGameState() == GameState.Registration || !isStarted){
+            sleepThread(2);
             Set<String> hosts = mModel.getHosts();
             int p = 0;
             for (String host : hosts) {
@@ -188,7 +190,7 @@ public class GameControl extends Observable{
             }
         }
         mModel.setTimeStamp();
-        mModel.notifyUpdateTimeStamp(new SimpleDateFormat("HH:mm:ss").format(new Date()));
+        mModel.notifyUpdateTimeStamp(new SimpleDateFormat("HH:mm:ss").format(new Date()).toString());
         isStarted = true;
         runGame();
     }
