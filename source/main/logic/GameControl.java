@@ -120,8 +120,8 @@ public class GameControl extends Observable{
                 p += mModel.getBot().getUsers(host).size();
             }
             p += mModel.getBot().getUsers(mModel.getGiverChannel()).size();
+            if(p < 2) mModel.notifyUpdateTimerText("Waiting for minimum of 2 players!");
             while(p < 2){
-                mModel.notifyUpdateTimerText("Waiting for minimum of 2 players!");
                 sleepThread(10);
                 p = 0;
                 for (String host : hosts) {
@@ -143,6 +143,7 @@ public class GameControl extends Observable{
             }
 
             Log.info("Entering Stand by: Anyone can type !register to become giver");
+            mModel.notifyUpdateTimerText("Next player to register will be the next giver!");
             while(true){
                 try {
                     //if user is registered but no giver, then new giver
@@ -151,7 +152,7 @@ public class GameControl extends Observable{
                         if(!mModel.getGiver().equals("")){
                             break gameLoop;
                         }
-                        else mModel.notifyUpdateTimerText("Next player to register will be the next giver!");
+
                     }
                     Thread.sleep(5000);
                 } catch (InterruptedException e) {
