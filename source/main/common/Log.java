@@ -21,7 +21,6 @@ import java.util.List;
  */
 public class Log {
     static Path file = Paths.get("Logging.txt");
-    static Path fileDebug = Paths.get("Debug.txt");
 
     private static Level mLevel = Level.INFO;
 
@@ -64,12 +63,8 @@ public class Log {
         List<String> lines = Arrays.asList(new SimpleDateFormat("dd.MM HH:mm:ss").format(new Date()) + ". " +
                 msg);
 
-        List<String> debug = Arrays.asList(new SimpleDateFormat("dd.MM HH:mm:ss").format(new Date()) + ". " +
-                msg);
         try {
             Files.write(file, lines, Charset.forName("UTF-8"));
-            if(msg.startsWith("E"))
-                Files.write(fileDebug, debug, Charset.forName("UTF-8"));
         }catch(IOException e){
 
         }

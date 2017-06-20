@@ -29,6 +29,7 @@ source/resources/server/npm-debug.log
 
 *.jar
 *.jar.original
+*.txt
 
 
 # Sensitive or high-churn files:

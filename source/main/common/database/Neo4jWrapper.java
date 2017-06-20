@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import static org.neo4j.driver.v1.Values.parameters;
 
 import org.neo4j.driver.v1.types.Node;
+import org.neo4j.driver.v1.types.Relationship;
 
 import javax.jnlp.UnavailableServiceException;
 import javax.xml.ws.Service;
@@ -178,36 +179,24 @@ public class Neo4jWrapper {
 
         query.append(", s.QandA = {qAndaBuilder} ");
 
-        if (tabooWords.isEmpty()) tabooBuilder.append("isEmpty");
-        else {
             for (String taboo : tabooWords) {
                 tabooBuilder.append(taboo).append(", ");
             }
-        }
         query.append(", s.tabooWords = {tabooBuilder} ");
 
-        if (skippedWords.isEmpty()) skippedWordBuilder.append("isEmpty");
-        else {
             for (String used : skippedWords) {
                 skippedWordBuilder.append(used).append(", ");
             }
-        }
         query.append(", s.skippedWords = {skippedWordBuilder} ");
 
-        if (explanations.isEmpty()) explanationBuilder.append("isEmpty");
-        else {
             for (String explain : explanations) {
                 explanationBuilder.append(explain).append(", ");
             }
-        }
         query.append(", s.explanations = {explanationBuilder} ");
 
-        if (guesses.isEmpty()) guessBuilder.append("isEmpty");
-        else {
             for (Guess guess : guesses) {
-                guessBuilder.append(guess.toString()).append(", ");
+                guessBuilder.append(guess.getGuess()).append(", ");
             }
-        }
         query.append(", s.guesses = {guessBuilder} ");
 
         Transaction tx = getTransaction();
@@ -1336,7 +1325,172 @@ public class Neo4jWrapper {
         }
     }
 
-    /********************************** TRIVIAL METHOD **************************************/
+    /********************************** EXPORT METHODS**************************************/
+
+    int space = 40;
+
+    public void dbExportExplain(){
+        StringBuilder query = new StringBuilder();
+
+        query.append("MATCH (s:Node) ")
+                .append("WHERE s.type = 'explain' ")
+                .append("AND s.needValidation = false ")
+                .append("RETURN s ")
+                .append("ORDER BY s.validateRating ")
+                .append("DESC ");
+        Transaction tx = getTransaction();
+
+        try {
+            StatementResult sR = tx.run(query.toString());
+            while (sR.hasNext()) {
+                Node n = sR.next().get("s").asNode();
+                String name = n.get("name").asString();
+                int explainedTimes = n.get("asExplain").asInt();
+                int rating = n.get("validateRating").asInt();
+                String spaces;
+                try {
+                    spaces = new String(new char[space - name.length()]);
+                }catch(NegativeArraySizeException e){
+                    spaces = " ";
+                }
+
+                String export = name +spaces+ "{explainedTimes: "+explainedTimes+", rating: "+rating+"}";
+                dbExport.write(export);
+            }
+
+            tx.success();
+        } finally {
+            tx.close();
+        }
+    }
+
+    public void dbExportCategory(){
+        StringBuilder query = new StringBuilder();
+
+        query.append("MATCH (s:Node) ")
+                .append("WHERE s.type = 'category' ")
+                .append("AND s.needValidation = false ")
+                .append("RETURN s ")
+                .append("ORDER BY s.validateRating ")
+                .append("DESC ");
+        Transaction tx = getTransaction();
+
+        try {
+            StatementResult sR = tx.run(query.toString());
+            while (sR.hasNext()) {
+                Node n = sR.next().get("s").asNode();
+                String name = n.get("name").asString();
+                int explainedTimes = n.get("asExplain").asInt();
+                int rating = n.get("validateRating").asInt();
+                String spaces;
+                try {
+                    spaces = new String(new char[space - name.length()]);
+                }catch(NegativeArraySizeException e){
+                    spaces = " ";
+                }
+
+                String export = name +spaces+ "{explainedTimes: "+explainedTimes+", rating: "+rating+"}";
+                dbExport.write(export);
+            }
+
+            tx.success();
+        } finally {
+            tx.close();
+        }
+    }
+
+    public void dbExportExplainTaboo(){
+        StringBuilder query = new StringBuilder();
+
+        query.append("MATCH (s:Node)-[rel]->(t:Node) ")
+                .append("WHERE rel.needValidationTaboo = false ")
+                .append("RETURN s,rel,t ")
+                .append("ORDER BY rel.frequency ")
+                .append("DESC ");
+
+        Transaction tx = getTransaction();
+
+        try {
+            StatementResult sR = tx.run(query.toString());
+            while (sR.hasNext()) {
+                String export = "";
+                Record r = sR.next();
+                String source = r.get("s").asNode().get("name").asString();
+                String target = r.get("t").asNode().get("name").asString();
+
+                Relationship n = r.get("rel").asRelationship();
+                int frequency = n.get("frequency").asInt();
+                int rating = n.get("validateRatingTaboo").asInt();
+
+                space = 30;
+                String spaces;
+                String spacesTaboo;
+                try {
+                    spaces = new String(new char[space - source.length()]);
+                    spacesTaboo = new String(new char[space - target.length()]);
+                }catch(NegativeArraySizeException e){
+                    spaces = " ";
+                    spacesTaboo = " ";
+                }
+
+                export += "{Explain:"+source + spaces +", Category:"+target+ spacesTaboo+", Relationship:{frequency:"+frequency+", validate_rating:"+rating+" } }" ;
+                dbExport.write(export);
+            }
+
+            tx.success();
+        } finally {
+            tx.close();
+        }
+    }
+
+    public void dbExportExplainCategory(){
+        StringBuilder query = new StringBuilder();
+
+        query.append("MATCH (s:Node)-[rel]->(t:Node) ")
+                .append("WHERE rel.needValidationTaboo = false ")
+                .append("AND t.type = 'category' ")
+                .append("AND s.needValidation = false ")
+                .append("AND s.type <> 'basic' ")
+                .append("RETURN s,rel,t ")
+                .append("ORDER BY rel.frequency ")
+                .append("DESC ");
+
+        Transaction tx = getTransaction();
+
+        try {
+            StatementResult sR = tx.run(query.toString());
+            while (sR.hasNext()) {
+                String export = "";
+                Record r = sR.next();
+                String source = r.get("s").asNode().get("name").asString();
+                String target = r.get("t").asNode().get("name").asString();
+
+                Relationship n = r.get("rel").asRelationship();
+                int frequency = n.get("frequency").asInt();
+                int rating = n.get("validateRatingTaboo").asInt();
+
+                space = 30;
+                String spaces;
+                String spacesTaboo;
+                try {
+                    spaces = new String(new char[space - source.length()]);
+                    spacesTaboo = new String(new char[space - target.length()]);
+                }catch(NegativeArraySizeException e){
+                    spacesTaboo = " ";
+                    spaces = " ";
+                }
+
+                export += "{Explain:"+source + spaces +", Taboo:"+target+ spacesTaboo+", Relationship:{frequency:"+frequency+", validate_rating:"+rating+" } }" ;
+                dbExport.write(export);
+            }
+
+            tx.success();
+        } finally {
+            tx.close();
+        }
+    }
+
+    /********************************** TRIVIAL METHODS **************************************/
 
     /**
      * clear all connections that have too less of a rating

@@ -1,5 +1,6 @@
 import common.Log;
 import common.database.Neo4jWrapper;
+import common.dbExport;
 import gui.webinterface.RunInterface;
 import gui.webinterface.SiteController;
 import logic.GameControl;
@@ -125,12 +126,46 @@ public class Main {
         }
     }
 
-    public void parseCommandLine(String[] args) {
+    private void doDatabaseExport(Neo4jWrapper db){
+        //print out all explain nodes
+        dbExport.init("explain_nodes.txt","Processing explain...");
+        db.dbExportExplain();
+        dbExport.close();
 
-        if(args.length < 1){
-            doSemantics();
-            return;
+        //print out all category nodes
+        dbExport.init("category_nodes.txt","Processing category...");
+        db.dbExportCategory();
+        dbExport.close();
+
+        //print out all taboo nodes to different explain nodes
+        dbExport.init("explain-taboo_nodes.txt","Processing taboo -> explain...");
+        db.dbExportExplainTaboo();
+        dbExport.close();
+
+        //print out all explain nodes to different category nodes
+        dbExport.init("explain-category_nodes.txt","Processing explain -> category...");
+        db.dbExportExplainCategory();
+        dbExport.close();
+
+
+        Log.db("export completed");
+    }
+
+    public void parseCommandLine(String[] args1) {
+
+        String[] args = {"--webpageserver","m.schubhan.de:1337","--neo4jserver","pewhgames.com:7687","-defaultdata","false","--lang","ger","-v","1"};
+        if(args1.length > 0)
+            args = args1;
+
+        if(args[0].equals("--dbexport")){
+            Neo4jWrapper neo = new Neo4jWrapper(false,"pewhgames.com:7687",0);
+            Log.db("init export process");
+            doDatabaseExport(neo);
+            System.exit(1);
         }
+
+
+
         //initiates seed
         Random rand = new Random();
         rand.setSeed(new Date().getTime());
