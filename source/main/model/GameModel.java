@@ -116,7 +116,7 @@ public class GameModel extends Observable{
 
     public void setBot(String channel) {
         try {
-            this.bot = new AltTwitchBot(this, "#" + channel);
+            this.bot = new AltTwitchBot(this, "#" + channel.toLowerCase());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -568,7 +568,7 @@ public class GameModel extends Observable{
     }
 
     public void setGiverChannel(String giverChannel) {
-        this.giverChannel = giverChannel;
+        this.giverChannel = giverChannel.toLowerCase();
     }
 
     public int getScore(String user,String ch) {

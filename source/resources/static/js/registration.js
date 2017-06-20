@@ -16,8 +16,8 @@ var x = setInterval(function() {
 
 function updateTimeText(string) {
     document.getElementById("progressbar").style.width = "100%";
-    console.log(JSON.parse(string).text);
-    document.getElementById("progressbar").innerHTML = JSON.parse(JSON.stringify(string)).text;
+    console.log(JSON.parse(string.body).text);
+    document.getElementById("#statusInfo").innerHTML = JSON.parse(string.body).text;
 }
 
 function animateRank() {

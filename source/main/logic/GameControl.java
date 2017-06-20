@@ -129,6 +129,7 @@ public class GameControl extends Observable{
                 }
                 p += mModel.getBot().getUsers(mModel.getGiverChannel()).size();
             }
+            mModel.notifyUpdateTimerText("go marci boi");
             mModel.setTimeStamp();
             mModel.announceRegistration();
             sleepThread(30);

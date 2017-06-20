@@ -36,7 +36,7 @@ public class WebAPI implements IObserver {
 
     @MessageMapping("/startGame")
     public void startGame(SetupInformationContainer si) {
-        Setup sCmd = (new Setup(si, GameControl.mModel, si.getChannel()));
+        Setup sCmd = (new Setup(si, GameControl.mModel, si.getChannel().toLowerCase()));
         db = GameControl.mModel.getNeo4jWrapper();
         if (sCmd.validate()) {
             channel = si.getChannel();
