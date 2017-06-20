@@ -93,6 +93,12 @@ public abstract class Observable {
         }
     }
 
+    public void notifyUpdateTimeStamp(String s) {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyTimeStamp(s);
+        }
+    }
+
     public void addObserver(IObserver ob){
         listIObserver.add(0,ob);
     }

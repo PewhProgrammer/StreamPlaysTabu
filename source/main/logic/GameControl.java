@@ -9,6 +9,7 @@ import model.GameModel;
 import model.GameState;
 import model.Observable;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -187,6 +188,7 @@ public class GameControl extends Observable{
             }
         }
         mModel.setTimeStamp();
+        mModel.notifyUpdateTimeStamp((new SimpleDateFormat("HH:mm:ss").format(new Date())));
         isStarted = true;
         runGame();
     }

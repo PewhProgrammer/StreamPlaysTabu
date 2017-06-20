@@ -42,4 +42,6 @@ public interface IObserver {
 
     public void onNotifyTimerText(String s);
 
+    public void onNotifyTimeStamp(String s);
+
 }
