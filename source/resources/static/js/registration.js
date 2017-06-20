@@ -156,7 +156,7 @@ function updateCategoryVote(categories) {
 function updateValidation(validation) {
 
     var json = JSON.parse(validation.body);
-    console.log("Validation container: " + JSON.stringify(json));
+   //console.log("Validation container: " + JSON.stringify(json));
     var string = "<big>" + json.reference + "</big>" + "<br><small>";
     if (json.taboo1 != "") {
         string = string + "<ol style='text-align:left'><li>" + json.taboo1 + "</li>"

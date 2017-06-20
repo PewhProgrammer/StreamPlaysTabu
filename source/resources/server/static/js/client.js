@@ -6,13 +6,13 @@ $(document).ready(function () {
     socket = io.connect();
 
     socket.on(base, function (data) {
-        console.log('Connected to server: ' + JSON.stringify(data));
+        //console.log('Connected to server: ' + JSON.stringify(data));
     });
     socket.on(base + '/pwSucc', function (data) {
         var json = JSON.parse(data);
         var pass = json["password"];
         if (pass == pw_cmp.toString()) {
-            console.log('Password accepted.');
+            //console.log('Password accepted.');
             pw = pw_cmp;
             onGiverJoined();
             showCategories();
@@ -86,7 +86,7 @@ function send(target, content) {
 }
 
 function vpw(data) {
-    console.log(">> CHECK PW");
+    //console.log(">> CHECK PW");
     var json = JSON.parse(JSON.stringify(data));
     var pw = json["password"];
     return validatePW(pw);

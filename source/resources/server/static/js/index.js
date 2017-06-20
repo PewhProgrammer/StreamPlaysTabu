@@ -17,7 +17,7 @@ $(function () {
     });
     $("#pw").click(function () {
         pw_cmp = getParameterByName('pw');
-        console.log(pw_cmp);
+        //console.log(pw_cmp);
         if (pw_cmp === "root") {
             onCategoryChosen(document.getElementById("category1").innerHTML);
             $("#transparentBG").hide();
@@ -122,7 +122,7 @@ function onCategoryChosen(category) {
     sendCategory(createChosenCategoryEvent(category));
     requestGiverInfo(createGiverInfoRequest());
     requestValidation(createValidationRequest());
-    console.log('<< SEND explanation: ' + 'The word to be explained is from the category ' + category);
+    //console.log('<< SEND explanation: ' + 'The word to be explained is from the category ' + category);
     sendExplanation(createExplanationEvent('The word to be explained is from the category ' + category));
 }
 
@@ -149,7 +149,7 @@ function onExplanation() {
         document.getElementById('template_layer1').style.display = 'block';
         document.getElementById('template_layer' + templateLayer).style.display = 'none';
 
-        console.log("id: " + templateId + " active: " + activeQuestion);
+        //console.log("id: " + templateId + " active: " + activeQuestion);
         var result = "";
         if (templateId < 4 && templateId >= 1) {
             result += tempString;
@@ -166,10 +166,10 @@ function onExplanation() {
         }
 
         if (activeField == "templates") {
-            console.log("Sent Explanation");
+            //console.log("Sent Explanation");
             sendExplanation(createExplanationEvent(result));
         } else if (activeQuestion > -1) {
-            console.log("Sent Answer");
+            //console.log("Sent Answer");
             sendAnswer(createAnswerEvent(result));
             questions[activeQuestion] = null;
             refreshQuestions();
@@ -286,7 +286,7 @@ function validatePW(password) {
 }
 
 function showCategories() {
-    console.log("wta");
+    //console.log("wta");
     $("#signin").fadeOut();
     $("#categories").show();
     document.getElementById("categories").style.zIndex = "1";
@@ -446,7 +446,7 @@ function handleTemplateDropDownDouble(description, description2, id) {
 }
 
 function handleStars(id, count) {
-    console.log("id: " + id + " , count: " + count);
+    //console.log("id: " + id + " , count: " + count);
     var label = "";
     validated += 1;
     if (id === 1) {
@@ -517,7 +517,7 @@ function showTemplateUsage(i) {
     var doc = document.getElementById("explanationLabel");
     var doc_2 = document.getElementById("explanationLabel1");
     var label;
-    console.log("entered " + i);
+    //console.log("entered " + i);
 
     if (i >= 2) {
         label = "Your Explanation: ( you can only use this template <span style='color: #337ab7'>" +

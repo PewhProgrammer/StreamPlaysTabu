@@ -4,19 +4,13 @@ var channel = "StreamPlaysTaboo";
 
 function setGameMode(mode) {
     gameMode = mode;
-    console.log('Set game mode to ' + gameMode);
+    //console.log('Set game mode to ' + gameMode);
     document.getElementById('dropdownMode').innerHTML = gameMode + ' <span class="caret"></span>';
-}
-
-function setPlatform(pf) {
-    platform = pf;
-    console.log('Set platform to ' + platform);
-    document.getElementById('dropdownPlatform').innerHTML = platform + ' <span class="caret"></span>';
 }
 
 function setChannel() {
     channel = document.getElementById('channelName').value;
-    console.log('Set channel to ' + channel);
+    //console.log('Set channel to ' + channel);
 }
 
 function sendSetup() {
@@ -40,10 +34,9 @@ function loadPage() {
     $("#heading").fadeIn();
     $("#h2").delay(200).fadeIn();
     $("#mode").delay(400).fadeIn();
-    $("#platforms").delay(600).fadeIn();
-    $("#channelName").delay(800).fadeIn();
-    $("#startGame").delay(1000).fadeIn();
-    $("#botText").delay(1200).animate({
+    $("#channelName").delay(600).fadeIn();
+    $("#startGame").delay(800).fadeIn();
+    $("#botText").delay(1000).animate({
         opacity: 1,
         top: "+=5%"
     }, 1000);

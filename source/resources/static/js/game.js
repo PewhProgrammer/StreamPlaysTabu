@@ -20,7 +20,7 @@ var timer = setInterval(function () {
 }, 1000);
 
 function updateTime() {
-    console.log("Increased time by 10 seconds");
+    //console.log("Increased time by 10 seconds");
     timeLeft += 10;
     timeMax += 10;
 }
@@ -76,7 +76,7 @@ function updateGuesses(guesses) {
 }
 
 function updateExplanations(explanations) {
-    console.log(explanations);
+    //console.log(explanations);
     var incJson = JSON.parse(explanations.body);
 
     var string = "Explanations:<br><br>";
@@ -136,7 +136,7 @@ function prepareGame() {
 
 function categoryChosen(chosencategory) {
     //TODO: display chosen category as first explanation
-    console.log(chosencategory);
+    //console.log(chosencategory);
 }
 
 function updateEndGame(endGame) {

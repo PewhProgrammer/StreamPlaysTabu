@@ -5,17 +5,17 @@ var numQuestions = 0;
 var activeField = "templates";
 
 function sendGiverJoined(giverJoinedEvent) {
-    console.log('<< Send giver joined.');
+    //console.log('<< Send giver joined.');
     sendToServer('/giverJoined', giverJoinedEvent);
 }
 
 function requestPrevotedCategories(request) {
-    console.log('<< Request prevoting categories');
+    //console.log('<< Request prevoting categories');
     sendToServer('/reqPrevotedCategories', request);
 }
 
 function showPrevotedCategories(prevotedCategories) {
-    console.log('>> Received prevoting categories: ' + prevotedCategories);
+    //console.log('>> Received prevoting categories: ' + prevotedCategories);
     var json = JSON.parse(prevotedCategories);
 
     if(json.i1 !== "Random choice") document.getElementById("category1").innerHTML = json.cat1 + "<br><br><small>Votes: " + json.i1 + "</small>";
@@ -31,24 +31,24 @@ function showPrevotedCategories(prevotedCategories) {
 }
 
 function sendCategory(chosenCategory) {
-    console.log('<< Send chosen category: ' + chosenCategory);
+    //console.log('<< Send chosen category: ' + chosenCategory);
     sendToServer('/sendCategory', chosenCategory);
 }
 
 function requestGiverInfo(request) {
-    console.log('<< Request giver information.');
+    //console.log('<< Request giver information.');
     sendToServer('/reqGiver', request);
 }
 
 function showGiverInfo(giverInfo) {
     var json = JSON.parse(giverInfo);
-    console.log('>> Received giver information: ' + giverInfo);
+    //console.log('>> Received giver information: ' + giverInfo);
     giver = json.name;
 }
 
 function showGuesses(guesses) {
     var json = JSON.parse(guesses);
-    console.log('>> Received guesses: ' + guesses);
+    //console.log('>> Received guesses: ' + guesses);
 
     if (json.guess1 != "") {
         if (json.guess4 != "") {
@@ -75,13 +75,13 @@ function showGuesses(guesses) {
 
 function showExplainWord(explainWord) {
     var json = JSON.parse(explainWord);
-    console.log('>> Received explain word: ' + explainWord);
+    //console.log('>> Received explain word: ' + explainWord);
     document.getElementById("explainWord").innerHTML = json.explainWord;
 }
 
 function showTabooWords(tabooWords) {
     var json = JSON.parse(tabooWords);
-    console.log('>> Received taboo words: ' + tabooWords);
+    //console.log('>> Received taboo words: ' + tabooWords);
     var taboo = "";
     if(json.word1 === "" && json.word2 === "" && json.word3 === "" && json.word4 === "" && json.word5 === "") {
         taboo = "No taboo words! <br><br><br>"
@@ -108,7 +108,7 @@ function showTabooWords(tabooWords) {
 }
 
 function sendExplanation(explanation) {
-    console.log('<< Send explanation.');
+    //console.log('<< Send explanation.');
     sendToServer('/sendExplanation', explanation);
     document.getElementById("templatesDiv").innerHTML = document.getElementById("templatesDiv").innerHTML
         + "<div id='successfullySendPanel' class='panel panel-success' style='position: absolute; top: 47.5%; width: 75%; left: 12.5%; z-index: 5; display: none'><div class='panel-heading' style='text-align: center'>Explanation successfully sent!</div></div>";
@@ -119,7 +119,7 @@ function sendExplanation(explanation) {
 
 function showQuestion(question) {
     var json = JSON.parse(question);
-    console.log('>> Received question: ' + question);
+    //console.log('>> Received question: ' + question);
     numQuestions++;
     questions.push(json.question);
 
@@ -148,7 +148,7 @@ function chosenQuestion(num, p) {
 }
 
 function sendAnswer(QandA) {
-    console.log('<< Send answer.');
+    //console.log('<< Send answer.');
     sendToServer('/sendQandA', QandA);
     document.getElementById("templatesDiv").innerHTML = document.getElementById("templatesDiv").innerHTML
         + "<div id='successfullySendPanel' class='panel panel-success' style='position: absolute; top: 47.5%; width: 75%; left: 12.5%; z-index: 5; display: none'><div class='panel-heading' style='text-align: center'>Answer successfully sent!</div></div>";
@@ -158,17 +158,17 @@ function sendAnswer(QandA) {
 }
 
 function requestSkip(request) {
-    console.log('<< Request skip.');
+    //console.log('<< Request skip.');
     sendToServer('/reqSkip', request);
 }
 
 function requestValidation(request) {
-    console.log('<< Request validation.');
+    //console.log('<< Request validation.');
     sendToServer('/reqValidation', request);
 }
 
 function showValidation(validation) {
-    console.log('>> Received validation: ' + validation);
+    //console.log('>> Received validation: ' + validation);
     var json = JSON.parse(validation);
 
     var labelOne = document.getElementById("validationCategoryLabel_one");
@@ -193,7 +193,7 @@ function showValidation(validation) {
 
 function updateGameState(gameState) {
     var json = JSON.parse(gameState);
-    console.log('>> RECEIVED gameState: ' + json.state);
+    //console.log('>> RECEIVED gameState: ' + json.state);
     state = json.state;
     if (state === 'Register') {
         socket.close();
@@ -202,7 +202,7 @@ function updateGameState(gameState) {
 }
 
 function sendValidation(validation) {
-    console.log('<< Send validation.');
+    //console.log('<< Send validation.');
     sendToServer('/sendValidation', validation);
 }
 
@@ -210,7 +210,7 @@ function showChatMessage(msg) {
     var json = JSON.parse(msg);
 
     var element = document.getElementById("chat");
-    console.log('>> Received chat message: ' + json.content + "from: " + json.sender);
+    //console.log('>> Received chat message: ' + json.content + "from: " + json.sender);
     element.innerHTML = element.innerHTML + "<br>" + json.sender + ": " + json.content;
 
     $('#chat').animate({
@@ -219,7 +219,7 @@ function showChatMessage(msg) {
 }
 
 function closeGame(status) {
-    console.log('>> Received end of game: ' + status);
+    //console.log('>> Received end of game: ' + status);
 
     socket.onclose = function () {console.log("Socket closed.")};
     socket.close();
@@ -263,7 +263,7 @@ function hideTemplates(){
 }
 
 function sendPassword(pw) {
-    console.log('<< SEND password: ' + pw);
+    //console.log('<< SEND password: ' + pw);
     sendToServer('/pw', pw);
 }
 
