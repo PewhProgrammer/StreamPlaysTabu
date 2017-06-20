@@ -188,7 +188,7 @@ public class GameControl extends Observable{
             }
         }
         mModel.setTimeStamp();
-        mModel.notifyUpdateTimeStamp((new SimpleDateFormat("HH:mm:ss").format(new Date())));
+        mModel.notifyUpdateTimeStamp(new SimpleDateFormat("HH:mm:ss").format(new Date()));
         isStarted = true;
         runGame();
     }

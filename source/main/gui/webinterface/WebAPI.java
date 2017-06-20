@@ -250,6 +250,11 @@ public class WebAPI implements IObserver {
     }
 
     @Override
+    public void onNotifyTimeStamp(String s) {
+
+    }
+
+    @Override
     public void onNotifyExplainWord() {
         //Nothing to do here
     }

@@ -77,6 +77,10 @@ function initializeExt(socket) {
         //console.log('>> RECEIVED chatMessage: ' + JSON.stringify(data));
         send2Ext('/chatMessage', data);
     });
+        socket.on(base2Core + '/timeLeft', function (data) {
+            //console.log('>> RECEIVED chatMessage: ' + JSON.stringify(data));
+            send2Ext('/timeLeft', data);
+        });
     socket.on(base2Core + '/validation', function (data) {
         //console.log('>> RECEIVED validation: ' + JSON.stringify(data));
         send2Ext('/validation', data);
