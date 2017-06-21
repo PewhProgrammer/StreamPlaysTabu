@@ -854,6 +854,7 @@ public class Neo4jWrapper {
                             "RETURN s", parameters("cat", "category"));
 
             List<Record> list = sResult.list();
+            Collections.shuffle(list,randomizer);
             list = list.stream().limit(cap).collect(Collectors.toList());
 
             builder.append("Fetched Categories: [");

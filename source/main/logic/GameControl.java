@@ -191,8 +191,10 @@ public class GameControl extends Observable{
                 if (s.getScore() > 0)
                     prevotedBuild.append(s.getCategory()).append("(").append(s.getScore()).append(") . ");
             }
-        } else prevotedBuild.append(" none :D");
-        mModel.getBot().sendChatMessage("You guys voted for these categories: " + prevotedBuild.toString());
+        }
+
+        if(prevotedBuild.length() == 0) prevotedBuild.append(" none :D");
+        mModel.getBot().sendChatMessage("You voted for these categories: " + prevotedBuild.toString());
         mModel.setTimeStamp();
         mModel.notifyUpdateTimeStamp(new SimpleDateFormat("HH:mm:ss").format(new Date()).toString());
         mModel.notifyUpdateTimerText("go marci boi");
