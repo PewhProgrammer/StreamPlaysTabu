@@ -35,6 +35,7 @@ public class Neo4jWrapper {
     private String userLabel = "userNode";
     private String forced = "mass effect";
     private Set<String> forcedSet;
+    private boolean preset = false;
 
     public Neo4jWrapper(boolean simulation, String neo4jbind, int seed) {
         config = Config.build().withEncryptionLevel(Config.EncryptionLevel.REQUIRED).toConfig();//baut enkryptische Verbindung, um uns gegen "man-in-the-middle" attacken zu schützen
@@ -638,7 +639,7 @@ public class Neo4jWrapper {
         try {
             tx.run("CREATE (a: " + label + " {name: {name}," +
                             " type: {type}, needValidation: {validateBoolean} , validateRating: 0, validationLock: "
-                            + !needValidation + ", asExplain: 0 })",
+                            + !needValidation + ", asExplain: 0, preset: "+ preset +" })",
                     parameters("name", nodeName, "type", type, "validateBoolean", validate));
             tx.success();
         } finally {
@@ -710,7 +711,7 @@ public class Neo4jWrapper {
         int i = 0;
         int validate = 0;
         if (!needValidation)
-            validate = 100;
+            validate = 15;
         query.append("MATCH (s),(t) WHERE s.name = {n1} AND t.name = {n2} ")
                 .append("MERGE (s)-[rel:`" + relationship + "`]->(t) ")
                 .append("ON MATCH SET rel.frequency = rel.frequency + 1 ")
@@ -720,6 +721,7 @@ public class Neo4jWrapper {
                 .append(", rel.validateRatingTaboo = " + validate)
                 .append(", rel.validateFrequencyTaboo = 0 ")
                 .append(", rel.validateRatingCategory = " + validate)
+                .append(", rel.preset = " + preset)
                 .append(", rel.validateFrequencyCategory = 0 ")
                 .append(", rel.needValidationCategory = " + needValidation + " ")
                 .append(", rel.validationLock = " + !needValidation + " ")
@@ -1274,7 +1276,8 @@ public class Neo4jWrapper {
             if (count >= CATEGORY_TRESHOLD) {
                 tx.run("MATCH (s:Node)" +
                         "WHERE s.name = {n1} " +
-                        "SET s.type = {c}" +
+                        "SET s.type = {c} " +
+                        ", s.preset = "+ preset +" " +
                         "RETURN s", parameters("n1", nodeName, "c", "category"));
 
                 builder.append(nodeName + " did qualifiy as category with " + count + " incoming edges");
@@ -1329,12 +1332,13 @@ public class Neo4jWrapper {
 
     int space = 40;
 
-    public void dbExportExplain(){
+    public void dbExportExplain(boolean preset){
         StringBuilder query = new StringBuilder();
 
         query.append("MATCH (s:Node) ")
                 .append("WHERE s.type = 'explain' ")
                 .append("AND s.needValidation = false ")
+                .append("AND s.preset = "+preset+" ")
                 .append("RETURN s ")
                 .append("ORDER BY s.validateRating ")
                 .append("DESC ");
@@ -1364,12 +1368,13 @@ public class Neo4jWrapper {
         }
     }
 
-    public void dbExportCategory(){
+    public void dbExportCategory(boolean preset){
         StringBuilder query = new StringBuilder();
 
         query.append("MATCH (s:Node) ")
                 .append("WHERE s.type = 'category' ")
                 .append("AND s.needValidation = false ")
+                .append("AND s.preset = "+preset+" ")
                 .append("RETURN s ")
                 .append("ORDER BY s.validateRating ")
                 .append("DESC ");
@@ -1399,11 +1404,12 @@ public class Neo4jWrapper {
         }
     }
 
-    public void dbExportExplainTaboo(){
+    public void dbExportExplainTaboo(boolean preset){
         StringBuilder query = new StringBuilder();
 
         query.append("MATCH (s:Node)-[rel]->(t:Node) ")
                 .append("WHERE rel.needValidationTaboo = false ")
+                .append("AND rel.preset = "+preset+" ")
                 .append("RETURN s,rel,t ")
                 .append("ORDER BY rel.frequency ")
                 .append("DESC ");
@@ -1433,7 +1439,7 @@ public class Neo4jWrapper {
                     spacesTaboo = " ";
                 }
 
-                export += "{Explain:"+source + spaces +", Category:"+target+ spacesTaboo+", Relationship:{frequency:"+frequency+", validate_rating:"+rating+" } }" ;
+                export += "{Explain:"+source + spaces +", Taboo:"+target+ spacesTaboo+", Relationship:{frequency:"+frequency+", validate_rating:"+rating+" } }" ;
                 dbExport.write(export);
             }
 
@@ -1443,12 +1449,13 @@ public class Neo4jWrapper {
         }
     }
 
-    public void dbExportExplainCategory(){
+    public void dbExportExplainCategory(boolean preset){
         StringBuilder query = new StringBuilder();
 
         query.append("MATCH (s:Node)-[rel]->(t:Node) ")
-                .append("WHERE rel.needValidationTaboo = false ")
+                .append("WHERE rel.needValidationCategory = false ")
                 .append("AND t.type = 'category' ")
+                .append("AND rel.preset = "+preset+" ")
                 .append("AND s.needValidation = false ")
                 .append("AND s.type <> 'basic' ")
                 .append("RETURN s,rel,t ")
@@ -1467,7 +1474,7 @@ public class Neo4jWrapper {
 
                 Relationship n = r.get("rel").asRelationship();
                 int frequency = n.get("frequency").asInt();
-                int rating = n.get("validateRatingTaboo").asInt();
+                int rating = n.get("validateRatingCategory").asInt();
 
                 space = 30;
                 String spaces;
@@ -1480,7 +1487,7 @@ public class Neo4jWrapper {
                     spaces = " ";
                 }
 
-                export += "{Explain:"+source + spaces +", Taboo:"+target+ spacesTaboo+", Relationship:{frequency:"+frequency+", validate_rating:"+rating+" } }" ;
+                export += "{Explain:"+source + spaces +", Category:"+target+ spacesTaboo+", Relationship:{frequency:"+frequency+", validate_rating:"+rating+" } }" ;
                 dbExport.write(export);
             }
 
@@ -1512,6 +1519,8 @@ public class Neo4jWrapper {
     public void setSimulation(boolean b) {
         this.needValidation = !b;
     }
+
+    public void triggerPreset(){this.preset = true;}
 
     private Driver acquireDriver(String uri, AuthToken authToken, Config config) {
 

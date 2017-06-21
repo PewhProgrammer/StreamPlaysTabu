@@ -21,7 +21,7 @@
     <div id="transparentBG"></div>
     <div id="signin">
         <form class="form-signin" style="position:absolute; width:40%; height:50%; top:25%; left:30%;">
-            <h1 class="form-signin-heading" style="text-align: center">StreamPlaysTaboo</h1>
+            <h1 class="form-signin-heading" style="text-align: center;color:wheat">StreamPlaysTaboo</h1>
             <h2 class="form-signin-heading" style="text-align: center; margin-bottom: 50px;">You are the giver!</h2>
 
             <button class="btn btn-lg btn-primary btn-block btn-danger" type="button" id="pw">Start round!</button>
@@ -36,10 +36,11 @@
         <button class="btn btn-lg btn-primary btn-block btn-warning" type="submit" id="category4" onclick="chosenCat4()">category4</button>
         <button class="btn btn-lg btn-primary btn-block btn-danger" type="submit" id="category5" onclick="chosenCat5()">category5</button>
     </div>
+    <div id="endGameDiv" style="margin-right:4%; height:73%; width:98%; font-size: 6vmin; text-align: center; position:absolute; top: 25%; z-index: 0; visibility: hidden;"></div>
     <div id="gameDiv">
         <nav class="navbar navbar-inverse" style="background:linear-gradient(to bottom, #3a404d, #181c26); border-radius: 10px;box-shadow: 0 7px 30px rgba(62, 9, 11, 0.3);">
             <div class="navbar-header">
-                <p class="navbar-brand" style="font-size: 4vh">StreamPlaysTaboo</p>
+                <p class="navbar-brand" style="font-size: 4vh;color:wheat">StreamPlaysTaboo</p>
             </div>
             <p class="navbar-text" style="font-size: 3vh">Giver Interface</p>
             <div class="nav navbar-text progress pull-right" style="width: 25%; height:3vh; margin-top:1.25%; background-color: #11131a;">
@@ -72,7 +73,7 @@
 
                 <div id="template_layer3" style="display:none;padding:0px">
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 25%; width: 15%; height:15%; padding:10px 0px" type="submit" id="template_usage" onclick="handleTemplateDropDown('It is used for',6)">Usage</button>
-                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15%" type="submit" id="template_enhancement" onclick="handleTemplateDropDown('It enhances',7)">Enhancement</button>
+                    <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 70%; right: 55%; width: 15%;height:15%;padding:10px 0px" type="submit" id="template_enhancement" onclick="handleTemplateDropDown('It enhances',7)">Enhancement</button>
                     <button class="btn btn-lg btn-primary btn-block btn-warning" style="position: absolute; bottom: 20%; right: 2%; width: 10%" type="submit" onclick=handleTemplateLayerPrevious(3)>Back</button>
                 </div>
 
@@ -138,7 +139,7 @@
                     <button class="btn btn-lg btn-primary btn-block btn-primary" style="position: absolute; bottom: 2%; right: 2%; width: 10%" type="submit" id="explanation" onclick="onExplanation()">Send</button>
                 </div>
             </div>
-            <div id="endGameDiv" style="margin-right:4%; height:73%; width:98%; font-size: 6vmin; text-align: center; position:absolute; top: 25%; z-index: 0; visibility: hidden;"></div>
+            <div id="endGameDiv2" style="margin-right:4%; height:73%; width:98%; font-size: 6vmin; text-align: center; position:absolute; top: 25%; z-index: 0; visibility: hidden;"></div>
         </div>
 
         <div id="tabooCard" class="background">
@@ -149,6 +150,7 @@
                 <div id="tabooWords" class="panel-body" style="color:#000000; font-size: 3vmin"></div>
             </div>
             <button class="btn btn-lg btn-primary btn-block btn-warning" type="submit" id="skip">Skip word</button>
+            <div style="position: absolute;bottom: 1.5%;right: 30%;width: 40%;"><p>You will lose <span style="color:red">20</span> Pts. !</p></div>
         </div>
 
         <div id="chat" class="scrollable background">

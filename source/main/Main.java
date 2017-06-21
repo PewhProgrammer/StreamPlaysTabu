@@ -126,25 +126,25 @@ public class Main {
         }
     }
 
-    private void doDatabaseExport(Neo4jWrapper db){
+    private void doDatabaseExport(Neo4jWrapper db,boolean preset){
         //print out all explain nodes
         dbExport.init("explain_nodes.txt","Processing explain...");
-        db.dbExportExplain();
+        db.dbExportExplain(preset);
         dbExport.close();
 
         //print out all category nodes
         dbExport.init("category_nodes.txt","Processing category...");
-        db.dbExportCategory();
+        db.dbExportCategory(preset);
         dbExport.close();
 
         //print out all taboo nodes to different explain nodes
         dbExport.init("explain-taboo_nodes.txt","Processing taboo -> explain...");
-        db.dbExportExplainTaboo();
+        db.dbExportExplainTaboo(preset);
         dbExport.close();
 
         //print out all explain nodes to different category nodes
         dbExport.init("explain-category_nodes.txt","Processing explain -> category...");
-        db.dbExportExplainCategory();
+        db.dbExportExplainCategory(preset);
         dbExport.close();
 
 
@@ -160,11 +160,13 @@ public class Main {
         if(args[0].equals("--dbexport")){
             Neo4jWrapper neo = new Neo4jWrapper(false,"pewhgames.com:7687",0);
             Log.db("init export process");
-            doDatabaseExport(neo);
+            boolean preset = true ;
+            if(args.length > 1 && args[1] != null && args[1].equals("unique")){
+                preset = false;
+            }
+            doDatabaseExport(neo,preset);
             System.exit(1);
         }
-
-
 
         //initiates seed
         Random rand = new Random();

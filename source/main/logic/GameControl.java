@@ -4,10 +4,7 @@ import common.Log;
 import logic.commands.CategoryChosen;
 import logic.commands.Command;
 import logic.commands.GiverJoined;
-import model.GameMode;
-import model.GameModel;
-import model.GameState;
-import model.Observable;
+import model.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,6 +25,7 @@ public class GameControl extends Observable{
     private boolean isStarted;
     private Random rand ;
     private final String extBindAddr;
+    private final int MIN_PlAYERS = 2 ;
 
     public GameControl(GameModel model,int seed,String ext_bindaddr){
         mModel = model;
@@ -123,8 +121,8 @@ public class GameControl extends Observable{
                 p += mModel.getBot().getUsers(host).size();
             }
             p += mModel.getBot().getUsers(mModel.getGiverChannel()).size();
-            if(p < 2) mModel.notifyUpdateTimerText("Waiting for minimum of 2 players!");
-            while(p < 2){
+            if(p < MIN_PlAYERS) mModel.notifyUpdateTimerText("Waiting for minimum of 2 players!");
+            while(p < MIN_PlAYERS){
                 sleepThread(10);
                 p = 0;
                 for (String host : hosts) {
@@ -187,6 +185,14 @@ public class GameControl extends Observable{
         }
 
         sleepThread(2);
+        StringBuilder prevotedBuild = new StringBuilder();
+        if(mModel.getPrevotedCategories().size() > 0) {
+            for (PrevoteCategory s : mModel.getPrevotedCategories()) {
+                if (s.getScore() > 0)
+                    prevotedBuild.append(s.getCategory()).append("(").append(s.getScore()).append(") | ");
+            }
+        } else prevotedBuild.append(" none :D");
+        mModel.getBot().sendChatMessage("You guys voted for these categories: " + prevotedBuild.toString());
         mModel.setTimeStamp();
         mModel.notifyUpdateTimeStamp(new SimpleDateFormat("HH:mm:ss").format(new Date()).toString());
         mModel.notifyUpdateTimerText("go marci boi");

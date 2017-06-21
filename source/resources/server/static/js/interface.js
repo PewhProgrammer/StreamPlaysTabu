@@ -171,6 +171,7 @@ function sendAnswer(QandA) {
 
 function requestSkip(request) {
     //console.log('<< Request skip.');
+
     sendToServer('/reqSkip', request);
 }
 
@@ -251,6 +252,13 @@ function closeGame(status) {
     } else if (json.status === "Kick") {
         document.getElementById("endGameDiv").innerHTML = "<p>Too many cheating attempts!<br>The round is over.</p>";
     }
+
+    //grey everything out
+    $("#transparentBG").show();
+    $("#transparentBG").css("visibility", "visible");
+    $("#transparentBG").css('z-index', 20);
+
+    $("#endGameDiv").css('z-index', 21);
 }
 
 function showTemplates(){
@@ -271,7 +279,7 @@ function hideTemplates(){
 
     contentDiv.style.zIndex = "1";
     contentDiv.style.visibility = "visible";
-    contentDiv.innerHTML = "<p>Choose either your explain word on the left or<br>a new question on the right side!</p>";
+    contentDiv.innerHTML = "<p>Choose between explaining<br>the word <span style='color:#337ab7'>on the left</span> or<br>a new question <span style='color:#337ab7'>on the right</span> side <br> by clicking on the areas!</p>";
 }
 
 function sendPassword(pw) {

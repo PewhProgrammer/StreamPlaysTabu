@@ -16,6 +16,7 @@ public class AltTwitchBot extends Bot {
     private Pirc bot;
     private String sender;
     private String feedback = "Thank you for your validation!";
+    private String feedback_prevoting = "Thank you for your prevote! ";
 
     public AltTwitchBot(GameModel gm, String channel) {
         super(gm, channel);
@@ -290,6 +291,7 @@ public class AltTwitchBot extends Bot {
                         if ((feedback.length() + sender.length()) >= 500) {
                             sendChatMessage(feedback);
                             feedback = "Thank you for your validation!";
+                            feedback += " " + sender;
                         }
                         if (!feedback.contains(sender)) {
                             if (feedback.length() <= 30)
@@ -315,9 +317,24 @@ public class AltTwitchBot extends Bot {
                         int vote = Integer.parseInt(parts[i]);
                         preVotes[i - 1] = vote;
                     } catch (NumberFormatException e) {
+                        return new ChatMessage(model, channel, sender, message);
                     }
                 }
-                return new Prevote(model, channel, preVotes, sender);
+                Command prevoteCommand = new Prevote(model, channel, preVotes, sender);
+                if(prevoteCommand.validate()){
+                    if ((feedback_prevoting.length() + sender.length()) >= 500) {
+                        sendChatMessage(feedback_prevoting);
+                        feedback_prevoting = "Thank you for your prevote! ";
+                        feedback_prevoting += " " + sender;
+                    }
+                    if (!feedback_prevoting.contains(sender)) {
+                        if (feedback_prevoting.length() <= 30)
+                            feedback_prevoting += " " + sender;
+                        else
+                            feedback_prevoting += ", " + sender;
+                    }
+                }
+                return prevoteCommand;
             }
 
             return new ChatMessage(model, channel, sender, message);
@@ -327,11 +344,17 @@ public class AltTwitchBot extends Bot {
         for (; ; ) {
 
             try {
-                if (feedback.length() == 30)
-                    Thread.sleep(10000);
+                if (feedback.length() <= 30 && feedback_prevoting.length() <= 30)
+                    Thread.sleep(5000);
                 else {
-                    sendChatMessage(feedback);
-                    feedback = "Thank you for your validation!";
+                    if(feedback.length() > 30) {
+                        sendChatMessage(feedback);
+                        feedback = "Thank you for your validation!";
+                    }
+                    if(feedback_prevoting.length() > 30){
+                        sendChatMessage(feedback_prevoting);
+                        feedback_prevoting = "Thank you for your prevote! ";
+                    }
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
