@@ -47,6 +47,14 @@ public class dbExport {
         print(msg);
     }
 
+    public static BufferedWriter getWriter(){return writer;}
+
+    public static void printLine(){
+        try {
+            dbExport.getWriter().newLine();
+        }catch (IOException e){e.printStackTrace();}
+    }
+
     private static void print(String msg) {
         try {
             writer.write(msg);

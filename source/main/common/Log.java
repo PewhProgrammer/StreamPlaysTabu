@@ -1,5 +1,7 @@
 package common;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.Charset;
@@ -20,9 +22,33 @@ import java.util.List;
  * DB
  */
 public class Log {
-    static Path file = Paths.get("Logging.txt");
+    static Path file = null;
+    static BufferedWriter writer = null;
+    static FileWriter fw = null;
 
     private static Level mLevel = Level.INFO;
+
+    public static void init(String filename) {
+        file = Paths.get(filename);
+        try {
+            fw = new FileWriter(file.toFile(), true);
+            writer = new BufferedWriter(fw);
+            //Files.write(file, lines, Charset.forName("UTF-8"));
+        } catch (IOException e) {
+            Log.error(e.getStackTrace().toString());
+        }
+
+        try {
+            writer.newLine();
+            writer.write("----------------------------------");
+            writer.newLine();
+            writer.write("New Game Instance: " + new SimpleDateFormat("dd.MM HH:mm:ss").format(new Date()));
+            writer.newLine();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void debug(String msg) {
         if (mLevel.level <= Level.DEBUG.level)
@@ -60,14 +86,34 @@ public class Log {
         out.println(new SimpleDateFormat("HH:mm:ss").format(new Date()) + ". " +
             msg);
 
-        List<String> lines = Arrays.asList(new SimpleDateFormat("dd.MM HH:mm:ss").format(new Date()) + ". " +
-                msg);
-
-        try {
-            Files.write(file, lines, Charset.forName("UTF-8"));
-        }catch(IOException e){
-
+        if(open()){
+            try {
+                writer.write(new SimpleDateFormat("HH:mm:ss").format(new Date()) + ". " +
+                        msg);
+                writer.newLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
+    }
+
+    public static boolean open() {
+        try {
+            if(file == null) return false;
+            fw = new FileWriter(file.toFile(), true);
+            writer = new BufferedWriter(fw);
+            //Files.write(file, lines, Charset.forName("UTF-8"));
+        } catch (IOException e) {
+            Log.error(e.getStackTrace().toString());
+        }
+
+        return true;
     }
 
     /**

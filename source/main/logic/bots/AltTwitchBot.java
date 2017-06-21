@@ -290,7 +290,7 @@ public class AltTwitchBot extends Bot {
             int ID = 0, valScore;
             try {
                 valScore = Integer.parseInt(parts[2]);
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
                 return new ChatMessage(model, channel, sender, message);
             }
             try {
@@ -304,6 +304,8 @@ public class AltTwitchBot extends Bot {
                     }
                     return c;
                 }
+            } catch (ArrayIndexOutOfBoundsException i){
+                return new ChatMessage(model, channel, sender, message);
             }
                 if ((ID == 1) || (ID == 2) || (ID == 3) || (ID == 4) || (ID == 5)) {
                     Command c = new Validate(model, channel, ID, valScore, sender);
@@ -340,6 +342,7 @@ public class AltTwitchBot extends Bot {
                         return new ChatMessage(model, channel, sender, message);
                     }
                 }
+                if(preVotes.length == 0) return new ChatMessage(model, channel, sender, message);
                 Command prevoteCommand = new Prevote(model, channel, preVotes, sender);
                 if(prevoteCommand.validate()){
                     if ((feedback_prevoting.length() + sender.length()) >= 500) {

@@ -25,7 +25,7 @@ public class GameControl extends Observable{
     private boolean isStarted;
     private Random rand ;
     private final String extBindAddr;
-    private final int MIN_PlAYERS = 2 ;
+    private final int MIN_PlAYERS = 1 ;
 
     public GameControl(GameModel model,int seed,String ext_bindaddr){
         mModel = model;
@@ -121,7 +121,7 @@ public class GameControl extends Observable{
                 p += mModel.getBot().getUsers(host).size();
             }
             p += mModel.getBot().getUsers(mModel.getGiverChannel()).size();
-            if(p < MIN_PlAYERS) mModel.notifyUpdateTimerText("Waiting for minimum of 2 players!");
+            if(p < MIN_PlAYERS) mModel.notifyUpdateTimerText("Waiting for minimum of "+MIN_PlAYERS+" players!");
             while(p < MIN_PlAYERS){
                 sleepThread(10);
                 p = 0;
@@ -189,7 +189,7 @@ public class GameControl extends Observable{
         if(mModel.getPrevotedCategories().size() > 0) {
             for (PrevoteCategory s : mModel.getPrevotedCategories()) {
                 if (s.getScore() > 0)
-                    prevotedBuild.append(s.getCategory()).append("(").append(s.getScore()).append(") | ");
+                    prevotedBuild.append(s.getCategory()).append("(").append(s.getScore()).append(") . ");
             }
         } else prevotedBuild.append(" none :D");
         mModel.getBot().sendChatMessage("You guys voted for these categories: " + prevotedBuild.toString());

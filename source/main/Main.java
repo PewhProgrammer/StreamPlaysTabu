@@ -78,6 +78,8 @@ public class Main {
                 Log.error("Unknown verbosity level");
         }
 
+        Log.init("console_output.txt");
+
         sBuild.append("- Verbosity Level is set to " + Log.getLevel() + "\n");
 
         if (setSeed) sBuild.append("- Seed has been set to " + seed + "\n");
@@ -145,6 +147,10 @@ public class Main {
         //print out all explain nodes to different category nodes
         dbExport.init("explain-category_nodes.txt","Processing explain -> category...");
         db.dbExportExplainCategory(preset);
+        dbExport.close();
+
+        dbExport.init("game_logs.txt","Processing game logs...");
+        db.dbExportGameLogs();
         dbExport.close();
 
 

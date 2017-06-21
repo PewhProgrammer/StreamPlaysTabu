@@ -6,6 +6,7 @@ import model.Guess;
 import org.neo4j.driver.v1.*;
 import org.neo4j.driver.v1.exceptions.*;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -1489,6 +1490,80 @@ public class Neo4jWrapper {
 
                 export += "{Explain:"+source + spaces +", Category:"+target+ spacesTaboo+", Relationship:{frequency:"+frequency+", validate_rating:"+rating+" } }" ;
                 dbExport.write(export);
+            }
+
+            tx.success();
+        } finally {
+            tx.close();
+        }
+    }
+
+    public void dbExportGameLogs(){
+        StringBuilder query = new StringBuilder();
+
+        query.append("MATCH (s:Logging) ")
+                .append("RETURN s");
+
+        Transaction tx = getTransaction();
+
+        try {
+            StatementResult sR = tx.run(query.toString());
+            //retrieve general first
+            if(sR.hasNext()){
+                Record r = sR.next();
+                Node node = r.get("s").asNode();
+                int numGames = node.get("games").asInt();
+                int missedOffers = node.get("missedOffer").asInt();
+                String export = "#Games: " + numGames + "; #missedGiverOffer: " + missedOffers;
+                dbExport.write(export);
+                dbExport.printLine();
+            }
+
+            while (sR.hasNext()) {
+                String export = "";
+                Record r = sR.next();
+                Node source = r.get("s").asNode();
+
+                String name = source.get("name").asString();
+                String date = source.get("date").asString();
+                String explain = source.get("toExplain").asString();
+                String guesses = source.get("guesses").asString();
+                String taboo = source.get("tabooWords").asString();
+                String outcome = source.get("gameOutcome").asString();
+                String skipped = source.get("skippedWords").asString();
+                String qAnda = source.get("QandA").asString();
+                String explanations = source.get("explanations").asString();
+                String mode = source.get("gameMode").asString();
+                String giver = source.get("giver").asString();
+                int numRegistered = source.get("numRegisteredPlayers").asInt();
+                int difficulty = source.get("gameDifficulty").asInt();
+                int roundTime = source.get("roundTime").asInt();
+
+
+                space = 30;
+                String spaces;
+                try {
+
+                }catch(NegativeArraySizeException e){
+                    spaces = " ";
+                }
+
+                export += "Game no.: " + name + ", Date: " + date;
+                dbExport.write(export);
+                export = "{ Game outcome: "+outcome
+                        +", Giver: "+giver+", Difficulty: "+difficulty+", Mode: "+mode+", Round time: "+ roundTime
+                        +", #registered players: "+numRegistered;
+                dbExport.write(export);
+                export = ", Explain word: "+explain+", Skipped words: "+skipped
+                        +", Taboo words: "+taboo;
+                dbExport.write(export);
+                export =  ", Explanations: "+explanations ;
+                dbExport.write(export);
+                export =  ", Guesses: "+guesses ;
+                dbExport.write(export);
+                export =  ", Q&A: "+qAnda+" }" ;
+                dbExport.write(export);
+                dbExport.printLine();
             }
 
             tx.success();
