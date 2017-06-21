@@ -66,7 +66,7 @@ public class AltTwitchBot extends Bot {
         }
 
         public void onPrivateMessage(String sender, String login, String hostname, String message) {
-
+            System.out.println("yo im here" + message);
             if (model.getHosts().contains(hostname)) {
                 return;
             }
@@ -78,6 +78,24 @@ public class AltTwitchBot extends Bot {
                 model.pushCommand(new Host(model, channel[0], channel[0], new AltTwitchBot(model, "#" + channel[0])));
             }
         }
+        public void onUnknown(String line) {
+
+            System.out.println(line);
+
+            if (line.contains("WHISPER")) {
+
+                String[] hilf = line.split(" WHISPER ");
+                String[] message = hilf[1].split(" :");
+                String[] source = hilf[0].substring(1).split("!");
+
+            Command cmd = parseLine(message[1], source[0]);
+            if (cmd != null) {
+                model.pushCommand(cmd);
+            }
+            }
+        }
+
+
     }
 
     @Override
@@ -109,6 +127,7 @@ public class AltTwitchBot extends Bot {
                     6667,
                     "oauth:" + "ksfaxec4iil2ao18nf2d91ua9she0z"); //streamplaystaboo
             bot.joinChannel(user);
+            bot.sendRawLineViaQueue("CAP REQ :twitch.tv/commands");
         } catch (Exception e) {
             bot.dispose();
         }
@@ -217,6 +236,7 @@ public class AltTwitchBot extends Bot {
 
         // !register
         if (parts[0].equals("!register")) {
+            sendChatMessage("/w " + sender + " " + "You have succesfully registered yourself!");
             return new Register(model, channel, sender);
         }
 
