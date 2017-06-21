@@ -20,8 +20,7 @@ public class Prevote extends Command {
     @Override
     public void execute() {
         for (int i = 0; i < id.length && i < 5; i++) {
-            if(!(id[i] < 1 || id[i] >= gameModel.getPrevoteCategories().length))
-                gameModel.prevote(id[i]-1, sender);
+            gameModel.prevote(id[i]-1, sender);
         }
     }
 
@@ -30,6 +29,12 @@ public class Prevote extends Command {
 
         if (!gameModel.contribute(sender, thisChannel)) {
             return false;
+        }
+
+        for (int i = 0; i < id.length && i < 5; i++) {
+            if(id[i] < 1 || id[i] >= gameModel.getPrevoteCategories().length) {
+                return false;
+            }
         }
 
         return gameModel.getGameState().equals(GameState.Registration);

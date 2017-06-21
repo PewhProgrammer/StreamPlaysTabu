@@ -9,7 +9,7 @@ import model.GameModel;
 import model.GameState;
 import model.Language;
 
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Thinh-Laptop on 17.04.2017.
@@ -157,6 +157,26 @@ public class CommandTest extends TestCase{
 
 
 
+
+    }
+
+    public void testValidation() {
+
+        gModel.setGameState(GameState.Registration);
+
+        Set<String> tabooWords = new HashSet<>();
+        String[] words = {"dummy", "taboo", "words", "for", "validation"};
+        ArrayList<String> wordList = new ArrayList<>(Arrays.asList(words));
+        tabooWords.addAll(wordList);
+
+        gModel.setTabooWords(tabooWords);
+
+        //public Validate(GameModel gm, String ch, String word, int valScore, String sender) {
+        Validate errorCmd = new Validate(gModel, "streamplaystaboo", "haha", 3, "pigfacejoe2");
+        assertFalse(errorCmd.validate());
+
+        Validate correctCmd = new Validate(gModel, "streamplaystaboo", "words", 3, "pigfacejoe2");
+        assertTrue(correctCmd.validate());
 
     }
 }

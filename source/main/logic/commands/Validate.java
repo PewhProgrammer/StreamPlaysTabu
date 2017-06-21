@@ -48,53 +48,39 @@ public class Validate extends Command {
 
     @Override
     public void execute() {
-
-        Iterator<String> it = tabooWords.iterator();
-        String s = "";
-        for (int i = 0; i < ID; i++) {
-            s = it.next();
-            if (s.equals(word)) {
-                break;
-            }
-        }
-
         if(valLevel == 0){
-            gameModel.getNeo4jWrapper().validateNode(s,score * 2 - 6);
+            gameModel.getNeo4jWrapper().validateNode(word,score * 2 - 6);
         } else if(valLevel == 1){
-            gameModel.getNeo4jWrapper().validateConnectionTaboo(reference, s, score * 2 - 6);
+            gameModel.getNeo4jWrapper().validateConnectionTaboo(reference, word, score * 2 - 6);
         } else {
-            gameModel.getNeo4jWrapper().validateConnectionCategory(reference, s, score * 2 - 6);
+            gameModel.getNeo4jWrapper().validateConnectionCategory(reference, word, score * 2 - 6);
         }
     }
 
     @Override
     public boolean validate() {
 
-        if(gameModel.getGameState() != GameState.Registration || gameModel.getGameState() != GameState.WaitingForGiver) return false;
+        //wrong time
+        if(gameModel.getGameState() != GameState.Registration && gameModel.getGameState() != GameState.WaitingForGiver) {
+            return false;
+        }
+
+        //wrong person
         if (!gameModel.contribute(sender, thisChannel)) {
             return false;
         }
 
-        if (ID < 1 || ID > 5) {
-            if (word == null || !tabooWords.contains(word)) {
-                return false;
-            }
-        }
-
-        Iterator<String> it = tabooWords.iterator();
-        String s = "";
-        boolean found = false;
-        for (int i = 0; i < ID; i++) {
-            s = it.next();
-            if (s.equals(word)) {
-                found = true;
-            }
-        }
-
-        if (!found) {
+        //wrong ID
+        if ((ID < 1 || ID > 5) && word == null) {
             return false;
         }
 
+        //wrong word
+        if (word != null && !gameModel.getTabooWords().contains(word)) {
+            return false;
+        }
+
+        //wrong score
         return !(score < 1 || score > 5);
     }
 
