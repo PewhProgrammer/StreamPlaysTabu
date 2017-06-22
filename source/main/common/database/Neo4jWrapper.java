@@ -1526,6 +1526,7 @@ public class Neo4jWrapper {
                 Node source = r.get("s").asNode();
 
                 String name = source.get("name").asString();
+                if(!name.startsWith("G")) break;
                 String date = source.get("date").asString();
                 String explain = source.get("toExplain").asString();
                 String guesses = source.get("guesses").asString();
@@ -1540,14 +1541,6 @@ public class Neo4jWrapper {
                 int difficulty = source.get("gameDifficulty").asInt();
                 int roundTime = source.get("roundTime").asInt();
 
-
-                space = 30;
-                String spaces;
-                try {
-
-                }catch(NegativeArraySizeException e){
-                    spaces = " ";
-                }
 
                 export += "Game no.: " + name + ", Date: " + date;
                 dbExport.write(export);
