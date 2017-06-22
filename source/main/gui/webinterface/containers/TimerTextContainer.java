@@ -17,24 +17,26 @@ public class TimerTextContainer {
         bonus = "";
     }
 
-    public TimerTextContainer(String s,String t,String b) {
+    public TimerTextContainer(String s, String t, String b) {
         text = s;
         time = t;
         bonus = b;
     }
 
-    public String getText() { return text; }
+    public String getText() {
+        return text;
+    }
 
-    public String getTime() { return time; }
+    public String getTime() {
+        return time;
+    }
 
     public JSONObject toJSONObject() {
 
         JSONObject obj = new JSONObject();
         obj.put("text", text);
-        if(time.length() > 0)
-            obj.put("time", time);
-        if(bonus.length() > 0)
-            obj.put("bonus", bonus);
+        obj.put("time", time);
+        obj.put("bonus", bonus);
 
         return obj;
     }
