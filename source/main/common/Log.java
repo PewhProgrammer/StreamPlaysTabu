@@ -111,6 +111,7 @@ public class Log {
             //Files.write(file, lines, Charset.forName("UTF-8"));
         } catch (IOException e) {
             Log.error(e.getStackTrace().toString());
+            return false;
         }
 
         return true;

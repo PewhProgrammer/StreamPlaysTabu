@@ -8,6 +8,7 @@ var timeMax = 105;
 var timer;
 
 function updateTimeText(string) {
+
     console.log("Start timer");
     timer = setInterval(function () {
         if (timeLeft !== 0) {

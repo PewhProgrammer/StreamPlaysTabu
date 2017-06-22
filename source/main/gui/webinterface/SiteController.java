@@ -287,6 +287,11 @@ public class SiteController implements IObserver {
     }
 
     @Override
+    public void onNotifyTimerText(String s, String time, String bonus) {
+
+    }
+
+    @Override
     public void onNotifyTimeStamp(String s){
         send("/timeLeft", new TimerTextContainer(s).toJSONObject());
     }

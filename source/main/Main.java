@@ -26,8 +26,12 @@ public class Main {
     private final Options mOptions = new Options();
     private String neo4jbindAddr = "pewhgames.com:7687";
     private String ext_bindAddr = "m.schubhan.de:1337";
+    private String neo4jUsr = "neo4j";
+    private String neo4jPassword = "streamplaystabu";
     private int seed = 222;
-    private int players = 0;
+    private int min_players = 2;
+    private int round_time = 105;
+    private int bonus_time = 10;
     private Language language = Language.Eng;
 
     private int mVerbosity = INFO;
@@ -52,7 +56,7 @@ public class Main {
         StringBuilder sBuild = new StringBuilder();
 
         sBuild.append("Following Command Lines have been processed: \n")
-                .append("- Neo4j Bind Address: " + neo4jbindAddr + "\n")
+                .append("- Neo4j Bind Address: " + neo4jbindAddr + " with usr/pw: "+ neo4jUsr+"/"+neo4jPassword+"\n")
                 .append("- External Webpage Bind Address: " + ext_bindAddr + "\n");
 
         if (defaultDatbase) sBuild.append("- Default Data Processing in Database\n");
@@ -85,6 +89,9 @@ public class Main {
         if (setSeed) sBuild.append("- Seed has been set to " + seed + "\n");
         else sBuild.append("- Seed has been randomized to " + seed + "\n");
 
+        sBuild.append("- Round time set to " + round_time + "\n");
+        sBuild.append("- Bonus time set to " + bonus_time + "\n");
+
         Log.info(sBuild.toString());
 
         defaultDatbase = false;
@@ -94,9 +101,12 @@ public class Main {
         else
             Log.info("Connecting to neo4j legacy database with " + neo4jbindAddr); //Diese datenbank benutzten wir für unsere studie
 
-        Neo4jWrapper neoWrapper = new Neo4jWrapper(defaultDatbase, neo4jbindAddr, seed);
+        Neo4jWrapper neoWrapper = new Neo4jWrapper(defaultDatbase, neo4jbindAddr, seed,neo4jUsr,neo4jPassword);
 
         GameModel model = new GameModel(neoWrapper);
+        model.setMinNumPlayers(min_players);
+        model.setROUND_TIME_STATIC(round_time);
+        model.setBONUS_TIME_STATIC(bonus_time);
 
         mTHREAD = new Thread() {
             @Override
@@ -157,14 +167,11 @@ public class Main {
         Log.db("export completed");
     }
 
-    public void parseCommandLine(String[] args1) {
+    public void parseCommandLine(String[] args) {
 
-        String[] args = {"--webpageserver","m.schubhan.de:1337","--neo4jserver","pewhgames.com:7687","-defaultdata","false","--lang","ger","-v","1"};
-        if(args1.length > 0)
-            args = args1;
 
         if(args[0].equals("--dbexport")){
-            Neo4jWrapper neo = new Neo4jWrapper(false,"pewhgames.com:7687",0);
+            Neo4jWrapper neo = new Neo4jWrapper(false,"pewhgames.com:7687",0,neo4jUsr,neo4jPassword);
             Log.db("init export process");
             boolean preset = true ;
             if(args.length > 1 && args[1] != null && args[1].equals("unique")){
@@ -197,19 +204,6 @@ public class Main {
                         .withArgName("HOST:PORT")
                         .create());
         mOptions.addOption(OptionBuilder
-                .withDescription("Tell the program if it should use the default data base")
-                .hasArg()
-                .withType(Boolean.TYPE)
-                .withArgName("BOOLEAN")
-                .create("defaultdata"));
-        mOptions.addOption(
-                OptionBuilder.withLongOpt("lang")
-                        .withDescription("Sets up Language Mode for either Ger or Eng")
-                        .hasArg()
-                        .withType(Number.class)
-                        .withArgName("LANGUAGE")
-                        .create());
-        mOptions.addOption(OptionBuilder
                 .withDescription("Set deterministic RNG Seed <server only>")
                 .hasArg()
                 .withType(Number.class)
@@ -227,6 +221,36 @@ public class Main {
                 .withType(Number.class)
                 .withArgName("")
                 .create("gui"));
+        mOptions.addOption(OptionBuilder
+                .withDescription("If not used, will default to 2")
+                .hasOptionalArg()
+                .withType(Number.class)
+                .withArgName("MIN_PLAYERS")
+                .create("p"));
+        mOptions.addOption(OptionBuilder
+                .withDescription("If not used, will default to 105")
+                .hasOptionalArg()
+                .withType(Number.class)
+                .withArgName("ROUNDTIME")
+                .create("roundtime"));
+        mOptions.addOption(OptionBuilder
+                .withDescription("If not used, will default to 10")
+                .hasOptionalArg()
+                .withType(Number.class)
+                .withArgName("BONUSTIME")
+                .create("bonustime"));
+        mOptions.addOption(OptionBuilder
+                .withDescription("If not used, will default to <anonymous>")
+                .hasOptionalArg()
+                .withType(Number.class)
+                .withArgName("BONUSTIME")
+                .create("dbusr"));
+        mOptions.addOption(OptionBuilder
+                .withDescription("If not used, will default to <anonymous>")
+                .hasOptionalArg()
+                .withType(Number.class)
+                .withArgName("BONUSTIME")
+                .create("dbpassword"));
 
         CommandLine line;
         for (String arg : args) {
@@ -248,19 +272,25 @@ public class Main {
                         neo4jbindAddr = line.getOptionValue("neo4jserver");
                         //  if (!checkBindAddrFormat(neo4jbindAddr))
                         //      throw new ParseException(neo4jbindAddr + " malicious bind address format for neo4j!");
-                        if (line.hasOption("s")) {
-                            seed = ((Number) line.getParsedOptionValue("s")).intValue();
-                            setSeed = true;
-                        }
-                        if (line.hasOption("defaultdata"))
-                            defaultDatbase = Boolean.valueOf(line.getOptionValue("defaultdata"));
-                        else
-                            throw new ParseException("-defaultdata not specified!");
-                       /* if (line.hasOption("lang")) {
-                            if (line.getOptionValue("lang").equals("ger"))
-                                language = Language.Ger;
-                            else language = Language.Eng;
-                        } else throw new ParseException("-lang not specified!");*/
+                        break;
+                    case "-dbusr":
+                        neo4jUsr = line.getOptionValue("dbusr");
+                        break;
+                    case "-dbpassword":
+                        neo4jPassword = line.getOptionValue("dbpassword");
+                        break;
+                    case "-s":
+                        seed = ((Number) line.getParsedOptionValue("s")).intValue();
+                        setSeed = true;
+                        break;
+                    case "-p":
+                        min_players = ((Number) line.getParsedOptionValue("p")).intValue();
+                        break;
+                    case "-roundtime":
+                        round_time = ((Number) line.getParsedOptionValue("roundtime")).intValue();
+                        break;
+                    case "-bonustime":
+                        bonus_time = ((Number) line.getParsedOptionValue("bonustime")).intValue();
                         break;
                     default:
                         //abort("No launch mode specified");

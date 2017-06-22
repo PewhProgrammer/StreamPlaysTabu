@@ -25,10 +25,11 @@ public class GameControl extends Observable{
     private boolean isStarted;
     private Random rand ;
     private final String extBindAddr;
-    private final int MIN_PlAYERS = 1 ;
+    private final int MIN_PlAYERS;
 
     public GameControl(GameModel model,int seed,String ext_bindaddr){
         mModel = model;
+        MIN_PlAYERS = model.getMinNumPlayers();
         isStarted = false;
         mModel.setGameState(GameState.Config);
         rand = new Random(seed);
@@ -197,7 +198,7 @@ public class GameControl extends Observable{
         mModel.getBot().sendChatMessage("You voted for these categories: " + prevotedBuild.toString());
         mModel.setTimeStamp();
         mModel.notifyUpdateTimeStamp(new SimpleDateFormat("HH:mm:ss").format(new Date()).toString());
-        mModel.notifyUpdateTimerText("go marci boi");
+        mModel.notifyUpdateTimerText("go marci boi","" + mModel.getROUND_TIME_STATIC(),"" + mModel.getBONUS_TIME_STATIC() );
         isStarted = true;
         runGame();
     }

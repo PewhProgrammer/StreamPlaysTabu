@@ -93,6 +93,12 @@ public abstract class Observable {
         }
     }
 
+    public void notifyUpdateTimerText(String s,String time,String bonus) {
+        for (IObserver ob : listIObserver) {
+            ob.onNotifyTimerText(s,time,bonus);
+        }
+    }
+
     public void notifyUpdateTimeStamp(String s) {
         for (IObserver ob : listIObserver) {
             ob.onNotifyTimeStamp(s);

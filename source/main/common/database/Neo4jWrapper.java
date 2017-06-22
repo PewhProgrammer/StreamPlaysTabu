@@ -38,13 +38,13 @@ public class Neo4jWrapper {
     private Set<String> forcedSet;
     private boolean preset = false;
 
-    public Neo4jWrapper(boolean simulation, String neo4jbind, int seed) {
+    public Neo4jWrapper(boolean simulation, String neo4jbind, int seed,String usr,String password) {
         config = Config.build().withEncryptionLevel(Config.EncryptionLevel.REQUIRED).toConfig();//baut enkryptische Verbindung, um uns gegen "man-in-the-middle" attacken zu schützen
         neo4jbindAddr.append(neo4jbind);
         randomizer = new Random(seed);
         randomizer.setSeed(seed);
         driver = acquireDriver("bolt://" + neo4jbindAddr,
-                AuthTokens.basic("neo4j", "streamplaystabu"), config);
+                AuthTokens.basic(usr, password), config);
         this.session = driver.session();
 
         //non-legacy nodes are used experimentally

@@ -10,6 +10,7 @@ var templateLayer = 0;
 var timer;
 var tempUsage = [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2];
 var validated = 0;
+var bonusTime = 10;
 
 $(function () {
     $("form").on('submit', function (e) {
@@ -475,8 +476,8 @@ function handleStars(id, count) {
     var cat = document.getElementById('validationCategoryLabel_' + label).textContent;
     var taboo = document.getElementById('validationTabooLabel_' + label).textContent;
     document.getElementById('stars_' + label).style.display = 'none';
-    timeLeft += 10;
-    timeMax += 10;
+    timeLeft += bonusTime;
+    timeMax += bonusTime;
     onValidation(cat, taboo, count, id);
 }
 

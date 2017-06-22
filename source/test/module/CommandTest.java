@@ -19,7 +19,7 @@ public class CommandTest extends TestCase{
     private GameModel gModel;
     private final Neo4jWrapper neo =
             new Neo4jWrapper(true,
-                    "localhost:7687",20);
+                    "localhost:7687",20,"neo4j","streamplaystabu");
     private final String channelName = "streamplaystaboo";
 
     @org.junit.Test

@@ -21,7 +21,7 @@ public class GameRunningTest extends TestCase {
 
     @org.junit.Test
     public void setUp() throws Exception {
-        database = new Neo4jWrapper(simulation,neo4jbindAddr,20);
+        database = new Neo4jWrapper(simulation,neo4jbindAddr,20,"neo4j","streamplaystabu");
         gModel = new GameModel(database);
         controller = new GameControl(gModel, 1337,ext_bindAddr);
         Thread mTHREAD = new Thread() {

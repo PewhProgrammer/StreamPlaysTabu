@@ -40,7 +40,6 @@ function connectLoc() {
             updateEndGame(endGame);
         });
         stompClientLoc.subscribe('/localJS/updateTimerText', function (string) {
-            console.log("called");
             updateTimeText(string);
         });
         stompClientLoc.subscribe('/localJS/category', function (categorychosen) {

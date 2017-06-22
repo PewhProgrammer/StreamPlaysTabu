@@ -26,7 +26,7 @@ public class ExecStudy extends TestCase {
     @org.junit.Test
     public void setUp() throws Exception {
         int seed = randomizer.nextInt(100);
-        database = new Neo4jWrapper(simulation, neo4jbindAddr, seed);
+        database = new Neo4jWrapper(simulation, neo4jbindAddr, seed,"neo4j","streamplaystabu");
         //database.resetRelationships();
         //database.resetDatabase();
         Log.setLevel(Log.Level.TRACE);

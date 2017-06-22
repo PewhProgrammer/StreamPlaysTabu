@@ -39,6 +39,9 @@ public class GameModel extends Observable{
 
     private GameState mGameState;
     private int mNumPlayers;
+    private int minNumPlayers = 2;
+    private int BONUS_TIME_STATIC = 10;
+    private int ROUND_TIME_STATIC = 105;
     private double roundTime = 105;
     private int errCounter = 0;
 
@@ -508,7 +511,7 @@ public class GameModel extends Observable{
 
         missedOffer = 0 ;
         setGameOutcome("Not determined");
-        setRoundTime(105);
+        setRoundTime(ROUND_TIME_STATIC);
         clearExplanations();
         clearQAndA();
         clearGuesses();
@@ -562,6 +565,16 @@ public class GameModel extends Observable{
             setGameMode(GameMode.Normal);
         }
     }
+
+    public void setMinNumPlayers(int i){this.minNumPlayers  = i;}
+    public int getMinNumPlayers(){return this.minNumPlayers;}
+
+    public void setROUND_TIME_STATIC(int i){this.ROUND_TIME_STATIC  = i;}
+    public int getROUND_TIME_STATIC(){return this.ROUND_TIME_STATIC;}
+
+    public void setBONUS_TIME_STATIC(int i){this.BONUS_TIME_STATIC  = i;}
+    public int getBONUS_TIME_STATIC(){return this.BONUS_TIME_STATIC;}
+
 
     public String getGiverChannel() {
         return giverChannel;
