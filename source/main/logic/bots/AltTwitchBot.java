@@ -236,8 +236,11 @@ public class AltTwitchBot extends Bot {
 
         // !register
         if (parts[0].equals("!register")) {
-            sendChatMessage("/w " + sender + " " + "You have succesfully registered yourself!");
-            return new Register(model, channel, sender);
+            Command r = new Register(model, channel, sender);
+            if(r.validate()){
+                sendChatMessage("/w " + sender + " " + "You have succesfully registered yourself!");
+                return r;
+            }
         }
 
         // !guess

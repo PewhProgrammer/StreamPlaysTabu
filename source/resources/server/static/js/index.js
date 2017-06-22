@@ -448,7 +448,7 @@ function handleTemplateDropDownDouble(description, description2, id) {
 function handleStars(id, count) {
     //console.log("id: " + id + " , count: " + count);
     var label = "";
-    validated += 1;
+    validated += bonusTime;
     if (id === 1) {
         label = "one";
         document.getElementById("val1").style.visibility = "hidden";
@@ -469,7 +469,7 @@ function handleStars(id, count) {
         label = "three";
         document.getElementById("val3").style.visibility = "hidden";
         document.getElementById("valHeader").innerHTML = '<b style="font-size: 1.88vmin;">Thank you very much for helping us improve this game!</b>' +
-            '<br><br>You have gained <span style="color: #3CBC3C">+' + validated + "0</span> seconds extra time in total!";
+            '<br><br>You have gained <span style="color: #3CBC3C">+' + validated + "</span> seconds extra time in total!";
     }
 
 
@@ -478,11 +478,12 @@ function handleStars(id, count) {
     document.getElementById('stars_' + label).style.display = 'none';
     timeLeft += bonusTime;
     timeMax += bonusTime;
+    console.log("Increased by " + bonusTime);
     onValidation(cat, taboo, count, id);
 }
 
 function showNextValidation(i) {
-    var gain = '<br>You have gained <span style="color: #3CBC3C">+' + validated + "0 seconds</span> extra time in total!";
+    var gain = '<br>You have gained <span style="color: #3CBC3C">+' + validated + " seconds</span> extra time in total!";
     var categoryLabel = 'Does the <span style="color: #337ab7">explain word</span> below fit to its <span style="color: orange">category?</span>';
     var thanks = '<b style="font-size: 1.66vmin;">' +
                              'Thank you for helping us improve this game!'   + '</b>' + gain;

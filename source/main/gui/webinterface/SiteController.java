@@ -199,8 +199,8 @@ public class SiteController implements IObserver {
         else if(id == 2) db.validateConnectionTaboo(reference,taboo,score * 2 -6);
         else if(id == 3) db.validateConnectionCategory(reference,taboo,score * 2 -6);
 
-        //Give user 10 more seconds
-        gm.setRoundTime(gm.getRoundTime() + 10);
+        //Give user bonus more seconds
+        gm.setRoundTime(gm.getRoundTime() + gm.getBONUS_TIME_STATIC());
         gm.notifyUpdateTime();
     }
 
@@ -288,7 +288,7 @@ public class SiteController implements IObserver {
 
     @Override
     public void onNotifyTimerText(String s, String time, String bonus) {
-
+        send("/timeLeft", new TimerTextContainer(s,time,bonus).toJSONObject());
     }
 
     @Override

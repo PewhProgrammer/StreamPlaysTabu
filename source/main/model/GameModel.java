@@ -569,7 +569,7 @@ public class GameModel extends Observable{
     public void setMinNumPlayers(int i){this.minNumPlayers  = i;}
     public int getMinNumPlayers(){return this.minNumPlayers;}
 
-    public void setROUND_TIME_STATIC(int i){this.ROUND_TIME_STATIC  = i;}
+    public void setROUND_TIME_STATIC(int i){this.ROUND_TIME_STATIC  = i; this.roundTime = i;}
     public int getROUND_TIME_STATIC(){return this.ROUND_TIME_STATIC;}
 
     public void setBONUS_TIME_STATIC(int i){this.BONUS_TIME_STATIC  = i;}

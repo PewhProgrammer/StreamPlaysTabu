@@ -197,8 +197,8 @@ public class GameControl extends Observable{
         if(prevotedBuild.length() == 0) prevotedBuild.append(" none :D");
         mModel.getBot().sendChatMessage("You voted for these categories: " + prevotedBuild.toString());
         mModel.setTimeStamp();
-        mModel.notifyUpdateTimeStamp(new SimpleDateFormat("HH:mm:ss").format(new Date()).toString());
         mModel.notifyUpdateTimerText("go marci boi","" + mModel.getROUND_TIME_STATIC(),"" + mModel.getBONUS_TIME_STATIC() );
+        mModel.notifyUpdateTimeStamp(new SimpleDateFormat("HH:mm:ss").format(new Date()).toString());
         isStarted = true;
         runGame();
     }

@@ -243,13 +243,13 @@ public class Main {
                 .withDescription("If not used, will default to <anonymous>")
                 .hasOptionalArg()
                 .withType(Number.class)
-                .withArgName("BONUSTIME")
+                .withArgName("USER")
                 .create("dbusr"));
         mOptions.addOption(OptionBuilder
                 .withDescription("If not used, will default to <anonymous>")
                 .hasOptionalArg()
                 .withType(Number.class)
-                .withArgName("BONUSTIME")
+                .withArgName("PASSWORD")
                 .create("dbpassword"));
 
         CommandLine line;

@@ -76,13 +76,27 @@ function showGuesses(guesses) {
 
 function updateTimer(time) {
     var json = JSON.parse(JSON.stringify(time));
-    var timeArray = json.text.split(":");
-    stamp = new Date();
-    stamp.setHours(timeArray[0]);
-    stamp.setMinutes(timeArray[1]);
-    stamp.setSeconds(timeArray[2]);
+    var timeText = json.text;
+    if(timeText === 'go marci boi'){
+        var roundTime = parseInt(json.time);
+        var bonus = parseInt(json.bonus);
+        if(!isNaN(roundTime)){
+            timeMax = roundTime;
+            timeLeft = roundTime;
+        }
+        if(!isNaN(bonusTime))
+            bonusTime = bonus;
+    }
+    else{
+        var timeArray = json.text.split(":");
 
-    runTimer();
+        stamp = new Date();
+        stamp.setHours(timeArray[0]);
+        stamp.setMinutes(timeArray[1]);
+        stamp.setSeconds(timeArray[2]);
+
+        runTimer();
+    }
 }
 
 function showExplainWord(explainWord) {
@@ -248,7 +262,7 @@ function closeGame(status) {
         document.getElementById("endGameDiv").innerHTML = '<p>'+json.winner+' has guessed the word!<br>You have received <span style="color: #3CBC3C">+'
         + json.points + "</span> Points. </p>";
     } else if (json.status === "Lose") {
-        document.getElementById("endGameDiv").innerHTML = '<p><span style="color: red">Game over!</span><br>The time has run out!</p>';
+        document.getElementById("endGameDiv").innerHTML = '<p><span style="color: red">Game over!</span><br>The time has ran out!</p>';
     } else if (json.status === "Kick") {
         document.getElementById("endGameDiv").innerHTML = "<p>Too many cheating attempts!<br>The round is over.</p>";
     }
