@@ -31,6 +31,10 @@ public class TimerTextContainer {
         return time;
     }
 
+    public String getBonus() {
+        return bonus;
+    }
+
     public JSONObject toJSONObject() {
 
         JSONObject obj = new JSONObject();

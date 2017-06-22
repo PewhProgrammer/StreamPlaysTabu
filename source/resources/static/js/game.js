@@ -5,11 +5,16 @@
 var timeLeft = 105;
 var timeMax = 105;
 // Update the count down every 1 second
+var bonus = 10;
 var timer;
 
 function updateTimeText(string) {
+    var json = JSON.parse(string.body);
 
-    console.log("Start timer");
+    bonus = parseInt(json.bonus);
+    timeMax = parseInt(json.time);
+    timeLeft = parseInt(json.time);
+
     timer = setInterval(function () {
         if (timeLeft !== 0) {
             timeLeft = timeLeft - 1;
@@ -26,9 +31,9 @@ function updateTimeText(string) {
 
 
 function updateTime() {
-    //console.log("Increased time by 10 seconds");
-    timeLeft += 10;
-    timeMax += 10;
+    //console.log("Increased time by " + bonus + " seconds");
+    timeLeft += bonus;
+    timeMax += bonus;
 }
 
 function updateGiver(giver) {
