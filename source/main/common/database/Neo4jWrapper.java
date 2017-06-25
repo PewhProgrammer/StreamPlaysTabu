@@ -27,7 +27,7 @@ public class Neo4jWrapper {
     private final int DEL_TRESHHOLD = 2; //
     private final int CATEGORY_TRESHOLD = 3; //word qualifies as category if more equal than 3 incoming arcs are available
     private final int VALIDATE_THRESHOLD = 5; //only need a validation score of five
-    private final int VALIDATELOCK_TRESHOLD = 5; //only need a validation score of five
+    private final int VALIDATELOCK_TRESHOLD = 7; //only need a validation score of seven to be locked
     private final String label;
     private Driver driver;
     private final Random randomizer;
