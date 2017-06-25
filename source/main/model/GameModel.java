@@ -440,6 +440,7 @@ public class GameModel extends Observable{
     }
 
     public void win(String winner,String ch) {
+        notifyWinner();
         this.gameOutcome = GameState.Win.toString();
 
         if (getGameState() != GameState.GameStarted || !getGameState().equals(GameState.GameStarted)) {
@@ -463,7 +464,7 @@ public class GameModel extends Observable{
         updateScore(winner, score,ch);
         updateScore(giver, score,ch);
         setGameState(GameState.Win);
-        notifyWinner();
+        //notifyWinner();
         announceWinner(winner);
         for (int i = 0; i < 3 && i < guesses.size(); i++) {
             if(guesses.get(i).getScore() > 1)

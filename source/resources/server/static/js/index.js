@@ -484,15 +484,15 @@ function handleStars(id, count) {
 
 function showNextValidation(i) {
     var gain = '<br>You have gained <span style="color: #3CBC3C">+' + validated + " seconds</span> extra time in total!";
-    var categoryLabel = 'Does the <span style="color: #337ab7">explain word</span> below fit to its <span style="color: orange">category?</span>';
+    var categoryLabel = 'Is this <span style="color: orange">word</span> a fitting category for this <span style="color: #337ab7">explain word</span>?';
     var thanks = '<b style="font-size: 1.66vmin;">' +
-                             'Thank you for helping us improve this game!'   + '</b>' + gain;
+                             'Thank you for improving this game with us!'   + '</b>' + gain;
 
     if (i === 1) {
         if (document.getElementById("validationCategoryLabel_two").textContent != 'EMPTY') {
             document.getElementById("val2").style.visibility = "visible";
             document.getElementById("valHeader").innerHTML = '<b style="font-size: 1.66vmin;">' +
-            'Does the <span style="color: #337ab7">taboo word</span> fit to its <span style="color: orange">explain word?</span>'  + '</b>' +
+            'Is this <span style="color: #337ab7">word</span> a fitting taboo word for this <span style="color: orange">explain word</span>?'  + '</b>' +
                 gain;
         } else if (document.getElementById("validationCategoryLabel_three").textContent != 'EMPTY') {
             document.getElementById("val3").style.visibility = "visible";

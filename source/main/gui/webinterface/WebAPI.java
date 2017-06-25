@@ -94,8 +94,8 @@ public class WebAPI implements IObserver {
 
                     Neo4jWrapper.Pair explainCategory = db.getTabooExplainForValidation();
                     Set<String> set = new HashSet<>();
-                    set.add((String) explainCategory.getSecond());
-                    String first = ((String) explainCategory.getFirst());
+                    set.add((String) explainCategory.getFirst());
+                    String first = ((String) explainCategory.getSecond());
 
                     if (first.equals("EMPTY")) {
                         validateRotation++;
@@ -118,8 +118,8 @@ public class WebAPI implements IObserver {
                 i++;
                 Neo4jWrapper.Pair explainCategory = db.getExplainCategoryForValidation();
                 Set<String> set = new HashSet<>();
-                set.add((String) explainCategory.getSecond());
-                String first = ((String) explainCategory.getFirst());
+                set.add((String) explainCategory.getFirst());
+                String first = ((String) explainCategory.getSecond());
                 if (first.equals("EMPTY")) {
                     if (i == 3) {
                         first = noNeed;
@@ -250,7 +250,7 @@ public class WebAPI implements IObserver {
     }
 
     public void onNotifyTimerText(String s,String time,String bonus) {
-        Log.info("New TimerText sent: " + s);
+        //Log.info("New TimerText sent: " + s);
         send("/updateTimerText", new TimerTextContainer(s,time,bonus));
     }
 

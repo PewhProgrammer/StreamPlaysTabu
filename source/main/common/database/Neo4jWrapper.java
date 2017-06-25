@@ -26,7 +26,8 @@ public class Neo4jWrapper {
     private final Config config;
     private final int DEL_TRESHHOLD = 2; //
     private final int CATEGORY_TRESHOLD = 3; //word qualifies as category if more equal than 3 incoming arcs are available
-    private final int VALIDATE_THRESHOLD = 5; //only need a validation score of eight
+    private final int VALIDATE_THRESHOLD = 5; //only need a validation score of five
+    private final int VALIDATELOCK_TRESHOLD = 5; //only need a validation score of five
     private final String label;
     private Driver driver;
     private final Random randomizer;
@@ -102,7 +103,7 @@ public class Neo4jWrapper {
 
     public void createUser(String str, String ch) {
         if (str.equals("")) {
-            Thread.dumpStack();
+            //Thread.dumpStack();
             return;
         }
 
@@ -220,40 +221,6 @@ public class Neo4jWrapper {
 
         Log.db("Updated a new game instance");
     }
-
-    /**
-     * FORCES TABOO WORDS
-     *
-     * @param explain   explain word to retrieve taboo words from
-     * @param querySize describes how many taboo words to retrieve
-     * @return
-     */
-    public HashMap<String, Set<String>> getTabooWordsForValidation(String explain, int querySize) {
-        String category = "none";
-        HashMap<String, Set<String>> result = new HashMap<>();
-        try {
-            if (explain == null) explain = getRandomExplainWord(querySize);
-
-            Set<String> taboo = fetchTabooWords(Util.reduceStringToMinimum(explain), category, querySize);
-            if (taboo.size() > 0) {
-                result.put(explain, taboo);
-            } else {
-                explain = getRandomExplainWord(querySize);
-                taboo = fetchTabooWords(Util.reduceStringToMinimum(explain), category, querySize);
-                if(taboo.size() == 0) {
-                    result.put("EMPTY", taboo);
-                }
-            }
-
-        } catch (ServiceUnavailableException e) {
-            Log.error(e.getLocalizedMessage());
-            HashMap<String, Set<String>> map = new HashMap<>();
-            map.put("EMPTY", new HashSet<>());
-            return map;
-        }
-        return result;
-    }
-
 
     private String getRandomExplainWord(int querySize) {
         String explain = "";
@@ -426,8 +393,11 @@ public class Neo4jWrapper {
                 .append(", rel.validateFrequencyTaboo = rel.validateFrequencyTaboo+").append(1).append(" ")
                 .append("WITH rel, ")
                 .append("(CASE WHEN rel.validateRatingTaboo > " + VALIDATE_THRESHOLD + " OR rel.validateRatingTaboo < " + (-VALIDATE_THRESHOLD) +
-                        " THEN false ELSE " + needValidation + " END) AS flag ")
-                .append("SET rel.needValidationTaboo = flag");
+                        " THEN false ELSE " + needValidation + " END) AS flag, ")
+                .append("(CASE WHEN rel.validateRatingTaboo > " + VALIDATELOCK_TRESHOLD + " OR rel.validateRatingTaboo < " + (-VALIDATELOCK_TRESHOLD) +
+                        " THEN true ELSE " + !needValidation + " END) AS validateLock ")
+                .append("SET rel.needValidationTaboo = flag ")
+                .append(", rel.validationLock = validateLock ");
 
         Transaction tx = getTransaction();
         if(tx == null){
@@ -453,8 +423,11 @@ public class Neo4jWrapper {
                 .append(", rel.validateFrequencyCategory = rel.validateFrequencyCategory+").append(1).append(" ")
                 .append("WITH rel, ")
                 .append("(CASE WHEN rel.validateRatingCategory > " + VALIDATE_THRESHOLD + " OR rel.validateRatingCategory < " +
-                        (-VALIDATE_THRESHOLD) + " THEN false ELSE " + needValidation + " END) AS flag ")
-                .append("SET rel.needValidationCategory = flag");
+                        (-VALIDATE_THRESHOLD) + " THEN false ELSE " + needValidation + " END) AS flag, ")
+                .append("(CASE WHEN rel.validateRatingCategory > " + VALIDATELOCK_TRESHOLD + " OR rel.validateRatingCategory < " +
+                        (-VALIDATELOCK_TRESHOLD) + " THEN true ELSE " + !needValidation + " END) AS validateLock ")
+                .append("SET rel.needValidationCategory = flag ")
+                .append(", rel.validationLock = validateLock ");
 
         Transaction tx = getTransaction();
         if(tx == null) return;
@@ -476,8 +449,12 @@ public class Neo4jWrapper {
                 .append("SET s.validateRating = s.validateRating+").append(i).append(" ")
                 .append(", s.validateFrequency = s.validateFrequency+").append(1).append(" ")
                 .append("WITH s, ")
-                .append("(CASE WHEN s.validateRating > 8 THEN false ELSE " + needValidation + " END) AS flag ")
-                .append("SET s.needValidation = flag");
+                .append("(CASE WHEN s.validateRating > " + VALIDATE_THRESHOLD +
+                        " OR s.validateRating < " + (-VALIDATE_THRESHOLD) + " THEN false ELSE " + needValidation + " END) AS flag, ")
+                .append("(CASE WHEN s.validateRating > " + VALIDATELOCK_TRESHOLD +
+                        " OR s.validateRating < " + (-VALIDATELOCK_TRESHOLD) + " THEN true ELSE " + !needValidation + " END) AS validateLock ")
+                .append("SET s.needValidation = flag ")
+                .append(", s.validationLock = validateLock ");
 
         Transaction tx = getTransaction();
         if(tx == null) return;

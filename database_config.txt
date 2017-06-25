@@ -50,7 +50,7 @@ portal
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
 silent hill;genre is;survival horror
 resident evil;genre is;survival horror
-super mario bros.;is published by;nintendo
+super mario bros;is published by;nintendo
 afk;is the opposite of;being active ingame
 rushing;is part of;csgo
 bulletstorm;genre is;fps
@@ -74,11 +74,11 @@ sivir;is a character in;league of legends
 kalista;is a character in;league of legends
 sejuani;is a character in;league of legends
 Shadow fiend;is a character in;dota2
-mario;is a character in;super mario bros.
-luigi;is a character in;super mario bros.
-Bowser;is a character in;super mario bros.
-samus;is a character in;super smash bros.
-super smash bros.;is published by;nintendo
+mario;is a character in;super mario bros
+luigi;is a character in;super mario bros
+Bowser;is a character in;super mario bros
+samus;is a character in;super smash bros
+super smash bros;is published by;nintendo
 splatoon;is published by;nintendo
 the legend of zelda;is published by;nintendo
 Link;is a character in;the legend of zelda

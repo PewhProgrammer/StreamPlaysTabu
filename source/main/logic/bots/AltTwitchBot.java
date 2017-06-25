@@ -88,7 +88,7 @@ public class AltTwitchBot extends Bot {
                 String[] message = hilf[1].split(" :");
                 String[] source = hilf[0].substring(1).split("!");
 
-            Command cmd = parseLine(message[1], source[0]);
+            Command cmd = parseLineWhisper(message[1], source[0]);
             if (cmd != null) {
                 model.pushCommand(cmd);
             }
@@ -199,7 +199,7 @@ public class AltTwitchBot extends Bot {
 
         JSONObject obj = TwitchAPIRequester.requestUsers(channel);
         if (obj == null) {
-            Log.error("no users");
+            Log.error("The API Request for Twitch failed for getUsers. Returning empty object.");
             return users;
         }
 
@@ -229,8 +229,8 @@ public class AltTwitchBot extends Bot {
         return parseLine(message);
     }
 
-    @Override
-    public Command parseLine(String message) {
+    private Command parseLineWhisper(String message, String sender) {
+        this.sender = sender;
         String channel = this.channel.replaceAll("#", "");
         String[] parts = message.split(" ");
 
@@ -241,6 +241,25 @@ public class AltTwitchBot extends Bot {
                 sendChatMessage("/w " + sender + " " + "You have succesfully registered yourself!");
                 return r;
             }
+        }
+
+        return new ChatMessage(model, channel, sender, message);
+    }
+
+    @Override
+    public Command parseLine(String message) {
+        String channel = this.channel.replaceAll("#", "");
+        String[] parts = message.split(" ");
+
+        // !register
+        if (parts[0].equals("!register")) {
+            /*Command r = new Register(model, channel, sender);
+            if(r.validate()){
+                sendChatMessage("/w " + sender + " " + "You have succesfully registered yourself!");
+                return r;
+            }*/
+            sendChatMessage( sender + " " + "Whisper !register to me to get registered!");
+            return new ChatMessage(model, channel, sender, message);
         }
 
         // !guess

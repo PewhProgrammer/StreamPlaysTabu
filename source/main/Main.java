@@ -25,7 +25,7 @@ public class Main {
 
     private final Options mOptions = new Options();
     private String neo4jbindAddr = "pewhgames.com:7687";
-    private String ext_bindAddr = "m.schubhan.de:1337";
+    private String ext_bindAddr = "http://m.schubhan.de:1337/";
     private String neo4jUsr = "neo4j";
     private String neo4jPassword = "streamplaystabu";
     private int seed = 222;
@@ -170,7 +170,7 @@ public class Main {
     public void parseCommandLine(String[] args) {
 
 
-        if(args[0].equals("--dbexport")){
+        if(args.length > 0 && args[0].equals("--dbexport")){
             Neo4jWrapper neo = new Neo4jWrapper(false,"pewhgames.com:7687",0,neo4jUsr,neo4jPassword);
             Log.db("init export process");
             boolean preset = true ;

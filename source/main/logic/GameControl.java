@@ -115,7 +115,7 @@ public class GameControl extends Observable{
         Log.info("Control is waiting for Players");
         gameLoop:
         while(mModel.getGameState() == GameState.Registration || !isStarted){
-            sleepThread(2);
+            sleepThread(5);
             Set<String> hosts = mModel.getHosts();
             int p = 0;
             for (String host : hosts) {
@@ -185,7 +185,6 @@ public class GameControl extends Observable{
             sleepThread(2);
         }
 
-        sleepThread(2);
         StringBuilder prevotedBuild = new StringBuilder();
         if(mModel.getPrevotedCategories().size() > 0) {
             for (PrevoteCategory s : mModel.getPrevotedCategories()) {
@@ -196,6 +195,8 @@ public class GameControl extends Observable{
 
         if(prevotedBuild.length() == 0) prevotedBuild.append(" none :D");
         mModel.getBot().sendChatMessage("You voted for these categories: " + prevotedBuild.toString());
+
+        sleepThread(5);
         mModel.setTimeStamp();
         mModel.notifyUpdateTimerText("go marci boi","" + mModel.getROUND_TIME_STATIC(),"" + mModel.getBONUS_TIME_STATIC() );
         mModel.notifyUpdateTimeStamp(new SimpleDateFormat("HH:mm:ss").format(new Date()).toString());
