@@ -46,7 +46,7 @@ public class Explanation extends Command {
 
         String rtn = Util.checkCheating(explanation, gameModel);
 
-        if (!rtn.equals("")) {
+        if (!rtn.equals("") && !gameModel.getExplanations().isEmpty()) {
             gameModel.getNeo4jWrapper().increaseUserError(gameModel.getGiver(), thisChannel);
             if (gameModel.getNeo4jWrapper().getUserError(gameModel.getGiver(), thisChannel) > 3) {
                 gameModel.getNeo4jWrapper().setUserErrorTimeStamp(gameModel.getGiver(), new Date());
