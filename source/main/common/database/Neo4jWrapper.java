@@ -27,6 +27,7 @@ public class Neo4jWrapper {
     private final int DEL_TRESHHOLD = 2; //
     private final int CATEGORY_TRESHOLD = 3; //word qualifies as category if more equal than 3 incoming arcs are available
     private final int VALIDATE_THRESHOLD = 5; //only need a validation score of five
+    private final int VALIDATELOCK_TRESHOLD_POSITIVE = 12;
     private final int VALIDATELOCK_TRESHOLD = 7; //only need a validation score of seven to be locked
     private final String label;
     private Driver driver;
@@ -307,7 +308,7 @@ public class Neo4jWrapper {
         StringBuilder query = new StringBuilder();
         query.append("MATCH (s:Node)-[rel]->(t:Node) ")
                 .append("WHERE s.needValidation = false AND s.type = 'explain' ")
-                .append("AND rel.needValidationTaboo = true AND rel.validationLock <> true ")
+                .append("AND rel.needValidationTaboo = true AND rel.validationLockTaboo <> true ")
                 .append("RETURN s,t");
 
 
@@ -345,7 +346,7 @@ public class Neo4jWrapper {
         query.append("MATCH (s:Node)-[rel]->(t:Node) ")
                 .append("WHERE s.needValidation = false AND s.type = 'explain' ")
                 .append("AND t.type <> 'basic' ")
-                .append("AND rel.needValidationCategory = true AND rel.validationLock <> true ")
+                .append("AND rel.needValidationCategory = true AND rel.validationLockCategory <> true ")
                 .append("RETURN s,t ");
 
 
@@ -394,10 +395,10 @@ public class Neo4jWrapper {
                 .append("WITH rel, ")
                 .append("(CASE WHEN rel.validateRatingTaboo > " + VALIDATE_THRESHOLD +
                         " THEN false ELSE " + needValidation + " END) AS flag, ")
-                .append("(CASE WHEN rel.validateRatingTaboo > " + VALIDATELOCK_TRESHOLD + " OR rel.validateRatingTaboo < " + (-VALIDATELOCK_TRESHOLD) +
+                .append("(CASE WHEN rel.validateRatingTaboo > " + VALIDATELOCK_TRESHOLD_POSITIVE + " OR rel.validateRatingTaboo < " + (-VALIDATELOCK_TRESHOLD) +
                         " THEN true ELSE " + !needValidation + " END) AS validateLock ")
                 .append("SET rel.needValidationTaboo = flag ")
-                .append(", rel.validationLock = validateLock ");
+                .append(", rel.validationLockTaboo = validateLock ");
 
         Transaction tx = getTransaction();
         if(tx == null){
@@ -424,10 +425,10 @@ public class Neo4jWrapper {
                 .append("WITH rel, ")
                 .append("(CASE WHEN rel.validateRatingCategory > " + VALIDATE_THRESHOLD +
                          " THEN false ELSE " + needValidation + " END) AS flag, ")
-                .append("(CASE WHEN rel.validateRatingCategory > " + VALIDATELOCK_TRESHOLD + " OR rel.validateRatingCategory < " +
+                .append("(CASE WHEN rel.validateRatingCategory > " + VALIDATELOCK_TRESHOLD_POSITIVE + " OR rel.validateRatingCategory < " +
                         (-VALIDATELOCK_TRESHOLD) + " THEN true ELSE " + !needValidation + " END) AS validateLock ")
                 .append("SET rel.needValidationCategory = flag ")
-                .append(", rel.validationLock = validateLock ");
+                .append(", rel.validationLockCategory = validateLock ");
 
         Transaction tx = getTransaction();
         if(tx == null) return;
@@ -451,7 +452,7 @@ public class Neo4jWrapper {
                 .append("WITH s, ")
                 .append("(CASE WHEN s.validateRating > " + VALIDATE_THRESHOLD +
                        " THEN false ELSE " + needValidation + " END) AS flag, ")
-                .append("(CASE WHEN s.validateRating > " + VALIDATELOCK_TRESHOLD +
+                .append("(CASE WHEN s.validateRating > " + VALIDATELOCK_TRESHOLD_POSITIVE +
                         " OR s.validateRating < " + (-VALIDATELOCK_TRESHOLD) + " THEN true ELSE " + !needValidation + " END) AS validateLock ")
                 .append("SET s.needValidation = flag ")
                 .append(", s.validationLock = validateLock ");
@@ -617,7 +618,7 @@ public class Neo4jWrapper {
         try {
             tx.run("CREATE (a: " + label + " {name: {name}," +
                             " type: {type}, needValidation: {validateBoolean} , validateRating: 0, validationLock: "
-                            + !needValidation + ", asExplain: 0, preset: "+ preset +" })",
+                            + !needValidation + ", asExplain: 0, validateFrequency: 0, preset: "+ preset +" })",
                     parameters("name", nodeName, "type", type, "validateBoolean", validate));
             tx.success();
         } finally {
@@ -702,7 +703,8 @@ public class Neo4jWrapper {
                 .append(", rel.preset = " + preset)
                 .append(", rel.validateFrequencyCategory = 0 ")
                 .append(", rel.needValidationCategory = " + needValidation + " ")
-                .append(", rel.validationLock = " + !needValidation + " ")
+                .append(", rel.validationLockCategory = " + !needValidation + " ")
+                .append(", rel.validationLockTaboo = " + !needValidation + " ")
                 .append("WITH rel," +
                         "(CASE WHEN rel.frequency > 1 THEN false ELSE " + needValidation + " END) AS flag ")
                 .append("SET rel.needValidationTaboo = flag ");
@@ -1419,6 +1421,7 @@ public class Neo4jWrapper {
                 }
 
                 export += "{Explain:"+source + spaces +", Taboo:"+target+ spacesTaboo+", Relationship:{frequency:"+frequency+", validate_rating:"+rating+" } }" ;
+                //System.out.print(export);
                 dbExport.write(export);
             }
 
