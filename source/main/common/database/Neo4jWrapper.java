@@ -392,7 +392,7 @@ public class Neo4jWrapper {
                 .append("SET rel.validateRatingTaboo = rel.validateRatingTaboo+").append(i).append(" ")
                 .append(", rel.validateFrequencyTaboo = rel.validateFrequencyTaboo+").append(1).append(" ")
                 .append("WITH rel, ")
-                .append("(CASE WHEN rel.validateRatingTaboo > " + VALIDATE_THRESHOLD + " OR rel.validateRatingTaboo < " + (-VALIDATE_THRESHOLD) +
+                .append("(CASE WHEN rel.validateRatingTaboo > " + VALIDATE_THRESHOLD +
                         " THEN false ELSE " + needValidation + " END) AS flag, ")
                 .append("(CASE WHEN rel.validateRatingTaboo > " + VALIDATELOCK_TRESHOLD + " OR rel.validateRatingTaboo < " + (-VALIDATELOCK_TRESHOLD) +
                         " THEN true ELSE " + !needValidation + " END) AS validateLock ")
@@ -422,8 +422,8 @@ public class Neo4jWrapper {
                 .append("SET rel.validateRatingCategory = rel.validateRatingCategory+").append(i).append(" ")
                 .append(", rel.validateFrequencyCategory = rel.validateFrequencyCategory+").append(1).append(" ")
                 .append("WITH rel, ")
-                .append("(CASE WHEN rel.validateRatingCategory > " + VALIDATE_THRESHOLD + " OR rel.validateRatingCategory < " +
-                        (-VALIDATE_THRESHOLD) + " THEN false ELSE " + needValidation + " END) AS flag, ")
+                .append("(CASE WHEN rel.validateRatingCategory > " + VALIDATE_THRESHOLD +
+                         " THEN false ELSE " + needValidation + " END) AS flag, ")
                 .append("(CASE WHEN rel.validateRatingCategory > " + VALIDATELOCK_TRESHOLD + " OR rel.validateRatingCategory < " +
                         (-VALIDATELOCK_TRESHOLD) + " THEN true ELSE " + !needValidation + " END) AS validateLock ")
                 .append("SET rel.needValidationCategory = flag ")
@@ -450,7 +450,7 @@ public class Neo4jWrapper {
                 .append(", s.validateFrequency = s.validateFrequency+").append(1).append(" ")
                 .append("WITH s, ")
                 .append("(CASE WHEN s.validateRating > " + VALIDATE_THRESHOLD +
-                        " OR s.validateRating < " + (-VALIDATE_THRESHOLD) + " THEN false ELSE " + needValidation + " END) AS flag, ")
+                       " THEN false ELSE " + needValidation + " END) AS flag, ")
                 .append("(CASE WHEN s.validateRating > " + VALIDATELOCK_TRESHOLD +
                         " OR s.validateRating < " + (-VALIDATELOCK_TRESHOLD) + " THEN true ELSE " + !needValidation + " END) AS validateLock ")
                 .append("SET s.needValidation = flag ")
