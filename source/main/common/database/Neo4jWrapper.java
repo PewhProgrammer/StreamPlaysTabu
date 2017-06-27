@@ -1506,7 +1506,7 @@ public class Neo4jWrapper {
                 Node source = r.get("s").asNode();
 
                 String name = source.get("name").asString();
-                if(!name.startsWith("G")) break;
+                if(!name.startsWith("G")) continue;
                 String date = source.get("date").asString();
                 String explain = source.get("toExplain").asString();
                 String guesses = source.get("guesses").asString();
