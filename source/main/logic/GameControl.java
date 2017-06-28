@@ -55,7 +55,7 @@ public class GameControl extends Observable{
         while(mModel.getGameState() == GameState.GameStarted){
             //processNextCommand();
             if(Util.diffTimeStamp(d,new Date()) > mModel.getRoundTime()){
-                mModel.announceNoWinner();
+                mModel.announceNoWinner(mModel.getExplainWord());
                 mModel.setGameState(GameState.Lose);
                 mModel.setGameOutcome("Lose");
                 mModel.clear();

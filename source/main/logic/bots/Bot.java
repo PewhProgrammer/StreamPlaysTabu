@@ -45,7 +45,7 @@ public abstract class Bot {
 
     public abstract void announceWinner(String user);
 
-    public abstract void announceNoWinner();
+    public abstract void announceNoWinner(String word);
 
     protected void sendQuestion() {
         sendChatMessage(QUEST_MSG);

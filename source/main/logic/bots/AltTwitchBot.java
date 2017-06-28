@@ -171,8 +171,8 @@ public class AltTwitchBot extends Bot {
         sendChatMessage("The Winner is " + user + ". Congratulations!");
     }
 
-    public void announceNoWinner() {
-        sendChatMessage("There is no Winner!! Next time :)");
+    public void announceNoWinner(String word) {
+        sendChatMessage("The time ran out! The explain word was " + word);
     }
 
     @Override

@@ -689,11 +689,11 @@ public class GameModel extends Observable{
         bot.announceWinner(winner);
     }
 
-    public void announceNoWinner() {
+    public void announceNoWinner(String word) {
         for (AltTwitchBot ab : hostBots.values()) {
-            ab.announceNoWinner();
+            ab.announceNoWinner(word);
         }
-        bot.announceNoWinner();
+        bot.announceNoWinner(word);
     }
 
     public void announceGiverNotAccepted(String user) {
