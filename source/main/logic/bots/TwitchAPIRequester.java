@@ -1,5 +1,6 @@
 package logic.bots;
 
+import common.Log;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -96,7 +97,7 @@ public class TwitchAPIRequester {
             return responseCode;
 
         } catch (IOException e) {
-            System.out.println("Error while requesting " + url);
+            Log.error("Error while requesting " + url);
             System.exit(-1);
         }
         return -1;

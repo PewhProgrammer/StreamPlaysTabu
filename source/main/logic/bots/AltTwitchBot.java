@@ -66,13 +66,13 @@ public class AltTwitchBot extends Bot {
         }
 
         public void onPrivateMessage(String sender, String login, String hostname, String message) {
-            System.out.println("yo im here" + message);
+            //System.out.println("yo im here" + message);
             if (model.getHosts().contains(hostname)) {
                 return;
             }
 
             if (model.getGiverChannel().equals("streamplaystaboo")) {
-                System.out.println(message);
+                //System.out.println(message);
                 String[] channel = message.split(" ");
 
                 model.pushCommand(new Host(model, channel[0], channel[0], new AltTwitchBot(model, "#" + channel[0])));
@@ -80,7 +80,7 @@ public class AltTwitchBot extends Bot {
         }
         public void onUnknown(String line) {
 
-            System.out.println(line);
+            Log.trace("onUnknown" + line);
 
             if (line.contains("WHISPER")) {
 
@@ -220,7 +220,7 @@ public class AltTwitchBot extends Bot {
                 Log.trace(viewers.getString(i));
             }
         }
-        System.out.println("Found " + users.size() + " users in channel " + channel);
+        Log.trace("Found " + users.size() + " users in channel " + channel);
         return users;
     }
 

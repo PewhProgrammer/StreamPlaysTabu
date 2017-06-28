@@ -738,7 +738,7 @@ public class Util {
     public static String checkSpelling(String input) {
         if (!input.matches(REGEX)) {
             String error = "Invalid character: " + input;
-            System.out.println(error);
+            Log.error(error);
             return error;
         }
 
