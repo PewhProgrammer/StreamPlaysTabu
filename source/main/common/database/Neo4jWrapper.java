@@ -74,14 +74,14 @@ public class Neo4jWrapper {
         try {
             createNode(node1, isNode1Explain);
         } catch (ServiceUnavailableException | common.database.DatabaseException e) {
-            Log.error(e.getLocalizedMessage());
+            //Log.error(e.getLocalizedMessage());
         }
 
         String type = "";
         try {
             type = fetchNodePropertiesFromDatabase(node1, "type");
         } catch (ServiceUnavailableException | common.database.DatabaseException i) {
-            Log.error(i.getLocalizedMessage());
+            //Log.error(i.getLocalizedMessage());
         }
 
         if (type.equals("explain")) isNode1Explain = true;
@@ -668,7 +668,7 @@ public class Neo4jWrapper {
             tx.close();
         }
 
-        Log.db(builder.toString());
+        //Log.db(builder.toString());
         return true;
     }
 

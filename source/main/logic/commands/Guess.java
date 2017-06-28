@@ -29,11 +29,9 @@ public class Guess extends Command {
 
     @Override
     public void execute() {
-
-        Log.trace("Guess received: " + guess);
         if (Util.guessEquals(guess,gameModel.getExplainWord())) {
             gameModel.win(name,getChannel());
-            Log.trace("Winner found: "+name);
+            Log.info(name+ " has guessed the word");
         } else {
             gameModel.guess(guess);
         }
@@ -77,6 +75,6 @@ public class Guess extends Command {
 
     @Override
     public String toString(){
-        return "Guess";
+        return "Guess["+guess+"] from " +name;
     }
 }

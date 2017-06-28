@@ -79,4 +79,9 @@ public class Explanation extends Command {
 
         return explanation.equals(e.getExplanation());
     }
+
+    @Override
+    public String toString(){
+        return "Explanation["+explanation+"] from "+ user;
+    }
 }

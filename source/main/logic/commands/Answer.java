@@ -75,4 +75,9 @@ public class Answer extends Command {
 
         return answer.equals(a.getAnswer()) && question.equals(a.getQuestion()) && thisChannel.equals(a.getChannel());
     }
+
+    @Override
+    public String toString(){
+        return "Answer[q{"+question+"}, a{"+answer+"}]" ;
+    }
 }

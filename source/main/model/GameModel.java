@@ -510,6 +510,10 @@ public class GameModel extends Observable{
             Log.error(e.getLocalizedMessage());
         }
 
+        Log.info("Game finished: " + gameOutcome);
+        Log.info("Explain word was " + word);
+        Log.init("Clearing game model...");
+
         missedOffer = 0 ;
         setGameOutcome("Not determined");
         setRoundTime(ROUND_TIME_STATIC);

@@ -48,6 +48,6 @@ public class Ask extends Command {
 
     @Override
     public String toString(){
-        return "Ask";
+        return "Ask["+question+"] from" + sender;
     }
 }
