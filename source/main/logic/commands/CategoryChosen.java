@@ -22,6 +22,7 @@ public class CategoryChosen extends Command {
         gameModel.setCategory(category);
         gameModel.generateExplainWord();
         gameModel.generateTabooWords(getChannel());
+        gameModel.clearVotekick();
     }
 
     @Override

@@ -515,7 +515,6 @@ public class GameModel extends Observable{
         clearExplanations();
         clearQAndA();
         clearGuesses();
-        clearVotekick();
         errCounter = 0;
         prevotingLock.lock();
         prevoting.clear();
