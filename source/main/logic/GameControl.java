@@ -94,9 +94,9 @@ public class GameControl extends Observable{
         Thread mTHREAD = new Thread() {
             @Override
             public void run() {
-                Log.info("Starting new thread for commands processing...");
+                Log.info("Core starts new thread for command processing...");
                 processNextCommand();
-                Log.info("Canceled Command processing");
+                Log.info("Core terminated command processing");
             }
 
         } ;
@@ -112,7 +112,7 @@ public class GameControl extends Observable{
      */
     private void waitingForPlayers(){
 
-        Log.info("Control is waiting for Players");
+        Log.info("Core is waiting for Players");
         gameLoop:
         while(mModel.getGameState() == GameState.Registration || !isStarted){
             sleepThread(5);
@@ -122,7 +122,9 @@ public class GameControl extends Observable{
                 p += mModel.getBot().getUsers(host).size();
             }
             p += mModel.getBot().getUsers(mModel.getGiverChannel()).size();
-            if(p < MIN_PlAYERS) mModel.notifyUpdateTimerText("Waiting for minimum of "+MIN_PlAYERS+" players!");
+            if(p < MIN_PlAYERS){
+                Log.info("Core is waiting for minimum Players of " + MIN_PlAYERS + " available in stream");
+                mModel.notifyUpdateTimerText("Waiting for minimum of "+MIN_PlAYERS+" players!");}
             while(p < MIN_PlAYERS){
                 sleepThread(10);
                 p = 0;
@@ -134,18 +136,21 @@ public class GameControl extends Observable{
             mModel.notifyUpdateTimerText("go marci boi");
             mModel.setTimeStamp();
             mModel.announceRegistration();
+            Log.info("Core starts the registration phase: 30s standby");
             sleepThread(30);
 
             if(mModel.getGameMode() == GameMode.Streamer){
+                Log.info("Core sets streamer to giver of last round");
                 mModel.setGiver(mModel.getGiverChannel()); break gameLoop;
             }
 
             if(mModel.getRegisteredPlayers().contains(mModel.getWinner())){
+                Log.info("Core sets the winner of last round as giver");
                 mModel.setGiver(mModel.getWinner());
                 if(!mModel.getGiver().equals("")) break gameLoop;
             }
 
-            Log.info("Entering Stand by: Anyone can type !register to become giver");
+            Log.info("Core enters stand-by mode: Anyone can type !register to become giver");
             mModel.notifyUpdateTimerText("Next player to register will be the next giver!");
             while(true){
                 try {
@@ -165,20 +170,19 @@ public class GameControl extends Observable{
         }
 
         mModel.setGameState(GameState.WaitingForGiver);
-        Log.info("Starting the round");
         mModel.announceNewRound();
 
         mModel.getBot().whisperLink(mModel.getGiver(),extBindAddr, mModel.getSiteController().generatePW()); // send link
         mModel.setTimeStamp();
 
         while(mModel.getGameState() == GameState.WaitingForGiver){
+            Log.info("Core is waiting for Giver");
             Date d = mModel.getTimeStamp();
             if(Util.diffTimeStamp(d,new Date()) > 20){
                 mModel.incMissedOffer();
                 mModel.announceGiverNotAccepted(mModel.getGiver());
                 mModel.setGiver("");
                 mModel.setGameState(GameState.GameStarted.Registration);
-                //mModel.clear();
                 mModel.clearRegisteredPlayers();
                 break;
             }
@@ -193,10 +197,12 @@ public class GameControl extends Observable{
             }
         }
 
-        if(prevotedBuild.length() == 0) prevotedBuild.append(" none :D");
-        mModel.getBot().sendChatMessage("You voted for these categories: " + prevotedBuild.toString());
+        if(prevotedBuild.length() == 0) mModel.getBot().sendChatMessage("You didn't vote for any categories! The giver will receive random ones. :)");
+        else mModel.getBot().sendChatMessage("You voted for these categories: " + prevotedBuild.toString());
 
+        Log.info("Core is waiting for HTML Load");
         sleepThread(5);
+        Log.info("Core is starting the round");
         mModel.setTimeStamp();
         mModel.notifyUpdateTimerText("go marci boi","" + mModel.getROUND_TIME_STATIC(),"" + mModel.getBONUS_TIME_STATIC() );
         mModel.notifyUpdateTimeStamp(new SimpleDateFormat("HH:mm:ss").format(new Date()).toString());
@@ -210,17 +216,17 @@ public class GameControl extends Observable{
     private void chooseNewGiver(List<String> users){
         users = users.stream().filter(
                user -> !user.equals("streamplaystaboo")).collect(Collectors.toList());
-        Log.trace("New giver has been chosen from registration pool");
-        Log.trace("userSize:  " + users.size());
         int index = rand.nextInt(users.size());
         String newGiver =  users.get(index);
         mModel.setGiver(newGiver);
+
+        Log.info("New giver has been chosen from registration pool: " + newGiver);
+        Log.trace("userSize:  " + users.size());
     }
 
     private void sleepThread(int i){
         try {
-            //change this to 30 sec.
-            Log.info("Control sleeps for " + i + " seconds...");
+            //Log.info("Control sleeps for " + i + " seconds...");
             mModel.notifyRegistrationTime();
             Thread.sleep(i * 1000);
         } catch (InterruptedException e) {
@@ -236,7 +242,7 @@ public class GameControl extends Observable{
             Command c = mModel.pollNextCommand();
             try {
                 if(c.validate()) {
-                    Log.info(c.toString()+ " Command received!");
+                    Log.info("Command received: " + c.toString());
                     c.execute();
                 }
             }catch(NullPointerException n){

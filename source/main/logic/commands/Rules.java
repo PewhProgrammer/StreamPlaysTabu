@@ -43,6 +43,6 @@ public class Rules extends Command {
 
     @Override
     public String toString(){
-        return "Rules";
+        return "Rules["+user+"]";
     }
 }

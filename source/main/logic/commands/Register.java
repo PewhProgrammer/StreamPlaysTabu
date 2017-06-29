@@ -19,7 +19,7 @@ public class Register extends Command {
 
     @Override
     public void execute() {
-        Log.info("Registered user: " + user);
+        //Log.info(user + " registered");
         gameModel.register(user);
     }
 
@@ -50,6 +50,6 @@ public class Register extends Command {
 
     @Override
     public String toString(){
-        return "Register";
+        return "Register["+user+"]";
     }
 }

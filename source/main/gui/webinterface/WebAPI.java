@@ -160,7 +160,7 @@ public class WebAPI implements IObserver {
 
     public void onNotifyGameState() {
         GameState state = GameControl.mModel.getGameState();
-        System.out.println("GameState changed to " + state);
+        Log.trace("GameState changed to " + state);
 
         String winner = GameControl.mModel.getWinner();
         int points = GameControl.mModel.getGainedPoints();
@@ -186,7 +186,7 @@ public class WebAPI implements IObserver {
 
     public void onNotifyQandA() {
         if (GameControl.mModel.getQAndA().size() > 0) {
-            System.out.println("Received Q&A.");
+            Log.trace("Received Q&A.");
             String q = "", a = "";
             q = GameControl.mModel.getQAndA().getFirst()[0];
             a = GameControl.mModel.getQAndA().getFirst()[1];
@@ -195,7 +195,7 @@ public class WebAPI implements IObserver {
     }
 
     public void onNotifyCategoryChosen() {
-        System.out.println("Category chosen.");
+        Log.trace("Category chosen.");
         send("/category", new CategoryChosenContainer(GameControl.mModel.getCategory()));
     }
 
@@ -208,7 +208,7 @@ public class WebAPI implements IObserver {
     }
 
     public void onNotifyGuess() {
-        System.out.println("Guess!");
+        Log.trace("Guess!");
         List<Guess> guesses = GameControl.mModel.getGuesses();
         if (!guesses.isEmpty()) {
             send("/guesses", new GuessesContainer(GameControl.mModel.getGuesses()));
@@ -216,7 +216,7 @@ public class WebAPI implements IObserver {
     }
 
     public void onNotifyScoreUpdate() {
-        System.out.println("Score!");
+        Log.trace("Score!");
         GameModel gm = GameControl.mModel;
         if (!gm.getHosts().isEmpty()) {
             LinkedList<Neo4jWrapper.StreamerHighscore> sh = gm.getNeo4jWrapper().getStreamHighScore();
@@ -231,13 +231,12 @@ public class WebAPI implements IObserver {
     }
 
     public void onNotifyGameMode() {
-        System.out.println("GameMode changed.");
+        Log.trace("GameMode changed.");
         send("/gameMode", new GameModeContainer(GameControl.mModel.getGameMode()));
     }
 
     public void onNotifyKick() {
-        //nothing to do here
-        System.out.println("Kickvote!");
+        Log.trace("votekick!");
     }
 
     public void onNotifyRegistrationTime() {

@@ -39,18 +39,18 @@ public class SiteController implements IObserver {
         socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                System.out.println("Connected to the server!");
+                Log.info("SiteController is connected to the server!");
             }
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
-                System.out.println("Disconnected");
+                Log.info("SiteController is disconnected to the server!");
             }
         }).on(CORE_BASE, new Emitter.Listener() {
             @Override
             public void call(Object... args) {
                 JSONObject obj = (JSONObject)args[0];
-                System.out.println("Connected to server: " + obj.getString("time"));
+                //System.out.println("Connected to server: " + obj.getString("time"));
             }
         }).on(CORE_BASE + "/giverJoined", new Emitter.Listener() {
             @Override
@@ -115,12 +115,12 @@ public class SiteController implements IObserver {
     }
 
     private boolean validatePW(String pw) {
-        Log.info("CORE >> VALIDATE PW: " + pw);
+        Log.trace("CORE >> VALIDATE PW: " + pw);
         if (Integer.parseInt(pw) == this.pw) {
-            Log.info("CORE >> SUCCESSFULLY VALIDATED PW: " + pw);
+            Log.trace("CORE >> SUCCESSFULLY VALIDATED PW: " + pw);
             return true;
         }
-        Log.info("CORE >> PW ERROR! EXPECTED: " + this.pw + " BUT WAS: " + pw);
+        Log.error("CORE >> PW ERROR! EXPECTED: " + this.pw + " BUT WAS: " + pw);
         return false;
     }
 
@@ -129,13 +129,13 @@ public class SiteController implements IObserver {
     }
 
     public void giverJoined() {
-        System.out.println("Received GiverJoined.");
+        Log.trace("Received GiverJoined.");
         Command cmd = new GiverJoined(gm, gm.getGiverChannel());
         gm.pushCommand(cmd);
     }
 
     public void reqPrevotedCategories() {
-        System.out.println("Received reqPrevotedCategories.");
+        Log.trace("Received reqPrevotedCategories.");
         GameModel.prevotingLock.lock();
         JSONObject obj = new PrevotedCategoriesContainer(gm.getPrevotedCategories()).toJSONObject();
         GameModel.prevotingLock.unlock();
@@ -143,7 +143,7 @@ public class SiteController implements IObserver {
     }
 
     public void reqGiver() {
-        System.out.println("Received reqGiver.");
+        Log.trace("Received reqGiver.");
         String giver = gm.getGiver();
         int score = gm.getScore(giver,gm.getGiverChannel());
         int lvl = gm.getLevel(score);
@@ -169,31 +169,31 @@ public class SiteController implements IObserver {
     }
 
     public void reqSkip() {
-        System.out.println("Received reqSkip.");
+        Log.trace("Received reqSkip.");
         Command cmd = new Skip(gm, gm.getGiverChannel());
         gm.pushCommand(cmd);
     }
 
     public void receiveCategory(CategoryChosenContainer cg) {
-        System.out.println("Received category: " + cg.getCategory());
+        Log.info("Received chosen category: " + cg.getCategory());
         Command cmd = new CategoryChosen(gm, gm.getGiverChannel(), cg.getCategory());
         gm.pushCommand(cmd);
     }
 
     public void receiveExplanation(ExplanationContainer ec) {
-        System.out.println("Received explanation: " + ec.getExplanation() + " by " + ec.getGiver());
+        Log.trace("Received explanation: " + ec.getExplanation() + " by " + ec.getGiver());
         Command cmd = new Explanation(gm, gm.getGiverChannel(), ec.getExplanation(), ec.getGiver());
         gm.pushCommand(cmd);
     }
 
     public void receiveQandA(QandAContainer qa) {
-        System.out.println("Received question: " + qa.getQuestion() + " and answer " + qa.getAnswer());
+        Log.trace("Received question: " + qa.getQuestion() + " and answer " + qa.getAnswer());
         Command cmd = new Answer(gm, gm.getGiverChannel(), qa.getQuestion(), qa.getAnswer());
         gm.pushCommand(cmd);
     }
 
     public void receiveValidation(String reference, String taboo, int score,int id) {
-        Log.info("Received sendValidation");
+        Log.trace("Received sendValidation");
         Neo4jWrapper db = gm.getNeo4jWrapper();
         if(id == 1) db.validateNode(reference,score * 2 -6);
         else if(id == 2) db.validateConnectionTaboo(reference,taboo,score * 2 -6);

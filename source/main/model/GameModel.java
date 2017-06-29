@@ -130,7 +130,7 @@ public class GameModel extends Observable{
     }
 
     public void setGameState(GameState mGameState) {
-        System.out.println(" GameState set to " +  mGameState);
+        Log.trace("GameState set to " +  mGameState);
         this.mGameState = mGameState;
         notifyGameState();
     }
@@ -443,11 +443,6 @@ public class GameModel extends Observable{
         notifyWinner();
         this.gameOutcome = GameState.Win.toString();
 
-        if (getGameState() != GameState.GameStarted || !getGameState().equals(GameState.GameStarted)) {
-            System.out.println("!= : " + (getGameState() != GameState.GameStarted) + " ; " + "equals : " + (!getGameState().equals(GameState.GameStarted)));
-            return;
-        }
-
         this.winner  = winner;
         Date joinedTime = new Date();
         Date referenceTime = getTimeStamp();
@@ -509,6 +504,10 @@ public class GameModel extends Observable{
         }catch(ServiceUnavailableException e){
             Log.error(e.getLocalizedMessage());
         }
+
+        Log.info("Game finished: " + gameOutcome);
+        Log.info("Explain word was " + word);
+        Log.init("Clearing game model...");
 
         missedOffer = 0 ;
         setGameOutcome("Not determined");
