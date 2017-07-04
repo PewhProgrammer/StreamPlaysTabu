@@ -47,6 +47,76 @@ lara croft
 prince of persia
 glados
 portal
+Akali
+Alistar
+Amumu
+Anivia
+Annie
+Ashe
+Blitzcrank
+Caitlyn
+Cassipeia
+Cho'Gath
+Corki
+Dr. Mundo
+Evelynn
+Ezreal
+Fiddlesticks
+Galio
+Gangplank
+Garen
+Gragas
+Heimerdinger
+Irelia
+Janna
+Jarvan IV
+Jax
+Karma
+Karthus
+Kassadin
+Katarina
+Kayle
+Kennen
+Kog'Maw
+LeBlanc
+Lux
+Malphite
+Malzahar
+Maokai
+Master Yi
+Miss Fortune
+Mordekaiser
+Morgana
+Nasus
+Nidalee
+Nunu
+Olaf
+Pantheon
+Poppy
+Rammus
+Renekton
+Ryze
+Shaco
+Shen
+Singed
+Sion
+Sona
+Soraka
+Swain
+Taric
+Teemo
+Tristana
+Trundle
+Tryndamere
+Twisted Fate
+Twitch
+Udyr
+Urgot
+Veigar
+Vladimir
+Warwick
+Xin Zhao
+Zilean
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
 silent hill;genre is;survival horror
 resident evil;genre is;survival horror
@@ -73,6 +143,76 @@ alistar;is a character in;league of legends
 sivir;is a character in;league of legends
 kalista;is a character in;league of legends
 sejuani;is a character in;league of legends
+Akali;is a character in;league of legends
+Alistar;is a character in;league of legends
+Amumu;is a character in;league of legends
+Anivia;is a character in;league of legends
+Annie;is a character in;league of legends
+Ashe;is a character in;league of legends
+Blitzcrank;is a character in;league of legends
+Caitlyn;is a character in;league of legends
+Cassipeia;is a character in;league of legends
+Cho'Gath;is a character in;league of legends
+Corki;is a character in;league of legends
+Dr. Mundo;is a character in;league of legends
+Evelynn;is a character in;league of legends
+Ezreal;is a character in;league of legends
+Fiddlesticks;is a character in;league of legends
+Galio;is a character in;league of legends
+Gangplank;is a character in;league of legends
+Garen;is a character in;league of legends
+Gragas;is a character in;league of legends
+Heimerdinger;is a character in;league of legends
+Irelia;is a character in;league of legends
+Janna;is a character in;league of legends
+Jarvan IV;is a character in;league of legends
+Jax;is a character in;league of legends
+Karma;is a character in;league of legends
+Karthus;is a character in;league of legends
+Kassadin;is a character in;league of legends
+Katarina;is a character in;league of legends
+Kayle;is a character in;league of legends
+Kennen;is a character in;league of legends
+Kog'Maw;is a character in;league of legends
+LeBlanc;is a character in;league of legends
+Lux;is a character in;league of legends
+Malphite;is a character in;league of legends
+Malzahar;is a character in;league of legends
+Maokai;is a character in;league of legends
+Master Yi;is a character in;league of legends
+Miss Fortune;is a character in;league of legends
+Mordekaiser;is a character in;league of legends
+Morgana;is a character in;league of legends
+Nasus;is a character in;league of legends
+Nidalee;is a character in;league of legends
+Nunu;is a character in;league of legends
+Olaf;is a character in;league of legends
+Pantheon;is a character in;league of legends
+Poppy;is a character in;league of legends
+Rammus;is a character in;league of legends
+Renekton;is a character in;league of legends
+Ryze;is a character in;league of legends
+Shaco;is a character in;league of legends
+Shen;is a character in;league of legends
+Singed;is a character in;league of legends
+Sion;is a character in;league of legends
+Sona;is a character in;league of legends
+Soraka;is a character in;league of legends
+Swain;is a character in;league of legends
+Taric;is a character in;league of legends
+Teemo;is a character in;league of legends
+Tristana;is a character in;league of legends
+Trundle;is a character in;league of legends
+Tryndamere;is a character in;league of legends
+Twisted Fate;is a character in;league of legends
+Twitch;is a character in;league of legends
+Udyr;is a character in;league of legends
+Urgot;is a character in;league of legends
+Veigar;is a character in;league of legends
+Vladimir;is a character in;league of legends
+Warwick;is a character in;league of legends
+Xin Zhao;is a character in;league of legends
+Zilean;is a character in;league of legends
 Shadow fiend;is a character in;dota2
 mario;is a character in;super mario bros
 luigi;is a character in;super mario bros
