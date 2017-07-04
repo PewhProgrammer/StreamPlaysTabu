@@ -214,7 +214,129 @@ super star
 fire flower
 super mushroom
 cheep cheep
+Mario
+Luigi
+Mario Kart
+Mario Party
+Toad
+Princess Peach
+Bowser
+Rainbow Road
+Link
+Zelda
+Epona
+Master Sword
+The Witcher
+Fallout
+Grand Theft Auto
+Watch Dogs
+Assassin’s Creed
+Minecraft
+Morrowind
+Oblivion
+The Elder Scrolls
+World Of Warcraft
+Diablo
+Diablo 3
+The Beginning
+Destiny
+Hearthstone
+Starcraft
+Heroes of the storm
+Battlenet
+horde
+alliance
+Humanity
+Warrior of Sunlight
+Princess Guard
+Way of White
+Darkwraith
+Forest Hunter
+Path of the Dragon
+Blade of the Dark Moon
+Gravelord Servant
+Chaos Servant
+Backstab
+Parry
+Riposte
+Praise the sun
+Wanderer Set
+Thief Set
+Bandit Set
+Hunter Set
+Sorcerer Set
+Pyromancer Set
+Holy Set
+Warrior Set
+Knight Set
+Buckler
+Shield
+Black Iron Greatshield
+Havel's Greatshield
+Greatshield of Artorias
+Parrying Dagger
+Priscilla's Dagger
+Dark Silver Tracer
+Sword
+Claymore
+Flamberge
+Greatsword
+Zweihander
+Demon Great Machete
+Shotel
+Falchion
+Gold Tracer
+Uchigatana
+Washing Pole
+Iaito
+Chaos Blade
+Solaire
+Lautrec
+Ornstein
+Smough
+Havel
+GiantDad
+Giants
+Hollow
+Crytsal Lizard
+Four Kings
+Sif
+Gwyn
+Nito
+Seath
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
+Diablo;is published by; blizzard
+Diablo 3;is published by; blizzard
+The Beginning;is published by; blizzard
+Destiny;is published by; blizzard
+Hearthstone;is published by; blizzard
+Starcraft;is published by; blizzard
+Heroes of the storm;is published by; blizzard
+Battlenet;is published by; blizzard
+horde;is published by; blizzard
+alliance;is published by; blizzard
+The Witcher;is set in;open world
+Fallout;is set in;open world
+Grand Theft Auto;is set in;open world
+Watch Dogs;is set in;open world
+Assassin’s Creed;is set in;open world
+Minecraft;is set in;open world
+Morrowind;is set in;open world
+Oblivion;is set in;open world
+The Elder Scrolls;is set in;open world
+World Of Warcraft;is set in;open world
+Mario;is published by;nintendo
+Luigi;is published by;nintendo
+Mario Kart;is published by; nintendo
+Mario Party;is published by; nintendo
+Toad;is published by;nintendo
+Pricess Peach;is published by;nintendo
+Bowser;is published by; nintendo
+Rainbow Road;is published by; nintendo
+Link;is published by; nintendo
+Zelda;is published by; nintendo
+Epona;is published by; nintendo
+Master Sword;is published by; nintendo
 silent hill;genre is;survival horror
 resident evil;genre is;survival horror
 super mario bros;is published by;nintendo
@@ -441,3 +563,61 @@ valve;is;publisher
 resetting;is part of;league of legends
 pre-fire;is part of;csgo
 pop-flashing;is part of;csgo
+Humanity;is part of;dark souls
+Warrior of Sunlight;is part of;dark souls
+Princess Guard;is part of;dark souls
+Way of White;is part of;dark souls
+Darkwraith;is part of;dark souls
+Forest Hunter;is part of;dark souls
+Path of the Dragon;is part of;dark souls
+Blade of the Dark Moon;is part of;dark souls
+Gravelord Servant;is part of;dark souls
+Chaos Servant;is part of;dark souls
+Backstab;is part of;dark souls
+Parry;is part of;dark souls
+Riposte;is part of;dark souls
+Praise the sun;is part of;dark souls
+Wanderer Set;is part of;dark souls
+Thief Set;is part of;dark souls
+Bandit Set;is part of;dark souls
+Hunter Set;is part of;dark souls
+Sorcerer Set;is part of;dark souls
+Pyromancer Set;is part of;dark souls
+Holy Set;is part of;dark souls
+Warrior Set;is part of;dark souls
+Knight Set;is part of;dark souls
+Buckler;is part of;dark souls
+Shield;is part of;dark souls
+Black Iron Greatshield;is part of;dark souls
+Havel's Greatshield;is part of;dark souls
+Greatshield of Artorias;is part of;dark souls
+Parrying Dagger;is part of;dark souls
+Priscilla's Dagger;is part of;dark souls
+Dark Silver Tracer;is part of;dark souls
+Sword;is part of;dark souls
+Claymore;is part of;dark souls
+Flamberge;is part of;dark souls
+Greatsword;is part of;dark souls
+Zweihander;is part of;dark souls
+Demon Great Machete;is part of;dark souls
+Shotel;is part of;dark souls
+Falchion;is part of;dark souls
+Gold Tracer;is part of;dark souls
+Uchigatana;is part of;dark souls
+Washing Pole;is part of;dark souls
+Iaito;is part of;dark souls
+Chaos Blade;is part of;dark souls
+Solaire;is part of;dark souls
+Lautrec;is part of;dark souls
+Ornstein;is part of;dark souls
+Smough;is part of;dark souls
+Havel;is part of;dark souls
+GiantDad;is part of;dark souls
+Giants;is part of;dark souls
+Hollow;is part of;dark souls
+Crytsal Lizard;is part of;dark souls
+Four Kings;is part of;dark souls
+Sif;is part of;dark souls
+Gwyn;is part of;dark souls
+Nito;is part of;dark souls
+Seath;is part of;dark souls
