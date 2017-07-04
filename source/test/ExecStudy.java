@@ -71,12 +71,12 @@ public class ExecStudy extends TestCase {
             }
             i = 0;
             sCurrentLine = br.readLine();
-            database.setSimulation(false);
+            database.setSimulation(true);
             while (sCurrentLine != null) {
                 String[] parts = sCurrentLine.split(";");
                 try {
                     i++;
-                    if(i == 18) database.setSimulation(true);
+                    if(i == 18) database.setSimulation(false);
                     database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true,"");
                 }catch (ArrayIndexOutOfBoundsException e){
                     Log.db("Wrong Formatting: "+ parts.toString());
