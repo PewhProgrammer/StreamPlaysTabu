@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Random;
 
@@ -30,6 +31,18 @@ public class ExecStudy extends TestCase {
         //database.resetRelationships();
         //database.resetDatabase();
         Log.setLevel(Log.Level.TRACE);
+    }
+
+    public void testGetExplainWord(){
+        String category = "league of legends";
+        String explain = "";
+        try {
+            explain = database.getExplainWord(category, new HashSet<>());
+        }catch(DatabaseException e){
+
+        }
+        System.out.print(explain);
+
     }
 
     public void testSetUpNodes() {

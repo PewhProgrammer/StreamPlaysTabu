@@ -44,4 +44,9 @@ public class CategoryChosen extends Command {
         CategoryChosen cg = (CategoryChosen) o;
         return category.equals(cg.getCategory());
     }
+
+    @Override
+    public String toString(){
+        return "Category["+ category+"]";
+    }
 }

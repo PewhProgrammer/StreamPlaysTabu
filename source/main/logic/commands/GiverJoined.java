@@ -20,7 +20,6 @@ public class GiverJoined extends Command {
 
     @Override
     public void execute() {
-        Log.info("Giver has accepted the offer");
         gameModel.setGameState(GameState.GameStarted);
         gameModel.setTimeStamp();
         gameModel.transferTabooSuggestions();
@@ -49,5 +48,10 @@ public class GiverJoined extends Command {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString(){
+        return "GiverJoined";
     }
 }

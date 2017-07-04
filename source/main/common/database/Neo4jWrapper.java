@@ -215,6 +215,8 @@ public class Neo4jWrapper {
                     "explainWord", explainWord, "outcome", outcome, "mode", mode.toString(), "numRegistered", registeredPlayers.size(), "tabooBuilder", tabooBuilder.toString(),
                     "explanationBuilder", explanationBuilder.toString(), "guessBuilder", guessBuilder.toString(), "skippedWordBuilder", skippedWordBuilder.toString(),
                     "qAndaBuilder",qAndaBuilder.toString(),"date",date));
+            tx.run("MATCH (s:Node) WHERE s.name ={name} SET s.asExplain = s.asExplain +1",
+                    parameters("name", explainWord));
             tx.success();
         } finally {
             tx.close();
@@ -1141,7 +1143,8 @@ public class Neo4jWrapper {
             LinkedList<String> list = new LinkedList<>();
             Transaction tx = getTransaction();
             try {
-                StatementResult sResult = tx.run("MATCH (s:Node)-[rel]->(t:Node) WHERE t.name ={category} RETURN s",
+                StatementResult sResult = tx.run("MATCH (s:Node)-[rel]->(t:Node) WHERE t.name ={category} AND rel.needValidationCategory = false "+
+                                " AND s.needValidation = false RETURN s",
                         parameters("category", category));
 
                 if (!sResult.hasNext())
@@ -1154,6 +1157,7 @@ public class Neo4jWrapper {
                     String type = node.get("type").toString().replaceAll("\"", "");
                     String name = node.get("name").toString().replaceAll("\"", "");
                     if (!type.equals("basic") && !usedWords.contains(name)) { //if its an explain word and not in usedWord
+                        if(list.contains(name)) continue;
                         builder.append("," + name);
                         list.add(name);
                     }
@@ -1168,9 +1172,6 @@ public class Neo4jWrapper {
                 }
 
                 builder.append("] -> " + result);
-
-                tx.run("MATCH (s:Node) WHERE s.name ={name} SET s.asExplain = s.asExplain +1",
-                        parameters("name", result));
                 tx.success();
             } finally {
                 tx.close();

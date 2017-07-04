@@ -173,6 +173,42 @@ Butterfly Knife
 Falchion Knife
 Shadow Daggers
 Bowie Knife
+cooldown reduction
+team fight
+juke
+crowd control
+area of effect
+creeps
+gank
+last hitting
+glass cannon build
+burst
+carry
+peel
+jungler
+elo
+leashing
+nerf
+buff
+meta
+spray
+recoil
+tapping
+burst
+flick shot
+crosshair placement
+prefire
+strafing
+trick shot
+jump shot
+flanking
+tagged
+dinked
+peeking
+camping
+baiting
+lit
+ninja
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
 silent hill;genre is;survival horror
 resident evil;genre is;survival horror
@@ -212,7 +248,6 @@ Cho'Gath;is a character in;league of legends
 Corki;is a character in;league of legends
 Dr. Mundo;is a character in;league of legends
 Evelynn;is a character in;league of legends
-Ezreal;is a character in;league of legends
 Fiddlesticks;is a character in;league of legends
 Galio;is a character in;league of legends
 Gangplank;is a character in;league of legends
@@ -226,8 +261,6 @@ Jax;is a character in;league of legends
 Karma;is a character in;league of legends
 Karthus;is a character in;league of legends
 Kassadin;is a character in;league of legends
-Katarina;is a character in;league of legends
-Kayle;is a character in;league of legends
 Kennen;is a character in;league of legends
 Kog'Maw;is a character in;league of legends
 LeBlanc;is a character in;league of legends
@@ -239,8 +272,6 @@ Master Yi;is a character in;league of legends
 Miss Fortune;is a character in;league of legends
 Mordekaiser;is a character in;league of legends
 Morgana;is a character in;league of legends
-Nasus;is a character in;league of legends
-Nidalee;is a character in;league of legends
 Nunu;is a character in;league of legends
 Olaf;is a character in;league of legends
 Pantheon;is a character in;league of legends
@@ -254,8 +285,6 @@ Singed;is a character in;league of legends
 Sion;is a character in;league of legends
 Sona;is a character in;league of legends
 Soraka;is a character in;league of legends
-Swain;is a character in;league of legends
-Taric;is a character in;league of legends
 Teemo;is a character in;league of legends
 Tristana;is a character in;league of legends
 Trundle;is a character in;league of legends
@@ -269,6 +298,42 @@ Vladimir;is a character in;league of legends
 Warwick;is a character in;league of legends
 Xin Zhao;is a character in;league of legends
 Zilean;is a character in;league of legends
+spray;is related to;fps
+recoil;is related to;fps
+tapping;is related to;fps
+burst;is related to;fps
+flick shot;is related to;fps
+crosshair placement;is related to;fps
+prefire;is related to;fps
+strafing;is related to;fps
+trick shot;is related to;fps
+jump shot;is related to;fps
+flanking;is related to;fps
+tagged;is related to;fps
+dinked;is related to;fps
+peeking;is related to;fps
+camping;is related to;fps
+baiting;is related to;fps
+lit;is related to;fps
+ninja;is related to;fps
+cooldown reduction;is related to;moba
+team fight;is part of;moba
+juke;is used in;moba
+crowd control;is part of;moba
+area of effect;is part of;moba
+creeps;is part of;moba
+gank;is related to;moba
+last hitting;is related to;moba
+glass cannon build;is related to;moba
+burst;is related to;moba
+carry;is related to;moba
+peel;is related to;moba
+jungler;is related to;moba
+elo;is related to;moba
+leashing;is related to;moba
+nerf;is related to;moba
+buff;is related to;moba
+meta;is related to;moba
 P2000;is part of;csgo
 USP-S;is part of;csgo
 Glock-18;is part of;csgo

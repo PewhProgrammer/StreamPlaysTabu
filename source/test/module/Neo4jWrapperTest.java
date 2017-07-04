@@ -217,7 +217,7 @@ public class Neo4jWrapperTest {
     @Test
     public void testGetExplainWord(){
         String explain = "";
-        String category = "simulation";
+        String category = "league of legends";
         Set<String> usedWords = new HashSet<>();
 
         //test taboo word as explain word
