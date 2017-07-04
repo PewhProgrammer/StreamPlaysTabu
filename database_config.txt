@@ -17,14 +17,23 @@ Galio
 Gangplank
 Garen
 rpg
+valve
 activision
 ubisoft
+blizzard
+ea
+riot games
+nintendo
+microsoft
+remedy entertainment
+bandai namco
+sega
+deep silver
+konami
+capcom
 open world
 fps
-blizzard
 survival horror
-nintendo
-valve
 alan wake
 left4dead
 dota2
