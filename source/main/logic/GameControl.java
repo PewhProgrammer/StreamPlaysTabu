@@ -144,11 +144,11 @@ public class GameControl extends Observable{
                 mModel.setGiver(mModel.getGiverChannel()); break gameLoop;
             }
 
-            if(mModel.getRegisteredPlayers().contains(mModel.getWinner())){
+            /*if(mModel.getRegisteredPlayers().contains(mModel.getWinner())){
                 Log.info("Core sets the winner of last round as giver");
                 mModel.setGiver(mModel.getWinner());
                 if(!mModel.getGiver().equals("")) break gameLoop;
-            }
+            }*/
 
             Log.info("Core enters stand-by mode: Anyone can type !register to become giver");
             mModel.notifyUpdateTimerText("Next player to register will be the next giver!");
