@@ -209,7 +209,71 @@ camping
 baiting
 lit
 ninja
+Mario
+Luigi
+Mario Kart
+Mario Party
+Toad
+Princess Peach
+Bowser
+Rainbow Road
+Link
+Zelda
+Epona
+Master Sword
+The Witcher
+Fallout
+Grand Theft Auto
+Watch Dogs
+Assassin’s Creed
+Minecraft
+Morrowind
+Oblivion
+The Elder Scrolls
+World Of Warcraft
+Diablo
+Diablo 3
+The Beginning
+Destiny
+Hearthstone
+Starcraft
+Heroes of the storm
+Battlenet
+horde
+alliance
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
+Diablo;is published by; blizzard
+Diablo 3;is published by; blizzard
+The Beginning;is published by; blizzard
+Destiny;is published by; blizzard
+Hearthstone;is published by; blizzard
+Starcraft;is published by; blizzard
+Heroes of the storm;is published by; blizzard
+Battlenet;is published by; blizzard
+horde;is published by; blizzard
+alliance;is published by; blizzard
+The Witcher;is set in;open world
+Fallout;is set in;open world
+Grand Theft Auto;is set in;open world
+Watch Dogs;is set in;open world
+Assassin’s Creed;is set in;open world
+Minecraft;is set in;open world
+Morrowind;is set in;open world
+Oblivion;is set in;open world
+The Elder Scrolls;is set in;open world
+World Of Warcraft;is set in;open world
+Mario;is published by;nintendo
+Luigi;is published by;nintendo
+Mario Kart;is published by; nintendo
+Mario Party;is published by; nintendo
+Toad;is published by;nintendo
+Pricess Peach;is published by;nintendo
+Bowser;is published by; nintendo
+Rainbow Road;is published by; nintendo
+Link;is published by; nintendo
+Zelda;is published by; nintendo
+Epona;is published by; nintendo
+Master Sword;is published by; nintendo
 silent hill;genre is;survival horror
 resident evil;genre is;survival horror
 super mario bros;is published by;nintendo
