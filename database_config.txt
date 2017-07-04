@@ -21,7 +21,6 @@ wario
 bowser
 splatoon
 kalista
-sivir
 sejuani
 the legend of zelda
 dark souls
@@ -31,7 +30,6 @@ far cry 4
 resident evil
 kiting
 sniping
-skill
 afk
 quickscope
 ragequit
@@ -209,6 +207,13 @@ camping
 baiting
 lit
 ninja
+lakitu
+goomba
+1up mushroom
+super star
+fire flower
+super mushroom
+cheep cheep
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
 silent hill;genre is;survival horror
 resident evil;genre is;survival horror
@@ -232,9 +237,6 @@ dota2;is a;moba
 league of legends;is a;moba
 heroes of the storm;is a;moba
 alistar;is a character in;league of legends
-sivir;is a character in;league of legends
-kalista;is a character in;league of legends
-sejuani;is a character in;league of legends
 Akali;is a character in;league of legends
 Alistar;is a character in;league of legends
 Amumu;is a character in;league of legends
@@ -275,17 +277,9 @@ Morgana;is a character in;league of legends
 Nunu;is a character in;league of legends
 Olaf;is a character in;league of legends
 Pantheon;is a character in;league of legends
-Poppy;is a character in;league of legends
-Rammus;is a character in;league of legends
-Renekton;is a character in;league of legends
-Ryze;is a character in;league of legends
 Shaco;is a character in;league of legends
 Shen;is a character in;league of legends
 Singed;is a character in;league of legends
-Sion;is a character in;league of legends
-Sona;is a character in;league of legends
-Soraka;is a character in;league of legends
-Teemo;is a character in;league of legends
 Tristana;is a character in;league of legends
 Trundle;is a character in;league of legends
 Tryndamere;is a character in;league of legends
@@ -298,6 +292,7 @@ Vladimir;is a character in;league of legends
 Warwick;is a character in;league of legends
 Xin Zhao;is a character in;league of legends
 Zilean;is a character in;league of legends
+kiting;is related to;league of legends
 spray;is related to;fps
 recoil;is related to;fps
 tapping;is related to;fps
@@ -334,12 +329,12 @@ leashing;is related to;moba
 nerf;is related to;moba
 buff;is related to;moba
 meta;is related to;moba
+quickscope;is part of;csgo
+sniping;is part of;csgo
 P2000;is part of;csgo
 USP-S;is part of;csgo
 Glock-18;is part of;csgo
 Dual Berettas;is part of;csgo
-P250;is part of;csgo
-Five-SeveN;is part of;csgo
 Tec-9;is part of;csgo
 CZ75-Auto;is part of;csgo
 Desert Eagle;is part of;csgo
@@ -352,10 +347,6 @@ M249;is part of;csgo
 Negev;is part of;csgo
 MP9;is part of;csgo
 MAC-10;is part of;csgo
-MP7;is part of;csgo
-UMP-45;is part of;csgo
-P90;is part of;csgo
-PP-Bizon;is part of;csgo
 FAMAS;is part of;csgo
 Galil AR;is part of;csgo
 M4A4;is part of;csgo
@@ -387,13 +378,18 @@ M9 Bayonet;is part of;csgo
 Karambit;is part of;csgo
 Huntsman Knife;is part of;csgo
 Butterfly Knife;is part of;csgo
-Falchion Knife;is part of;csgo
-Shadow Daggers;is part of;csgo
 Bowie Knife;is part of;csgo
 Shadow fiend;is a character in;dota2
 mario;is a character in;super mario bros
+lakitu;is a character in;super mario bros
 luigi;is a character in;super mario bros
 Bowser;is a character in;super mario bros
+goomba;is a character in;super mario bros
+1up mushroom;is a character in;super mario bros
+super star;is a character in;super mario bros
+fire flower;is a character in;super mario bros
+super mushroom;is a character in;super mario bros
+cheep cheep;is a character in;super mario bros
 samus;is a character in;super smash bros
 super smash bros;is published by;nintendo
 splatoon;is published by;nintendo
@@ -429,9 +425,6 @@ undead;is related to;warcraft 3
 warcraft 3;is published by;blizzard
 world of warcraft;is published by;blizzard
 overwatch;is published by;blizzard
-kiting;requires a lot of;skill
-sniping;requires a lot of;skill
-quickscope;requires a lot of;skill
 firelink shrine;appears in;dark souls
 bonfire;appears in;dark souls
 portal gun;can be received from;glados
