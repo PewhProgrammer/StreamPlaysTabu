@@ -50,7 +50,7 @@ public class ExecStudy extends TestCase {
         database.resetDatabase();
         database.initLogging();
         database.triggerPreset();
-        database.setSimulation(true);
+        database.setSimulation(false);
 
         try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
 
@@ -62,7 +62,7 @@ public class ExecStudy extends TestCase {
                 try {
                     database.createNode(sCurrentLine, true);
                     i++;
-                    if(i == 38) database.setSimulation(false);
+                    if(i == 15) database.setSimulation(true);
                 } catch (DatabaseException e) {
                     Log.db(e.getMessage());
                     //fail();
@@ -71,12 +71,12 @@ public class ExecStudy extends TestCase {
             }
             i = 0;
             sCurrentLine = br.readLine();
-            database.setSimulation(true);
+            database.setSimulation(false);
             while (sCurrentLine != null) {
                 String[] parts = sCurrentLine.split(";");
                 try {
                     i++;
-                    if(i == 18) database.setSimulation(false);
+                    if(i == 16) database.setSimulation(true);
                     database.insertNodesAndRelationshipIntoOntology(parts[0], parts[2], true, parts[1], true,"");
                 }catch (ArrayIndexOutOfBoundsException e){
                     Log.db("Wrong Formatting: "+ parts.toString());

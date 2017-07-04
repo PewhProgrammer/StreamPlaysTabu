@@ -332,7 +332,6 @@ alan wake;is known for;insomnia
 dota2;is a;moba
 league of legends;is a;moba
 heroes of the storm;is a;moba
-alistar;is a character in;league of legends
 Akali;is a character in;league of legends
 Alistar;is a character in;league of legends
 Amumu;is a character in;league of legends
@@ -499,6 +498,7 @@ friendly fire;appears in;csgo
 ak-47;appears in;call of duty
 friendly fire;appears in;call of duty
 tracer;is a character in;overwatch
+reaper;is a character in;overwatch
 csgo;genre is;fps
 call of duty;genre is;fps
 overwatch;genre is;fps
