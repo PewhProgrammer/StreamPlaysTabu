@@ -317,7 +317,7 @@ Luigi;is published by;nintendo
 Mario Kart;is published by; nintendo
 Mario Party;is published by; nintendo
 Toad;is published by;nintendo
-Pricess Peach;is published by;nintendo
+Peach;is published by;nintendo
 Bowser;is published by; nintendo
 Rainbow Road;is published by; nintendo
 Link;is published by; nintendo
