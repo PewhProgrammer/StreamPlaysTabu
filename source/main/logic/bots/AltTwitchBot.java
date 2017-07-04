@@ -251,6 +251,8 @@ public class AltTwitchBot extends Bot {
         String channel = this.channel.replaceAll("#", "");
         String[] parts = message.split(" ");
 
+        int counter = 0;
+
         // !register
         if (parts[0].equals("!register")) {
             /*Command r = new Register(model, channel, sender);
@@ -299,6 +301,9 @@ public class AltTwitchBot extends Bot {
 
         // !votekick
         if ((parts[0].equals("!votekick") && parts.length == 1) || (parts.length == 2 && parts[1].equals(model.getGiver()))) {
+            if (model.getVotekick().isEmpty()) {
+                sendChatMessage("A votekick for '" + model.getGiver() + "' has started! Type !votekick to contribute.");
+            }
             return new Votekick(model, channel, sender);
         }
 

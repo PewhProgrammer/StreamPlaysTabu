@@ -3,7 +3,6 @@ package module;
 import common.Util;
 import junit.framework.TestCase;
 import model.GameModel;
-import model.Language;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -90,5 +89,11 @@ public class CheatingTests extends TestCase {
             assertEquals("'" + s + "' was rated as " + iv + " but should be " + v + "." ,
                     valid, Util.checkCheating(s, gm));
         }
+    }
+
+    public void testCheckWordUsage() {
+        String expl = "Hehehe das ist 1 explanation zum explain word k alist ar";
+        gm.setExplainWord("kalista");
+        assertTrue(Util.checkCheating(expl, gm).length() != 0);
     }
 }

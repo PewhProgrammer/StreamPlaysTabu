@@ -782,6 +782,19 @@ public class Util {
             }
         }
 
+        String s = input.replaceAll("\\s", "");
+        boolean invalid = false;
+        for (String w :  gm.getTabooWords()) {
+            invalid = s.contains(w);
+            if (invalid) {
+                break;
+            }
+        }
+
+        if(invalid || s.contains(gm.getExplainWord())) {
+            return "Please do not use forbidden words in your explanations!";
+        }
+
         return "";
     }
 

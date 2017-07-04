@@ -47,6 +47,132 @@ lara croft
 prince of persia
 glados
 portal
+Akali
+Alistar
+Amumu
+Anivia
+Annie
+Ashe
+Blitzcrank
+Caitlyn
+Cassipeia
+Cho'Gath
+Corki
+Dr. Mundo
+Evelynn
+Ezreal
+Fiddlesticks
+Galio
+Gangplank
+Garen
+Gragas
+Heimerdinger
+Irelia
+Janna
+Jarvan IV
+Jax
+Karma
+Karthus
+Kassadin
+Katarina
+Kayle
+Kennen
+Kog'Maw
+LeBlanc
+Lux
+Malphite
+Malzahar
+Maokai
+Master Yi
+Miss Fortune
+Mordekaiser
+Morgana
+Nasus
+Nidalee
+Nunu
+Olaf
+Pantheon
+Poppy
+Rammus
+Renekton
+Ryze
+Shaco
+Shen
+Singed
+Sion
+Sona
+Soraka
+Swain
+Taric
+Teemo
+Tristana
+Trundle
+Tryndamere
+Twisted Fate
+Twitch
+Udyr
+Urgot
+Veigar
+Vladimir
+Warwick
+Xin Zhao
+Zilean
+P2000
+USP-S
+Glock-18
+Dual Berettas
+P250
+Five-SeveN
+Tec-9
+CZ75-Auto
+Desert Eagle
+R8 Revolver
+Nova
+XM1014
+Sawed-Off
+MAG-7
+M249
+Negev
+MP9
+MAC-10
+MP7
+UMP-45
+P90
+PP-Bizon
+FAMAS
+Galil AR
+M4A4
+M4A1-S
+AK-47
+SSG 08
+AUG
+SG 553
+AWP
+SCAR-20
+G3SG1
+Kevlar Vest
+Kevlar + Helmet
+Zeus x27
+Defuse Kit
+Rescue Kit
+C4 Explosive
+Incendiary Grenade
+Molotov
+Decoy Grenade
+Flashbang
+High Explosive Grenade
+Smoke Grenade
+Knife
+Bayonet
+Gut Knife
+Flip Knife
+M9 Bayonet
+Karambit
+Huntsman Knife
+Butterfly Knife
+Falchion Knife
+Shadow Daggers
+Bowie Knife
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
 silent hill;genre is;survival horror
 resident evil;genre is;survival horror
@@ -73,6 +199,132 @@ alistar;is a character in;league of legends
 sivir;is a character in;league of legends
 kalista;is a character in;league of legends
 sejuani;is a character in;league of legends
+Akali;is a character in;league of legends
+Alistar;is a character in;league of legends
+Amumu;is a character in;league of legends
+Anivia;is a character in;league of legends
+Annie;is a character in;league of legends
+Ashe;is a character in;league of legends
+Blitzcrank;is a character in;league of legends
+Caitlyn;is a character in;league of legends
+Cassipeia;is a character in;league of legends
+Cho'Gath;is a character in;league of legends
+Corki;is a character in;league of legends
+Dr. Mundo;is a character in;league of legends
+Evelynn;is a character in;league of legends
+Ezreal;is a character in;league of legends
+Fiddlesticks;is a character in;league of legends
+Galio;is a character in;league of legends
+Gangplank;is a character in;league of legends
+Garen;is a character in;league of legends
+Gragas;is a character in;league of legends
+Heimerdinger;is a character in;league of legends
+Irelia;is a character in;league of legends
+Janna;is a character in;league of legends
+Jarvan IV;is a character in;league of legends
+Jax;is a character in;league of legends
+Karma;is a character in;league of legends
+Karthus;is a character in;league of legends
+Kassadin;is a character in;league of legends
+Katarina;is a character in;league of legends
+Kayle;is a character in;league of legends
+Kennen;is a character in;league of legends
+Kog'Maw;is a character in;league of legends
+LeBlanc;is a character in;league of legends
+Lux;is a character in;league of legends
+Malphite;is a character in;league of legends
+Malzahar;is a character in;league of legends
+Maokai;is a character in;league of legends
+Master Yi;is a character in;league of legends
+Miss Fortune;is a character in;league of legends
+Mordekaiser;is a character in;league of legends
+Morgana;is a character in;league of legends
+Nasus;is a character in;league of legends
+Nidalee;is a character in;league of legends
+Nunu;is a character in;league of legends
+Olaf;is a character in;league of legends
+Pantheon;is a character in;league of legends
+Poppy;is a character in;league of legends
+Rammus;is a character in;league of legends
+Renekton;is a character in;league of legends
+Ryze;is a character in;league of legends
+Shaco;is a character in;league of legends
+Shen;is a character in;league of legends
+Singed;is a character in;league of legends
+Sion;is a character in;league of legends
+Sona;is a character in;league of legends
+Soraka;is a character in;league of legends
+Swain;is a character in;league of legends
+Taric;is a character in;league of legends
+Teemo;is a character in;league of legends
+Tristana;is a character in;league of legends
+Trundle;is a character in;league of legends
+Tryndamere;is a character in;league of legends
+Twisted Fate;is a character in;league of legends
+Twitch;is a character in;league of legends
+Udyr;is a character in;league of legends
+Urgot;is a character in;league of legends
+Veigar;is a character in;league of legends
+Vladimir;is a character in;league of legends
+Warwick;is a character in;league of legends
+Xin Zhao;is a character in;league of legends
+Zilean;is a character in;league of legends
+P2000;is part of;csgo
+USP-S;is part of;csgo
+Glock-18;is part of;csgo
+Dual Berettas;is part of;csgo
+P250;is part of;csgo
+Five-SeveN;is part of;csgo
+Tec-9;is part of;csgo
+CZ75-Auto;is part of;csgo
+Desert Eagle;is part of;csgo
+R8 Revolver;is part of;csgo
+Nova;is part of;csgo
+XM1014;is part of;csgo
+Sawed-Off;is part of;csgo
+MAG-7;is part of;csgo
+M249;is part of;csgo
+Negev;is part of;csgo
+MP9;is part of;csgo
+MAC-10;is part of;csgo
+MP7;is part of;csgo
+UMP-45;is part of;csgo
+P90;is part of;csgo
+PP-Bizon;is part of;csgo
+FAMAS;is part of;csgo
+Galil AR;is part of;csgo
+M4A4;is part of;csgo
+M4A1-S;is part of;csgo
+AK-47;is part of;csgo
+SSG 08;is part of;csgo
+AUG;is part of;csgo
+SG 553;is part of;csgo
+AWP;is part of;csgo
+SCAR-20;is part of;csgo
+G3SG1;is part of;csgo
+Kevlar Vest;is part of;csgo
+Kevlar + Helmet;is part of;csgo
+Zeus x27;is part of;csgo
+Defuse Kit;is part of;csgo
+Rescue Kit;is part of;csgo
+C4 Explosive;is part of;csgo
+Incendiary Grenade;is part of;csgo
+Molotov;is part of;csgo
+Decoy Grenade;is part of;csgo
+Flashbang;is part of;csgo
+High Explosive Grenade;is part of;csgo
+Smoke Grenade;is part of;csgo
+Knife;is part of;csgo
+Bayonet;is part of;csgo
+Gut Knife;is part of;csgo
+Flip Knife;is part of;csgo
+M9 Bayonet;is part of;csgo
+Karambit;is part of;csgo
+Huntsman Knife;is part of;csgo
+Butterfly Knife;is part of;csgo
+Falchion Knife;is part of;csgo
+Shadow Daggers;is part of;csgo
+Bowie Knife;is part of;csgo
 Shadow fiend;is a character in;dota2
 mario;is a character in;super mario bros
 luigi;is a character in;super mario bros
