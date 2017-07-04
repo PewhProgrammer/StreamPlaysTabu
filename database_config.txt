@@ -117,6 +117,62 @@ Vladimir
 Warwick
 Xin Zhao
 Zilean
+P2000
+USP-S
+Glock-18
+Dual Berettas
+P250
+Five-SeveN
+Tec-9
+CZ75-Auto
+Desert Eagle
+R8 Revolver
+Nova
+XM1014
+Sawed-Off
+MAG-7
+M249
+Negev
+MP9
+MAC-10
+MP7
+UMP-45
+P90
+PP-Bizon
+FAMAS
+Galil AR
+M4A4
+M4A1-S
+AK-47
+SSG 08
+AUG
+SG 553
+AWP
+SCAR-20
+G3SG1
+Kevlar Vest
+Kevlar + Helmet
+Zeus x27
+Defuse Kit
+Rescue Kit
+C4 Explosive
+Incendiary Grenade
+Molotov
+Decoy Grenade
+Flashbang
+High Explosive Grenade
+Smoke Grenade
+Knife
+Bayonet
+Gut Knife
+Flip Knife
+M9 Bayonet
+Karambit
+Huntsman Knife
+Butterfly Knife
+Falchion Knife
+Shadow Daggers
+Bowie Knife
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
 silent hill;genre is;survival horror
 resident evil;genre is;survival horror
@@ -213,6 +269,62 @@ Vladimir;is a character in;league of legends
 Warwick;is a character in;league of legends
 Xin Zhao;is a character in;league of legends
 Zilean;is a character in;league of legends
+P2000;is part of;csgo
+USP-S;is part of;csgo
+Glock-18;is part of;csgo
+Dual Berettas;is part of;csgo
+P250;is part of;csgo
+Five-SeveN;is part of;csgo
+Tec-9;is part of;csgo
+CZ75-Auto;is part of;csgo
+Desert Eagle;is part of;csgo
+R8 Revolver;is part of;csgo
+Nova;is part of;csgo
+XM1014;is part of;csgo
+Sawed-Off;is part of;csgo
+MAG-7;is part of;csgo
+M249;is part of;csgo
+Negev;is part of;csgo
+MP9;is part of;csgo
+MAC-10;is part of;csgo
+MP7;is part of;csgo
+UMP-45;is part of;csgo
+P90;is part of;csgo
+PP-Bizon;is part of;csgo
+FAMAS;is part of;csgo
+Galil AR;is part of;csgo
+M4A4;is part of;csgo
+M4A1-S;is part of;csgo
+AK-47;is part of;csgo
+SSG 08;is part of;csgo
+AUG;is part of;csgo
+SG 553;is part of;csgo
+AWP;is part of;csgo
+SCAR-20;is part of;csgo
+G3SG1;is part of;csgo
+Kevlar Vest;is part of;csgo
+Kevlar + Helmet;is part of;csgo
+Zeus x27;is part of;csgo
+Defuse Kit;is part of;csgo
+Rescue Kit;is part of;csgo
+C4 Explosive;is part of;csgo
+Incendiary Grenade;is part of;csgo
+Molotov;is part of;csgo
+Decoy Grenade;is part of;csgo
+Flashbang;is part of;csgo
+High Explosive Grenade;is part of;csgo
+Smoke Grenade;is part of;csgo
+Knife;is part of;csgo
+Bayonet;is part of;csgo
+Gut Knife;is part of;csgo
+Flip Knife;is part of;csgo
+M9 Bayonet;is part of;csgo
+Karambit;is part of;csgo
+Huntsman Knife;is part of;csgo
+Butterfly Knife;is part of;csgo
+Falchion Knife;is part of;csgo
+Shadow Daggers;is part of;csgo
+Bowie Knife;is part of;csgo
 Shadow fiend;is a character in;dota2
 mario;is a character in;super mario bros
 luigi;is a character in;super mario bros
