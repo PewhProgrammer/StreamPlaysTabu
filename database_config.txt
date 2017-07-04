@@ -1,8 +1,32 @@
-CreateExplainNode:
+﻿CreateExplainNode:
+Flamberge
+Greatsword
+Zweihander
+SG 553
+AWP
+SCAR-20
+G3SG1
+Kevlar Vest
+Kevlar + Helmet
+Zeus x27
+Demon Great Machete
+Shotel
+Evelynn
+Ezreal
+Fiddlesticks
+Galio
+Gangplank
+Garen
 rpg
+valve
+activision
+ubisoft
 open world
 fps
+blizzard
 survival horror
+nintendo
+valve
 alan wake
 left4dead
 dota2
@@ -47,16 +71,10 @@ Annie
 Ashe
 Blitzcrank
 Caitlyn
-Cassiopeia
+Cassipeia
 Cho'Gath
 Corki
 Dr. Mundo
-Evelynn
-Ezreal
-Fiddlesticks
-Galio
-Gangplank
-Garen
 Gragas
 Heimerdinger
 Irelia
@@ -138,13 +156,6 @@ M4A1-S
 AK-47
 SSG 08
 AUG
-SG 553
-AWP
-SCAR-20
-G3SG1
-Kevlar Vest
-Kevlar + Helmet
-Zeus x27
 Defuse Kit
 Rescue Kit
 C4 Explosive
@@ -273,11 +284,6 @@ Priscilla's Dagger
 Dark Silver Tracer
 Sword
 Claymore
-Flamberge
-Greatsword
-Zweihander
-Demon Great Machete
-Shotel
 Falchion
 Gold Tracer
 Uchigatana
@@ -298,21 +304,20 @@ Sif
 Gwyn
 Nito
 Seath
-valve
-activision
-ubisoft
-blizzard
-ea
-riot games
-nintendo
-microsoft
-remedy entertainment
-bandai namco
-sega
-deep silver
-konami
-capcom
 CreateNodesAndRelationships: Schema ->  [source word];[relationship];[target word]
+afk;is the opposite of;being active ingame
+rushing;is part of;csgo
+bulletstorm;genre is;fps
+ragequit;is;bad behaviour
+crowd-control;is known for;rooting enemies
+afk;is known for;bad behaviour
+portal gun;has the ability to;shoot orange
+wolfenstein;genre is;fps
+portal gun;has the ability to;shoot blue
+left4dead;genre is ;survival horror
+league of legends;is known for;bad behaviour
+bonfire;is used for;restoring estus
+lara croft;is known for;sexappeal
 Diablo;is published by; blizzard
 Diablo 3;is published by; blizzard
 The Beginning;is published by; blizzard
@@ -348,19 +353,6 @@ Master Sword;is published by; nintendo
 silent hill;genre is;survival horror
 resident evil;genre is;survival horror
 super mario bros;is published by;nintendo
-afk;is the opposite of;being active ingame
-rushing;is part of;csgo
-bulletstorm;genre is;fps
-ragequit;is;bad behaviour
-crowd-control;is known for;rooting enemies
-afk;is known for;bad behaviour
-portal gun;has the ability to;shoot orange
-wolfenstein;genre is;fps
-portal gun;has the ability to;shoot blue
-left4dead;genre is ;survival horror
-league of legends;is known for;bad behaviour
-bonfire;is used for;restoring estus
-lara croft;is known for;sexappeal
 alan wake;is published by;remedy entertainment
 alan wake;is known for;insomnia
 dota2;is a;moba
@@ -375,7 +367,7 @@ Annie;is a character in;league of legends
 Ashe;is a character in;league of legends
 Blitzcrank;is a character in;league of legends
 Caitlyn;is a character in;league of legends
-Cassiopeia;is a character in;league of legends
+Cassipeia;is a character in;league of legends
 Cho'Gath;is a character in;league of legends
 Corki;is a character in;league of legends
 Dr. Mundo;is a character in;league of legends
@@ -565,6 +557,9 @@ lara croft;is published by;activision
 prince of persia;is published by;ubisoft
 skill;appears in;league of legends
 rooting enemies;is part of;moba
+ubisoft;is;publisher
+activision;is;publisher
+valve;is;publisher
 resetting;is part of;league of legends
 pre-fire;is part of;csgo
 pop-flashing;is part of;csgo
@@ -626,17 +621,3 @@ Sif;is part of;dark souls
 Gwyn;is part of;dark souls
 Nito;is part of;dark souls
 Seath;is part of;dark souls
-valve;is;publisher
-activision;is;publisher
-ubisoft;is;publisher
-blizzard;is;publisher
-ea;is;publisher
-riot games;is;publisher
-nintendo;is;publisher
-microsoft;is;publisher
-remedy entertainment;is;publisher
-bandai namco;is;publisher
-sega;is;publisher
-deep silver;is;publisher
-konami;is;publisher
-capcom;is;publisher
