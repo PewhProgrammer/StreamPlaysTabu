@@ -57,6 +57,12 @@ public class AltTwitchBot extends Bot {
                     disconnect();
                     dispose();
                 }
+
+                if (message.startsWith("!deploy")) {
+                    Log.debug("shutdown command received!");
+                    model.pushCommand(new Host(model, channel, channel, new AltTwitchBot(model, "#" + channel)));
+                    return;
+                }
             }
 
             Command cmd = parseLine(message, sender);
@@ -66,15 +72,10 @@ public class AltTwitchBot extends Bot {
         }
 
         public void onPrivateMessage(String sender, String login, String hostname, String message) {
-            //System.out.println("yo im here" + message);
-            if (model.getHosts().contains(hostname)) {
-                return;
-            }
+            if (model.getHosts().contains(hostname)) {return;}
 
             if (model.getGiverChannel().equals("streamplaystaboo")) {
-                //System.out.println(message);
                 String[] channel = message.split(" ");
-
                 model.pushCommand(new Host(model, channel[0], channel[0], new AltTwitchBot(model, "#" + channel[0])));
             }
         }
