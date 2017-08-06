@@ -2,7 +2,7 @@
 Developer Branch Status:
 
 
-[![Build Status](https://travis-ci.com/PewhProgrammer/StreamPlaysTabu.svg?token=3Kr2aEJKCmDsLsuKytEz&branch=development)](https://travis-ci.com/PewhProgrammer/StreamPlaysTabu)
+-- Completed --
 
 A students' project for a seminar about livestreaming
 
@@ -27,9 +27,9 @@ For details on our code of conduct and the process for submitting pull requests 
 
 ## Authors
 
-* **Marc Schubhan** - *Ongoing work* - [mcdaschu](https://github.com/s8mcschu)
-* **Tim Düwel** - *Ongoing work* - [s8tiduew](https://github.com/s8tiduew)
-* **Ba Thinh Tran** - *Ongoing work* - [PewhProgrammer](https://github.com/PewhProgrammer)
-* **Manh Tuan Ho** - *Ongoing work* - [Wasaberino](https://github.com/Wasaberino)
+* **Marc Schubhan** - *Finished* - [mcdaschu](https://github.com/s8mcschu)
+* **Tim Düwel** - *Finished* - [s8tiduew](https://github.com/s8tiduew)
+* **Ba Thinh Tran** - *Finished* - [PewhProgrammer](https://github.com/PewhProgrammer)
+* **Manh Tuan Ho** - *Finished* - [Wasaberino](https://github.com/Wasaberino)
 
 See also the list of [contributors](https://github.com/PewhProgrammer/StreamPlaysTabu/graphs/contributors) who participated in this project.
